@@ -1,0 +1,184 @@
+buildscript {
+    ext {
+        allurePluginVersion = '4.1.0'
+        allureVersion       = '3.13.0'
+        allureBomVersion    = '2.35.2'
+        selenideVersion     = '7.16.2'
+        ownerVersion        = '1.0.12'
+        junitVersion        = '5.11.4'
+        slf4jVersion        = '2.0.17'
+        gsonVersion         = '2.11.0'
+        playwrightVersion   = '1.61.0'
+        testParallelForks   = 1
+        defaultEnv          = 'local'
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'io.qameta.allure' version "${allurePluginVersion}"
+}
+
+def allureReportMode = System.getProperty('allureReportMode', 'allure3')
+
+repositories {
+    mavenCentral()
+}
+
+allure {
+    version = allureVersion
+    adapter {
+        allureJavaVersion = allureBomVersion
+        resultsDir.set(layout.buildDirectory.dir('allure-results'))
+        autoconfigure.set(allureReportMode != 'none')
+        aspectjWeaver.set(allureReportMode != 'none')
+        frameworks {
+            junit5 {
+                enabled.set(allureReportMode != 'none')
+                autoconfigureListeners.set(allureReportMode != 'none')
+            }
+        }
+    }
+    report {
+        configFile.set(layout.projectDirectory.file('allurerc.json'))
+    }
+}
+
+dependencies {
+    testImplementation platform("io.qameta.allure:allure-bom:${allureBomVersion}")
+    testImplementation (
+            'io.qameta.allure:allure-jupiter',
+            'io.qameta.allure:allure-selenide',
+            "com.codeborne:selenide:${selenideVersion}",
+            "com.google.code.gson:gson:${gsonVersion}",
+            "org.aeonbits.owner:owner:${ownerVersion}",
+            "com.microsoft.playwright:playwright:${playwrightVersion}",
+            "org.junit.jupiter:junit-jupiter:${junitVersion}")
+    testRuntimeOnly (
+            'org.junit.platform:junit-platform-launcher',
+            "org.slf4j:slf4j-simple:${slf4jVersion}")
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+def resolveConfiguredHubUrl = {
+    def env = System.getProperty('env', defaultEnv)
+    def props = new Properties()
+    def configFile = file("src/test/resources/config/${env}.properties")
+    if (configFile.exists()) {
+        configFile.withInputStream { props.load(it) }
+    }
+    def hubUrl = (System.getProperty('hubUrl') ?: props.getProperty('hubUrl', '')).trim()
+    if (!hubUrl) {
+        throw new GradleException("Set hubUrl in config/${env}.properties")
+    }
+    hubUrl.endsWith('/') ? hubUrl : "${hubUrl}/"
+}
+
+def resolveConfiguredUiUrl = {
+    def env = System.getProperty('env', defaultEnv)
+    def props = new Properties()
+    def configFile = file("src/test/resources/config/${env}.properties")
+    if (configFile.exists()) {
+        configFile.withInputStream { props.load(it) }
+    }
+    def uiUrl = (System.getProperty('uiUrl') ?: props.getProperty('uiUrl', '')).trim()
+    if (!uiUrl) {
+        throw new GradleException("Set uiUrl in config/${env}.properties")
+    }
+    uiUrl.endsWith('/') ? uiUrl : "${uiUrl}/"
+}
+
+def runHubHealthCheck = {
+    if (System.getProperty('skipHealthCheck', 'false') == 'true') {
+        return
+    }
+    def hubUrl = resolveConfiguredHubUrl()
+    def healthUrl = new URL("${hubUrl}status")
+    try {
+        def conn = (java.net.HttpURLConnection) healthUrl.openConnection()
+        conn.setRequestMethod('GET')
+        conn.setConnectTimeout(5000)
+        conn.setReadTimeout(5000)
+        def code = conn.responseCode
+        if (code != 200) {
+            throw new GradleException(
+                    "Hub health check failed: GET ${healthUrl} returned HTTP ${code}. " +
+                    'Start hub: cd dev && ./scripts/start-selenoid.sh'
+            )
+        }
+    } catch (java.net.ConnectException | java.net.SocketTimeoutException e) {
+        throw new GradleException(
+                "Hub health check failed: cannot reach ${healthUrl} (${e.class.simpleName}). " +
+                'Start hub: cd dev && ./scripts/start-selenoid.sh',
+                e
+        )
+    }
+}
+
+tasks.register('healthCheck') {
+    group = 'verification'
+    description = 'GET hubUrl/status — requires Selenoid hub on :4444'
+    doLast runHubHealthCheck
+}
+
+def runUiHealthCheck = {
+    if (System.getProperty('skipHealthCheck', 'false') == 'true') {
+        return
+    }
+    def uiUrl = resolveConfiguredUiUrl()
+    def healthUrl = new URL("${uiUrl}status")
+    try {
+        def conn = (java.net.HttpURLConnection) healthUrl.openConnection()
+        conn.setRequestMethod('GET')
+        conn.setConnectTimeout(5000)
+        conn.setReadTimeout(5000)
+        def code = conn.responseCode
+        if (code != 200) {
+            throw new GradleException(
+                    "UI health check failed: GET ${healthUrl} returned HTTP ${code}. " +
+                    'Start UI: cd dev && ./scripts/start-selenoid-ui.sh'
+            )
+        }
+    } catch (java.net.ConnectException | java.net.SocketTimeoutException e) {
+        throw new GradleException(
+                "UI health check failed: cannot reach ${healthUrl} (${e.class.simpleName}). " +
+                'Start UI: cd dev && ./scripts/start-selenoid-ui.sh',
+                e
+        )
+    }
+}
+
+tasks.register('uiHealthCheck') {
+    group = 'verification'
+    description = 'GET uiUrl/status — requires Selenoid UI on :8080'
+    doLast runUiHealthCheck
+}
+
+test {
+    dependsOn healthCheck, uiHealthCheck
+    useJUnitPlatform {
+        def includeTagsProp = System.getProperty('includeTags')
+        if (includeTagsProp) {
+            includeTags(*(includeTagsProp.split(',')*.trim()))
+        }
+        def excludeTagsProp = System.getProperty('excludeTags')
+        if (excludeTagsProp) {
+            excludeTags(*(excludeTagsProp.split(',')*.trim()))
+        }
+    }
+    systemProperty 'env', System.getProperty('env', defaultEnv)
+    systemProperty 'allureReportMode', allureReportMode
+    maxParallelForks = testParallelForks
+}
+
+if (allureReportMode == 'none') {
+    tasks.named('test', Test).configure {
+        systemProperties.remove('allure.results.directory')
+        doLast {
+            delete layout.buildDirectory.dir('allure-results')
+        }
+    }
+}
