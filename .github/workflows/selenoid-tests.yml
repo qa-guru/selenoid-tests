@@ -1,13 +1,27 @@
+# Synced from template-project ethalon: selenoid_github-orchestrator.yml
+# Runnable filename: selenoid-tests.yml (consumer). Default: -Denv=selenoid_github_e2e
+#
+# SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
+# Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub tests + merge Allure + repository_dispatch.
+# Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
+# Consumer reference: qa-guru-home/selenoid-home/tests-java (scripts/run-go-unit.sh — bootstrap, не в template-project).
+#
+# Default: -Denv=selenoid_github_e2e. GRADLE_ARGS: env, skipHealthCheck, tags only — не дублировать profile keys.
+
 name: Selenoid Tests
 
 on:
   workflow_dispatch:
     inputs:
+      env_profile:
+        description: "Env profile (-Denv=), e.g. selenoid_github_e2e"
+        required: false
+        default: selenoid_github_e2e
       test_class:
-        description: "Fully qualified test (optional), e.g. tests.HubStatusTests"
+        description: "Fully qualified test (optional), e.g. tests.api.HubStatusTests"
         required: false
       test_tags:
-        description: "JUnit tags (comma-separated), e.g. api,smoke"
+        description: "JUnit tags (comma-separated); empty = slice default smoke,api"
         required: false
       source_ref:
         description: "Git ref for Go service repos (default main)"
@@ -25,7 +39,7 @@ on:
     types: [deploy-smoke]
 
 concurrency:
-  group: selenoid-tests-${{ github.ref }}-${{ github.event_name }}
+  group: selenoid_github-orchestrator-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: ${{ github.event_name == 'push' }}
 
 permissions:
@@ -34,6 +48,7 @@ permissions:
 env:
   ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.autotests.cloud' }}
   REPORT_ID: ${{ github.run_id }}
+  ENV_PROFILE: ${{ github.event.inputs.env_profile || 'selenoid_github_e2e' }}
   SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}
   SOURCE_VERSION: ${{ github.event.client_payload.source_version || github.event.inputs.source_version || '' }}
   SOURCE_REF: ${{ github.event.inputs.source_ref || 'main' }}
@@ -57,7 +72,7 @@ jobs:
             epic: cm
             go_repo: qa-guru/cm
     steps:
-      - name: Checkout selenoid-tests
+      - name: Checkout tests repo
         uses: actions/checkout@v6
 
       - name: Checkout ${{ matrix.repo }}
@@ -117,12 +132,11 @@ jobs:
         run: exit "${{ env.GO_TEST_EXIT }}"
 
   java-e2e:
-    name: Java e2e
+    name: Java hub tests
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
       ALLURE_RESULTS: build/allure-results
-      BROWSER_VERSION: "148"
       TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
       TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
     steps:
@@ -141,15 +155,12 @@ jobs:
         with:
           gradle-version: wrapper
 
-      - name: Run Java tests
+      - name: Run Java hub tests
         run: |
           set +e
           GRADLE_ARGS=(
-            -Denv=ci
+            -Denv="${ENV_PROFILE}"
             -DskipHealthCheck=true
-            -DallureReportMode=allure3
-            -DlogToConsole=false
-            -DselenideLogToConsole=false
           )
           if [ -n "$TEST_CLASS" ]; then
             ./gradlew test --tests "$TEST_CLASS" "${GRADLE_ARGS[@]}"
@@ -157,10 +168,6 @@ jobs:
             ./gradlew test "${GRADLE_ARGS[@]}" \
               -DincludeTags="$TEST_TAGS" \
               -DexcludeTags=resilience,local-only
-          elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
-            ./gradlew test "${GRADLE_ARGS[@]}" \
-              -DincludeTags=smoke,api \
-              -DexcludeTags=resilience,local-only,playwright
           else
             ./gradlew test "${GRADLE_ARGS[@]}" \
               -DincludeTags=smoke,api \
@@ -300,7 +307,7 @@ jobs:
           if [ -n "$SOURCE_REPO" ]; then
             export ALLURE_LAUNCH_NAME="Deploy smoke — ${SOURCE_REPO} ${SOURCE_VERSION} #${GITHUB_RUN_NUMBER}"
           else
-            export ALLURE_LAUNCH_NAME="Selenoid Tests — ${GITHUB_REPOSITORY} #${GITHUB_RUN_NUMBER}"
+            export ALLURE_LAUNCH_NAME="selenoid_github-orchestrator — ${GITHUB_REPOSITORY} #${GITHUB_RUN_NUMBER}"
           fi
           allurectl upload build/allure-results 2>&1 | tee allurectl-upload.log
           UPLOAD_EXIT=${PIPESTATUS[0]}
@@ -323,13 +330,14 @@ jobs:
         run: |
           REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/awesome/index.html"
           DASHBOARD_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/dashboard/index.html"
-          echo "## Selenoid Tests" >> "$GITHUB_STEP_SUMMARY"
+          echo "## selenoid_github-orchestrator" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Env profile: \`${ENV_PROFILE}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${SOURCE_REPO:-}" ]; then
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java e2e: smoke + api (\`-DskipHealthCheck=true\`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java hub: smoke + api (\`-DskipHealthCheck=true\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
