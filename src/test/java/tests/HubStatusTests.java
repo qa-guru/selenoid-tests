@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("integration")
-@Epic("Selenoid")
+@Epic("selenoid")
 @Feature("Hub status")
 @DisplayName("Hub status")
 class HubStatusTests {

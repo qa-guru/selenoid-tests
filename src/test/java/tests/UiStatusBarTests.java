@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
-@Epic("Selenoid")
+@Epic("selenoid-ui")
 @Feature("UI status bar")
 @DisplayName("UI status bar")
 class UiStatusBarTests extends UiTestBase {

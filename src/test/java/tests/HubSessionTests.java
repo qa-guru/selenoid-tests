@@ -17,7 +17,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("e2e")
-@Epic("Selenoid")
+@Epic("selenoid")
 @Feature("WebDriver session")
 @DisplayName("WebDriver session")
 class HubSessionTests extends TestBase {

@@ -12,7 +12,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("e2e")
-@Epic("Selenoid")
+@Epic("playwright-image")
 @Feature("Playwright WS session")
 @DisplayName("Playwright WS session")
 class HubPlaywrightSessionTests extends PlaywrightTestBase {

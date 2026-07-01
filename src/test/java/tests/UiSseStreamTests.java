@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("integration")
-@Epic("Selenoid")
+@Epic("selenoid-ui")
 @Feature("UI SSE")
 @DisplayName("UI SSE stream")
 class UiSseStreamTests {

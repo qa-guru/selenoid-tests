@@ -9,6 +9,10 @@ on:
       test_tags:
         description: "JUnit tags (comma-separated), e.g. api,smoke"
         required: false
+      source_ref:
+        description: "Git ref for Go service repos (default main)"
+        required: false
+        default: main
       source_repo:
         description: "Triggering repository (repository_dispatch)"
         required: false
@@ -27,21 +31,157 @@ concurrency:
 permissions:
   contents: write
 
+env:
+  ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.autotests.cloud' }}
+  REPORT_ID: ${{ github.run_id }}
+  SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}
+  SOURCE_VERSION: ${{ github.event.client_payload.source_version || github.event.inputs.source_version || '' }}
+  SOURCE_REF: ${{ github.event.inputs.source_ref || 'main' }}
+
 jobs:
-  selenoid-tests:
-    name: Selenoid Tests
+  go-unit:
+    name: Go unit — ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: selenoid
+            epic: selenoid
+            go_repo: qa-guru/selenoid
+          - repo: selenoid-ui
+            epic: selenoid-ui
+            go_repo: qa-guru/selenoid-ui
+          - repo: cm
+            epic: cm
+            go_repo: qa-guru/cm
+    steps:
+      - name: Checkout selenoid-tests
+        uses: actions/checkout@v6
+
+      - name: Checkout ${{ matrix.repo }}
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ matrix.go_repo }}
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/${{ matrix.repo }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ~1.23.8
+          cache-dependency-path: repos/${{ matrix.repo }}/go.sum
+
+      - name: Setup Node (selenoid-ui)
+        if: matrix.repo == 'selenoid-ui'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12.x
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Build selenoid-ui frontend
+        if: matrix.repo == 'selenoid-ui'
+        working-directory: repos/selenoid-ui/ui
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: Run Go unit tests → Allure
+        id: go-tests
+        run: |
+          set +e
+          chmod +x scripts/run-go-unit.sh
+          ./scripts/run-go-unit.sh "${{ matrix.repo }}" "${{ matrix.epic }}"
+          echo "GO_TEST_EXIT=$?" >> "$GITHUB_ENV"
+          set -e
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/go-${{ matrix.repo }}/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-go-${{ matrix.repo }}
+          path: build/allure-results/go-${{ matrix.repo }}/
+          retention-days: 7
+
+      - name: Fail if Go tests failed
+        if: always() && env.GO_TEST_EXIT != '0'
+        run: exit "${{ env.GO_TEST_EXIT }}"
+
+  java-e2e:
+    name: Java e2e
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
-      ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.autotests.cloud' }}
       ALLURE_RESULTS: build/allure-results
       BROWSER_VERSION: "148"
-      REPORT_ID: ${{ github.run_id }}
       TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
-      SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}
-      SOURCE_VERSION: ${{ github.event.client_payload.source_version || github.event.inputs.source_version || '' }}
       TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: wrapper
+
+      - name: Run Java tests
+        run: |
+          set +e
+          GRADLE_ARGS=(
+            -Denv=ci
+            -DskipHealthCheck=true
+            -DallureReportMode=allure3
+            -DlogToConsole=false
+            -DselenideLogToConsole=false
+          )
+          if [ -n "$TEST_CLASS" ]; then
+            ./gradlew test --tests "$TEST_CLASS" "${GRADLE_ARGS[@]}"
+          elif [ -n "$TEST_TAGS" ]; then
+            ./gradlew test "${GRADLE_ARGS[@]}" \
+              -DincludeTags="$TEST_TAGS" \
+              -DexcludeTags=resilience,local-only
+          elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            ./gradlew test "${GRADLE_ARGS[@]}" \
+              -DincludeTags=smoke,api \
+              -DexcludeTags=resilience,local-only,playwright
+          else
+            ./gradlew test "${GRADLE_ARGS[@]}" \
+              -DincludeTags=smoke,api \
+              -DexcludeTags=resilience,local-only,playwright
+          fi
+          echo "JAVA_TEST_EXIT=$?" >> "$GITHUB_ENV"
+          set -e
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/**') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-java
+          path: build/allure-results/
+          retention-days: 7
+
+      - name: Fail if Java tests failed
+        if: always() && env.JAVA_TEST_EXIT != '0'
+        run: exit "${{ env.JAVA_TEST_EXIT }}"
+
+  report:
+    name: Allure report + TestOps
+    needs: [go-unit, java-e2e]
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ALLURE_RESULTS: build/allure-results
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -54,6 +194,20 @@ jobs:
           path: gh-pages
           sparse-checkout: history.jsonl
           sparse-checkout-cone-mode: false
+
+      - name: Download Go Allure artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-go-*
+          path: build/allure-results
+          merge-multiple: true
+
+      - name: Download Java Allure artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-java
+          path: build/allure-results
+          merge-multiple: true
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -83,27 +237,50 @@ jobs:
           allure-token: ${{ secrets.ALLURE_TOKEN }}
           allure-project-id: ${{ vars.ALLURE_PROJECT_ID }}
 
-      - name: Run tests
+      - name: Write executor.json
+        if: hashFiles('build/allure-results/**') != ''
         run: |
-          set +e
-          GRADLE_ARGS=(
-            -Denv=ci
-            -DskipHealthCheck=true
-            -DallureReportMode=allure3
-            -DlogToConsole=false
-            -DselenideLogToConsole=false
-          )
-          if [ -n "$TEST_CLASS" ]; then
-            ./gradlew test --tests "$TEST_CLASS" "${GRADLE_ARGS[@]}"
-          elif [ -n "$TEST_TAGS" ]; then
-            ./gradlew test "${GRADLE_ARGS[@]}" \
-              -DincludeTags="$TEST_TAGS" \
-              -DexcludeTags=resilience,local-only
-          else
-            ./gradlew test --tests 'config.*Test' "${GRADLE_ARGS[@]}"
+          mkdir -p build/allure-results
+          SOURCE_JSON=""
+          if [ -n "${SOURCE_REPO:-}" ]; then
+            SOURCE_JSON=$(printf ', "source_repo": "%s", "source_version": "%s"' "$SOURCE_REPO" "$SOURCE_VERSION")
           fi
-          echo "TEST_EXIT=$?" >> "$GITHUB_ENV"
-          set -e
+          cat > build/allure-results/executor.json <<EOF
+          {
+            "reportName": "Run #${{ github.run_number }}",
+            "buildOrder": ${{ github.run_number }},
+            "reportUrl": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/awesome/index.html",
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"${SOURCE_JSON}
+          }
+          EOF
+
+      - name: Generate Allure 3 report
+        if: always() && hashFiles('build/allure-results/**') != ''
+        id: allure-report
+        continue-on-error: true
+        run: ./gradlew allureReport
+
+      - name: Prepare GitHub Pages
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
+        run: |
+          mkdir -p pages/reports/${REPORT_ID}
+          cp -r build/reports/allure-report/allureReport/. "pages/reports/${REPORT_ID}/"
+          if [ -f history.jsonl ]; then
+            cp history.jsonl pages/history.jsonl
+          elif [ -f build/reports/allure-report/allureReport/history.jsonl ]; then
+            cp build/reports/allure-report/allureReport/history.jsonl pages/history.jsonl
+          fi
+          echo "${REPORT_ID}" > pages/latest-run-id.txt
+          touch pages/.nojekyll
+
+      - name: Deploy Allure report to GitHub Pages
+        if: always() && hashFiles('pages/reports/**/awesome/index.html') != ''
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: pages
+          enable_jekyll: false
 
       - name: Upload results to Allure TestOps
         if: always() && steps.setup-allurectl.outcome == 'success' && hashFiles('build/allure-results/**') != ''
@@ -134,44 +311,6 @@ jobs:
           fi
           set -e
 
-      - name: Generate Allure 3 report
-        if: always() && hashFiles('build/allure-results/**') != ''
-        id: allure-report
-        continue-on-error: true
-        run: |
-          mkdir -p build/allure-results
-          cat > build/allure-results/executor.json <<EOF
-          {
-            "reportName": "Run #${{ github.run_number }}",
-            "buildOrder": ${{ github.run_number }},
-            "reportUrl": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/awesome/index.html",
-            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          }
-          EOF
-          ./gradlew allureReport
-
-      - name: Prepare GitHub Pages
-        if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
-        run: |
-          mkdir -p pages/reports/${REPORT_ID}
-          cp -r build/reports/allure-report/allureReport/. "pages/reports/${REPORT_ID}/"
-          if [ -f history.jsonl ]; then
-            cp history.jsonl pages/history.jsonl
-          elif [ -f build/reports/allure-report/allureReport/history.jsonl ]; then
-            cp build/reports/allure-report/allureReport/history.jsonl pages/history.jsonl
-          fi
-          echo "${REPORT_ID}" > pages/latest-run-id.txt
-          touch pages/.nojekyll
-
-      - name: Deploy Allure report to GitHub Pages
-        if: always() && hashFiles('pages/reports/**/awesome/index.html') != ''
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: pages
-          enable_jekyll: false
-
       - name: Job summary
         if: always()
         run: |
@@ -182,6 +321,8 @@ jobs:
           if [ -n "${SOURCE_REPO:-}" ]; then
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
           fi
+          echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java e2e: smoke + api (\`-DskipHealthCheck=true\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
@@ -195,6 +336,6 @@ jobs:
             echo "- Allure TestOps upload: _ошибка (см. шаг Upload results)_" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Fail if tests failed
-        if: always() && env.TEST_EXIT != '0'
-        run: exit "${{ env.TEST_EXIT }}"
+      - name: Fail if upstream tests failed
+        if: always() && (needs.go-unit.result == 'failure' || needs.java-e2e.result == 'failure')
+        run: exit 1

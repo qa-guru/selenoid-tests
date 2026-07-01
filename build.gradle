@@ -40,7 +40,7 @@ allure {
         }
     }
     report {
-        configFile.set(layout.projectDirectory.file('allurerc.json'))
+        configFile.set(layout.projectDirectory.file('allurerc.mjs'))
     }
 }
 

@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static io.qameta.allure.Allure.step;
 
 @Layer("integration")
-@Epic("Selenoid")
+@Epic("selenoid-ui")
 @Feature("UI status recovery")
 @DisplayName("UI status recovery")
 @Tag("resilience")
