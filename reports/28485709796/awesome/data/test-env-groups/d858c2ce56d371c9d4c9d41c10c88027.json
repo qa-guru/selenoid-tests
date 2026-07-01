@@ -1,1 +1,0 @@
-{"id":"d858c2ce56d371c9d4c9d41c10c88027","fullName":"tests.UiStatusTests.uiStatusReturnsProxiedHubJson","name":"GET UI /status returns proxied hub statistics JSON","status":"broken","testResultsByEnv":{"default":"3b099885766e3d9e1aa33dbc4b30d1b4"}}
