@@ -20,6 +20,7 @@ import static io.qameta.allure.Allure.step;
 @Feature("UI status recovery")
 @DisplayName("UI status recovery")
 @Tag("resilience")
+@Tag("integration")
 @Tag("local-only")
 @Execution(ExecutionMode.SAME_THREAD)
 class UiStatusRecoveryTests extends UiTestBase {

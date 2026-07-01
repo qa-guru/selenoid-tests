@@ -1,9 +1,8 @@
-package helpers;
+package api.ui;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import config.ConfigReader;
 import io.qameta.allure.Step;
+import io.restassured.path.json.JsonPath;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,25 +14,24 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-public final class UiClient {
+public final class SseStreamApi {
 
     private static final HttpClient HTTP = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(5))
             .build();
 
-    private UiClient() {
+    private SseStreamApi() {
     }
 
-    @Step("GET UI {uiUrl}status")
-    public static HubClient.HubStatusResponse fetchStatus(String uiUrl) {
-        return HubClient.fetchStatus(uiUrl);
+    @Step("Read first SSE event from /events")
+    public static SseHubEvent readFirstEvent() {
+        return readFirstEvent(ConfigReader.resolveUiUrl());
     }
 
     @Step("Read first SSE event from {uiUrl}events")
-    public static JsonObject readFirstSseEvent(String uiUrl) {
+    public static SseHubEvent readFirstEvent(String uiUrl) {
         var url = uiUrl.endsWith("/") ? uiUrl + "events" : uiUrl + "/events";
         var request = HttpRequest.newBuilder(URI.create(url))
-                .timeout(Duration.ofSeconds(20))
                 .header("Accept", "text/event-stream")
                 .GET()
                 .build();
@@ -43,7 +41,7 @@ public final class UiClient {
                 throw new IllegalStateException("SSE GET " + url + " returned HTTP " + response.statusCode());
             }
             try (var reader = new BufferedReader(new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
-                var deadline = System.currentTimeMillis() + 15_000;
+                var deadline = System.currentTimeMillis() + 30_000;
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (System.currentTimeMillis() > deadline) {
@@ -51,11 +49,7 @@ public final class UiClient {
                     }
                     if (line.startsWith("data:")) {
                         var payload = line.substring("data:".length()).trim();
-                        JsonElement parsed = JsonParser.parseString(payload);
-                        if (!parsed.isJsonObject()) {
-                            throw new IllegalStateException("Expected SSE JSON object, got: " + payload);
-                        }
-                        return parsed.getAsJsonObject();
+                        return JsonPath.from(payload).getObject("", SseHubEvent.class);
                     }
                 }
             }

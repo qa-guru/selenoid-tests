@@ -52,6 +52,30 @@ class ConfigReaderTest {
     }
 
     @Test
+    @DisplayName("resolveApiBaseUrl prefers apiBaseUrl over hubUrl")
+    void resolveApiBaseUrlPrefersExplicitKey() {
+        var config = configWith(Map.of(
+                "apiBaseUrl", "http://api.example.com",
+                "hubUrl", "http://hub.example.com/"));
+        assertEquals("http://api.example.com/", ConfigReader.resolveApiBaseUrl(config));
+    }
+
+    @Test
+    @DisplayName("resolveApiBaseUrl falls back to hubUrl when apiBaseUrl is empty")
+    void resolveApiBaseUrlFallsBackToHubUrl() {
+        var config = configWith(Map.of("apiBaseUrl", "", "hubUrl", "http://127.0.0.1:4444"));
+        assertEquals("http://127.0.0.1:4444/", ConfigReader.resolveApiBaseUrl(config));
+    }
+
+    @Test
+    @DisplayName("resolveApiBaseUrl fails fast when apiBaseUrl and hubUrl are empty")
+    void resolveApiBaseUrlFailsWhenBothEmpty() {
+        var config = configWith(Map.of("apiBaseUrl", "", "hubUrl", ""));
+        var error = assertThrows(IllegalStateException.class, () -> ConfigReader.resolveApiBaseUrl(config));
+        assertTrue(error.getMessage().contains("apiBaseUrl or hubUrl"));
+    }
+
+    @Test
     @DisplayName("resolvePlaywrightWsEndpoint appends selenoid query params")
     void resolvePlaywrightWsEndpointAddsQueryParams() {
         var config = configWith(Map.of(

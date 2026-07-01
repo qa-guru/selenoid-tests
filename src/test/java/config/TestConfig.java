@@ -6,6 +6,7 @@ import org.aeonbits.owner.Config;
 @Config.Sources({
         "system:properties",
         "classpath:config/${env}.properties",
+        "classpath:config/default.properties",
 })
 public interface TestConfig extends Config {
 
@@ -36,6 +37,10 @@ public interface TestConfig extends Config {
     @Key("rootLogLevel")
     @DefaultValue("info")
     String rootLogLevel();
+
+    @Key("apiBaseUrl")
+    @DefaultValue("")
+    String apiBaseUrl();
 
     @Key("hubUrl")
     @DefaultValue("http://127.0.0.1:4444/")

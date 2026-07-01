@@ -14,6 +14,24 @@ public final class ConfigReader {
     private ConfigReader() {
     }
 
+    public static String resolveApiBaseUrl() {
+        return resolveApiBaseUrl(testConfig);
+    }
+
+    public static String resolveApiBaseUrl(TestConfig config) {
+        var apiUrl = config.apiBaseUrl().trim();
+        if (!apiUrl.isEmpty()) {
+            return withSlash(apiUrl);
+        }
+
+        var hubUrl = config.hubUrl().trim();
+        if (!hubUrl.isEmpty()) {
+            return withSlash(hubUrl);
+        }
+
+        throw new IllegalStateException("Set apiBaseUrl or hubUrl in config/${env}.properties");
+    }
+
     public static String resolveHubUrl() {
         return resolveHubUrl(testConfig);
     }

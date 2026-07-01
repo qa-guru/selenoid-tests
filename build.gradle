@@ -4,13 +4,14 @@ buildscript {
         allureVersion       = '3.13.0'
         allureBomVersion    = '2.35.2'
         selenideVersion     = '7.16.2'
+        restAssuredVersion  = '5.5.7'
         ownerVersion        = '1.0.12'
         junitVersion        = '5.11.4'
         slf4jVersion        = '2.0.17'
-        gsonVersion         = '2.11.0'
         playwrightVersion   = '1.61.0'
         testParallelForks   = 1
         defaultEnv          = 'local'
+        pyramidStand        = 'local'
     }
 }
 
@@ -50,10 +51,11 @@ dependencies {
             'io.qameta.allure:allure-jupiter',
             'io.qameta.allure:allure-selenide',
             "com.codeborne:selenide:${selenideVersion}",
-            "com.google.code.gson:gson:${gsonVersion}",
             "org.aeonbits.owner:owner:${ownerVersion}",
             "com.microsoft.playwright:playwright:${playwrightVersion}",
-            "org.junit.jupiter:junit-jupiter:${junitVersion}")
+            "org.junit.jupiter:junit-jupiter:${junitVersion}",
+            "io.rest-assured:rest-assured:${restAssuredVersion}",
+            'io.qameta.allure:allure-rest-assured')
     testRuntimeOnly (
             'org.junit.platform:junit-platform-launcher',
             "org.slf4j:slf4j-simple:${slf4jVersion}")
@@ -91,8 +93,20 @@ def resolveConfiguredUiUrl = {
     uiUrl.endsWith('/') ? uiUrl : "${uiUrl}/"
 }
 
-def runHubHealthCheck = {
+def shouldSkipHealthCheck = { String env ->
     if (System.getProperty('skipHealthCheck', 'false') == 'true') {
+        return true
+    }
+    if (env.endsWith('_unit') || env.endsWith('_api')) {
+        return true
+    }
+    def includeTags = System.getProperty('includeTags', '').split(',').collect { it.trim() }.findAll { it }
+    return includeTags == ['api']
+}
+
+def runHubHealthCheck = {
+    def env = System.getProperty('env', defaultEnv)
+    if (shouldSkipHealthCheck(env)) {
         return
     }
     def hubUrl = resolveConfiguredHubUrl()
@@ -120,12 +134,13 @@ def runHubHealthCheck = {
 
 tasks.register('healthCheck') {
     group = 'verification'
-    description = 'GET hubUrl/status — requires Selenoid hub on :4444'
+    description = 'GET hubUrl/status — auto-skip for *_unit, *_api, -DincludeTags=api'
     doLast runHubHealthCheck
 }
 
 def runUiHealthCheck = {
-    if (System.getProperty('skipHealthCheck', 'false') == 'true') {
+    def env = System.getProperty('env', defaultEnv)
+    if (shouldSkipHealthCheck(env)) {
         return
     }
     def uiUrl = resolveConfiguredUiUrl()
@@ -153,13 +168,14 @@ def runUiHealthCheck = {
 
 tasks.register('uiHealthCheck') {
     group = 'verification'
-    description = 'GET uiUrl/status — requires Selenoid UI on :8080'
+    description = 'GET uiUrl/status — auto-skip for *_unit, *_api, -DincludeTags=api'
     doLast runUiHealthCheck
 }
 
 test {
     dependsOn healthCheck, uiHealthCheck
     useJUnitPlatform {
+        excludeTags 'api'
         def includeTagsProp = System.getProperty('includeTags')
         if (includeTagsProp) {
             includeTags(*(includeTagsProp.split(',')*.trim()))
@@ -172,6 +188,70 @@ test {
     systemProperty 'env', System.getProperty('env', defaultEnv)
     systemProperty 'allureReportMode', allureReportMode
     maxParallelForks = testParallelForks
+}
+
+def pyramidLayerEnv = { String layer ->
+    "${System.getProperty('pyramidStand', pyramidStand)}_${layer}"
+}
+
+def layerTestSlices = [
+        [name: 'testUnit',        layer: 'unit',
+         description: 'Pyramid unit — config.*Test',
+         testPatterns: ['config.*Test']],
+        [name: 'testIntegration', layer: 'integration',
+         description: 'Pyramid integration — @Tag(integration), exclude local-only',
+         includeTags: 'integration', excludeTags: 'local-only',
+         needsStack: true],
+        [name: 'testApi',         layer: 'api',
+         description: 'Pyramid api — @Tag(api)',
+         includeTags: 'api'],
+        [name: 'testE2e',         layer: 'e2e',
+         description: 'Pyramid e2e smoke — @Tag(smoke), exclude playwright/resilience/local-only',
+         includeTags: 'smoke', excludeTags: 'playwright,resilience,local-only',
+         needsStack: true],
+        [name: 'testPlaywright',  layer: 'e2e',
+         description: 'Playwright smoke — @Tag(playwright)',
+         includeTags: 'playwright', excludeTags: 'local-only',
+         needsStack: true],
+        [name: 'testResilience',  layer: 'integration',
+         description: 'Resilience — @Tag(resilience), local hub kill/recovery',
+         includeTags: 'resilience',
+         needsStack: true],
+]
+
+layerTestSlices.each { slice ->
+    def envName = pyramidLayerEnv(slice.layer)
+    tasks.register(slice.name, Test) {
+        group = 'verification'
+        description = "${slice.description} (env=${envName}; stand: -DpyramidStand=selenoid_github)"
+        testClassesDirs = sourceSets.test.output.classesDirs
+        classpath = sourceSets.test.runtimeClasspath
+        useJUnitPlatform {
+            if (slice.includeTags) {
+                includeTags(*(slice.includeTags.split(',')*.trim()))
+            }
+            if (slice.excludeTags) {
+                excludeTags(*(slice.excludeTags.split(',')*.trim()))
+            }
+        }
+        if (slice.testPatterns) {
+            filter {
+                slice.testPatterns.each { pattern -> includeTestsMatching pattern }
+            }
+        }
+        systemProperty 'env', envName
+        systemProperty 'allureReportMode', allureReportMode
+        maxParallelForks = testParallelForks
+        if (slice.needsStack && !shouldSkipHealthCheck(envName)) {
+            dependsOn healthCheck, uiHealthCheck
+        }
+        if (allureReportMode == 'none') {
+            systemProperties.remove('allure.results.directory')
+            doLast {
+                delete layout.buildDirectory.dir('allure-results')
+            }
+        }
+    }
 }
 
 if (allureReportMode == 'none') {

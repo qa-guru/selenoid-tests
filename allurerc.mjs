@@ -109,7 +109,7 @@ export default {
           {
             type: "testingPyramid",
             title: "Пирамида тестирования",
-            layers: ["unit", "component", "integration", "e2e", "manual"],
+            layers: ["unit", "component", "integration", "api", "e2e", "manual"],
           },
         ],
       },

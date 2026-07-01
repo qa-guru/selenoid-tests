@@ -21,7 +21,7 @@ on:
         description: "Fully qualified test (optional), e.g. tests.api.HubStatusTests"
         required: false
       test_tags:
-        description: "JUnit tags (comma-separated); empty = slice default smoke,api"
+        description: "JUnit tags (comma-separated); empty = smoke,api; e.g. integration"
         required: false
       source_ref:
         description: "Git ref for Go service repos (default main)"
@@ -171,7 +171,7 @@ jobs:
           else
             ./gradlew test "${GRADLE_ARGS[@]}" \
               -DincludeTags=smoke,api \
-              -DexcludeTags=resilience,local-only,playwright
+              -DexcludeTags=resilience,local-only,playwright,integration
           fi
           echo "JAVA_TEST_EXIT=$?" >> "$GITHUB_ENV"
           set -e
@@ -337,7 +337,7 @@ jobs:
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java hub: smoke + api (\`-DskipHealthCheck=true\`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java: smoke + api layers (\`@Tag(smoke,api)\`, integration excluded in default CI)" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
