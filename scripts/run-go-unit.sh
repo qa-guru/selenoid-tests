@@ -16,11 +16,12 @@ export GO111MODULE=on
 export PATH="${PATH}:$(go env GOPATH)/bin"
 
 if ! command -v gotestsum >/dev/null 2>&1; then
-  go install gotest.tools/gotestsum@latest
+  go install gotest.tools/gotestsum@v1.12.3
 fi
 
 cd "${REPOS_DIR}/${REPO}"
 
+set +e
 case "${REPO}" in
   selenoid)
     gotestsum --junitfile "${JUNIT_FILE}" -- \
@@ -49,6 +50,13 @@ case "${REPO}" in
     exit 2
     ;;
 esac
+TEST_EXIT=$?
+set -e
+
+if [ ! -f "${JUNIT_FILE}" ]; then
+  echo "JUnit file not found: ${JUNIT_FILE}" >&2
+  exit "${TEST_EXIT:-1}"
+fi
 
 cd "${ROOT}"
 npm install --no-save @allurereport/reader@3.14.0 @allurereport/reader-api@3.14.0
@@ -57,3 +65,5 @@ node scripts/junit-to-allure.mjs \
   --output "${ALLURE_DIR}" \
   --epic "${EPIC}" \
   --layer unit
+
+exit "${TEST_EXIT}"

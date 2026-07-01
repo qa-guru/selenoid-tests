@@ -67,6 +67,11 @@ jobs:
           ref: ${{ env.SOURCE_REF }}
           path: repos/${{ matrix.repo }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
@@ -84,6 +89,8 @@ jobs:
       - name: Build selenoid-ui frontend
         if: matrix.repo == 'selenoid-ui'
         working-directory: repos/selenoid-ui/ui
+        env:
+          CI: false
         run: |
           yarn install --frozen-lockfile
           yarn build
