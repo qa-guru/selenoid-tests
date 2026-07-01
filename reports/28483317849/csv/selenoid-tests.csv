@@ -1,6 +1,0 @@
-Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
-"config.ConfigReaderTest.resolveHubUrlAddsTrailingSlash","resolveHubUrl adds trailing slash","passed","2ms",,,,,"ConfigReader",,,,
-"config.ConfigReaderTest.resolveHubUrlFailsWhenEmpty","resolveHubUrl fails fast when hubUrl is empty","passed","5ms",,,,,"ConfigReader",,,,
-"config.ConfigReaderTest.resolveHubUrlKeepsTrailingSlash","resolveHubUrl keeps trailing slash","passed","3ms",,,,,"ConfigReader",,,,
-"config.ConfigReaderTest.resolvePlaywrightWsEndpointAddsQueryParams","resolvePlaywrightWsEndpoint appends selenoid query params","passed","96ms",,,,,"ConfigReader",,,,
-"config.ConfigReaderTest.resolveUiUrlAddsTrailingSlash","resolveUiUrl adds trailing slash","passed","2ms",,,,,"ConfigReader",,,,
