@@ -67,18 +67,13 @@ jobs:
           ref: ${{ env.SOURCE_REF }}
           path: repos/${{ matrix.repo }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
           go-version: ~1.23.8
           cache-dependency-path: repos/${{ matrix.repo }}/go.sum
 
-      - name: Setup Node (selenoid-ui)
+      - name: Setup Node 12 (selenoid-ui yarn)
         if: matrix.repo == 'selenoid-ui'
         uses: actions/setup-node@v4
         with:
@@ -94,6 +89,11 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn build
+
+      - name: Setup Node 20 (Allure JUnit conversion)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Run Go unit tests → Allure
         id: go-tests
@@ -343,6 +343,6 @@ jobs:
             echo "- Allure TestOps upload: _ошибка (см. шаг Upload results)_" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Fail if upstream tests failed
-        if: always() && (needs.go-unit.result == 'failure' || needs.java-e2e.result == 'failure')
+      - name: Fail if report was not generated
+        if: always() && steps.allure-report.outcome != 'success'
         run: exit 1
