@@ -1,0 +1,1 @@
+{"id":"7760b32efdc6e1928bc042afb6c1facf","fullName":"tests.HubStatusTests.statusReturnsHubStatisticsJson","name":"GET /status returns hub statistics JSON","status":"broken","testResultsByEnv":{"default":"a5adb496106ec5486e50a40ace64308c"}}
