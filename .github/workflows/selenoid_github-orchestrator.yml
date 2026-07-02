@@ -215,7 +215,13 @@ jobs:
                 JAVA_TEST_EXIT=$?
                 ;;
               smoke)
-                ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
+                if [ "$SOURCE_VARIANT" = "webdriver" ]; then
+                  ./gradlew testWebdriverE2e "${GRADLE_PYRAMID[@]}"
+                elif [ "$SOURCE_REPO" = "qa-guru/selenoid-ui" ]; then
+                  ./gradlew testUiE2e "${GRADLE_PYRAMID[@]}"
+                else
+                  ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
+                fi
                 JAVA_TEST_EXIT=$?
                 ;;
               playwright)
@@ -457,7 +463,7 @@ jobs:
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (hub via CI stack)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch default (\`selenoid_github_e2e\`): full Java pyramid + \`testE2e\` (unit→component→integration→api→e2e)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch slice: \`test_tags=integration|api|smoke\` → one layer only" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → \`testWebdriverE2e\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"

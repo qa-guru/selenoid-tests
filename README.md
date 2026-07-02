@@ -38,7 +38,9 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testComponent -DskipHealthCheck=true                         # @Layer component
 ./gradlew testApi -DskipHealthCheck=true                             # @Layer api
 ./gradlew testIntegration -DskipHealthCheck=true                     # @Layer integration (без local-only)
-./gradlew testE2e -DskipHealthCheck=true                             # e2e smoke
+./gradlew testE2e -DskipHealthCheck=true                             # e2e smoke (hub + UI)
+./gradlew testWebdriverE2e -DskipHealthCheck=true                    # webdriver-image smoke (HubSession*)
+./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
 ./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (hub + image qaguru/playwright-chromium:1.61.1)
 ./gradlew testResilience -DskipHealthCheck=true                      # hub kill/recovery (local-only)
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (local-only, :4445)
@@ -102,7 +104,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
 | [qa-guru/cm](https://github.com/qa-guru/cm) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api` |
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `playwright` (`source_variant=playwright`) |
-| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` (`source_variant=webdriver`) |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testWebdriverE2e` (`source_variant=webdriver`) |
 
 Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver`).  
 TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
