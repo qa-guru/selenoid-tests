@@ -1,1 +1,0 @@
-{"id":"1218df183fd1ca4c97b425c8ef8f64cd","fullName":"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointFailsWhenEmpty","name":"resolvePlaywrightWsEndpoint fails fast when playwrightWsEndpoint is empty","status":"passed","testResultsByEnv":{"default":"25d9b5eabd5d6c7a20f0d2d44a346e8a"}}
