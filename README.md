@@ -46,12 +46,27 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 # CI-эквиваленты
 ./gradlew test -Denv=selenoid_github_api -DincludeTags=api -DskipHealthCheck=true
 ./gradlew test -Denv=selenoid_github_integration -DincludeTags=integration -DskipHealthCheck=true
+./gradlew test -Denv=selenoid_github_min_integration -DincludeTags=min -DskipHealthCheck=true
 ./gradlew test -DincludeTags=smoke,api -DexcludeTags=integration,resilience,local-only,playwright
 
 ./gradlew allureReport
 ```
 
 Stand override: `-DpyramidStand=selenoid_github` → env `selenoid_github_api`, `selenoid_github_integration`, …
+
+### Playwright-chromium-min (`1.61.1-min`)
+
+Отдельный slice, **не** в default smoke / `testPlaywright` / `testIntegration`. Образ в `fixtures/ci-browsers.json`; endpoint — `selenoid_github_min_integration.properties` (VNC/video off).
+
+```bash
+./gradlew test -Denv=selenoid_github_min_integration -DincludeTags=min -DskipHealthCheck=true
+```
+
+| Класс | @Layer | @Tag |
+|-------|--------|------|
+| PlaywrightMinCatalogJsonTest | component | min |
+| HubPlaywrightMinSessionTests (`tests.integration`) | integration | min |
+| HubPlaywrightMinSessionTests (`tests`) | e2e | min |
 
 ## CI
 
@@ -65,9 +80,40 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 
 `workflow_dispatch`: `test_tags=integration` для integration slice; `env_profile=selenoid_github_api` для api-only.
 
+### Deploy triggers (`repository_dispatch`)
+
+После docker-push в `release.yml`:
+
+| Репо | Secret | event-type |
+|------|--------|------------|
+| [qa-guru/selenoid](https://github.com/qa-guru/selenoid) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` |
+| [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` |
+
+Payload: `source_repo`, `source_ref`, `source_version`, `test_tags` (напр. `api,smoke`).  
+TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
+
+Ручная проверка:
+
+```bash
+gh api repos/qa-guru/selenoid-tests/dispatches --input - <<'EOF'
+{"event_type":"deploy-smoke","client_payload":{"source_repo":"qa-guru/selenoid","source_version":"manual","test_tags":"api"}}
+EOF
+```
+
 ### Dashboard (`allurerc.mjs`)
 
 Пирамида: `unit → component → integration → api → e2e → manual`.
+
+## Пробелы → закрыто (2026-07)
+
+| Сервис | unit | component | integration | api | e2e | Добавлено |
+|--------|------|-----------|-------------|-----|-----|-----------|
+| **cm** | ✓ | **+2** | ✓ | **+3** | ✓ | component + api (local-only, CM :4445/:8081) |
+| **playwright-image** | ✓ | **+4** | ✓ | ✓ | ✓ | component (catalog fixture) |
+| **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓ | logs, status+session |
+| **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
+
+CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integration -DskipHealthCheck=true` (CM hub/UI на :4445/:8081).
 
 ## Матрица
 
@@ -81,6 +127,11 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | CreateSessionRequestJsonTest | — | — | unit | — |
 | CmInstallerHelperTest | cm | CM | unit | — |
 | CmRunResultTest | cm | CM | unit | — |
+| CmBrowsersConfigJsonTest | cm | cm | component | — |
+| CmStatusOutputTest | cm | cm | component | — |
+| CmHubStatusApiTests | cm | cm | api | api, cm, local-only |
+| CmHubSessionApiTests | cm | cm | api | api, cm, local-only |
+| CmUiStatusApiTests | cm | cm | api | api, cm, local-only |
 | ConfigOwnerMergeTest | — | — | unit | — |
 | HubStatusJsonTest | selenoid | selenoid | component | — |
 | HubStatusBrowsersJsonTest | selenoid | selenoid | component | — |
@@ -92,6 +143,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | SessionCreateJsonTest | selenoid | selenoid | component | — |
 | BrowsersConfigJsonTest | selenoid-ui | selenoid-ui | component | — |
 | HubStatusForwardCompatJsonTest | selenoid | selenoid | component | — |
+| HubLogsListJsonTest | selenoid | selenoid | component | — |
 | HubPingTests | selenoid | selenoid | api | api |
 | HubStatusBrowsersTests | selenoid | selenoid | api | api |
 | HubSessionDeleteUnknownTests | selenoid | selenoid | api | api, negative |
@@ -101,13 +153,19 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | UiPingVersionTests | selenoid-ui | selenoid-ui | api | api |
 | UiSseMultipleEventsTests | selenoid-ui | selenoid-ui | api | api |
 | PlaywrightUnknownPathTests | playwright-image | playwright-image | api | api, negative |
+| PlaywrightWsPathJsonTest | playwright-image | playwright-image | component | — |
+| PlaywrightBrowserCapsJsonTest | playwright-image | playwright-image | component | — |
+| PlaywrightMinCatalogJsonTest | playwright-image | playwright-image | component | min |
 | HubStatusTests | selenoid | selenoid | api | api |
+| HubLogsListApiTests | selenoid | selenoid | api | api, negative |
+| HubStatusSessionApiTests | selenoid | selenoid | api | api |
 | HubSessionApiTests | selenoid | selenoid | api | api |
 | PlaywrightEndpointTests | playwright-image | playwright-image | api | api |
 | UiStatusTests | selenoid-ui | selenoid-ui | api | api |
 | UiSseStreamTests | selenoid-ui | selenoid-ui | api | api |
 | UiPingTests | selenoid-ui | selenoid-ui | api | api |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | integration | integration |
+| HubPlaywrightMinSessionTests | playwright-image | playwright-image | integration | min |
 | HubPlaywrightNavigateTests | playwright-image | playwright-image | integration | integration |
 | UiStatusWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
 | UiSseWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
@@ -116,16 +174,20 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | CmInstallerSessionTests | cm | CM | e2e | smoke, cm |
 | UiHubStatusConsistencyTests | selenoid-ui | selenoid-ui | integration | integration |
 | UiStatusWhenHubDownTests | selenoid-ui | selenoid-ui | integration | integration, local-only |
+| UiBrowsersConfigIntegrationTests | selenoid-ui | selenoid-ui | integration | integration |
+| HubStatusSessionIntegrationTests | selenoid | selenoid | integration | integration |
 | UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | integration, resilience, local-only |
 | HubSessionTests | selenoid | selenoid | e2e | smoke |
 | HubSessionIdTests | selenoid | selenoid | e2e | smoke |
 | HubSessionHeadingTests | selenoid | selenoid | e2e | smoke |
 | HubSessionTitleTests | selenoid | selenoid | e2e | smoke |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | e2e | playwright, smoke |
+| HubPlaywrightMinSessionTests | playwright-image | playwright-image | e2e | min |
 | UiStatusBarTests | selenoid-ui | selenoid-ui | e2e | smoke |
 | UiDashboardLoadTests | selenoid-ui | selenoid-ui | e2e | smoke |
 | UiSseIndicatorTests | selenoid-ui | selenoid-ui | e2e | smoke |
 | UiReloadTests | selenoid-ui | selenoid-ui | e2e | smoke |
+| UiSessionsListTests | selenoid-ui | selenoid-ui | e2e | smoke |
 
 ## Config keys
 
