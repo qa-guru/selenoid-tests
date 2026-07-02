@@ -14,8 +14,8 @@ import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
-@Component("selenoid")
-@Epic("selenoid")
+@Component("webdriver-image")
+@Epic("webdriver-image")
 @Feature("WebDriver session")
 @DisplayName("Hub session heading")
 class HubSessionHeadingTests extends TestBase {

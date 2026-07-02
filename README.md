@@ -2,11 +2,11 @@
 
 Центральный репозиторий автотестов Selenoid-стека: [qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests).
 
-Покрывает **selenoid**, **selenoid-ui**, **cm**, **playwright-image** — Go unit (в CI из исходных репо) + Java e2e/integration/api.
+Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
-- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
+- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
 - Allure 3 GitHub Pages: `https://qa-guru.github.io/selenoid-tests/reports/<run-id>/`
 - Dashboard: `.../reports/<run-id>/dashboard/index.html`
 
@@ -86,10 +86,13 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 
 | Репо | Secret | event-type |
 |------|--------|------------|
-| [qa-guru/selenoid](https://github.com/qa-guru/selenoid) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` |
-| [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` |
+| [qa-guru/selenoid](https://github.com/qa-guru/selenoid) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
+| [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
+| [qa-guru/cm](https://github.com/qa-guru/cm) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api` |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `playwright` (`source_variant=playwright`) |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` (`source_variant=webdriver`) |
 
-Payload: `source_repo`, `source_ref`, `source_version`, `test_tags` (напр. `api,smoke`).  
+Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver`).  
 TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
 
 Ручная проверка:
@@ -109,7 +112,8 @@ EOF
 | Сервис | unit | component | integration | api | e2e | Добавлено |
 |--------|------|-----------|-------------|-----|-----|-----------|
 | **cm** | ✓ | **+2** | ✓ | **+3** | ✓ | component + api (local-only, CM :4445/:8081) |
-| **playwright-image** | ✓ | **+4** | ✓ | ✓ | ✓ | component (catalog fixture) |
+| **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | ✓ | ✓ | ✓ | component (catalog fixture) |
+| **webdriver-image** (`browser-image/webdriver/`) | — | — | — | — | ✓ | WebDriver session e2e (`HubSession*`) |
 | **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓ | logs, status+session |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 

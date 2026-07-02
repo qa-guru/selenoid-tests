@@ -1,5 +1,5 @@
 /** @type {import('@allurereport/core-api').Config} */
-const EPICS = ["selenoid", "selenoid-ui", "cm", "playwright-image"];
+const EPICS = ["selenoid", "selenoid-ui", "cm", "playwright-image", "webdriver-image"];
 
 const epicStatusDynamics = EPICS.map((epic) => ({
   type: "statusDynamics",

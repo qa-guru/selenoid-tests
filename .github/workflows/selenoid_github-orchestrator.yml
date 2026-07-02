@@ -50,6 +50,7 @@ env:
   ENV_PROFILE: ${{ github.event.inputs.env_profile || 'selenoid_github_e2e' }}
   SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}
   SOURCE_VERSION: ${{ github.event.client_payload.source_version || github.event.inputs.source_version || '' }}
+  SOURCE_VARIANT: ${{ github.event.client_payload.source_variant || github.event.inputs.source_variant || '' }}
   SOURCE_REF: ${{ github.event.inputs.source_ref || 'main' }}
 
 jobs:
@@ -215,6 +216,14 @@ jobs:
                 ;;
               smoke)
                 ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
+              playwright)
+                ./gradlew testPlaywright "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
+              cm)
+                ./gradlew testApi "${GRADLE_PYRAMID[@]}"
                 JAVA_TEST_EXIT=$?
                 ;;
               *)
@@ -438,6 +447,9 @@ jobs:
           echo "- Env profile: \`${ENV_PROFILE}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${SOURCE_REPO:-}" ]; then
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
+            if [ -n "${SOURCE_VARIANT:-}" ]; then
+              echo "- Variant: \`${SOURCE_VARIANT}\`" >> "$GITHUB_STEP_SUMMARY"
+            fi
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (hub via CI stack)" >> "$GITHUB_STEP_SUMMARY"
