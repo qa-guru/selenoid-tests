@@ -25,6 +25,6 @@ class HubSessionInvalidBrowserTests extends ApiTestBase {
     @DisplayName("POST /wd/hub/session rejects unknown browser")
     void createSessionRejectsUnknownBrowser() {
         step("POST session with unknown browser", () ->
-                HubSessionApi.createExpectStatus("unknown-browser", "1.0", 500));
+                HubSessionApi.createExpectStatus("unknown-browser", "1.0", 400));
     }
 }
