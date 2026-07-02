@@ -1,5 +1,6 @@
 package tests.component;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ui.SseHubEvent;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Component("selenoid-ui")
 @Layer("component")
 @DisplayName("SSE state fixture")
 class SseStateJsonTest {

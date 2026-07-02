@@ -6,6 +6,7 @@
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
+- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
 - Allure 3 GitHub Pages: `https://qa-guru.github.io/selenoid-tests/reports/<run-id>/`
 - Dashboard: `.../reports/<run-id>/dashboard/index.html`
 
@@ -54,12 +55,12 @@ Stand override: `-DpyramidStand=selenoid_github` → env `selenoid_github_api`, 
 
 ## CI
 
-Workflow: `.github/workflows/selenoid-tests.yml`
+Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-tests Tests`).
 
 | Job | Что делает |
 |-----|------------|
 | `go-unit` (matrix) | Checkout `qa-guru/selenoid`, `selenoid-ui`, `cm` → Go unit → Allure |
-| `java-e2e` | `./gradlew test` с tags `smoke,api` (integration excluded) |
+| `java-e2e` | Push: `testUnit` + `testComponent` (gate) + `testApi` → TestOps; dispatch: `test_tags=integration|api|smoke` |
 | `report` | Merge `build/allure-results/**` → `allureReport` → gh-pages → TestOps 5271 |
 
 `workflow_dispatch`: `test_tags=integration` для integration slice; `env_profile=selenoid_github_api` для api-only.

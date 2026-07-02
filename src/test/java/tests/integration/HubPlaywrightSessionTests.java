@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubStatusApi;
 import api.hub.PlaywrightSessionApi;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("integration")
+@Component("playwright-image")
 @Epic("playwright-image")
 @Feature("Playwright WS session")
 @DisplayName("Playwright hub WS session")

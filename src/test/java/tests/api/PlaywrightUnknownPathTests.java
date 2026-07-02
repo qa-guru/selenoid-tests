@@ -1,5 +1,6 @@
 package tests.api;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ApiTestBase;
 import api.hub.PlaywrightEndpointApi;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 
 @Layer("api")
+@Component("playwright-image")
 @Epic("playwright-image")
 @Feature("Playwright endpoint")
 @DisplayName("Playwright unknown path")

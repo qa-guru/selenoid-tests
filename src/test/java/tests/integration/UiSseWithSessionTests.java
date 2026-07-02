@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import api.ui.SseStreamApi;
@@ -13,6 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("integration")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI SSE")
 @DisplayName("UI SSE with hub session")

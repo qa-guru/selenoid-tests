@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubStatusApi;
 import api.ui.UiStatusApi;
@@ -26,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("integration")
-@Epic("CM")
+@Component("cm")
+@Epic("cm")
 @Feature("Installer lifecycle")
 @DisplayName("CM installer lifecycle")
 @Tag("integration")

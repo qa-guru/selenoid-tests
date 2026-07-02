@@ -1,5 +1,6 @@
 package tests.api;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ApiTestBase;
 import api.hub.HubPingApi;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Layer("api")
+@Component("selenoid")
 @Epic("selenoid")
 @Feature("Hub ping")
 @DisplayName("Hub ping API")

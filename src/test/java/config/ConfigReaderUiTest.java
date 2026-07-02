@@ -1,5 +1,6 @@
 package config;
 
+import annotations.Component;
 import annotations.Layer;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Component("selenoid-ui")
 @Layer("unit")
 @DisplayName("ConfigReader UI URL")
 @Execution(ExecutionMode.SAME_THREAD)

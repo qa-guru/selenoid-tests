@@ -1,5 +1,6 @@
 package tests.api;
 
+import annotations.Component;
 import annotations.Layer;
 import api.UiApiTestBase;
 import api.ui.UiBrowsersConfigApi;
@@ -13,6 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Layer("api")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI browsers config")
 @DisplayName("UI browsers config API")

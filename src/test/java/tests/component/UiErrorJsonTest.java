@@ -1,5 +1,6 @@
 package tests.component;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ui.UiErrorResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Component("selenoid-ui")
 @Layer("component")
 @DisplayName("UI error fixture")
 class UiErrorJsonTest {

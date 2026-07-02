@@ -1,5 +1,6 @@
 package tests.api;
 
+import annotations.Component;
 import annotations.Layer;
 import api.UiApiTestBase;
 import api.ui.UiStatusApi;
@@ -13,6 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("api")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI status proxy")
 @DisplayName("UI status total counter")

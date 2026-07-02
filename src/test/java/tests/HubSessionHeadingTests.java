@@ -1,5 +1,6 @@
 package tests;
 
+import annotations.Component;
 import annotations.Layer;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -13,6 +14,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
+@Component("selenoid")
 @Epic("selenoid")
 @Feature("WebDriver session")
 @DisplayName("Hub session heading")

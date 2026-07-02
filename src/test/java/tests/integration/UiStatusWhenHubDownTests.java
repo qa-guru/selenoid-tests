@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ui.UiStatusApi;
 import helpers.StackHelper;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Layer("integration")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI status when hub down")
 @DisplayName("UI status when hub down")

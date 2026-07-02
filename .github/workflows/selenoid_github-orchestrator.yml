@@ -1,6 +1,5 @@
 # Synced from template-project ethalon: selenoid_github-orchestrator.yml
-# Runnable filename: selenoid-tests.yml (consumer). Default: -Denv=selenoid_github_e2e
-#
+# Runnable filename = ethalon filename. Default: -Denv=selenoid_github_e2e
 # SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
 # Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub tests + merge Allure + repository_dispatch.
 # Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
@@ -8,7 +7,7 @@
 #
 # Default: -Denv=selenoid_github_e2e. GRADLE_ARGS: env, skipHealthCheck, tags only — не дублировать profile keys.
 
-name: Selenoid Tests
+name: selenoid-tests Tests
 
 on:
   workflow_dispatch:
@@ -40,7 +39,7 @@ on:
 
 concurrency:
   group: selenoid_github-orchestrator-${{ github.ref }}-${{ github.event_name }}
-  cancel-in-progress: ${{ github.event_name == 'push' }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -162,18 +161,50 @@ jobs:
             -Denv="${ENV_PROFILE}"
             -DskipHealthCheck=true
           )
+          GRADLE_PYRAMID=(
+            -DpyramidStand=selenoid_github
+            -DskipHealthCheck=true
+          )
+          JAVA_TEST_EXIT=0
           if [ -n "$TEST_CLASS" ]; then
             ./gradlew test --tests "$TEST_CLASS" "${GRADLE_ARGS[@]}"
+            JAVA_TEST_EXIT=$?
           elif [ -n "$TEST_TAGS" ]; then
-            ./gradlew test "${GRADLE_ARGS[@]}" \
-              -DincludeTags="$TEST_TAGS" \
-              -DexcludeTags=resilience,local-only
+            case "$TEST_TAGS" in
+              integration)
+                ./gradlew testIntegration "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
+              api)
+                ./gradlew testApi "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
+              smoke)
+                ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
+              *)
+                ./gradlew test "${GRADLE_ARGS[@]}" \
+                  -DincludeTags="$TEST_TAGS" \
+                  -DexcludeTags=resilience,local-only
+                JAVA_TEST_EXIT=$?
+                ;;
+            esac
+          elif [ "$ENV_PROFILE" = "selenoid_github_integration" ]; then
+            ./gradlew testIntegration "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
+          elif [ "$ENV_PROFILE" = "selenoid_github_api" ]; then
+            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
+          elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ] && [ "${{ github.event_name }}" != "push" ]; then
+            ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
           else
-            ./gradlew test "${GRADLE_ARGS[@]}" \
-              -DincludeTags=smoke,api \
-              -DexcludeTags=resilience,local-only,playwright,integration
+            ./gradlew testUnit testComponent "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
+            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
           fi
-          echo "JAVA_TEST_EXIT=$?" >> "$GITHUB_ENV"
+          echo "JAVA_TEST_EXIT=${JAVA_TEST_EXIT}" >> "$GITHUB_ENV"
           set -e
 
       - name: Upload Allure results
@@ -330,14 +361,15 @@ jobs:
         run: |
           REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/awesome/index.html"
           DASHBOARD_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${REPORT_ID}/dashboard/index.html"
-          echo "## selenoid_github-orchestrator" >> "$GITHUB_STEP_SUMMARY"
+          echo "## selenoid-tests Tests" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Env profile: \`${ENV_PROFILE}\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${SOURCE_REPO:-}" ]; then
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java: smoke + api layers (\`@Tag(smoke,api)\`, integration excluded in default CI)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (TestOps; hub optional)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch: \`test_tags=integration|api|smoke\` → matching pyramid slice" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"

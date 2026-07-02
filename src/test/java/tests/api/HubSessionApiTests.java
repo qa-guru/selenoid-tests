@@ -1,5 +1,6 @@
 package tests.api;
 
+import annotations.Component;
 import annotations.Layer;
 import api.ApiTestBase;
 import api.hub.HubSessionApi;
@@ -13,6 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("api")
+@Component("selenoid")
 @Epic("selenoid")
 @Feature("WebDriver session API")
 @DisplayName("Hub session API")

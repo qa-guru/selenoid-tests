@@ -175,10 +175,15 @@ tasks.register('uiHealthCheck') {
 test {
     dependsOn healthCheck, uiHealthCheck
     useJUnitPlatform {
-        excludeTags 'api'
         def includeTagsProp = System.getProperty('includeTags')
+        def includeTagsList = includeTagsProp
+                ? includeTagsProp.split(',').collect { it.trim() }.findAll { it }
+                : []
+        if (!includeTagsList.contains('api')) {
+            excludeTags 'api'
+        }
         if (includeTagsProp) {
-            includeTags(*(includeTagsProp.split(',')*.trim()))
+            includeTags(*includeTagsList)
         }
         def excludeTagsProp = System.getProperty('excludeTags')
         if (excludeTagsProp) {

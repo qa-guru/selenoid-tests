@@ -9,7 +9,7 @@ const epicStatusDynamics = EPICS.map((epic) => ({
 }));
 
 export default {
-  name: "Selenoid Tests",
+  name: "selenoid-tests Tests",
   historyPath: "./history.jsonl",
   appendHistory: true,
   historyLimit: 20,
@@ -60,7 +60,7 @@ export default {
     },
     dashboard: {
       options: {
-        reportName: "Selenoid Tests Dashboard",
+        reportName: "selenoid-tests Tests Dashboard",
         reportLanguage: "ru",
         layout: [
           {

@@ -1,5 +1,6 @@
 package tests;
 
+import annotations.Component;
 import annotations.Layer;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -12,6 +13,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("e2e")
+@Component("playwright-image")
 @Epic("playwright-image")
 @Feature("Playwright WS session")
 @DisplayName("Playwright WS session")

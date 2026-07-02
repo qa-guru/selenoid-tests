@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubStatusApi;
 import api.ui.UiPingApi;
@@ -13,6 +14,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("integration")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("Stack health")
 @DisplayName("Stack health integration")

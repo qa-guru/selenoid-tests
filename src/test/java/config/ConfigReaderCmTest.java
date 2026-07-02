@@ -1,5 +1,6 @@
 package config;
 
+import annotations.Component;
 import annotations.Layer;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Component("cm")
 @Layer("unit")
 @DisplayName("ConfigReader CM URLs")
 @Execution(ExecutionMode.SAME_THREAD)

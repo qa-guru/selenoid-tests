@@ -1,5 +1,6 @@
 package tests;
 
+import annotations.Component;
 import annotations.Layer;
 import allure.Attachments;
 import helpers.StackHelper;
@@ -16,6 +17,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static io.qameta.allure.Allure.step;
 
 @Layer("integration")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI status recovery")
 @DisplayName("UI status recovery")

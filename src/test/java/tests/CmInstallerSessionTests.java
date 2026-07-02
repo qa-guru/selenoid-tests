@@ -1,5 +1,6 @@
 package tests;
 
+import annotations.Component;
 import annotations.Layer;
 import com.codeborne.selenide.Configuration;
 import config.ConfigReader;
@@ -25,7 +26,8 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("e2e")
-@Epic("CM")
+@Component("cm")
+@Epic("cm")
 @Feature("Installed stack session")
 @DisplayName("CM installer session")
 @Tag("smoke")

@@ -1,5 +1,6 @@
 package tests;
 
+import annotations.Component;
 import annotations.Layer;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI dashboard")
 @DisplayName("UI dashboard reload")

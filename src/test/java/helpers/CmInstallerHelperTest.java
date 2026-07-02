@@ -1,5 +1,6 @@
 package helpers;
 
+import annotations.Component;
 import annotations.Layer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Component("cm")
 @Layer("unit")
 @DisplayName("CmInstallerHelper paths")
 class CmInstallerHelperTest {

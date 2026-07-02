@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import api.hub.HubStatusApi;
@@ -15,6 +16,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Layer("integration")
+@Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI hub proxy")
 @DisplayName("UI status with active session")

@@ -1,11 +1,13 @@
 package tests.component;
 
+import annotations.Component;
 import annotations.Layer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Component("selenoid")
 @Layer("component")
 @DisplayName("Session create fixture")
 class SessionCreateJsonTest {

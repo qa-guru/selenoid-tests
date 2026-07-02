@@ -1,5 +1,6 @@
 package tests.integration;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubStatusApi;
 import api.hub.PlaywrightSessionApi;
@@ -14,6 +15,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Layer("integration")
+@Component("playwright-image")
 @Epic("playwright-image")
 @Feature("Playwright WS session")
 @DisplayName("Playwright navigate integration")
