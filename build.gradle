@@ -196,8 +196,13 @@ def pyramidLayerEnv = { String layer ->
 
 def layerTestSlices = [
         [name: 'testUnit',        layer: 'unit',
-         description: 'Pyramid unit — config.*Test',
-         testPatterns: ['config.*Test']],
+         description: 'Pyramid unit — config.*Test, helpers.*Test',
+         testPatterns: ['config.*Test', 'helpers.*Test'],
+         envOverride: 'local_unit'],
+        [name: 'testComponent',   layer: 'component',
+         description: 'Pyramid component — tests.component.*Test',
+         testPatterns: ['tests.component.*Test'],
+         envOverride: 'local_unit'],
         [name: 'testIntegration', layer: 'integration',
          description: 'Pyramid integration — @Tag(integration), exclude local-only',
          includeTags: 'integration', excludeTags: 'local-only',
@@ -217,10 +222,15 @@ def layerTestSlices = [
          description: 'Resilience — @Tag(resilience), local hub kill/recovery',
          includeTags: 'resilience',
          needsStack: true],
+        [name: 'testCmIntegration', layer: 'integration',
+         description: 'CM installer lifecycle — @Tag(cm), exclude smoke (env=local_cm_integration)',
+         includeTags: 'cm', excludeTags: 'smoke',
+         envOverride: 'local_cm_integration',
+         needsStack: false],
 ]
 
 layerTestSlices.each { slice ->
-    def envName = pyramidLayerEnv(slice.layer)
+    def envName = slice.envOverride ?: pyramidLayerEnv(slice.layer)
     tasks.register(slice.name, Test) {
         group = 'verification'
         description = "${slice.description} (env=${envName}; stand: -DpyramidStand=selenoid_github)"
