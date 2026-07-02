@@ -1,0 +1,1 @@
+{"id":"9492a4b184430f8a8a4b3e38375d09f9","fullName":"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","name":"GET /browsers-config returns browser catalog JSON","status":"broken","testResultsByEnv":{"default":"308c493615fb901aa93f0c18453d2a0f"}}
