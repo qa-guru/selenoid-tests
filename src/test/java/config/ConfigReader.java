@@ -56,6 +56,29 @@ public final class ConfigReader {
         return withSlash(url);
     }
 
+    /**
+     * Selenide baseUrl when the browser runs in a Selenoid container: loopback in uiUrl
+     * is unreachable from inside Docker — use host.docker.internal (requires hosts in browsers.json).
+     */
+    public static String resolveUiBrowserUrl() {
+        return resolveUiBrowserUrl(testConfig);
+    }
+
+    public static String resolveUiBrowserUrl(TestConfig config) {
+        var remoteUrl = config.remoteUrl();
+        if (remoteUrl == null || remoteUrl.isBlank()) {
+            return stripTrailingSlash(resolveUiUrl(config));
+        }
+        var uiUrl = config.uiUrl().trim();
+        if (uiUrl.isEmpty()) {
+            throw new IllegalStateException("Set uiUrl in config/${env}.properties");
+        }
+        var browserUrl = uiUrl
+                .replace("127.0.0.1", "host.docker.internal")
+                .replace("localhost", "host.docker.internal");
+        return stripTrailingSlash(withSlash(browserUrl));
+    }
+
     public static String resolveCmHubUrl() {
         return resolveCmHubUrl(testConfig);
     }
@@ -105,11 +128,35 @@ public final class ConfigReader {
         return base + "?" + query;
     }
 
+    public static String resolvePlaywrightWsEndpoint(TestConfig config, String playwrightBrowser) {
+        var endpoint = config.playwrightWsEndpoint().trim();
+        var pathOnly = endpoint.contains("?") ? endpoint.substring(0, endpoint.indexOf('?')) : endpoint;
+        var browserPath = pathOnly.replace("playwright-chromium", playwrightBrowser);
+        if (endpoint.contains("?")) {
+            return browserPath + endpoint.substring(endpoint.indexOf('?'));
+        }
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("name", config.playwrightSessionName());
+        params.put("sessionTimeout", config.playwrightSessionTimeout());
+        params.put("enableVNC", String.valueOf(config.playwrightEnableVnc()));
+        params.put("enableVideo", String.valueOf(config.playwrightEnableVideo()));
+
+        var query = params.entrySet().stream()
+                .map(entry -> encode(entry.getKey()) + "=" + encode(entry.getValue()))
+                .collect(Collectors.joining("&"));
+        return browserPath + "?" + query;
+    }
+
     private static String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 
     private static String withSlash(String value) {
         return value.endsWith("/") ? value : value + "/";
+    }
+
+    private static String stripTrailingSlash(String value) {
+        return value.endsWith("/") ? value.substring(0, value.length() - 1) : value;
     }
 }

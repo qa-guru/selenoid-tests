@@ -12,7 +12,18 @@ public final class PlaywrightSessionApi {
 
     @Step("Connect Playwright browser via hub WS")
     public static Browser connect(Playwright playwright) {
-        return playwright.chromium().connect(ConfigReader.resolvePlaywrightWsEndpoint());
+        return connect(playwright, ConfigReader.resolvePlaywrightWsEndpoint());
+    }
+
+    @Step("Connect Playwright browser via hub WS ({wsEndpoint})")
+    public static Browser connect(Playwright playwright, String wsEndpoint) {
+        if (wsEndpoint.contains("firefox")) {
+            return playwright.firefox().connect(wsEndpoint);
+        }
+        if (wsEndpoint.contains("webkit")) {
+            return playwright.webkit().connect(wsEndpoint);
+        }
+        return playwright.chromium().connect(wsEndpoint);
     }
 
     @Step("Close Playwright remote browser session")

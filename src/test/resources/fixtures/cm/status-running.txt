@@ -1,0 +1,3 @@
+Configuration directory: /tmp/cm-installer-abc123
+Configuration file: /tmp/cm-installer-abc123/browsers.json
+Selenoid container is running on port 4445

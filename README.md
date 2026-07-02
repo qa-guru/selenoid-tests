@@ -111,9 +111,9 @@ EOF
 
 | Сервис | unit | component | integration | api | e2e | Добавлено |
 |--------|------|-----------|-------------|-----|-----|-----------|
-| **cm** | ✓ | **+2** | ✓ | **+3** | ✓ | component + api (local-only, CM :4445/:8081) |
-| **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | ✓ | ✓ | ✓ | component (catalog fixture) |
-| **webdriver-image** (`browser-image/webdriver/`) | — | — | — | — | ✓ | WebDriver session e2e (`HubSession*`) |
+| **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures + CLI local-only |
+| **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
+| **webdriver-image** (`browser-image/webdriver/`) | — | **+1** | — | **+2** | ✓ | WD status + capabilities API; session e2e |
 | **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓ | logs, status+session |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 
@@ -181,10 +181,18 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | UiBrowsersConfigIntegrationTests | selenoid-ui | selenoid-ui | integration | integration |
 | HubStatusSessionIntegrationTests | selenoid | selenoid | integration | integration |
 | UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | integration, resilience, local-only |
-| HubSessionTests | selenoid | selenoid | e2e | smoke |
-| HubSessionIdTests | selenoid | selenoid | e2e | smoke |
-| HubSessionHeadingTests | selenoid | selenoid | e2e | smoke |
-| HubSessionTitleTests | selenoid | selenoid | e2e | smoke |
+| HubSessionTests | webdriver-image | webdriver-image | e2e | smoke |
+| HubSessionIdTests | webdriver-image | webdriver-image | e2e | smoke |
+| HubSessionHeadingTests | webdriver-image | webdriver-image | e2e | smoke |
+| HubSessionTitleTests | webdriver-image | webdriver-image | e2e | smoke |
+| HubCapabilitiesApiTests | selenoid | selenoid | api | api |
+| HubWebDriverStatusApiTests | selenoid | selenoid | api | api |
+| HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |
+| CmVersionOutputTest | cm | cm | component | — |
+| CmHelpOutputTest | cm | cm | component | — |
+| CmCliVersionTests | cm | cm | integration | cm, local-only |
+| HubPlaywrightFirefoxSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
+| HubPlaywrightWebkitSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | e2e | playwright, smoke |
 | HubPlaywrightMinSessionTests | playwright-image | playwright-image | e2e | min |
 | UiStatusBarTests | selenoid-ui | selenoid-ui | e2e | smoke |

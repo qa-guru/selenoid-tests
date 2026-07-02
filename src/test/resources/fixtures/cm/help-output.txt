@@ -1,0 +1,15 @@
+cm is a configuration manager for the qa-guru Selenoid stack
+
+Usage:
+  cm [flags]
+  cm [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  selenoid    Download, configure and run Selenoid
+  selenoid-ui Download, configure and run Selenoid UI
+  version     Show version
+
+Flags:
+  -h, --help   help for cm
