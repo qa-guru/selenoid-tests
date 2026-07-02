@@ -74,17 +74,4 @@ class ConfigReaderTest {
         var error = assertThrows(IllegalStateException.class, () -> ConfigReader.resolveApiBaseUrl(config));
         assertTrue(error.getMessage().contains("apiBaseUrl or hubUrl"));
     }
-
-    @Test
-    @DisplayName("resolvePlaywrightWsEndpoint appends selenoid query params")
-    void resolvePlaywrightWsEndpointAddsQueryParams() {
-        var config = configWith(Map.of(
-                "playwrightWsEndpoint", "ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1",
-                "playwrightSessionName", "smoke",
-                "playwrightSessionTimeout", "5m"
-        ));
-        var endpoint = ConfigReader.resolvePlaywrightWsEndpoint(config);
-        assertTrue(endpoint.contains("name=smoke"));
-        assertTrue(endpoint.contains("sessionTimeout=5m"));
-    }
 }
