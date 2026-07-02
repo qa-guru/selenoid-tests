@@ -45,4 +45,26 @@ public final class HubSessionApi {
                 .then()
                 .statusCode(200);
     }
+
+    @Step("DELETE /wd/hub/session/{sessionId} — expect HTTP {expectedStatus}")
+    public static void deleteExpectStatus(String sessionId, int expectedStatus) {
+        given()
+                .when()
+                .delete("/wd/hub/session/{sessionId}", sessionId)
+                .then()
+                .statusCode(expectedStatus);
+    }
+
+    @Step("POST /wd/hub/session — expect HTTP {expectedStatus}")
+    public static void createExpectStatus(String browserName, String browserVersion, int expectedStatus) {
+        var request = new CreateSessionRequest(
+                new CreateSessionCapabilities(new SessionAlwaysMatch(browserName, browserVersion)));
+        given()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/wd/hub/session")
+                .then()
+                .statusCode(expectedStatus);
+    }
 }
