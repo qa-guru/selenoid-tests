@@ -56,6 +56,30 @@ public final class ConfigReader {
         return withSlash(url);
     }
 
+    public static String resolveCmHubUrl() {
+        return resolveCmHubUrl(testConfig);
+    }
+
+    public static String resolveCmHubUrl(TestConfig config) {
+        return withSlash("http://127.0.0.1:" + config.cmHubPort());
+    }
+
+    public static String resolveCmUiUrl() {
+        return resolveCmUiUrl(testConfig);
+    }
+
+    public static String resolveCmUiUrl(TestConfig config) {
+        return withSlash("http://127.0.0.1:" + config.cmUiPort());
+    }
+
+    public static String resolveCmRemoteUrl() {
+        return resolveCmRemoteUrl(testConfig);
+    }
+
+    public static String resolveCmRemoteUrl(TestConfig config) {
+        return resolveCmHubUrl(config) + "wd/hub";
+    }
+
     public static String resolvePlaywrightWsEndpoint() {
         return resolvePlaywrightWsEndpoint(testConfig);
     }

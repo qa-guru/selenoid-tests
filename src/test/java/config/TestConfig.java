@@ -105,4 +105,35 @@ public interface TestConfig extends Config {
     @Key("playwrightEnableVideo")
     @DefaultValue("false")
     boolean playwrightEnableVideo();
+
+    @Key("cmBinaryPath")
+    @DefaultValue("../cm/cm")
+    String cmBinaryPath();
+
+    @Key("cmBrowsersJson")
+    @DefaultValue("../dev/browsers.json")
+    String cmBrowsersJson();
+
+    @Key("cmSelenoidBinary")
+    @DefaultValue("../dev/bin/selenoid")
+    String cmSelenoidBinary();
+
+    @Key("cmSelenoidUiBinary")
+    @DefaultValue("../dev/bin/selenoid-ui")
+    String cmSelenoidUiBinary();
+
+    /** When true, pass --selenoid-binary (Linux ELF only — not macOS dev/bin). */
+    @Key("cmUseLocalBinaries")
+    @DefaultValue("false")
+    boolean cmUseLocalBinaries();
+
+    /** CM-managed hub host port (dev stack uses 4444). */
+    @Key("cmHubPort")
+    @DefaultValue("4445")
+    int cmHubPort();
+
+    /** CM-managed UI host port (dev stack uses 8080). */
+    @Key("cmUiPort")
+    @DefaultValue("8081")
+    int cmUiPort();
 }
