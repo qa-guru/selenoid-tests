@@ -39,14 +39,26 @@ public final class CmInstallerHelper {
 
     private final TestConfig config;
     private final Path configDir;
-    private final Path cmBinary;
-    private final Path browsersJson;
+    private Path cmBinary;
+    private Path browsersJson;
 
     private CmInstallerHelper(TestConfig config, Path configDir) {
         this.config = config;
         this.configDir = configDir;
-        this.cmBinary = resolveExecutable(config.cmBinaryPath(), "cm binary");
-        this.browsersJson = resolveExisting(config.cmBrowsersJson(), "browsers.json");
+    }
+
+    private Path cmBinary() {
+        if (cmBinary == null) {
+            cmBinary = resolveExecutable(config.cmBinaryPath(), "cm binary");
+        }
+        return cmBinary;
+    }
+
+    private Path browsersJson() {
+        if (browsersJson == null) {
+            browsersJson = resolveExisting(config.cmBrowsersJson(), "browsers.json");
+        }
+        return browsersJson;
     }
 
     public static CmInstallerHelper withTempConfigDir() throws IOException {
@@ -75,7 +87,7 @@ public final class CmInstallerHelper {
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmHubPort()),
                 "-n",
-                "-j", browsersJson.toString());
+                "-j", browsersJson().toString());
     }
 
     @Step("cm selenoid start")
@@ -86,7 +98,7 @@ public final class CmInstallerHelper {
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmHubPort()),
                 "-n",
-                "-j", browsersJson.toString(),
+                "-j", browsersJson().toString(),
                 "--selenoid-binary", configDir.resolve("bin/selenoid").toAbsolutePath().toString());
     }
 
@@ -244,7 +256,7 @@ public final class CmInstallerHelper {
 
     private CmRunResult run(String scope, String subcommand, String... args) {
         var command = new ArrayList<String>();
-        command.add(cmBinary.toString());
+        command.add(cmBinary().toString());
         command.add(scope);
         command.add(subcommand);
         command.addAll(List.of(args));

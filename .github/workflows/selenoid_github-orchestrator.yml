@@ -200,9 +200,18 @@ jobs:
             ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
             JAVA_TEST_EXIT=$?
           else
-            ./gradlew testUnit testComponent "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
+            ./gradlew testUnit "${GRADLE_PYRAMID[@]}"
+            UNIT_EXIT=$?
+            ./gradlew testComponent "${GRADLE_PYRAMID[@]}"
+            COMPONENT_EXIT=$?
             ./gradlew testApi "${GRADLE_PYRAMID[@]}"
+            if [ "$UNIT_EXIT" -ne 0 ]; then
+              JAVA_TEST_EXIT=$UNIT_EXIT
+            elif [ "$COMPONENT_EXIT" -ne 0 ]; then
+              JAVA_TEST_EXIT=$COMPONENT_EXIT
+            else
+              JAVA_TEST_EXIT=0
+            fi
           fi
           echo "JAVA_TEST_EXIT=${JAVA_TEST_EXIT}" >> "$GITHUB_ENV"
           set -e
