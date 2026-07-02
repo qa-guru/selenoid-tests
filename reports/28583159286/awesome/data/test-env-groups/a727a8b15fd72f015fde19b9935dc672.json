@@ -1,1 +1,0 @@
-{"id":"a727a8b15fd72f015fde19b9935dc672","fullName":"config.ConfigReaderTest.resolveHubUrlFailsWhenEmpty","name":"resolveHubUrl fails fast when hubUrl is empty","status":"passed","testResultsByEnv":{"default":"4e8144e7e08c0aa0cbb9679926f7593a"}}
