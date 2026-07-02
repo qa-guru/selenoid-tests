@@ -52,9 +52,16 @@ build_selenoid_ui() {
   echo "==> Building selenoid-ui frontend"
   local ui="${REPOS}/selenoid-ui/ui"
   export CI=false
-  export NODE_OPTIONS="${NODE_OPTIONS:---openssl-legacy-provider}"
+  # GHA blocks --openssl-legacy-provider in NODE_OPTIONS; pass as CLI flag on Node 17+.
+  unset NODE_OPTIONS
   yarn --cwd "$ui" install --frozen-lockfile
-  yarn --cwd "$ui" build
+  local node_major
+  node_major="$(node -p "process.versions.node.split('.')[0]")"
+  if (( node_major >= 17 )); then
+    (cd "$ui" && node --openssl-legacy-provider ./node_modules/.bin/react-scripts build)
+  else
+    yarn --cwd "$ui" build
+  fi
 
   echo "==> Building selenoid-ui binary"
   go install github.com/rakyll/statik@latest
