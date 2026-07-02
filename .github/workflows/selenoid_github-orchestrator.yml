@@ -133,7 +133,7 @@ jobs:
   java-e2e:
     name: Java hub tests
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       ALLURE_RESULTS: build/allure-results
       TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
@@ -141,6 +141,40 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Checkout selenoid
+        uses: actions/checkout@v6
+        with:
+          repository: qa-guru/selenoid
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid
+
+      - name: Checkout selenoid-ui
+        uses: actions/checkout@v6
+        with:
+          repository: qa-guru/selenoid-ui
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid-ui
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ~1.23.8
+          cache-dependency-path: |
+            repos/selenoid/go.sum
+            repos/selenoid-ui/go.sum
+
+      - name: Setup Node 12 (selenoid-ui yarn)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 12.x
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Start Selenoid stack for hub tests
+        run: |
+          chmod +x scripts/start-ci-selenoid-stack.sh
+          ./scripts/start-ci-selenoid-stack.sh
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -197,8 +231,23 @@ jobs:
             ./gradlew testApi "${GRADLE_PYRAMID[@]}"
             JAVA_TEST_EXIT=$?
           elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ] && [ "${{ github.event_name }}" != "push" ]; then
+            ./gradlew testUnit "${GRADLE_PYRAMID[@]}"
+            UNIT_EXIT=$?
+            ./gradlew testComponent "${GRADLE_PYRAMID[@]}"
+            COMPONENT_EXIT=$?
+            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
+            API_EXIT=$?
             ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
+            E2E_EXIT=$?
+            if [ "$UNIT_EXIT" -ne 0 ]; then
+              JAVA_TEST_EXIT=$UNIT_EXIT
+            elif [ "$COMPONENT_EXIT" -ne 0 ]; then
+              JAVA_TEST_EXIT=$COMPONENT_EXIT
+            elif [ "$E2E_EXIT" -ne 0 ]; then
+              JAVA_TEST_EXIT=$E2E_EXIT
+            else
+              JAVA_TEST_EXIT=0
+            fi
           else
             ./gradlew testUnit "${GRADLE_PYRAMID[@]}"
             UNIT_EXIT=$?
@@ -308,6 +357,14 @@ jobs:
           }
           EOF
 
+      - name: Allure 3 quality gate
+        if: always() && hashFiles('build/allure-results/**') != ''
+        run: |
+          set +e
+          ./gradlew allureQualityGate
+          echo "QUALITY_GATE_EXIT=$?" >> "$GITHUB_ENV"
+          set -e
+
       - name: Generate Allure 3 report
         if: always() && hashFiles('build/allure-results/**') != ''
         id: allure-report
@@ -377,8 +434,9 @@ jobs:
             echo "- Trigger: \`${SOURCE_REPO}\` ${SOURCE_VERSION}" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (TestOps; hub optional)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch: \`test_tags=integration|api|smoke\` → matching pyramid slice" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (hub via CI stack)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch default (\`selenoid_github_e2e\`): full Java pyramid + \`testE2e\` (unit→component→api→e2e)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke\` → one layer only" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
@@ -391,6 +449,15 @@ jobs:
           elif [ "${TESTOPS_UPLOAD_EXIT:-}" != "" ] && [ "${TESTOPS_UPLOAD_EXIT}" != "0" ]; then
             echo "- Allure TestOps upload: _ошибка (см. шаг Upload results)_" >> "$GITHUB_STEP_SUMMARY"
           fi
+          if [ "${QUALITY_GATE_EXIT:-}" = "0" ]; then
+            echo "- Allure 3 quality gate: passed" >> "$GITHUB_STEP_SUMMARY"
+          elif [ -n "${QUALITY_GATE_EXIT:-}" ]; then
+            echo "- Allure 3 quality gate: **failed** (exit ${QUALITY_GATE_EXIT})" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Fail if quality gate failed
+        if: always() && env.QUALITY_GATE_EXIT != '' && env.QUALITY_GATE_EXIT != '0'
+        run: exit "${{ env.QUALITY_GATE_EXIT }}"
 
       - name: Fail if report was not generated
         if: always() && steps.allure-report.outcome != 'success'

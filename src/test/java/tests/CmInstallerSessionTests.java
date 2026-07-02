@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @DisplayName("CM installer session")
 @Tag("smoke")
 @Tag("cm")
+@Tag("local-only")
 @Execution(ExecutionMode.SAME_THREAD)
 @Timeout(300)
 class CmInstallerSessionTests extends TestBase {
