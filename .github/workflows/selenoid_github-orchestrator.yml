@@ -70,9 +70,6 @@ jobs:
           - repo: cm
             epic: cm
             go_repo: qa-guru/cm
-    if: >-
-      github.event_name != 'repository_dispatch' ||
-      github.event.client_payload.source_repo == matrix.go_repo
     steps:
       - name: Checkout tests repo
         uses: actions/checkout@v6
