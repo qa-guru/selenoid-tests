@@ -10,6 +10,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.openqa.selenium.MutableCapabilities;
+
+import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
@@ -27,12 +30,29 @@ public class UiTestBase {
             System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
         }
 
-        Configuration.baseUrl = ConfigReader.resolveUiUrl();
+        Configuration.baseUrl = ConfigReader.resolveUiBrowserUrl();
         Configuration.browser = config.browser();
         Configuration.browserSize = config.browserSize();
-        Configuration.headless = true;
-        Configuration.remote = null;
+        Configuration.headless = config.headless();
         Configuration.timeout = 20_000;
+
+        var remoteUrl = config.remoteUrl();
+        if (remoteUrl != null && !remoteUrl.isBlank()) {
+            Configuration.remote = remoteUrl;
+            Configuration.browserVersion = config.browserVersion();
+            var capabilities = new MutableCapabilities();
+            capabilities.setCapability("selenoid:options", Map.of(
+                    "enableVNC", config.enableVnc(),
+                    "enableVideo", config.enableVideo(),
+                    "name", "selenoid-ui-e2e",
+                    "sessionTimeout", "2m"
+            ));
+            Configuration.browserCapabilities = capabilities;
+        } else {
+            Configuration.remote = null;
+            Configuration.browserVersion = null;
+            Configuration.browserCapabilities = new MutableCapabilities();
+        }
     }
 
     @BeforeEach

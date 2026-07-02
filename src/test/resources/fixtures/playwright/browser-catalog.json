@@ -1,0 +1,17 @@
+{
+  "playwright-chromium": {
+    "default": "1.61.1",
+    "versions": {
+      "1.61.1": {
+        "image": "qaguru/playwright-chromium:1.61.1",
+        "protocol": "playwright",
+        "playwrightVersion": "1.61.1"
+      },
+      "1.61.1-min": {
+        "image": "qaguru/playwright-chromium:1.61.1-min",
+        "protocol": "playwright",
+        "playwrightVersion": "1.61.1"
+      }
+    }
+  }
+}

@@ -9,6 +9,8 @@ import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Epic("selenoid")
 @Feature("WebDriver session API")
 @DisplayName("Hub session API")
+@ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubSessionApiTests extends ApiTestBase {
 
     @Test

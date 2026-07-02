@@ -4,11 +4,15 @@
     "versions": {
       "148.0": {
         "image": "qaguru/webdriver-chrome:148",
-        "port": "4444"
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
       },
       "148.0-min": {
         "image": "qaguru/webdriver-chrome:148-min",
-        "port": "4444"
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
       }
     }
   }

@@ -15,8 +15,8 @@ public class UiDashboardPage {
 
     private static final Duration RECOVERY_TIMEOUT = Duration.ofSeconds(20);
 
-    private final SelenideElement sseStatus = $("[data-testid='sse-status-label']");
-    private final SelenideElement selenoidStatus = $("[data-testid='selenoid-status-label']");
+    private final SelenideElement sseStatus = $("#sse-status");
+    private final SelenideElement selenoidStatus = $("#selenoid-status");
 
     @Step("Open Selenoid UI dashboard")
     public UiDashboardPage openPage() {

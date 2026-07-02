@@ -15,7 +15,7 @@ public final class PlaywrightEndpointApi {
     @Step("GET {path} without WebSocket upgrade")
     public static void assertUpgradeRequired() {
         var path = resolveHttpPath();
-        given()
+        hubRequest()
                 .when()
                 .get(path)
                 .then()
@@ -34,10 +34,16 @@ public final class PlaywrightEndpointApi {
 
     @Step("GET unknown playwright path without WebSocket upgrade")
     public static void assertUnknownPathRejected() {
-        given()
+        hubRequest()
                 .when()
                 .get("/playwright/unknown-browser/0.0.0")
                 .then()
                 .statusCode(400);
+    }
+
+    private static io.restassured.specification.RequestSpecification hubRequest() {
+        var base = ConfigReader.resolveApiBaseUrl();
+        var trimmed = base.endsWith("/") ? base.substring(0, base.length() - 1) : base;
+        return given().baseUri(trimmed);
     }
 }

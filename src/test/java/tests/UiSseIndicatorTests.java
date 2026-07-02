@@ -24,8 +24,8 @@ class UiSseIndicatorTests extends UiTestBase {
     @DisplayName("SSE indicator uses ok styling when connected")
     void sseIndicatorUsesOkStyling() {
         step("Open dashboard", () -> uiDashboard.openPage().shouldBeConnected());
-        step("Verify SSE indicator styling", () ->
-                $("[data-testid='sse-status'] .indicator")
-                        .shouldHave(com.codeborne.selenide.Condition.cssClass("indicator_ok")));
+        step("Verify SSE metric shows CONNECTED state", () ->
+                $(".header-metric--status[data-kind='sse']")
+                        .shouldHave(com.codeborne.selenide.Condition.attribute("data-state", "ok")));
     }
 }

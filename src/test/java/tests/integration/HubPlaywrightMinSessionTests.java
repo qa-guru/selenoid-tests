@@ -21,29 +21,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Layer("integration")
 @Component("playwright-image")
 @Epic("playwright-image")
-@Feature("Playwright WS session")
-@DisplayName("Playwright hub WS session")
+@Feature("Playwright WS session (min)")
+@DisplayName("Playwright hub WS session (min)")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
-class HubPlaywrightSessionTests {
+class HubPlaywrightMinSessionTests {
 
     @Test
-    @Tag("integration")
+    @Tag("min")
     @Tag("positive")
-    @DisplayName("Remote Playwright WS session starts browser node and completes")
-    void remotePlaywrightSessionStartsAndCompletes() {
+    @DisplayName("Remote Playwright min WS session starts browser node and completes")
+    void remotePlaywrightMinSessionStartsAndCompletes() {
         var usedBefore = step("Snapshot hub /status used counter", () ->
                 HubStatusApi.fetch().used());
 
         try (var playwright = Playwright.create()) {
-            var browser = step("Connect Playwright via hub WS endpoint", () ->
+            var browser = step("Connect Playwright via hub WS endpoint (min)", () ->
                     PlaywrightSessionApi.connect(playwright));
 
             step("Verify remote browser is connected", () ->
-                    assertTrue(browser.isConnected(), "Playwright browser node should be connected"));
+                    assertTrue(browser.isConnected(), "Playwright min browser node should be connected"));
 
             step("Verify hub reports active session", () ->
                     assertEquals(usedBefore + 1, HubStatusApi.fetch().used(),
-                            "Hub /status.used should increment while Playwright session is open"));
+                            "Hub /status.used should increment while Playwright min session is open"));
 
             step("Close remote session", () -> PlaywrightSessionApi.close(browser));
 
@@ -53,6 +53,6 @@ class HubPlaywrightSessionTests {
 
         step("Verify hub released session", () ->
                 assertEquals(usedBefore, HubStatusApi.fetch().used(),
-                        "Hub /status.used should return to baseline after session ends"));
+                        "Hub /status.used should return to baseline after min session ends"));
     }
 }
