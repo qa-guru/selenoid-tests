@@ -31,4 +31,13 @@ public final class PlaywrightEndpointApi {
         }
         return path;
     }
+
+    @Step("GET unknown playwright path without WebSocket upgrade")
+    public static void assertUnknownPathRejected() {
+        given()
+                .when()
+                .get("/playwright/unknown-browser/0.0.0")
+                .then()
+                .statusCode(400);
+    }
 }
