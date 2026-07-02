@@ -36,6 +36,13 @@ public class TestBase {
         Configuration.remote = config.remoteUrl();
 
         var capabilities = new MutableCapabilities();
+        capabilities.setCapability("goog:chromeOptions", java.util.Map.of(
+                "args", java.util.List.of(
+                        "--headless=new",
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage"
+                )
+        ));
         capabilities.setCapability("selenoid:options", Map.of(
                 "enableVNC", config.enableVnc(),
                 "enableVideo", config.enableVideo(),

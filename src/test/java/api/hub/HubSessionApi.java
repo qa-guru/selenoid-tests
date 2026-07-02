@@ -1,10 +1,15 @@
 package api.hub;
 
-import config.ConfigReader;
-import config.TestConfig;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import config.ConfigReader;
+import config.TestConfig;
 
 import static io.restassured.RestAssured.given;
 
@@ -15,11 +20,9 @@ public final class HubSessionApi {
 
     @Step("POST /wd/hub/session ({browserName} {browserVersion})")
     public static String create(String browserName, String browserVersion) {
-        var request = new CreateSessionRequest(
-                new CreateSessionCapabilities(new SessionAlwaysMatch(browserName, browserVersion)));
         return hubRequest()
                 .contentType(ContentType.JSON)
-                .body(request)
+                .body(createSessionBody(browserName, browserVersion))
                 .when()
                 .post("/wd/hub/session")
                 .then()
@@ -58,11 +61,9 @@ public final class HubSessionApi {
 
     @Step("POST /wd/hub/session — expect HTTP {expectedStatus}")
     public static void createExpectStatus(String browserName, String browserVersion, int expectedStatus) {
-        var request = new CreateSessionRequest(
-                new CreateSessionCapabilities(new SessionAlwaysMatch(browserName, browserVersion)));
         hubRequest()
                 .contentType(ContentType.JSON)
-                .body(request)
+                .body(createSessionBody(browserName, browserVersion))
                 .when()
                 .post("/wd/hub/session")
                 .then()
@@ -71,11 +72,9 @@ public final class HubSessionApi {
 
     @Step("POST /wd/hub/session and read browserName from capabilities")
     public static SessionCreateResult createWithCapabilities(TestConfig config) {
-        var request = new CreateSessionRequest(
-                new CreateSessionCapabilities(new SessionAlwaysMatch(config.browser(), config.browserVersion())));
         var response = hubRequest()
                 .contentType(ContentType.JSON)
-                .body(request)
+                .body(createSessionBody(config.browser(), config.browserVersion()))
                 .when()
                 .post("/wd/hub/session")
                 .then()
@@ -88,6 +87,19 @@ public final class HubSessionApi {
             browserName = response.path("value.capabilities.alwaysMatch.browserName");
         }
         return new SessionCreateResult(sessionId, browserName == null ? "" : browserName.toString());
+    }
+
+    public static Map<String, Object> createSessionBody(String browserName, String browserVersion) {
+        var alwaysMatch = new LinkedHashMap<String, Object>();
+        alwaysMatch.put("browserName", browserName);
+        alwaysMatch.put("browserVersion", browserVersion);
+        alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
+
+        return Map.of("capabilities", Map.of("alwaysMatch", alwaysMatch));
+    }
+
+    private static List<String> dockerChromeArgs() {
+        return ChromeOptions.dockerHeadless().args();
     }
 
     private static RequestSpecification hubRequest() {
