@@ -1,0 +1,11 @@
+{
+  "total": 10,
+  "used": 2,
+  "queued": 0,
+  "pending": 1,
+  "browsers": {
+    "chrome": {
+      "148.0": {}
+    }
+  }
+}
