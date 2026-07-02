@@ -1,0 +1,13 @@
+{
+  "state": {
+    "total": 5,
+    "used": 1,
+    "queued": 0,
+    "pending": 0,
+    "browsers": {
+      "chrome": {
+        "148.0": {}
+      }
+    }
+  }
+}
