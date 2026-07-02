@@ -1,0 +1,1149 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.UiSessionsListTests.activeSessionAppearsInSessionsList","Active hub session appears in dashboard sessions list","failed","2s 374ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:57)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:139)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:38)
+	at tests.UiSessionsListTests.lambda$activeSessionAppearsInSessionsList$0(UiSessionsListTests.java:36)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.UiSessionsListTests.activeSessionAppearsInSessionsList(UiSessionsListTests.java:36)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Create hub session via API failed (2s 370ms)
+  POST /wd/hub/session failed (2s 369ms)
+    POST /wd/hub/session failed (2s 366ms)
+      POST /wd/hub/session (chrome 148.0) failed (2s 366ms)",,"UI sessions list",,"selenoid-ui","UI sessions list",
+"github.com/aerokube/cm/selenoid.TestAllUrlsAreValid/All_urls_are_valid","All_urls_are_valid","passed","1s 110ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopProcess/Based_on_https://npf.io/2015/06/testing-exec-command/","Based_on_https://npf.io/2015/06/testing-exec-command/","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestBrowserName/Browser_name","Browser_name","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserNotFound/Browser_not_found","Browser_not_found","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestCheckOrigin/Check_origin","Check_origin","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestChooseVolumeConfigDir/Choose_volume_config_dir","Choose_volume_config_dir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestClientDisconnected/Client_disconnected","Client_disconnected","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboard/Clipboard","Clipboard","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardMissingSession/Clipboard_missing_session","Clipboard_missing_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardProtocolExtension/Clipboard_protocol_extension","Clipboard_protocol_extension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfig/Config","Config","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoad/Config_concurrent_load","Config_concurrent_load","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoadAndRead/Config_concurrent_load_and_read","Config_concurrent_load_and_read","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentRead/Config_concurrent_read","Config_concurrent_read","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyState/Config_empty_state","Config_empty_state","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyVersions/Config_empty_versions","Config_empty_versions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigError/Config_error","Config_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersion/Config_find_default_version","Config_find_default_version","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersionError/Config_find_default_version_error","Config_find_default_version_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByEmptyPrefix/Config_find_found_by_empty_prefix","Config_find_found_by_empty_prefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByMatch/Config_find_found_by_match","Config_find_found_by_match","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByPrefix/Config_find_found_by_prefix","Config_find_found_by_prefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindImage/Config_find_image","Config_find_image","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMicrosoftEdgeAlias/Config_find_microsoft_edge_alias","Config_find_microsoft_edge_alias","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMissingBrowser/Config_find_missing_browser","Config_find_missing_browser","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyState/Config_non_empty_state","Config_non_empty_state","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyVersions/Config_non_empty_versions","Config_non_empty_versions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigParseError/Config_parse_error","Config_parse_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestConfigureDocker/Configure_docker","Configure_docker","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestConfigureDrivers/Configure_drivers","Configure_drivers","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.UiDashboardLoadTests.dashboardOpensRootUrl","Dashboard opens root URL","broken","25ms","
+Command duration or timeout: 3 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 3 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at pages.UiDashboardPage.openPage(UiDashboardPage.java:23)
+	at tests.UiDashboardLoadTests.lambda$dashboardOpensRootUrl$0(UiDashboardLoadTests.java:28)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.UiDashboardLoadTests.dashboardOpensRootUrl(UiDashboardLoadTests.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open dashboard broken (18ms)
+  Open Selenoid UI dashboard broken (5ms)",,"UI dashboard load",,"selenoid-ui","UI dashboard",
+"tests.UiReloadTests.dashboardReloadKeepsConnected","Dashboard reload keeps CONNECTED indicators","broken","12ms","
+Command duration or timeout: 3 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 3 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at pages.UiDashboardPage.openPage(UiDashboardPage.java:23)
+	at tests.UiReloadTests.lambda$dashboardReloadKeepsConnected$0(UiReloadTests.java:26)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.UiReloadTests.dashboardReloadKeepsConnected(UiReloadTests.java:25)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open dashboard and wait for CONNECTED broken (6ms)
+  Open Selenoid UI dashboard broken (5ms)",,"UI dashboard reload",,"selenoid-ui","UI dashboard",
+"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","DELETE unknown session returns client error","passed","81ms",,,"DELETE unknown session id passed (76ms)
+  DELETE /wd/hub/session/missing-session-id — expect HTTP 404 passed (72ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API",
+"github.com/aerokube/selenoid.TestDeleteContainerOnStartupError/Delete_container_on_startup_error","Delete_container_on_startup_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.component.CmStatusOutputTest.detectsRunningContainerInStatusOutput","detects running container in cm status output","passed","2ms",,,,,"CM status output fixture",,"cm",,
+"github.com/aerokube/selenoid.TestDetermineVideoScreenSizeFromScreenResolution/Determine_video_screen_size_from_screen_resolution","Determine_video_screen_size_from_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDevtools/Devtools","Devtools","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestDockerAvailable/Docker_available","Docker_available","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDockerUnavailable/Docker_unavailable","Docker_unavailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownload/Download","Download","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadFile/Download_file","Download_file","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadLatestRelease/Download_latest_release","Download_latest_release","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadSpecificRelease/Download_specific_release","Download_specific_release","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadUI/Download_UI","Download_UI","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.component.SessionCreateJsonTest.extractsSessionId","extracts sessionId from create session response","passed","283ms",,,,,"Session create fixture",,,,
+"github.com/aerokube/cm/selenoid.TestFetchImageTags/Fetch_image_tags","Fetch_image_tags","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFileDownload/File_download","File_download","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadMissingSession/File_download_missing_session","File_download_missing_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadProtocolExtension/File_download_protocol_extension","File_download_protocol_extension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileMatches/File_matches","File_matches","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUpload/File_upload","File_upload","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadBadJson/File_upload_bad_JSON","File_upload_bad_JSON","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadNoFile/File_upload_no_file","File_upload_no_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadTwoFiles/File_upload_two_files","File_upload_two_files","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFilterOutLatest/Filter_out_latest","Filter_out_latest","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindDockerIPSpecified/Find_docker_ip_specified","Find_docker_ip_specified","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindDriver/Find_driver","Find_driver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindInsideOfDocker/Find_inside_of_docker","Find_inside_of_docker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFindMatchingImage/Find_matching_image","Find_matching_image","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindOutsideOfDocker/Find_outside_of_docker","Find_outside_of_docker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","GET /browsers-config returns browser catalog JSON","passed","11ms",,,"GET /browsers-config passed (9ms)
+  GET /browsers-config passed (9ms)
+    GET http://127.0.0.1:8080/browsers-config passed (9ms)
+ Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config",
+"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","923ms",,,"GET /logs/unknown-session without WebSocket headers passed (900ms)",,"Hub logs endpoint API",,"selenoid","Hub logs",
+"tests.api.UiPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","17ms",,,"GET /ping passed (13ms)
+  GET /ping passed (13ms)
+    GET http://127.0.0.1:8080//ping passed (12ms)
+ Verify uptime and version passed (2ms)",,"UI ping API",,"selenoid-ui","UI ping",
+"tests.api.HubPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","55ms",,,"GET /ping passed (28ms)
+  GET /ping passed (28ms)
+    GET http://127.0.0.1:4444//ping passed (28ms)
+ Verify uptime and version passed (17ms)",,"Hub ping API",,"selenoid","Hub ping",
+"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","GET /ping version contains git revision marker","passed","15ms",,,"GET /ping passed (13ms)
+  GET /ping passed (13ms)
+    GET http://127.0.0.1:8080//ping passed (12ms)
+ Verify version looks like revision passed (0s)",,"UI ping version",,"selenoid-ui","UI ping",
+"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","GET /status lists configured browser families","passed","27ms",,,"GET /status passed (20ms)
+  GET /status passed (20ms)
+    GET http://127.0.0.1:4444//status passed (19ms)
+ Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status",
+"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","GET /status returns hub statistics JSON","passed","16ms",,,"GET /status passed (13ms)
+  GET /status passed (13ms)
+    GET http://127.0.0.1:4444//status passed (13ms)
+ Verify root counters passed (0s)
+  Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status",
+"tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle","GET /status used counter tracks session lifecycle","failed","2s 510ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:57)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$3.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$1.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at tests.api.HubStatusSessionApiTests.lambda$statusUsedCounterTracksSessionLifecycle$1(HubStatusSessionApiTests.java:36)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle(HubStatusSessionApiTests.java:36)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+","Snapshot hub used counter passed (1s 512ms)
+  GET /status passed (1s 494ms)
+    GET http://127.0.0.1:4444//status passed (1s 492ms)
+ Create hub session failed (983ms)
+   POST /wd/hub/session failed (981ms)
+     POST /wd/hub/session (chrome 148.0) failed (979ms)",,"Hub status session counters API",,"selenoid","Hub status with session",
+"tests.api.HubWebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub","passed","45ms",,,"GET /wd/hub/status passed (39ms)
+  GET /wd/hub/status passed (39ms)
+    GET http://127.0.0.1:4444//wd/hub/status passed (38ms)
+ Verify ready flag and message passed (1ms)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status",
+"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","GET playwright path without upgrade returns 400","passed","18ms",,,"GET playwright path without WebSocket headers passed (17ms)
+  GET {path} without WebSocket upgrade passed (14ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint",
+"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","GET UI /status exposes total quota counter","passed","1s 78ms",,,"GET UI /status passed (1s 75ms)
+  GET /status passed (1s 75ms)
+    GET http://127.0.0.1:8080//status passed (1s 75ms)
+ Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy",
+"tests.api.UiStatusTests.uiStatusReturnsProxiedHubJson","GET UI /status returns proxied hub statistics JSON","passed","84ms",,,"GET UI /status passed (83ms)
+  GET /status passed (83ms)
+    GET http://127.0.0.1:8080//status passed (82ms)
+ Verify proxied state counters passed (0s)
+  Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy",
+"tests.api.PlaywrightUnknownPathTests.unknownPlaywrightPathRejected","GET unknown playwright path returns 400","passed","13ms",,,"GET unknown playwright path passed (11ms)
+  GET unknown playwright path without WebSocket upgrade passed (11ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint",
+"github.com/aerokube/selenoid.TestNewSessionWithGet/GET_/wd/hub/session_returns_405_Method_Not_Allowed","GET_/wd/hub/session_returns_405_Method_Not_Allowed","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetConfigDir/Get_config_dir","Get_config_dir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetDefaultScreenResolution/Get_default_screen_resolution","Get_default_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetFullScreenResolution/Get_full_screen_resolution","Get_full_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetKey/Get_key","Get_key","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetLogs/Get_logs","Get_logs","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithVNC/Get_playwright_port_config_with_vnc","Get_playwright_port_config_with_vnc","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetSelenoidImage/Get_selenoid_image","Get_selenoid_image","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetShortScreenResolution/Get_short_screen_resolution","Get_short_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVideoScreenSizeFromCapability/Get_video_screen_size_from_capability","Get_video_screen_size_from_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVNC/Get_vnc","Get_vnc","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.HubStatusSessionIntegrationTests.statusBrowsersReflectActiveSession","Hub /status browsers map reflects active session browser family","failed","980ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:57)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:38)
+	at tests.integration.HubStatusSessionIntegrationTests.lambda$statusBrowsersReflectActiveSession$0(HubStatusSessionIntegrationTests.java:38)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.integration.HubStatusSessionIntegrationTests.statusBrowsersReflectActiveSession(HubStatusSessionIntegrationTests.java:38)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Create hub session failed (973ms)
+  POST /wd/hub/session failed (971ms)
+    POST /wd/hub/session failed (970ms)
+      POST /wd/hub/session (chrome 148.0) failed (968ms)",,"Hub status browsers with active session",,"selenoid","Hub status with session",
+"tests.integration.StackHealthTests.hubAndUiRespondOnHealthEndpoints","Hub and UI respond on health endpoints","passed","18ms",,,"GET hub /status passed (9ms)
+  GET /status passed (8ms)
+    GET http://127.0.0.1:4444//status passed (8ms)
+ GET UI /ping passed (8ms)
+   GET /ping passed (7ms)
+     GET http://127.0.0.1:8080//ping passed (7ms)
+  Verify UI ping uptime passed (0s)",,"Stack health integration",,"selenoid-ui","Stack health",
+"tests.component.HubStatusForwardCompatJsonTest.ignoresUnknownFields","ignores unknown JSON fields","passed","3ms",,,,,"Hub status forward compatibility",,,,
+"github.com/aerokube/cm/selenoid.TestImageWithTag/Image_with_tag","Image_with_tag","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestInvalidSessionTimeoutCapability/Invalid_session_timeout_capability","Invalid_session_timeout_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestIsVideoRecordingSupported/Is_video_recording_supported","Is_video_recording_supported","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLifecycle/Lifecycle","Lifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLimitNoPull/Limit_no_pull","Limit_no_pull","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.component.PlaywrightBrowserCapsJsonTest.listsPlaywrightChromiumFamily","lists playwright-chromium in browser families map","passed","4ms",,,,,"Playwright browser caps fixture",,"playwright-image",,
+"tests.component.CmHelpOutputTest.listsCoreSubcommandsInHelp","lists selenoid and selenoid-ui subcommands in help","passed","3ms",,,,,"CM help output fixture",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestLoadBrowserProtocols/Load_browser_protocols","Load_browser_protocols","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestLogConfigError/Log_config_error","Log_config_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedScreenResolutionCapability/Malformed_screen_resolution_capability","Malformed_screen_resolution_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedVideoScreenSizeCapability/Malformed_video_screen_size_capability","Malformed_video_screen_size_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionBadHostResponse/New_session_bad_host_response","New_session_bad_host_response","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionHostDown/New_session_host_down","New_session_host_down","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionNotFound/New_session_not_found","New_session_not_found","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionTimeout/New_session_timeout","New_session_timeout","passed","50ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParseGgrHost/Parse_GGR_host","Parse_GGR_host","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequest/Parse_playwright_request","Parse_playwright_request","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestDefaultVersion/Parse_playwright_request_default_version","Parse_playwright_request_default_version","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestLabels/Parse_playwright_request_labels","Parse_playwright_request_labels","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestParseRequestedBrowsers/Parse_requested_browsers","Parse_requested_browsers","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.component.BrowsersConfigJsonTest.parsesBrowsersCatalog","parses browsers catalog map","passed","886ms",,,,,"Browsers config fixture",,,,
+"tests.component.HubStatusBrowsersJsonTest.parsesBrowsersMap","parses browsers map with version entries","passed","4ms",,,,,"Hub status browsers fixture",,,,
+"tests.component.ChromeMinCatalogJsonTest.parsesChromeMinCatalogVersionBlock","parses chrome-min catalog version block port and path","passed","18ms",,,,,"Chrome min browser catalog fixture",,"webdriver-image",,
+"tests.component.CmBrowsersConfigJsonTest.parsesCmBrowsersChromeMinImage","parses cm browsers.json chrome-min image tag","passed","18ms",,,,,"CM browsers.json fixture",,"cm",,
+"tests.component.CmBrowsersConfigJsonTest.parsesCmBrowsersDefaultVersion","parses cm browsers.json default chrome version","passed","33ms",,,,,"CM browsers.json fixture",,"cm",,
+"tests.component.UiErrorJsonTest.parsesErrorPayload","parses error list payload","passed","16ms",,,,,"UI error fixture",,,,
+"tests.component.CmVersionOutputTest.parsesGitRevisionFromVersionOutput","parses git revision from cm version output","passed","2ms",,,,,"CM version output fixture",,"cm",,
+"tests.component.HubLogsListJsonTest.parsesHubLogsJsonArray","parses hub logs JSON array with session file names","passed","2ms",,,,,"Hub logs list fixture",,"selenoid",,
+"tests.component.HubStatusJsonTest.parsesIdleHubStatus","parses idle hub status counters","passed","3ms",,,,,"Hub status fixture",,,,
+"tests.component.PlaywrightMinCatalogJsonTest.parsesMinImageTagInCatalog","parses min image tag in catalog entry","passed","31ms",,,,,"Playwright min browser catalog fixture",,"playwright-image",,
+"tests.component.ChromeMinCatalogJsonTest.parsesMinImageTagInChromeCatalog","parses min image tag in chrome catalog entry","passed","21ms",,,,,"Chrome min browser catalog fixture",,"webdriver-image",,
+"tests.component.PlaywrightWsPathJsonTest.parsesPlaywrightDefaultVersion","parses playwright browser catalog default version","passed","24ms",,,,,"Playwright WS path fixture",,"playwright-image",,
+"tests.component.PlaywrightWsPathJsonTest.parsesPlaywrightProtocolFlag","parses playwright protocol flag in catalog entry","passed","66ms",,,,,"Playwright WS path fixture",,"playwright-image",,
+"tests.component.PlaywrightBrowserCapsJsonTest.parsesPlaywrightVersionFromCatalog","parses playwrightVersion from catalog version block","passed","20ms",,,,,"Playwright browser caps fixture",,"playwright-image",,
+"tests.component.PlaywrightMinCatalogJsonTest.parsesPlaywrightVersionFromMinCatalog","parses playwrightVersion from min catalog version block","passed","32ms",,,,,"Playwright min browser catalog fixture",,"playwright-image",,
+"tests.component.UiStatusJsonTest.parsesUiStatusWrapper","parses proxied UI status wrapper","passed","1s 10ms",,,,,"UI status fixture",,,,
+"tests.component.HubWebDriverStatusJsonTest.parsesReadyWebDriverStatus","parses ready WebDriver status payload","passed","4ms",,,,,"Hub WebDriver status fixture",,,,
+"tests.component.SseErrorsJsonTest.parsesSseErrorsPayload","parses SSE payload with errors list","passed","5ms",,,,,"SSE errors fixture",,,,
+"tests.component.SseStateJsonTest.parsesSseStatePayload","parses SSE payload with hub state","passed","5ms",,,,,"SSE state fixture",,,,
+"tests.component.UiPingJsonTest.parsesPingFields","parses uptime and version fields","passed","9ms",,,,,"UI ping fixture",,,,
+"github.com/aerokube/selenoid.TestPing/Ping","Ping","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestPing/Ping","Ping","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"tests.integration.HubPlaywrightNavigateTests.playwrightSessionNavigatesToExampleDomain","Playwright session navigates to example.com","passed","26s 800ms",,,"Snapshot hub used counter passed (1s 947ms)
+  GET /status passed (1s 909ms)
+    GET http://127.0.0.1:4444//status passed (1s 851ms)
+ Connect Playwright via hub WS endpoint passed (3s 965ms)
+   Connect Playwright browser via hub WS passed (3s 963ms)
+     Connect Playwright browser via hub WS (ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1?name=java-playwright-integration&sessionTimeout=5m&enableVNC=false&enableVideo=false) passed (3s 961ms)
+  Navigate to example.com passed (85ms)
+   Verify page title passed (31ms)
+    Close remote session passed (3ms)
+      Close Playwright remote browser session passed (3ms)
+     Verify hub released session passed (13ms)
+       GET /status passed (12ms)
+         GET http://127.0.0.1:4444//status passed (12ms)",,"Playwright navigate integration",,"playwright-image","Playwright WS session",
+"github.com/aerokube/selenoid/service.TestPlaywrightContainerEnv/Playwright_container_env","Playwright_container_env","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightSessionDeletedViaHub/Playwright_session_deleted_via_hub","Playwright_session_deleted_via_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.api.HubSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates and DELETE removes session","failed","1s 9ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$3.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$1.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at tests.api.HubSessionApiTests.lambda$createAndDeleteSession$0(HubSessionApiTests.java:31)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.api.HubSessionApiTests.createAndDeleteSession(HubSessionApiTests.java:31)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+","Create remote session failed (1s 6ms)
+  POST /wd/hub/session failed (1s 5ms)
+    POST /wd/hub/session (chrome 148.0) failed (1s 4ms)",,"Hub session API",,"selenoid","WebDriver session API",
+"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","POST /wd/hub/session echoes browserName in capabilities","failed","1s 131ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$3.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$1.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.createWithCapabilities(HubSessionApi.java:82)
+	at tests.api.HubCapabilitiesApiTests.lambda$createSessionEchoesBrowserName$0(HubCapabilitiesApiTests.java:32)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName(HubCapabilitiesApiTests.java:32)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+","Create remote session failed (1s 126ms)
+  POST /wd/hub/session and read browserName from capabilities failed (1s 125ms)",,"Hub session capabilities",,"selenoid","WebDriver session API",
+"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","POST /wd/hub/session rejects unknown browser","passed","30ms",,,"POST session with unknown browser passed (27ms)
+  POST /wd/hub/session — expect HTTP 400 passed (26ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API",
+"github.com/aerokube/selenoid.TestBadJsonFormat/POST_/wd/hub/session_rejects_malformed_JSON_body","POST_/wd/hub/session_rejects_malformed_JSON_body","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestPostProcessPath/Post_process_path","Post_process_path","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestPrepareCommand/Prepare_command","Prepare_command","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestProcessExtensionCapabilities/Process_extension_capabilities","Process_extension_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySession/Proxy_session","Proxy_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionCanceled/Proxy_session_canceled","Proxy_session_canceled","passed","1s 0ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionPanicOnAbortHandler/Proxy_session_panic_on_abort_handler","Proxy_session_panic_on_abort_handler","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionTimeout/Proxy_session_timeout","Proxy_session_timeout","passed","90ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.HubSessionTests.remoteSessionOpensExampleDomain","Remote Chrome session opens example.com","broken","14ms","
+Command duration or timeout: 6 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 6 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at tests.HubSessionTests.lambda$remoteSessionOpensExampleDomain$0(HubSessionTests.java:32)
+	at io.qameta.allure.Allure.lambda$step$0(Allure.java:113)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at io.qameta.allure.Allure.step(Allure.java:112)
+	at tests.HubSessionTests.remoteSessionOpensExampleDomain(HubSessionTests.java:32)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open smoke URL via remote WebDriver broken (8ms)",,"WebDriver session",,"webdriver-image","WebDriver session",
+"tests.integration.HubPlaywrightSessionTests.remotePlaywrightSessionStartsAndCompletes","Remote Playwright WS session starts browser node and completes","passed","1s 69ms",,,"Snapshot hub /status used counter passed (9ms)
+  GET /status passed (8ms)
+    GET http://127.0.0.1:4444//status passed (8ms)
+ Connect Playwright via hub WS endpoint passed (654ms)
+   Connect Playwright browser via hub WS passed (654ms)
+     Connect Playwright browser via hub WS (ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1?name=java-playwright-integration&sessionTimeout=5m&enableVNC=false&enableVideo=false) passed (653ms)
+  Verify remote browser is connected passed (1ms)
+   Verify hub reports active session passed (9ms)
+     GET /status passed (9ms)
+       GET http://127.0.0.1:4444//status passed (7ms)
+    Close remote session passed (1ms)
+      Close Playwright remote browser session passed (1ms)
+     Verify browser is disconnected after close passed (0s)
+      Verify hub released session passed (10ms)
+        GET /status passed (10ms)
+          GET http://127.0.0.1:4444//status passed (9ms)",,"Playwright hub WS session",,"playwright-image","Playwright WS session",
+"tests.HubSessionIdTests.remoteSessionAssignsSessionId","Remote session assigns session id","broken","10ms","
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at tests.HubSessionIdTests.lambda$remoteSessionAssignsSessionId$0(HubSessionIdTests.java:28)
+	at io.qameta.allure.Allure.lambda$step$0(Allure.java:113)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at io.qameta.allure.Allure.step(Allure.java:112)
+	at tests.HubSessionIdTests.remoteSessionAssignsSessionId(HubSessionIdTests.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open smoke URL broken (6ms)",,"Hub session id",,"webdriver-image","WebDriver session",
+"tests.HubSessionTitleTests.remoteSessionHasExampleDomainTitle","Remote session page has Example Domain title","broken","13ms","
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at tests.HubSessionTitleTests.lambda$remoteSessionHasExampleDomainTitle$0(HubSessionTitleTests.java:28)
+	at io.qameta.allure.Allure.lambda$step$0(Allure.java:113)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at io.qameta.allure.Allure.step(Allure.java:112)
+	at tests.HubSessionTitleTests.remoteSessionHasExampleDomainTitle(HubSessionTitleTests.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open smoke URL broken (7ms)",,"Hub session title",,"webdriver-image","WebDriver session",
+"tests.HubSessionHeadingTests.remoteSessionRendersHeading","Remote session renders Example Domain heading","broken","1s 999ms","
+Command duration or timeout: 2 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, get {url=https://example.com/}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 2 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, get {url=https://example.com/}]
+selenide.url: https://example.com/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://localhost:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.get(RemoteWebDriver.java:366)
+	at org.openqa.selenium.remote.RemoteWebDriver$RemoteNavigation.to(RemoteWebDriver.java:1216)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:71)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at tests.HubSessionHeadingTests.lambda$remoteSessionRendersHeading$0(HubSessionHeadingTests.java:28)
+	at io.qameta.allure.Allure.lambda$step$0(Allure.java:113)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at io.qameta.allure.Allure.step(Allure.java:112)
+	at tests.HubSessionHeadingTests.remoteSessionRendersHeading(HubSessionHeadingTests.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open smoke URL broken (1s 954ms)",,"Hub session heading",,"webdriver-image","WebDriver session",
+"helpers.CmRunResultTest.requireSuccessFailsOnNonZeroExit","requireSuccess fails on non-zero exit code","passed","6ms",,,,,"CmRunResult",,,,
+"helpers.CmRunResultTest.requireSuccessPassesOnZeroExit","requireSuccess passes on exit code zero","passed","3ms",,,,,"CmRunResult",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlFailsWhenBothEmpty","resolveApiBaseUrl fails fast when apiBaseUrl and hubUrl are empty","passed","3ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlFallsBackToHubUrl","resolveApiBaseUrl falls back to hubUrl when apiBaseUrl is empty","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlPrefersExplicitKey","resolveApiBaseUrl prefers apiBaseUrl over hubUrl","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUrlTrimTest.resolveApiBaseUrlTrimsWhitespace","resolveApiBaseUrl trims explicit apiBaseUrl","passed","2ms",,,,,"ConfigReader URL trim",,,,
+"config.ConfigReaderCmTest.resolveCmHubUrlRespectsCustomPort","resolveCmHubUrl respects custom cmHubPort","passed","3ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmHubUrlUsesCmHubPort","resolveCmHubUrl uses cmHubPort with trailing slash","passed","3ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmRemoteUrlCombinesHubBaseAndWdHubPath","resolveCmRemoteUrl points WebDriver hub at CM-managed port","passed","2ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmUiUrlRespectsCustomPort","resolveCmUiUrl respects custom cmUiPort","passed","2ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmUiUrlUsesCmUiPort","resolveCmUiUrl uses cmUiPort with trailing slash","passed","138ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderTest.resolveHubUrlAddsTrailingSlash","resolveHubUrl adds trailing slash","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubUrlFailsWhenEmpty","resolveHubUrl fails fast when hubUrl is empty","passed","3ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubUrlKeepsTrailingSlash","resolveHubUrl keeps trailing slash","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUrlTrimTest.resolveHubUrlTrimsWhitespace","resolveHubUrl trims surrounding whitespace","passed","2ms",,,,,"ConfigReader URL trim",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointAddsQueryParams","resolvePlaywrightWsEndpoint appends selenoid query params","passed","4ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointAppendsVncAndVideoFlags","resolvePlaywrightWsEndpoint appends VNC and video flags from config","passed","2ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointFailsWhenEmpty","resolvePlaywrightWsEndpoint fails fast when playwrightWsEndpoint is empty","passed","3ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointKeepsExistingQueryString","resolvePlaywrightWsEndpoint keeps endpoint that already has query string","passed","5ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointUrlEncodesSessionName","resolvePlaywrightWsEndpoint URL-encodes session name","passed","3ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderTest.resolveUiUrlAddsTrailingSlash","resolveUiUrl adds trailing slash","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUiTest.resolveUiUrlFailsWhenEmpty","resolveUiUrl fails fast when uiUrl is empty","passed","2ms",,,,,"ConfigReader UI URL",,,,
+"config.ConfigReaderUiTest.resolveUiUrlKeepsTrailingSlash","resolveUiUrl keeps trailing slash","passed","2ms",,,,,"ConfigReader UI URL",,,,
+"config.ConfigReaderUrlTrimTest.resolveUiUrlTrimsWhitespace","resolveUiUrl trims surrounding whitespace","passed","2ms",,,,,"ConfigReader URL trim",,,,
+"github.com/aerokube/selenoid-ui.TestRootLoads/Root_loads","Root_loads","passed","20ms",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestS3Uploader/S_3_uploader","S_3_uploader","passed","30ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"config.CreateSessionRequestJsonTest.serializesAlwaysMatchCapabilities","serializes alwaysMatch browser capabilities","passed","17ms",,,,,"CreateSessionRequest JSON",,,,
+"github.com/aerokube/selenoid.TestServeAndDeleteLogFile/Serve_and_delete_log_file","Serve_and_delete_log_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteVideoFile/Serve_and_delete_video_file","Serve_and_delete_video_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServiceStartupFailure/Service_startup_failure","Service_startup_failure","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreated/Session_created","Session_created","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedFirstMatchOnly/Session_created_first_match_only","Session_created_first_match_only","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRedirect/Session_created_redirect","Session_created_redirect","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRemoveExtensionCapabilities/Session_created_remove_extension_capabilities","Session_created_remove_extension_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedW3C/Session_created_w_3_c","Session_created_w_3_c","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedWdHub/Session_created_wd_hub","Session_created_wd_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionDeleted/Session_deleted","Session_deleted","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTimeout/Session_failed_after_timeout","Session_failed_after_timeout","passed","100ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTwoTimeout/Session_failed_after_two_timeout","Session_failed_after_two_timeout","passed","110ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionOnClose/Session_on_close","Session_on_close","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestAddedSeCdpCapability/session_response_includes_se:cdp_and_se:cdpVersion_capabilities","session_response_includes_se:cdp_and_se:cdpVersion_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionWithContentTypeCreatedWdHub/Session_with_content_type_created_wd_hub","Session_with_content_type_created_wd_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.api.UiSseStreamTests.sseDeliversPayload","SSE /events delivers state or error payload","passed","1s 682ms",,,"Read first SSE event passed (1s 680ms)
+  Read first SSE event from /events passed (1s 540ms)
+    Read first SSE event from http://127.0.0.1:8080/events passed (1s 539ms)
+ Verify payload has state or errors passed (0s)",,"UI SSE stream",,"selenoid-ui","UI SSE",
+"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","SSE /events delivers two consecutive payloads","passed","5s 300ms",,,"Read two SSE events passed (5s 298ms)
+  Read two SSE events from /events passed (5s 298ms)
+    Read two SSE events from http://127.0.0.1:8080/events passed (5s 298ms)
+ Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE",
+"tests.UiStatusBarTests.statusBarStaysConnected","SSE and SELENOID stay CONNECTED on stable stack","broken","16ms","
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at pages.UiDashboardPage.openPage(UiDashboardPage.java:23)
+	at tests.UiStatusBarTests.lambda$statusBarStaysConnected$0(UiStatusBarTests.java:27)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.UiStatusBarTests.statusBarStaysConnected(UiStatusBarTests.java:26)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open dashboard and wait for CONNECTED broken (8ms)
+  Open Selenoid UI dashboard broken (6ms)",,"UI status bar",,"selenoid-ui","UI status bar",
+"tests.UiSseIndicatorTests.sseIndicatorUsesOkStyling","SSE indicator uses ok styling when connected","broken","11ms","
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27","org.openqa.selenium.WebDriverException: 
+Command duration or timeout: 4 milliseconds
+Build info: version: '4.44.0', revision: 'da2039b'
+System info: os.name: 'Linux', os.arch: 'amd64', os.version: '6.17.0-1018-azure', java.version: '21.0.11'
+selenide.remote: http://127.0.0.1:4444/wd/hub
+Driver info: org.openqa.selenium.remote.RemoteWebDriver$ByteBuddy$H1Vy6HhY$ByteBuddy$x3GDKEHk
+Command: [55466fd6786955172553497e1efd9b27, getTitle {}]
+selenide.url: http://host.docker.internal:8080/
+Capabilities {acceptInsecureCerts: true, browserName: chrome, browserVersion: 148.0.7778.96, chrome: {chromedriverVersion: 148.0.7778.97 (6b3fa66a923a..., userDataDir: /tmp/org.chromium.Chromium....}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:36451}, goog:processID: 33, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: linux, proxy: Proxy(), se:cdp: ws://127.0.0.1:4444/devtool..., se:cdpVersion: 148.0.7778.96, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: ignore, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+selenide.baseUrl: http://host.docker.internal:8080
+Session ID: 55466fd6786955172553497e1efd9b27
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:227)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:175)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:662)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:682)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:686)
+	at org.openqa.selenium.remote.RemoteWebDriver.getTitle(RemoteWebDriver.java:371)
+	at com.codeborne.selenide.drivercommands.BrowserHealthChecker.isBrowserStillOpen(BrowserHealthChecker.java:16)
+	at com.codeborne.selenide.WebDriverThreadLocalContainer.getAndCheckWebDriver(WebDriverThreadLocalContainer.java:136)
+	at com.codeborne.selenide.WebDriverRunner.getAndCheckWebDriver(WebDriverRunner.java:102)
+	at com.codeborne.selenide.StaticDriver.getAndCheckWebDriver(StaticDriver.java:44)
+	at com.codeborne.selenide.SelenideDriver.getAndCheckWebDriver(SelenideDriver.java:254)
+	at com.codeborne.selenide.drivercommands.Navigator.lambda$navigateTo$0(Navigator.java:69)
+	at com.codeborne.selenide.logevents.SelenideLogger.lambda$run$0(SelenideLogger.java:99)
+	at com.codeborne.selenide.logevents.SelenideLogger.wrap(SelenideLogger.java:128)
+	at com.codeborne.selenide.logevents.SelenideLogger.run(SelenideLogger.java:98)
+	at com.codeborne.selenide.drivercommands.Navigator.navigateTo(Navigator.java:67)
+	at com.codeborne.selenide.drivercommands.Navigator.open(Navigator.java:31)
+	at com.codeborne.selenide.SelenideDriver.open(SelenideDriver.java:111)
+	at com.codeborne.selenide.Selenide.open(Selenide.java:50)
+	at pages.UiDashboardPage.openPage(UiDashboardPage.java:23)
+	at tests.UiSseIndicatorTests.lambda$sseIndicatorUsesOkStyling$0(UiSseIndicatorTests.java:26)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.UiSseIndicatorTests.sseIndicatorUsesOkStyling(UiSseIndicatorTests.java:26)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Open dashboard broken (7ms)
+  Open Selenoid UI dashboard broken (6ms)",,"UI SSE indicator",,"selenoid-ui","UI status bar",
+"tests.integration.UiSseWithSessionTests.ssePayloadParseableWithActiveSession","SSE payload remains parseable while hub session is active","failed","860ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:38)
+	at tests.integration.UiSseWithSessionTests.lambda$ssePayloadParseableWithActiveSession$0(UiSseWithSessionTests.java:28)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.integration.UiSseWithSessionTests.ssePayloadParseableWithActiveSession(UiSseWithSessionTests.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Create hub session failed (858ms)
+  POST /wd/hub/session failed (857ms)
+    POST /wd/hub/session failed (856ms)
+      POST /wd/hub/session (chrome 148.0) failed (855ms)",,"UI SSE with hub session",,"selenoid-ui","UI SSE",
+"github.com/aerokube/cm/selenoid.TestStartStopContainer/Start_stop_container","Start_stop_container","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopUIContainer/Start_stop_UI_container","Start_stop_UI_container","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestStatusError/Status_error","Status_error","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestSumUsedTotalGreaterThanPending/Sum_used_total_greater_than_pending","Sum_used_total_greater_than_pending","passed","200ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestSyncWithConfig/Sync_with_config","Sync_with_config","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"config.ConfigOwnerMergeTest.systemPropertyOverridesFileDefault","system property hubUrl overrides file default","passed","2ms",,,,,"Owner config merge",,,,
+"github.com/aerokube/selenoid.TestAddedSeCdpCapability","TestAddedSeCdpCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestAllUrlsAreValid","TestAllUrlsAreValid","passed","1s 110ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestBadJsonFormat","TestBadJsonFormat","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserName","TestBrowserName","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserNotFound","TestBrowserNotFound","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestCheckOrigin","TestCheckOrigin","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestChooseVolumeConfigDir","TestChooseVolumeConfigDir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestClientDisconnected","TestClientDisconnected","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboard","TestClipboard","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardMissingSession","TestClipboardMissingSession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardProtocolExtension","TestClipboardProtocolExtension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfig","TestConfig","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoad","TestConfigConcurrentLoad","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoadAndRead","TestConfigConcurrentLoadAndRead","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentRead","TestConfigConcurrentRead","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyState","TestConfigEmptyState","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyVersions","TestConfigEmptyVersions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigError","TestConfigError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersion","TestConfigFindDefaultVersion","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersionError","TestConfigFindDefaultVersionError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByEmptyPrefix","TestConfigFindFoundByEmptyPrefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByMatch","TestConfigFindFoundByMatch","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByPrefix","TestConfigFindFoundByPrefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindImage","TestConfigFindImage","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMicrosoftEdgeAlias","TestConfigFindMicrosoftEdgeAlias","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMissingBrowser","TestConfigFindMissingBrowser","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyState","TestConfigNonEmptyState","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyVersions","TestConfigNonEmptyVersions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigParseError","TestConfigParseError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestConfigureDocker","TestConfigureDocker","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestConfigureDrivers","TestConfigureDrivers","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestDeleteContainerOnStartupError","TestDeleteContainerOnStartupError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDetermineVideoScreenSizeFromScreenResolution","TestDetermineVideoScreenSizeFromScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDevtools","TestDevtools","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestDockerAvailable","TestDockerAvailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDockerUnavailable","TestDockerUnavailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownload","TestDownload","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadFile","TestDownloadFile","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadLatestRelease","TestDownloadLatestRelease","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadSpecificRelease","TestDownloadSpecificRelease","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadUI","TestDownloadUI","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestFetchImageTags","TestFetchImageTags","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFileDownload","TestFileDownload","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadMissingSession","TestFileDownloadMissingSession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadProtocolExtension","TestFileDownloadProtocolExtension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileMatches","TestFileMatches","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUpload","TestFileUpload","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadBadJson","TestFileUploadBadJson","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadNoFile","TestFileUploadNoFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadTwoFiles","TestFileUploadTwoFiles","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFilterOutLatest","TestFilterOutLatest","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindDockerIPSpecified","TestFindDockerIPSpecified","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindDriver","TestFindDriver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindInsideOfDocker","TestFindInsideOfDocker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFindMatchingImage","TestFindMatchingImage","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindOutsideOfDocker","TestFindOutsideOfDocker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetConfigDir","TestGetConfigDir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetDefaultScreenResolution","TestGetDefaultScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetFullScreenResolution","TestGetFullScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetKey","TestGetKey","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetLogs","TestGetLogs","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithVNC","TestGetPlaywrightPortConfigWithVNC","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetSelenoidImage","TestGetSelenoidImage","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetShortScreenResolution","TestGetShortScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVideoScreenSizeFromCapability","TestGetVideoScreenSizeFromCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVNC","TestGetVNC","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestImageWithTag","TestImageWithTag","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestInvalidSessionTimeoutCapability","TestInvalidSessionTimeoutCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestIsVideoRecordingSupported","TestIsVideoRecordingSupported","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLifecycle","TestLifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLimitNoPull","TestLimitNoPull","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestLoadBrowserProtocols","TestLoadBrowserProtocols","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestLogConfigError","TestLogConfigError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedScreenResolutionCapability","TestMalformedScreenResolutionCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedVideoScreenSizeCapability","TestMalformedVideoScreenSizeCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionBadHostResponse","TestNewSessionBadHostResponse","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionHostDown","TestNewSessionHostDown","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionNotFound","TestNewSessionNotFound","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionTimeout","TestNewSessionTimeout","passed","50ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionWithGet","TestNewSessionWithGet","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParseGgrHost","TestParseGgrHost","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequest","TestParsePlaywrightRequest","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestDefaultVersion","TestParsePlaywrightRequestDefaultVersion","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestLabels","TestParsePlaywrightRequestLabels","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestParseRequestedBrowsers","TestParseRequestedBrowsers","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestPing","TestPing","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestPing","TestPing","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid/service.TestPlaywrightContainerEnv","TestPlaywrightContainerEnv","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightSessionDeletedViaHub","TestPlaywrightSessionDeletedViaHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestPostProcessPath","TestPostProcessPath","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestPrepareCommand","TestPrepareCommand","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestProcessExtensionCapabilities","TestProcessExtensionCapabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySession","TestProxySession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionCanceled","TestProxySessionCanceled","passed","1s 0ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionPanicOnAbortHandler","TestProxySessionPanicOnAbortHandler","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionTimeout","TestProxySessionTimeout","passed","90ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestRootLoads","TestRootLoads","passed","20ms",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestS3Uploader","TestS3Uploader","passed","30ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteLogFile","TestServeAndDeleteLogFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteVideoFile","TestServeAndDeleteVideoFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServiceStartupFailure","TestServiceStartupFailure","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreated","TestSessionCreated","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedFirstMatchOnly","TestSessionCreatedFirstMatchOnly","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRedirect","TestSessionCreatedRedirect","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRemoveExtensionCapabilities","TestSessionCreatedRemoveExtensionCapabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedW3C","TestSessionCreatedW3C","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedWdHub","TestSessionCreatedWdHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionDeleted","TestSessionDeleted","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTimeout","TestSessionFailedAfterTimeout","passed","100ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTwoTimeout","TestSessionFailedAfterTwoTimeout","passed","110ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionOnClose","TestSessionOnClose","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionWithContentTypeCreatedWdHub","TestSessionWithContentTypeCreatedWdHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestStartStopContainer","TestStartStopContainer","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopProcess","TestStartStopProcess","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopUIContainer","TestStartStopUIContainer","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui/selenoid.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestStatusError","TestStatusError","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestSumUsedTotalGreaterThanPending","TestSumUsedTotalGreaterThanPending","passed","200ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestSyncWithConfig","TestSyncWithConfig","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestTooBigSessionTimeoutCapability","TestTooBigSessionTimeoutCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui/selenoid.TestToUI","TestToUI","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestUILifecycle","TestUILifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnavailableBinary","TestUnavailableBinary","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnknownRelease","TestUnknownRelease","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUntar","TestUntar","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnzip","TestUnzip","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestValidEnviron","TestValidEnviron","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestVideo","TestVideo","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestVideoFail","TestVideoFail","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestWelcomeScreen","TestWelcomeScreen","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestWrongBaseUrl","TestWrongBaseUrl","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestToUI/To_UI","To_UI","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestTooBigSessionTimeoutCapability/Too_big_session_timeout_capability","Too_big_session_timeout_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.UiBrowsersConfigIntegrationTests.browsersConfigIncludesHubBrowserVersions","UI /browsers-config includes chrome versions from hub /status","passed","17ms",,,"GET hub /status browsers passed (9ms)
+  GET /status passed (8ms)
+    GET http://127.0.0.1:4444//status passed (8ms)
+ GET UI /browsers-config passed (7ms)
+   GET /browsers-config passed (7ms)
+     GET http://127.0.0.1:8080/browsers-config passed (7ms)
+  Verify configured chrome version appears in hub status and UI catalog passed (1ms)",,"UI browsers config vs hub status",,"selenoid-ui","UI browsers config proxy",
+"tests.integration.UiHubStatusConsistencyTests.uiStatusMirrorsHubCounters","UI /status state mirrors hub /status counters","passed","669ms",,,"GET hub /status passed (7ms)
+  GET http://127.0.0.1:4444//status passed (7ms)
+ GET UI /status passed (661ms)
+   GET http://127.0.0.1:8080//status passed (660ms)
+  Verify proxied counters match hub passed (0s)",,"UI hub status consistency",,"selenoid-ui","UI hub proxy",
+"tests.integration.UiStatusWithSessionTests.uiUsedCounterIncrementsWithHubSession","UI /status used counter increments while hub session is active","failed","851ms","1 expectation failed.
+Expected status code <200> but was <500>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <200> but was <500>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$1.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:26)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:33)
+	at api.hub.HubSessionApi.create(HubSessionApi.java:38)
+	at tests.integration.UiStatusWithSessionTests.lambda$uiUsedCounterIncrementsWithHubSession$1(UiStatusWithSessionTests.java:31)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.integration.UiStatusWithSessionTests.uiUsedCounterIncrementsWithHubSession(UiStatusWithSessionTests.java:31)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+","Snapshot hub used counter passed (11ms)
+  GET /status passed (11ms)
+    GET http://127.0.0.1:4444//status passed (10ms)
+ Create hub session failed (838ms)
+   POST /wd/hub/session failed (837ms)
+     POST /wd/hub/session failed (836ms)
+       POST /wd/hub/session (chrome 148.0) failed (834ms)",,"UI status with active session",,"selenoid-ui","UI hub proxy",
+"github.com/aerokube/cm/selenoid.TestUILifecycle/UI_lifecycle","UI_lifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnavailableBinary/Unavailable_binary","Unavailable_binary","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnknownRelease/Unknown_release","Unknown_release","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUntar/Untar","Untar","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnzip/Unzip","Unzip","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestValidEnviron/Valid_environ","Valid_environ","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestVideo/Video","Video","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestVideoFail/Video_fail","Video_fail","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestWelcomeScreen/Welcome_screen","Welcome_screen","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"helpers.CmInstallerHelperTest.withTempConfigDirCreatesConfigDirectory","withTempConfigDir creates isolated config directory","passed","233ms",,,,,"CmInstallerHelper paths",,,,
+"github.com/aerokube/cm/selenoid.TestWrongBaseUrl/Wrong_base_URL","Wrong_base_URL","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
