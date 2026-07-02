@@ -1,0 +1,1 @@
+{"id":"869967a6a34a5c7e218fa522c3ce5a73","fullName":"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","name":"GET /status returns hub statistics JSON","status":"passed","testResultsByEnv":{"default":"9ba6e8b1b022fda754aede9031e4b581"}}
