@@ -2,6 +2,7 @@ package tests;
 
 import annotations.Component;
 import annotations.Layer;
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class HubPlaywrightSessionTests extends PlaywrightTestBase {
 
     @Test
+    @AllureId("45342")
     @Tag("playwright")
     @Tag("smoke")
     @Tag("positive")
