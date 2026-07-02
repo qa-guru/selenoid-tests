@@ -39,7 +39,7 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testApi -DskipHealthCheck=true                             # @Layer api
 ./gradlew testIntegration -DskipHealthCheck=true                     # @Layer integration (без local-only)
 ./gradlew testE2e -DskipHealthCheck=true                             # e2e smoke
-./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS
+./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (hub + image qaguru/playwright-chromium:1.61.1)
 ./gradlew testResilience -DskipHealthCheck=true                      # hub kill/recovery (local-only)
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (local-only, :4445)
 
@@ -53,6 +53,18 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ```
 
 Stand override: `-DpyramidStand=selenoid_github` → env `selenoid_github_api`, `selenoid_github_integration`, …
+
+### `testPlaywright` prerequisite
+
+Hub на `:4444` и Docker-образ из `fixtures/ci-browsers.json` / `dev/browsers.json`:
+
+```bash
+cd dev && ./scripts/start-selenoid.sh &
+docker pull qaguru/playwright-chromium:1.61.1   # или ./scripts/pull-browser-images.sh
+./gradlew testPlaywright -DskipHealthCheck=true
+```
+
+В CI `scripts/start-ci-selenoid-stack.sh` тянет образы из `fixtures/ci-browsers.json` (chrome + playwright-chromium).
 
 ### Playwright-chromium-min (`1.61.1-min`)
 

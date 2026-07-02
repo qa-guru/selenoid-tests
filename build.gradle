@@ -213,8 +213,8 @@ def layerTestSlices = [
          includeTags: 'integration', excludeTags: 'local-only',
          needsStack: true],
         [name: 'testApi',         layer: 'api',
-         description: 'Pyramid api — @Tag(api)',
-         includeTags: 'api'],
+         description: 'Pyramid api — @Tag(api), exclude local-only (CM :4445)',
+         includeTags: 'api', excludeTags: 'local-only'],
         [name: 'testE2e',         layer: 'e2e',
          description: 'Pyramid e2e smoke — @Tag(smoke), exclude playwright/resilience/local-only',
          includeTags: 'smoke', excludeTags: 'playwright,resilience,local-only',
@@ -257,6 +257,14 @@ layerTestSlices.each { slice ->
         systemProperty 'env', envName
         systemProperty 'allureReportMode', allureReportMode
         maxParallelForks = testParallelForks
+        if (slice.needsStack) {
+            systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
+        }
+        if (slice.name == 'testPlaywright') {
+            // Remote WS connect only — no local browser install on CI runner.
+            environment 'PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD', '1'
+            environment 'PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS', '1'
+        }
         if (slice.needsStack && !shouldSkipHealthCheck(envName)) {
             dependsOn healthCheck, uiHealthCheck
         }
@@ -276,4 +284,22 @@ if (allureReportMode == 'none') {
             delete layout.buildDirectory.dir('allure-results')
         }
     }
+}
+
+def allureResultsDir = layout.buildDirectory.dir('allure-results')
+def hasAllureResults = {
+    def dir = allureResultsDir.get().asFile
+    dir.exists() && (dir.listFiles()?.any { it.name.endsWith('-result.json') } ?: false)
+}
+
+tasks.register('allureQualityGate', Exec) {
+    group = 'verification'
+    description = 'Allure 3 quality gate on build/allure-results (rules in allurerc.mjs)'
+    onlyIf {
+        System.getProperty('allureReportMode', 'allure3') != 'none' && hasAllureResults()
+    }
+    def resultsDir = allureResultsDir.get().asFile.path
+    def configFile = layout.projectDirectory.file('allurerc.mjs').asFile.path
+    commandLine 'npx', '--yes', "allure@${allureVersion}", 'quality-gate',
+            resultsDir, '--config', configFile
 }

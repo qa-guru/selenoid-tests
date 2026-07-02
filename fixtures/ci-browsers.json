@@ -6,7 +6,34 @@
         "image": "twilio/selenoid:chrome_stable_148",
         "port": "4444",
         "path": "/",
-        "tmpfs": { "/tmp": "size=512m" }
+        "tmpfs": { "/tmp": "size=512m" },
+        "hosts": ["host.docker.internal:host-gateway"]
+      }
+    }
+  },
+  "playwright-chromium": {
+    "default": "1.61.1",
+    "versions": {
+      "1.61.1": {
+        "image": "qaguru/playwright-chromium:1.61.1",
+        "port": "3000",
+        "path": "/",
+        "protocol": "playwright",
+        "playwrightVersion": "1.61.1",
+        "user": "pwuser",
+        "workDir": "/home/pwuser",
+        "shmSize": 2147483648,
+        "hosts": ["host.docker.internal:host-gateway"]
+      },
+      "1.61.1-min": {
+        "image": "qaguru/playwright-chromium:1.61.1-min",
+        "port": "3000",
+        "path": "/",
+        "protocol": "playwright",
+        "playwrightVersion": "1.61.1",
+        "user": "pwuser",
+        "workDir": "/home/pwuser",
+        "shmSize": 2147483648
       }
     }
   }

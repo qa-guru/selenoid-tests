@@ -54,13 +54,20 @@ build_selenoid_ui() {
   export CI=false
   # GHA blocks --openssl-legacy-provider in NODE_OPTIONS; pass as CLI flag on Node 17+.
   unset NODE_OPTIONS
-  yarn --cwd "$ui" install --frozen-lockfile
-  local node_major
-  node_major="$(node -p "process.versions.node.split('.')[0]")"
-  if (( node_major >= 17 )); then
-    (cd "$ui" && node --openssl-legacy-provider ./node_modules/.bin/react-scripts build)
+  if [[ -f "${ui}/build/index.html" ]]; then
+    echo "    reusing existing ui/build (skip yarn build)"
   else
-    yarn --cwd "$ui" build
+    yarn --cwd "$ui" install --frozen-lockfile
+    local node_major
+    node_major="$(node -p "process.versions.node.split('.')[0]")"
+    if (( node_major >= 17 )); then
+      if ! (cd "$ui" && node --openssl-legacy-provider ./node_modules/.bin/react-scripts build); then
+        echo "react-scripts build failed on Node ${node_major}; install Node 12.x for selenoid-ui (see workflow setup-node)" >&2
+        exit 1
+      fi
+    else
+      yarn --cwd "$ui" build
+    fi
   fi
 
   echo "==> Building selenoid-ui binary"
