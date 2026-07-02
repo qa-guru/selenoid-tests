@@ -1,0 +1,10 @@
+{
+  "state": {
+    "total": 5,
+    "used": 0,
+    "queued": 0,
+    "pending": 0,
+    "browsers": {}
+  },
+  "errors": []
+}
