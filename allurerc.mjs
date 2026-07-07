@@ -64,14 +64,14 @@ export default {
         reportLanguage: "ru",
         layout: [
           {
-            type: "statusDynamics",
-            title: "Динамика статусов (все сервисы)",
-            limit: 30,
-          },
-          {
             type: "currentStatus",
             title: "Текущий статус по сервисам",
             groupBy: "epic",
+          },
+          {
+            type: "testingPyramid",
+            title: "Пирамида тестирования",
+            layers: ["unit", "component", "integration", "api", "e2e", "manual"],
           },
           {
             type: "stabilityDistribution",
@@ -80,15 +80,14 @@ export default {
             skipStatuses: ["skipped", "unknown"],
             groupBy: "epic",
           },
-          ...epicStatusDynamics,
           {
-            type: "durationDynamics",
-            title: "Динамика длительности",
-            limit: 20,
+            type: "successRateDistribution",
+            title: "Распределение успешности",
           },
           {
-            type: "currentStatus",
-            title: "Текущий статус",
+            type: "statusDynamics",
+            title: "Динамика статусов (все сервисы)",
+            limit: 30,
           },
           {
             type: "statusTransitions",
@@ -96,8 +95,14 @@ export default {
             limit: 20,
           },
           {
-            type: "successRateDistribution",
-            title: "Распределение успешности",
+            type: "durationDynamics",
+            title: "Динамика длительности",
+            limit: 20,
+          },
+          ...epicStatusDynamics,
+          {
+            type: "currentStatus",
+            title: "Текущий статус",
           },
           {
             type: "stabilityDistribution",
@@ -105,11 +110,6 @@ export default {
             threshold: 90,
             skipStatuses: ["skipped", "unknown"],
             groupBy: "feature",
-          },
-          {
-            type: "testingPyramid",
-            title: "Пирамида тестирования",
-            layers: ["unit", "component", "integration", "api", "e2e", "manual"],
           },
         ],
       },
