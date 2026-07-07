@@ -42,7 +42,7 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testWebdriverE2e -DskipHealthCheck=true                    # webdriver-image smoke (HubSession*)
 ./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
 ./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (hub + image qaguru/playwright-chromium:1.61.1)
-./gradlew testResilience -DskipHealthCheck=true                      # hub kill/recovery (local-only)
+./gradlew testResilience -DskipHealthCheck=true                      # UI status recovery after hub restart (selenoid-ui, local-only)
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (local-only, :4445)
 
 # CI-эквиваленты
@@ -127,11 +127,13 @@ EOF
 |--------|------|-----------|-------------|-----|-----|-----------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures + CLI local-only |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
-| **webdriver-image** (`browser-image/webdriver/`) | — | **+1** | — | **+2** | ✓ | WD status + capabilities API; session e2e |
-| **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓ | logs, status+session |
+| **webdriver-image** (`browser-image/webdriver/`) | — | ✓ | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min integration |
+| **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓¹ | logs, status+session |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 
 CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integration -DskipHealthCheck=true` (CM hub/UI на :4445/:8081).
+
+¹ **selenoid e2e:** `@Component("selenoid")` — нет отдельного e2e-класса; сквозной путь hub покрыт `HubSessionTests` / `HubPlaywrightSessionTests` (`webdriver-image` / `playwright-image`, `@Layer e2e`).
 
 ## Матрица
 
@@ -183,7 +185,7 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | UiSseStreamTests | selenoid-ui | selenoid-ui | api | api |
 | UiPingTests | selenoid-ui | selenoid-ui | api | api |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | integration | integration |
-| HubPlaywrightMinSessionTests | playwright-image | playwright-image | integration | min |
+| HubPlaywrightMinSessionTests | playwright-image | playwright-image | integration | integration, min |
 | HubPlaywrightNavigateTests | playwright-image | playwright-image | integration | integration |
 | UiStatusWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
 | UiSseWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
@@ -194,6 +196,8 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | UiStatusWhenHubDownTests | selenoid-ui | selenoid-ui | integration | integration, local-only |
 | UiBrowsersConfigIntegrationTests | selenoid-ui | selenoid-ui | integration | integration |
 | HubStatusSessionIntegrationTests | selenoid | selenoid | integration | integration |
+| HubChromeSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
+| HubChromeMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
 | UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | integration, resilience, local-only |
 | HubSessionTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionIdTests | webdriver-image | webdriver-image | e2e | smoke |
@@ -201,6 +205,8 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | HubSessionTitleTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubCapabilitiesApiTests | selenoid | selenoid | api | api |
 | HubWebDriverStatusApiTests | selenoid | selenoid | api | api |
+| WebDriverStatusApiTests | webdriver-image | webdriver-image | api | api |
+| WebDriverSessionApiTests | webdriver-image | webdriver-image | api | api |
 | HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |
 | CmVersionOutputTest | cm | cm | component | — |
 | CmHelpOutputTest | cm | cm | component | — |

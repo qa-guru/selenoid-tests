@@ -3,7 +3,7 @@
 # SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
 # Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub tests + merge Allure + repository_dispatch.
 # Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
-# Consumer reference: qa-guru-home/selenoid-home/tests-java (scripts/run-go-unit.sh — bootstrap, не в template-project).
+# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (scripts/run-go-unit.sh — bootstrap, не в template-project).
 #
 # Default: -Denv=selenoid_github_e2e. GRADLE_ARGS: env, skipHealthCheck, tags only — не дублировать profile keys.
 

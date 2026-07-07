@@ -20,7 +20,35 @@ public final class SseStreamApi {
             .connectTimeout(Duration.ofSeconds(5))
             .build();
 
+    private static final Duration SSE_REQUEST_TIMEOUT = Duration.ofSeconds(30);
+
     private SseStreamApi() {
+    }
+
+    private static SseHubEvent readFirstEventPayload(BufferedReader reader) throws IOException {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("data:")) {
+                var payload = line.substring("data:".length()).trim();
+                return JsonPath.from(payload).getObject("", SseHubEvent.class);
+            }
+        }
+        throw new IllegalStateException("SSE stream ended without data event");
+    }
+
+    private static java.util.List<SseHubEvent> readTwoEventPayloads(BufferedReader reader) throws IOException {
+        var events = new java.util.ArrayList<SseHubEvent>();
+        String line;
+        while ((line = reader.readLine()) != null && events.size() < 2) {
+            if (line.startsWith("data:")) {
+                var payload = line.substring("data:".length()).trim();
+                events.add(JsonPath.from(payload).getObject("", SseHubEvent.class));
+            }
+        }
+        if (events.size() < 2) {
+            throw new IllegalStateException("Expected 2 SSE events, got " + events.size());
+        }
+        return events;
     }
 
     @Step("Read first SSE event from /events")
@@ -33,6 +61,7 @@ public final class SseStreamApi {
         var url = uiUrl.endsWith("/") ? uiUrl + "events" : uiUrl + "/events";
         var request = HttpRequest.newBuilder(URI.create(url))
                 .header("Accept", "text/event-stream")
+                .timeout(SSE_REQUEST_TIMEOUT)
                 .GET()
                 .build();
         try {
@@ -41,21 +70,12 @@ public final class SseStreamApi {
                 throw new IllegalStateException("SSE GET " + url + " returned HTTP " + response.statusCode());
             }
             try (var reader = new BufferedReader(new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
-                var deadline = System.currentTimeMillis() + 30_000;
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (System.currentTimeMillis() > deadline) {
-                        throw new IllegalStateException("SSE timeout waiting for first event");
-                    }
-                    if (line.startsWith("data:")) {
-                        var payload = line.substring("data:".length()).trim();
-                        return JsonPath.from(payload).getObject("", SseHubEvent.class);
-                    }
-                }
+                return readFirstEventPayload(reader);
             }
-            throw new IllegalStateException("SSE stream ended without data event");
         } catch (IOException | InterruptedException e) {
-            Thread.currentThread().interrupt();
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             throw new IllegalStateException("Failed to read SSE from " + url + ": " + e.getMessage(), e);
         }
     }
@@ -67,10 +87,10 @@ public final class SseStreamApi {
 
     @Step("Read two SSE events from {uiUrl}events")
     public static java.util.List<SseHubEvent> readTwoEvents(String uiUrl) {
-        var events = new java.util.ArrayList<SseHubEvent>();
         var url = uiUrl.endsWith("/") ? uiUrl + "events" : uiUrl + "/events";
         var request = HttpRequest.newBuilder(URI.create(url))
                 .header("Accept", "text/event-stream")
+                .timeout(SSE_REQUEST_TIMEOUT)
                 .GET()
                 .build();
         try {
@@ -79,24 +99,12 @@ public final class SseStreamApi {
                 throw new IllegalStateException("SSE GET " + url + " returned HTTP " + response.statusCode());
             }
             try (var reader = new BufferedReader(new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
-                var deadline = System.currentTimeMillis() + 30_000;
-                String line;
-                while ((line = reader.readLine()) != null && events.size() < 2) {
-                    if (System.currentTimeMillis() > deadline) {
-                        break;
-                    }
-                    if (line.startsWith("data:")) {
-                        var payload = line.substring("data:".length()).trim();
-                        events.add(JsonPath.from(payload).getObject("", SseHubEvent.class));
-                    }
-                }
+                return readTwoEventPayloads(reader);
             }
-            if (events.size() < 2) {
-                throw new IllegalStateException("Expected 2 SSE events, got " + events.size());
-            }
-            return events;
         } catch (IOException | InterruptedException e) {
-            Thread.currentThread().interrupt();
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             throw new IllegalStateException("Failed to read SSE from " + url + ": " + e.getMessage(), e);
         }
     }

@@ -10,6 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
+
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic("selenoid-ui")
 @Feature("UI SSE")
 @DisplayName("UI SSE with hub session")
+@ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class UiSseWithSessionTests {
 
     @Test

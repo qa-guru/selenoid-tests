@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HubPlaywrightMinSessionTests {
 
     @Test
+    @Tag("integration")
     @Tag("min")
     @Tag("positive")
     @DisplayName("Remote Playwright min WS session starts browser node and completes")
