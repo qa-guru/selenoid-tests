@@ -1,0 +1,1 @@
+{"id":"022fe9a8c61162753730b2824b742564","fullName":"tests.api.UiSseStreamTests.sseDeliversPayload","name":"SSE /events delivers state or error payload","status":"passed","testResultsByEnv":{"default":"db6bdd5b0fb6b092a688baaf47265c0b"}}
