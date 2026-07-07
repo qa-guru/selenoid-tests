@@ -32,6 +32,9 @@ on:
       source_version:
         description: "Deployed version (repository_dispatch)"
         required: false
+      source_variant:
+        description: "Deploy variant (repository_dispatch), e.g. webdriver"
+        required: false
   push:
     branches: [main]
   repository_dispatch:
@@ -47,14 +50,16 @@ permissions:
 env:
   ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.autotests.cloud' }}
   REPORT_ID: ${{ github.run_id }}
-  ENV_PROFILE: ${{ github.event.inputs.env_profile || 'selenoid_github_e2e' }}
+  ENV_PROFILE: ${{ github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e' }}
   SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}
   SOURCE_VERSION: ${{ github.event.client_payload.source_version || github.event.inputs.source_version || '' }}
   SOURCE_VARIANT: ${{ github.event.client_payload.source_variant || github.event.inputs.source_variant || '' }}
   SOURCE_REF: ${{ github.event.inputs.source_ref || 'main' }}
+  PROD_CLOUD_STAND: ${{ startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_autotests_cloud') && 'true' || 'false' }}
 
 jobs:
   go-unit:
+    if: github.event.client_payload.skip_go_unit != true
     name: Go unit — ${{ matrix.repo }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -90,7 +95,7 @@ jobs:
 
       - name: Setup Node 12 (selenoid-ui yarn)
         if: matrix.repo == 'selenoid-ui'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 12.x
           cache: yarn
@@ -106,7 +111,7 @@ jobs:
           yarn build
 
       - name: Setup Node 20 (Allure JUnit conversion)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
 
@@ -120,8 +125,8 @@ jobs:
           set -e
 
       - name: Upload Allure results
-        if: always() && hashFiles('build/allure-results/go-${{ matrix.repo }}/**') != ''
-        uses: actions/upload-artifact@v4
+        if: always() && hashFiles(format('build/allure-results/go-{0}/**', matrix.repo)) != ''
+        uses: actions/upload-artifact@v6
         with:
           name: allure-go-${{ matrix.repo }}
           path: build/allure-results/go-${{ matrix.repo }}/
@@ -144,6 +149,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Checkout selenoid
+        if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/checkout@v6
         with:
           repository: qa-guru/selenoid
@@ -151,6 +157,7 @@ jobs:
           path: repos/selenoid
 
       - name: Checkout selenoid-ui
+        if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/checkout@v6
         with:
           repository: qa-guru/selenoid-ui
@@ -158,6 +165,7 @@ jobs:
           path: repos/selenoid-ui
 
       - name: Setup Go
+        if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/setup-go@v6
         with:
           go-version: ~1.23.8
@@ -166,13 +174,15 @@ jobs:
             repos/selenoid-ui/go.sum
 
       - name: Setup Node 12 (selenoid-ui yarn)
-        uses: actions/setup-node@v4
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/setup-node@v6
         with:
           node-version: 12.x
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
       - name: Start Selenoid stack for hub tests
+        if: env.PROD_CLOUD_STAND != 'true'
         run: |
           chmod +x scripts/start-ci-selenoid-stack.sh
           ./scripts/start-ci-selenoid-stack.sh
@@ -196,8 +206,13 @@ jobs:
             -Denv="${ENV_PROFILE}"
             -DskipHealthCheck=true
           )
+          if [[ "${ENV_PROFILE}" == selenoid_autotests_cloud_* ]]; then
+            PYRAMID_STAND=selenoid_autotests_cloud
+          else
+            PYRAMID_STAND=selenoid_github
+          fi
           GRADLE_PYRAMID=(
-            -DpyramidStand=selenoid_github
+            -DpyramidStand="${PYRAMID_STAND}"
             -DskipHealthCheck=true
           )
           JAVA_TEST_EXIT=0
@@ -291,7 +306,7 @@ jobs:
 
       - name: Upload Allure results
         if: always() && hashFiles('build/allure-results/**') != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: allure-java
           path: build/allure-results/
@@ -323,14 +338,14 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Download Go Allure artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           pattern: allure-go-*
           path: build/allure-results
           merge-multiple: true
 
       - name: Download Java Allure artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: allure-java
           path: build/allure-results

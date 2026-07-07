@@ -56,6 +56,17 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 
 Stand override: `-DpyramidStand=selenoid_github` → env `selenoid_github_api`, `selenoid_github_integration`, …
 
+### Prod hub (`selenoid.autotests.cloud`)
+
+Profiles: `selenoid_autotests_cloud_api`, `selenoid_autotests_cloud_e2e` — remote hub `https://selenoid.autotests.cloud` (auth `user1:1234` in properties, same as deploy smoke).
+
+```bash
+./gradlew testApi -DpyramidStand=selenoid_autotests_cloud -DskipHealthCheck=true
+./gradlew testE2e -DpyramidStand=selenoid_autotests_cloud -DskipHealthCheck=true
+```
+
+Post-deploy: `selenoid.autotests.cloud` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_autotests_cloud_api`).
+
 ### `testPlaywright` prerequisite
 
 Hub на `:4444` и Docker-образ из `fixtures/ci-browsers.json` / `dev/browsers.json`:
