@@ -6,7 +6,7 @@ export const categoryRules = [
       statuses: ["failed", "broken"],
       message: "timeout|Timeout|timed out",
     },
-    groupBy: ["hierarchy"],
+    groupBy: ["severity"],
     groupByMessage: true,
   },
   {
@@ -15,7 +15,7 @@ export const categoryRules = [
       statuses: ["failed", "broken"],
       message: "AssertionError|assertion|expected",
     },
-    groupBy: ["hierarchy"],
+    groupBy: ["severity"],
     groupByMessage: true,
   },
 ];
