@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("Installer lifecycle")
 @DisplayName("CM installer lifecycle")
 @Tag("integration")
-@Tag("local-only")
 @Tag("cm")
 @Execution(ExecutionMode.SAME_THREAD)
 @Timeout(300)

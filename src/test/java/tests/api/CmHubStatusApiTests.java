@@ -25,7 +25,6 @@ class CmHubStatusApiTests extends CmApiTestBase {
     @Test
     @Tag("api")
     @Tag("cm")
-    @Tag("local-only")
     @Tag("positive")
     @DisplayName("GET /status on CM hub port returns statistics JSON")
     void cmHubStatusReturnsStatisticsJson() {

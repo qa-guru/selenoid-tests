@@ -43,7 +43,7 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
 ./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (hub + image qaguru/playwright-chromium:1.61.1)
 ./gradlew testResilience -DskipHealthCheck=true                      # UI status recovery after hub restart (selenoid-ui, local-only)
-./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (local-only, :4445)
+./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (CI: java-cm job; local: ports :4445/:8081)
 
 # CI-эквиваленты
 ./gradlew test -Denv=selenoid_github_api -DincludeTags=api -DskipHealthCheck=true
@@ -67,7 +67,7 @@ Profiles: `selenoid_autotests_cloud_api`, `selenoid_autotests_cloud_e2e` — rem
 
 Post-deploy: `selenoid.autotests.cloud` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_autotests_cloud_api`).
 
-Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — not proxied (404), `HubLogsListApiTests` is `@Tag(local-only)`.
+Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
 
 ### `testPlaywright` prerequisite
 
@@ -103,6 +103,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 |-----|------------|
 | `go-unit` (matrix) | Checkout `qa-guru/selenoid`, `selenoid-ui`, `cm` → Go unit → Allure |
 | `java-e2e` | Push: `testUnit` + `testComponent` (gate) + `testApi` → TestOps; dispatch: `test_tags=integration|api|smoke` |
+| `java-cm` | Push: `testCmIntegration` + `testCmApi` + `testCmE2e` (CM :4445/:8081); dispatch `test_tags=cm` |
 | `report` | Merge `build/allure-results/**` → `allureReport` → gh-pages → TestOps 5271 |
 
 `workflow_dispatch`: `test_tags=integration` для integration slice; `env_profile=selenoid_github_api` для api-only.
@@ -138,13 +139,13 @@ EOF
 
 | Сервис | unit | component | integration | api | e2e | Добавлено |
 |--------|------|-----------|-------------|-----|-----|-----------|
-| **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures + CLI local-only |
+| **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
 | **webdriver-image** (`browser-image/webdriver/`) | — | ✓ | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min integration |
 | **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓¹ | logs, status+session |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 
-CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integration -DskipHealthCheck=true` (CM hub/UI на :4445/:8081).
+CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
 ¹ **selenoid e2e:** `@Component("selenoid")` — нет отдельного e2e-класса; сквозной путь hub покрыт `HubSessionTests` / `HubPlaywrightSessionTests` (`webdriver-image` / `playwright-image`, `@Layer e2e`).
 
@@ -162,9 +163,9 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | CmRunResultTest | cm | CM | unit | — |
 | CmBrowsersConfigJsonTest | cm | cm | component | — |
 | CmStatusOutputTest | cm | cm | component | — |
-| CmHubStatusApiTests | cm | cm | api | api, cm, local-only |
-| CmHubSessionApiTests | cm | cm | api | api, cm, local-only |
-| CmUiStatusApiTests | cm | cm | api | api, cm, local-only |
+| CmHubStatusApiTests | cm | cm | api | api, cm |
+| CmHubSessionApiTests | cm | cm | api | api, cm |
+| CmUiStatusApiTests | cm | cm | api | api, cm |
 | ConfigOwnerMergeTest | — | — | unit | — |
 | HubStatusJsonTest | selenoid | selenoid | component | — |
 | HubStatusBrowsersJsonTest | selenoid | selenoid | component | — |
@@ -203,7 +204,7 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | UiStatusWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
 | UiSseWithSessionTests | selenoid-ui | selenoid-ui | integration | integration |
 | StackHealthTests | selenoid-ui | selenoid-ui | integration | integration |
-| CmInstallerLifecycleTests | cm | CM | integration | integration, local-only, cm |
+| CmInstallerLifecycleTests | cm | CM | integration | integration, cm |
 | CmInstallerSessionTests | cm | CM | e2e | smoke, cm |
 | UiHubStatusConsistencyTests | selenoid-ui | selenoid-ui | integration | integration |
 | UiStatusWhenHubDownTests | selenoid-ui | selenoid-ui | integration | integration, local-only |
@@ -223,7 +224,7 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |
 | CmVersionOutputTest | cm | cm | component | — |
 | CmHelpOutputTest | cm | cm | component | — |
-| CmCliVersionTests | cm | cm | integration | cm, local-only |
+| CmCliVersionTests | cm | cm | integration | cm |
 | HubPlaywrightFirefoxSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
 | HubPlaywrightWebkitSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | e2e | playwright, smoke |

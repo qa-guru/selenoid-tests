@@ -21,7 +21,6 @@ class CmCliVersionTests {
     @Test
     @Tag("integration")
     @Tag("cm")
-    @Tag("local-only")
     @DisplayName("cm version exits zero and prints revision")
     void cmVersionPrintsRevision() {
         var result = step("Run cm version", CmCli::version);
@@ -35,7 +34,6 @@ class CmCliVersionTests {
     @Test
     @Tag("integration")
     @Tag("cm")
-    @Tag("local-only")
     @DisplayName("cm --help exits zero and lists subcommands")
     void cmHelpListsSubcommands() {
         var result = step("Run cm --help", CmCli::help);

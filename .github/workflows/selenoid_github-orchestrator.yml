@@ -244,8 +244,8 @@ jobs:
                 JAVA_TEST_EXIT=$?
                 ;;
               cm)
-                ./gradlew testApi "${GRADLE_PYRAMID[@]}"
-                JAVA_TEST_EXIT=$?
+                echo "CM suite runs in java-cm job (testCmIntegration + testCmApi + testCmE2e)"
+                JAVA_TEST_EXIT=0
                 ;;
               *)
                 ./gradlew test "${GRADLE_ARGS[@]}" \
@@ -316,10 +316,90 @@ jobs:
         if: always() && env.JAVA_TEST_EXIT != '0'
         run: exit "${{ env.JAVA_TEST_EXIT }}"
 
+  java-cm:
+    name: Java CM integration
+    if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_autotests_cloud') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ALLURE_RESULTS: build/allure-results
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Checkout cm
+        uses: actions/checkout@v6
+        with:
+          repository: qa-guru/cm
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/cm
+
+      - name: Checkout selenoid
+        uses: actions/checkout@v6
+        with:
+          repository: qa-guru/selenoid
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid
+
+      - name: Checkout selenoid-ui
+        uses: actions/checkout@v6
+        with:
+          repository: qa-guru/selenoid-ui
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid-ui
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ~1.23.8
+          cache-dependency-path: |
+            repos/cm/go.sum
+            repos/selenoid/go.sum
+            repos/selenoid-ui/go.sum
+
+      - name: Setup Node 12 (selenoid-ui yarn)
+        uses: actions/setup-node@v6
+        with:
+          node-version: 12.x
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: wrapper
+
+      - name: Run CM integration tests
+        run: |
+          set +e
+          chmod +x scripts/run-ci-cm-tests.sh
+          ./scripts/run-ci-cm-tests.sh
+          echo "CM_TEST_EXIT=$?" >> "$GITHUB_ENV"
+          set -e
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-java-cm
+          path: build/allure-results/
+          retention-days: 7
+
+      - name: Fail if CM tests failed
+        if: always() && env.CM_TEST_EXIT != '0'
+        run: exit "${{ env.CM_TEST_EXIT }}"
+
   report:
     name: Allure report + TestOps
-    needs: [go-unit, java-e2e]
-    if: always() && !cancelled()
+    needs: [go-unit, java-e2e, java-cm]
+    if: always() && !cancelled() && (needs.java-cm.result == 'success' || needs.java-cm.result == 'skipped' || needs.java-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -348,6 +428,14 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: allure-java
+          path: build/allure-results
+          merge-multiple: true
+
+      - name: Download Java CM Allure artifacts
+        uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: allure-java-cm
           path: build/allure-results
           merge-multiple: true
 
@@ -480,6 +568,7 @@ jobs:
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (hub via CI stack)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java CM push: \`testCmIntegration\` + \`testCmApi\` + \`testCmE2e\` (CM :4445/:8081)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch default (\`selenoid_github_e2e\`): full Java pyramid + \`testE2e\` (unit→component→integration→api→e2e)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → \`testWebdriverE2e\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"

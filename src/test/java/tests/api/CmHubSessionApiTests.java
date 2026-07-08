@@ -23,7 +23,6 @@ class CmHubSessionApiTests extends CmApiTestBase {
     @Test
     @Tag("api")
     @Tag("cm")
-    @Tag("local-only")
     @Tag("positive")
     @DisplayName("POST /wd/hub/session on CM hub creates and DELETE removes session")
     void cmHubCreateAndDeleteSession() {

@@ -36,7 +36,6 @@ class CmUiStatusApiTests {
     @Test
     @Tag("api")
     @Tag("cm")
-    @Tag("local-only")
     @Tag("positive")
     @DisplayName("GET /status on CM UI port returns proxied hub counters")
     void cmUiStatusReturnsProxiedCounters() {
