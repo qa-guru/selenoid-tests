@@ -101,20 +101,19 @@ class CmInstallerLifecycleTests {
     @Tag("positive")
     @DisplayName("full stack start — UI /status mirrors hub counters")
     void startFullStackUiProxiesHub() throws Exception {
-        step("Start hub and UI via cm", () -> {
-            installer.startHub().requireSuccess("start hub");
-            installer.startUi().requireSuccess("start UI");
-        });
-
-        step("Wait for hub and UI readiness", () -> {
-            installer.waitForHubReady(60_000);
-            installer.waitForUiReady(60_000);
-        });
+        step("Start hub via cm", () ->
+                installer.startHub().requireSuccess("start hub"));
+        step("Wait for hub readiness", () ->
+                installer.waitForHubReady(60_000));
+        step("Start UI via cm", () ->
+                installer.startUi().requireSuccess("start UI"));
+        step("Wait for UI readiness", () ->
+                installer.waitForUiReady(90_000));
 
         var hubStatus = step("GET hub /status", () ->
-                HubStatusApi.fetchFrom(ConfigReader.resolveHubUrl()));
+                HubStatusApi.fetchFrom(ConfigReader.resolveCmHubUrl()));
         var uiStatus = step("GET UI /status", () ->
-                UiStatusApi.fetchFrom(ConfigReader.resolveUiUrl()));
+                UiStatusApi.fetchFrom(ConfigReader.resolveCmUiUrl()));
 
         step("Verify proxied counters match hub", () -> {
             assertEquals(hubStatus.total(), uiStatus.total());

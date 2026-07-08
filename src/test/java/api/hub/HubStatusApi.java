@@ -3,6 +3,8 @@ package api.hub;
 import config.ConfigReader;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static io.restassured.RestAssured.given;
 
 public final class HubStatusApi {
@@ -26,6 +28,25 @@ public final class HubStatusApi {
                 .extract()
                 .body()
                 .as(HubStatus.class);
+    }
+
+    @Step("Wait until hub used counter = {expectedUsed}")
+    public static HubStatus waitUntilUsed(int expectedUsed, Duration timeout) {
+        var deadline = System.currentTimeMillis() + timeout.toMillis();
+        HubStatus last = null;
+        while (System.currentTimeMillis() <= deadline) {
+            last = fetch();
+            if (last.used() == expectedUsed) {
+                return last;
+            }
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for used=" + expectedUsed, e);
+            }
+        }
+        return last != null ? last : fetch();
     }
 
     private static String trimTrailingSlash(String baseUri) {

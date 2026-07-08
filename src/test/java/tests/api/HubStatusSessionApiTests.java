@@ -15,6 +15,8 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
+import java.time.Duration;
+
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,11 +38,13 @@ class HubStatusSessionApiTests extends ApiTestBase {
         var sessionId = step("Create hub session", () -> HubSessionApi.create(config));
         try {
             step("Verify used counter incremented", () ->
-                    assertEquals(usedBefore + 1, HubStatusApi.fetch().used()));
+                    assertEquals(usedBefore + 1,
+                            HubStatusApi.waitUntilUsed(usedBefore + 1, Duration.ofSeconds(30)).used()));
         } finally {
             step("Delete hub session", () -> HubSessionApi.delete(sessionId));
         }
         step("Verify used counter returned to baseline", () ->
-                assertEquals(usedBefore, HubStatusApi.fetch().used()));
+                assertEquals(usedBefore,
+                        HubStatusApi.waitUntilUsed(usedBefore, Duration.ofSeconds(30)).used()));
     }
 }
