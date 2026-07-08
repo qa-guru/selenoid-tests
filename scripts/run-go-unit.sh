@@ -43,8 +43,8 @@ case "${REPO}" in
   cm)
     gotestsum --junitfile "${JUNIT_FILE}" -- \
       -race -coverprofile=coverage.txt -covermode=atomic \
-        -coverpkg github.com/aerokube/cm/selenoid \
-        github.com/aerokube/cm/selenoid
+        -coverpkg github.com/aerokube/cm/...,github.com/aerokube/cm/cmd \
+        ./...
     ;;
   *)
     echo "Unknown repo: ${REPO}" >&2
