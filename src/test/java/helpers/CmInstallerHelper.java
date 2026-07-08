@@ -78,16 +78,21 @@ public final class CmInstallerHelper {
     public void stopAll() {
         stopUiQuietly();
         stopHubQuietly();
+        releasePublishedPorts(config.cmHubPort(), config.cmUiPort());
     }
 
     @Step("cm selenoid configure")
-    public CmRunResult configure() {
+    public CmRunResult configure() throws IOException {
+        ensureLinuxBinary("selenoid", config.cmSelenoidBinary(), selenoidRepoDir());
+        ensureLinuxBinary("selenoid-ui", config.cmSelenoidUiBinary(), selenoidUiRepoDir());
         return runSelenoid(
                 "configure",
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmHubPort()),
                 "-n",
-                "-j", browsersJson().toString());
+                "-j", browsersJson().toString(),
+                "--selenoid-binary", configDir.resolve("bin/selenoid").toAbsolutePath().toString(),
+                "--selenoid-ui-binary", configDir.resolve("bin/selenoid-ui").toAbsolutePath().toString());
     }
 
     @Step("cm selenoid start")
@@ -244,6 +249,35 @@ public final class CmInstallerHelper {
             runSelenoidUi("stop", "-c", configDir.toString(), "-p", Integer.toString(config.cmUiPort()));
         } catch (RuntimeException ignored) {
             // container may already be stopped
+        }
+    }
+
+    private static void releasePublishedPorts(int... ports) {
+        for (int port : ports) {
+            stopDockerPublishPort(port);
+        }
+    }
+
+    private static void stopDockerPublishPort(int port) {
+        try {
+            var list = new ProcessBuilder("docker", "ps", "-q", "--filter", "publish=" + port)
+                    .redirectErrorStream(true)
+                    .start();
+            var ids = new String(list.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+            if (!list.waitFor(30, TimeUnit.SECONDS) || list.exitValue() != 0 || ids.isEmpty()) {
+                return;
+            }
+            for (var id : ids.split("\\R")) {
+                if (id.isBlank()) {
+                    continue;
+                }
+                var stop = new ProcessBuilder("docker", "stop", id)
+                        .redirectErrorStream(true)
+                        .start();
+                stop.waitFor(30, TimeUnit.SECONDS);
+            }
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 

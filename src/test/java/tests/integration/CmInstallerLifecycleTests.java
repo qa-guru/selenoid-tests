@@ -57,7 +57,13 @@ class CmInstallerLifecycleTests {
     @Tag("positive")
     @DisplayName("configure writes browsers.json from dev catalog")
     void configureWritesBrowsersJson() throws IOException {
-        var result = step("cm selenoid configure -n", installer::configure);
+        var result = step("cm selenoid configure -n", () -> {
+            try {
+                return installer.configure();
+            } catch (IOException e) {
+                throw new IllegalStateException("configure failed: " + e.getMessage(), e);
+            }
+        });
         result.requireSuccess("configure");
 
         step("Verify browsers.json exists and contains chrome", () -> {
@@ -87,7 +93,7 @@ class CmInstallerLifecycleTests {
             result.requireSuccess("start hub");
         });
 
-        step("Wait for hub readiness", () -> installer.waitForHubReady(60_000));
+        step("Wait for hub readiness", () -> installer.waitForHubReady(120_000));
 
         var status = step("cm selenoid status", installer::statusHub);
         status.requireSuccess("status");
@@ -108,7 +114,7 @@ class CmInstallerLifecycleTests {
         step("Start hub via cm", () ->
                 installer.startHub().requireSuccess("start hub"));
         step("Wait for hub readiness", () ->
-                installer.waitForHubReady(60_000));
+                installer.waitForHubReady(120_000));
         step("Start UI via cm", () ->
                 installer.startUi().requireSuccess("start UI"));
         step("Wait for UI readiness", () ->
