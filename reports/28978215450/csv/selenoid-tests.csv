@@ -1,0 +1,92 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","DELETE unknown session returns client error","passed","993ms",,,"DELETE unknown session id passed (992ms)
+  DELETE /wd/hub/session/missing-session-id — expect HTTP 404 passed (992ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API",
+"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","GET /browsers-config returns browser catalog JSON","passed","1s 20ms",,,"GET /browsers-config passed (1s 20ms)
+  GET /browsers-config passed (1s 20ms)
+    GET https://selenoid.autotests.cloud/browsers-config passed (1s 19ms)
+ Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config",
+"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","2s 391ms",,,"GET /logs/unknown-session without WebSocket headers passed (2s 374ms)",,"Hub logs endpoint API",,"selenoid","Hub logs",
+"tests.api.HubPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","1s 10ms",,,"GET /ping passed (1s 2ms)
+  GET /ping passed (1s 2ms)
+    GET https://user1:1234@selenoid.autotests.cloud//ping passed (1s 2ms)
+ Verify uptime and version passed (7ms)",,"Hub ping API",,"selenoid","Hub ping",
+"tests.api.UiPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","1s 2ms",,,"GET /ping passed (1s 1ms)
+  GET /ping passed (1s 0ms)
+    GET https://selenoid.autotests.cloud//ping passed (1s 0ms)
+ Verify uptime and version passed (0s)",,"UI ping API",,"selenoid-ui","UI ping",
+"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","GET /ping version contains git revision marker","passed","1s 20ms",,,"GET /ping passed (1s 20ms)
+  GET /ping passed (1s 20ms)
+    GET https://selenoid.autotests.cloud//ping passed (1s 20ms)
+ Verify version looks like revision passed (0s)",,"UI ping version",,"selenoid-ui","UI ping",
+"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","GET /status lists configured browser families","passed","1s 5ms",,,"GET /status passed (1s 4ms)
+  GET /status passed (1s 4ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 3ms)
+ Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status",
+"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","GET /status returns hub statistics JSON","passed","1s 3ms",,,"GET /status passed (1s 2ms)
+  GET /status passed (1s 1ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 1ms)
+ Verify root counters passed (0s)
+  Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status",
+"tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle","GET /status used counter tracks session lifecycle","passed","11s 752ms",,,"Snapshot hub used counter passed (2s 946ms)
+  GET /status passed (2s 932ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (2s 927ms)
+ Create hub session passed (4s 269ms)
+   POST /wd/hub/session passed (4s 269ms)
+     POST /wd/hub/session (chrome 148.0) passed (4s 268ms)
+  Verify used counter incremented passed (986ms)
+    Wait until hub used counter = 1 passed (984ms)
+      GET /status passed (983ms)
+        GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (983ms)
+   Delete hub session passed (2s 501ms)
+     DELETE /wd/hub/session/27802a13e0310386711359adb103019b passed (2s 501ms)
+    Verify used counter returned to baseline passed (1s 41ms)
+      Wait until hub used counter = 0 passed (1s 40ms)
+        GET /status passed (1s 40ms)
+          GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 39ms)",,"Hub status session counters API",,"selenoid","Hub status with session",
+"tests.api.HubWebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub","passed","1s 23ms",,,"GET /wd/hub/status passed (1s 21ms)
+  GET /wd/hub/status passed (1s 21ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (1s 21ms)
+ Verify ready flag and message passed (0s)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status",
+"tests.api.WebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","1s 38ms",,,"GET /wd/hub/status passed (1s 37ms)
+  GET /wd/hub/status passed (1s 36ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (1s 36ms)
+ Verify ready flag and message passed (1ms)",,"WebDriver image hub status API",,"webdriver-image","WebDriver hub status",
+"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","GET playwright path without upgrade returns 400","passed","9s 90ms",,,"GET playwright path without WebSocket headers passed (9s 89ms)
+  GET {path} without WebSocket upgrade passed (9s 88ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint",
+"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","GET UI /status exposes total quota counter","passed","2s 837ms",,,"GET UI /status passed (2s 835ms)
+  GET /status passed (2s 835ms)
+    GET https://selenoid.autotests.cloud//status passed (2s 835ms)
+ Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy",
+"tests.api.UiStatusTests.uiStatusReturnsProxiedHubJson","GET UI /status returns proxied hub statistics JSON","passed","2s 833ms",,,"GET UI /status passed (2s 830ms)
+  GET /status passed (2s 830ms)
+    GET https://selenoid.autotests.cloud//status passed (2s 830ms)
+ Verify proxied state counters passed (0s)
+  Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy",
+"tests.api.PlaywrightUnknownPathTests.unknownPlaywrightPathRejected","GET unknown playwright path returns 400","passed","1s 28ms",,,"GET unknown playwright path passed (1s 28ms)
+  GET unknown playwright path without WebSocket upgrade passed (1s 28ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint",
+"tests.api.HubSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates and DELETE removes session","passed","5s 748ms",,,"Create remote session passed (3s 221ms)
+  POST /wd/hub/session passed (3s 221ms)
+    POST /wd/hub/session (chrome 148.0) passed (3s 221ms)
+ Verify session id passed (0s)
+  Delete session passed (2s 525ms)
+    DELETE /wd/hub/session/587acf957fdbbe567b94fcc5b425c2ef passed (2s 525ms)",,"Hub session API",,"selenoid","WebDriver session API",
+"tests.api.WebDriverSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates chrome session via webdriver-image node","passed","10s 522ms",,,"Create remote session passed (6s 206ms)
+  POST /wd/hub/session and read browserName from capabilities passed (6s 206ms)
+ Verify session id and browserName passed (0s)
+  Delete session passed (4s 314ms)
+    DELETE /wd/hub/session/19c1f2730e61b075d345a86b13bfc120 passed (4s 314ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API",
+"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","POST /wd/hub/session echoes browserName in capabilities","passed","5s 560ms",,,"Create remote session passed (3s 144ms)
+  POST /wd/hub/session and read browserName from capabilities passed (3s 140ms)
+ Verify capabilities.browserName passed (1ms)
+  Delete session passed (2s 415ms)
+    DELETE /wd/hub/session/f533e17d16ec16e812dc7745dca1be45 passed (2s 415ms)",,"Hub session capabilities",,"selenoid","WebDriver session API",
+"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","POST /wd/hub/session rejects unknown browser","passed","1s 34ms",,,"POST session with unknown browser passed (1s 33ms)
+  POST /wd/hub/session — expect HTTP 400 passed (1s 33ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API",
+"tests.api.UiSseStreamTests.sseDeliversPayload","SSE /events delivers state or error payload","passed","5s 667ms",,,"Read first SSE event passed (5s 665ms)
+  Read first SSE event from /events passed (5s 665ms)
+    Read first SSE event from https://selenoid.autotests.cloud/events passed (5s 664ms)
+ Verify payload has state or errors passed (0s)",,"UI SSE stream",,"selenoid-ui","UI SSE",
+"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","SSE /events delivers two consecutive payloads","passed","14s 948ms",,,"Read two SSE events passed (14s 947ms)
+  Read two SSE events from /events passed (14s 891ms)
+    Read two SSE events from https://selenoid.autotests.cloud/events passed (14s 890ms)
+ Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE",
