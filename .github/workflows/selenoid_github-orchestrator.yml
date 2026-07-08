@@ -642,7 +642,7 @@ jobs:
             --arg dashboard_url "${DASHBOARD_URL}" \
             --arg testops_url "${TESTOPS_LAUNCH_URL:-}" \
             --arg run_url "${RUN_URL}" \
-            --argjson report_built "${report_built}" \
+            --arg report_built "${report_built}" \
             --arg quality_gate "${quality_gate}" \
             --arg env_profile "${ENV_PROFILE}" \
             --arg test_tags "${{ github.event.client_payload.test_tags || '' }}" \
