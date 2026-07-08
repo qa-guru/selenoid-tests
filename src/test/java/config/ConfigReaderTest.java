@@ -74,4 +74,18 @@ class ConfigReaderTest {
         var error = assertThrows(IllegalStateException.class, () -> ConfigReader.resolveApiBaseUrl(config));
         assertTrue(error.getMessage().contains("apiBaseUrl or hubUrl"));
     }
+
+    @Test
+    @DisplayName("resolveHubStatusPath defaults to /status")
+    void resolveHubStatusPathDefaultsToStatus() {
+        var config = configWith(Map.of());
+        assertEquals("/status", ConfigReader.resolveHubStatusPath(config));
+    }
+
+    @Test
+    @DisplayName("resolveHubStatusPath normalizes path without leading slash")
+    void resolveHubStatusPathNormalizesPath() {
+        var config = configWith(Map.of("hubStatusPath", "hub/status"));
+        assertEquals("/hub/status", ConfigReader.resolveHubStatusPath(config));
+    }
 }

@@ -1,6 +1,7 @@
 package api.ui;
 
 import api.hub.HubStatus;
+import api.hub.HubStatusParser;
 import config.ConfigReader;
 import io.qameta.allure.Step;
 import io.restassured.response.ResponseBodyExtractionOptions;
@@ -27,10 +28,7 @@ public final class UiStatusApi {
                 .statusCode(200)
                 .extract()
                 .body();
-        if (body.path("state") != null) {
-            return body.jsonPath().getObject("state", HubStatus.class);
-        }
-        return body.as(HubStatus.class);
+        return HubStatusParser.parse(body);
     }
 
     @Step("GET /status when hub is unavailable")

@@ -32,6 +32,18 @@ public final class ConfigReader {
         throw new IllegalStateException("Set apiBaseUrl or hubUrl in config/${env}.properties");
     }
 
+    public static String resolveHubStatusPath() {
+        return resolveHubStatusPath(testConfig);
+    }
+
+    public static String resolveHubStatusPath(TestConfig config) {
+        var path = config.hubStatusPath().trim();
+        if (path.isEmpty()) {
+            return "/status";
+        }
+        return path.startsWith("/") ? path : "/" + path;
+    }
+
     public static String resolveHubUrl() {
         return resolveHubUrl(testConfig);
     }

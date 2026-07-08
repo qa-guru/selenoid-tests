@@ -67,7 +67,7 @@ Profiles: `selenoid_autotests_cloud_api`, `selenoid_autotests_cloud_e2e` — rem
 
 Post-deploy: `selenoid.autotests.cloud` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_autotests_cloud_api`).
 
-Prod caveats (nginx → selenoid-ui): `GET /status` — counters in `.state` (`HubStatusApi` unwraps). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
+Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — not proxied (404), `HubLogsListApiTests` is `@Tag(local-only)`.
 
 ### `testPlaywright` prerequisite
 
@@ -239,6 +239,7 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | Key | Default |
 |-----|---------|
 | apiBaseUrl | `""` (→ hubUrl) |
+| hubStatusPath | `/status` (prod cloud: `/hub/status` — raw hub via nginx) |
 | hubUrl | http://127.0.0.1:4444/ |
 | uiUrl | http://127.0.0.1:8080/ |
 | remoteUrl | http://127.0.0.1:4444/wd/hub |

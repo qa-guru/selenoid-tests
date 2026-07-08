@@ -42,6 +42,11 @@ public interface TestConfig extends Config {
     @DefaultValue("")
     String apiBaseUrl();
 
+    /** Hub capacity endpoint path — raw hub {@code /status}; prod nginx exposes {@code /hub/status}. */
+    @Key("hubStatusPath")
+    @DefaultValue("/status")
+    String hubStatusPath();
+
     @Key("hubUrl")
     @DefaultValue("http://127.0.0.1:4444/")
     String hubUrl();
