@@ -99,7 +99,8 @@ public final class CmInstallerHelper {
                 "-p", Integer.toString(config.cmHubPort()),
                 "-n",
                 "-j", browsersJson().toString(),
-                "--selenoid-binary", configDir.resolve("bin/selenoid").toAbsolutePath().toString());
+                "--selenoid-binary", configDir.resolve("bin/selenoid").toAbsolutePath().toString(),
+                "--selenoid-ui-binary", configDir.resolve("bin/selenoid-ui").toAbsolutePath().toString());
     }
 
     @Step("cm selenoid-ui start")

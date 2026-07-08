@@ -80,6 +80,8 @@ class CmInstallerLifecycleTests {
     @Tag("positive")
     @DisplayName("start exposes hub /status")
     void startHubExposesStatusEndpoint() throws Exception {
+        step("Configure CM stack", () ->
+                installer.configure().requireSuccess("configure"));
         step("Start hub via cm", () -> {
             var result = installer.startHub();
             result.requireSuccess("start hub");
@@ -94,13 +96,15 @@ class CmInstallerLifecycleTests {
                         () -> "Unexpected status output:\n" + status.output()));
 
         step("GET hub /status", () ->
-                HubStatusApi.fetchFrom(ConfigReader.resolveHubUrl()));
+                HubStatusApi.fetchFrom(ConfigReader.resolveCmHubUrl()));
     }
 
     @Test
     @Tag("positive")
     @DisplayName("full stack start — UI /status mirrors hub counters")
     void startFullStackUiProxiesHub() throws Exception {
+        step("Configure CM stack", () ->
+                installer.configure().requireSuccess("configure"));
         step("Start hub via cm", () ->
                 installer.startHub().requireSuccess("start hub"));
         step("Wait for hub readiness", () ->
