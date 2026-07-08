@@ -84,6 +84,7 @@ class CmInstallerLifecycleTests {
 
     @Test
     @Tag("positive")
+    @Tag("local-only")
     @DisplayName("start exposes hub /status")
     void startHubExposesStatusEndpoint() throws Exception {
         step("Configure CM stack", () ->
@@ -107,6 +108,7 @@ class CmInstallerLifecycleTests {
 
     @Test
     @Tag("positive")
+    @Tag("local-only")
     @DisplayName("full stack start — UI /status mirrors hub counters")
     void startFullStackUiProxiesHub() throws Exception {
         step("Configure CM stack", () ->

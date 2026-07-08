@@ -129,12 +129,12 @@ public final class CmInstallerHelper {
 
     @Step("Wait until hub /status is ready")
     public void waitForHubReady(long timeoutMs) throws InterruptedException {
-        waitForStatusReady(ConfigReader.resolveCmHubUrl(config), timeoutMs, "hub");
+        waitForStatusReady(ConfigReader.resolveCmHubUrl(config), timeoutMs, "hub", this::statusHub);
     }
 
     @Step("Wait until UI /status is ready")
     public void waitForUiReady(long timeoutMs) throws InterruptedException {
-        waitForStatusReady(ConfigReader.resolveCmUiUrl(config), timeoutMs, "UI");
+        waitForStatusReady(ConfigReader.resolveCmUiUrl(config), timeoutMs, "UI", this::statusUi);
     }
 
     public void deleteConfigDir() {
@@ -314,7 +314,8 @@ public final class CmInstallerHelper {
         }
     }
 
-    private static void waitForStatusReady(String baseUrl, long timeoutMs, String label)
+    private void waitForStatusReady(String baseUrl, long timeoutMs, String label,
+            java.util.function.Supplier<CmRunResult> statusSupplier)
             throws InterruptedException {
         var deadline = System.currentTimeMillis() + timeoutMs;
         var statusUri = URI.create(baseUrl + "status");
@@ -324,8 +325,15 @@ public final class CmInstallerHelper {
             }
             Thread.sleep(500);
         }
+        var lastStatusOutput = "";
+        try {
+            lastStatusOutput = statusSupplier.get().output();
+        } catch (RuntimeException ignored) {
+            // best-effort diagnostics
+        }
         throw new IllegalStateException(label + " did not become ready at " + statusUri
-                + " within " + timeoutMs + "ms");
+                + " within " + timeoutMs + "ms"
+                + (lastStatusOutput.isBlank() ? "" : "\ncm status:\n" + lastStatusOutput));
     }
 
     private static boolean statusResponds(URI statusUri) {
