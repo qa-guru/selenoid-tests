@@ -1,10 +1,11 @@
-# Synced from template-project ethalon: selenoid_github-orchestrator.yml
+# Synced from ethalon: selenoid_github-orchestrator.yml (SSOT generators/ethalon/tests-java/.github/_ethalon/)
 # Runnable filename = ethalon filename. Default: -Denv=selenoid_github_e2e
 # SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
-# Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub tests + merge Allure + repository_dispatch.
+# Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub/CM tests + merge Allure + repository_dispatch.
 # Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
-# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (scripts/run-go-unit.sh — bootstrap, не в template-project).
+# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (run-go-unit.sh, start-ci-selenoid-stack.sh, run-ci-cm-tests.sh).
 #
+# workflow name: = GitHub repo slug + " Tests" (канон test-layers). Reference consumer: selenoid-tests.
 # Default: -Denv=selenoid_github_e2e. GRADLE_ARGS: env, skipHealthCheck, tags only — не дублировать profile keys.
 
 name: selenoid-tests Tests
@@ -506,6 +507,20 @@ jobs:
         continue-on-error: true
         run: ./gradlew allureReport
 
+      - name: Verify Allure awesome section chunks
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
+        run: |
+          AWESOME=build/reports/allure-report/allureReport/awesome
+          APP=$(ls "$AWESOME"/app-*.js | head -1)
+          missing=0
+          for chunk_id in $(rg -o 'a\.e\((\d+)\)' "$APP" -r '$1' | sort -u); do
+            if ! ls "$AWESOME/${chunk_id}.app-"*.js >/dev/null 2>&1; then
+              echo "::error::Missing lazy-load chunk ${chunk_id}.app-*.js in $AWESOME (Graphs/Timeline fall back to test tree)"
+              missing=1
+            fi
+          done
+          test "$missing" -eq 0
+
       - name: Prepare GitHub Pages
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
         run: |
@@ -667,7 +682,7 @@ jobs:
             --arg run_url "${RUN_URL}" \
             --arg report_built "${report_built}" \
             --arg quality_gate "${quality_gate}" \
-            --arg stats "${STATS}" \
+            --argjson stats "${STATS}" \
             '{
               trigger_run_id: $trigger_run_id,
               tests_run_id: $tests_run_id,
