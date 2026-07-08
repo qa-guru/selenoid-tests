@@ -1,0 +1,1 @@
+{"id":"be8c4696ab4c78862304f43177195b11","fullName":"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","name":"SSE /events delivers two consecutive payloads","status":"passed","testResultsByEnv":{"default":"b63ad61a01d6c4c04c685b6df96c4dd2"}}
