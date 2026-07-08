@@ -4,6 +4,8 @@
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
 
+**Scope:** `warm-pool-orchestrator/` — out of scope (deferred), не в матрице и не в CI.
+
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
 - Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
@@ -34,22 +36,23 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ## Gradle pyramid slices
 
 ```bash
-./gradlew testUnit -DskipHealthCheck=true                              # unit
+./gradlew testHubAll -DskipHealthCheck=true                             # full hub/UI pyramid (CI push gate)
+./gradlew testUnit -DskipHealthCheck=true                              # unit only
 ./gradlew testComponent -DskipHealthCheck=true                         # @Layer component
 ./gradlew testApi -DskipHealthCheck=true                             # @Layer api
-./gradlew testIntegration -DskipHealthCheck=true                     # @Layer integration (без local-only)
+./gradlew testIntegration -DskipHealthCheck=true                     # @Layer integration (incl. local-only)
 ./gradlew testE2e -DskipHealthCheck=true                             # e2e smoke (hub + UI)
 ./gradlew testWebdriverE2e -DskipHealthCheck=true                    # webdriver-image smoke (HubSession*)
 ./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
-./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (hub + image qaguru/playwright-chromium:1.61.1)
-./gradlew testResilience -DskipHealthCheck=true                      # UI status recovery after hub restart (selenoid-ui, local-only)
+./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (incl. firefox/webkit local-only)
+./gradlew testResilience -DskipHealthCheck=true                      # hub restart recovery
+./gradlew testMin -DskipHealthCheck=true                             # chromium-min + chrome-min
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (CI: java-cm job; local: ports :4445/:8081)
 
-# CI-эквиваленты
+# CI-эквиваленты (slice-only dispatch)
 ./gradlew test -Denv=selenoid_github_api -DincludeTags=api -DskipHealthCheck=true
 ./gradlew test -Denv=selenoid_github_integration -DincludeTags=integration -DskipHealthCheck=true
 ./gradlew test -Denv=selenoid_github_min_integration -DincludeTags=min -DskipHealthCheck=true
-./gradlew test -DincludeTags=smoke,api -DexcludeTags=integration,resilience,local-only,playwright
 
 ./gradlew allureReport
 ```
@@ -83,10 +86,10 @@ docker pull qaguru/playwright-chromium:1.61.1   # или ./scripts/pull-browser-
 
 ### Playwright-chromium-min (`1.61.1-min`)
 
-Отдельный slice, **не** в default smoke / `testPlaywright` / `testIntegration`. Образ в `fixtures/ci-browsers.json`; endpoint — `selenoid_github_min_integration.properties` (VNC/video off).
+Образ в `fixtures/ci-browsers.json`; endpoint — `selenoid_github_min_integration.properties` (VNC/video off). Входит в `testHubAll` (`testMin`).
 
 ```bash
-./gradlew test -Denv=selenoid_github_min_integration -DincludeTags=min -DskipHealthCheck=true
+./gradlew testMin -DskipHealthCheck=true
 ```
 
 | Класс | @Layer | @Tag |
@@ -102,11 +105,42 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | Job | Что делает |
 |-----|------------|
 | `go-unit` (matrix) | Checkout `qa-guru/selenoid`, `selenoid-ui`, `cm` → Go unit → Allure |
-| `java-e2e` | Push: `testUnit` + `testComponent` (gate) + `testApi` → TestOps; dispatch: `test_tags=integration|api|smoke` |
+| `java-e2e` | Push/default: `testHubAll` (all hub slices incl. playwright, resilience, local-only, min); slice: `test_tags=…` |
 | `java-cm` | Push: `testCmIntegration` + `testCmApi` + `testCmE2e` (CM :4445/:8081); dispatch `test_tags=cm` |
 | `report` | Merge `build/allure-results/**` → `allureReport` → gh-pages → TestOps 5271 |
 
 `workflow_dispatch`: `test_tags=integration` для integration slice; `env_profile=selenoid_github_api` для api-only.
+
+### Component × Layer × CI (push `main`)
+
+Пирамида: `unit → component → integration → api → e2e → manual`. Числа — Java-классы в матрице ниже; **Go unit** — отдельно в `go-unit`.
+
+| Component | unit | component | integration | api | e2e | manual | CI push |
+|-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
+| **selenoid** | Go | 8 | 1 | 10 | △¹ | — | `go-unit` + `testHubAll` |
+| **selenoid-ui** | Go + 1 | 6 | 7 | 7 | 5 | △ | `go-unit` + `testHubAll` |
+| **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
+| **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
+| **webdriver-image** | — | 2 | 2 | 2 | 4 | — | `testHubAll` |
+| **dev** | — | △² | △³ | — | — | ✓ | — |
+| **selenoid-autotests-cloud** | — | — | — | △⁴ | △⁵ | ✓ | deploy-smoke dispatch |
+
+¹ **selenoid e2e:** нет `@Component("selenoid")` e2e-класса; hub-path — `webdriver-image` / `playwright-image` e2e в `testHubAll`.  
+² `browsers.json` — косвенно через component JSON fixtures.  
+³ `start-ci-selenoid-stack.sh` — оркестрация CI, без отдельного test-class.  
+⁴ Post-deploy: `selenoid_autotests_cloud_api` (default `trigger-deploy-smoke`).  
+⁵ Профиль `selenoid_autotests_cloud_e2e` — вручную / расширенный deploy-smoke.
+
+### Manual (runbook)
+
+| Сценарий | Где | Как |
+|----------|-----|-----|
+| Локальный стек hub/UI | `../dev/README.md` | `build-selenoid*.sh` + `start-selenoid*.sh` |
+| Prod hub smoke | `selenoid-autotests-cloud` | `./deploy/smoke-remote.sh https://selenoid.autotests.cloud` |
+| VNC viewer в UI | selenoid-ui | Сессия с `enableVNC` → открыть VNC в dashboard |
+| Video playback | selenoid-ui | Сессия с `enableVideo` → `/video/` в UI |
+| CM install на чистый хост | cm + autotests-cloud | `deploy/deploy.sh` / Actions deploy |
+| Полный hub pyramid локально | этот репо | `./gradlew testHubAll -DskipHealthCheck=true` |
 
 ### Deploy triggers (`repository_dispatch`)
 
@@ -141,8 +175,8 @@ EOF
 |--------|------|-----------|-------------|-----|-----|-----------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
-| **webdriver-image** (`browser-image/webdriver/`) | — | ✓ | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min integration |
-| **selenoid** | ✓ | **+1** | **+1** | **+2** | ✓¹ | logs, status+session |
+| **webdriver-image** (`browser-image/webdriver/`) | — | ✓ (+min) | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min integration |
+| **selenoid** | ✓ | **+2** | **+1** | **+2** | ✓¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
@@ -168,6 +202,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | CmUiStatusApiTests | cm | cm | api | api, cm |
 | ConfigOwnerMergeTest | — | — | unit | — |
 | HubStatusJsonTest | selenoid | selenoid | component | — |
+| HubStatusParserTest | selenoid | — | component | — |
 | HubStatusBrowsersJsonTest | selenoid | selenoid | component | — |
 | UiStatusJsonTest | selenoid-ui | selenoid-ui | component | — |
 | UiPingJsonTest | selenoid-ui | selenoid-ui | component | — |
@@ -222,6 +257,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | WebDriverStatusApiTests | webdriver-image | webdriver-image | api | api |
 | WebDriverSessionApiTests | webdriver-image | webdriver-image | api | api |
 | HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |
+| ChromeMinCatalogJsonTest | webdriver-image | webdriver-image | component | min |
 | CmVersionOutputTest | cm | cm | component | — |
 | CmHelpOutputTest | cm | cm | component | — |
 | CmCliVersionTests | cm | cm | integration | cm |

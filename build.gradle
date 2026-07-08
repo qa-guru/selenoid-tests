@@ -209,37 +209,42 @@ def layerTestSlices = [
          testPatterns: ['tests.component.*Test'],
          envOverride: 'local_unit'],
         [name: 'testIntegration', layer: 'integration',
-         description: 'Pyramid integration — @Tag(integration), exclude local-only & cm',
-         includeTags: 'integration', excludeTags: 'local-only,cm',
+         description: 'Pyramid integration — @Tag(integration); CM → testCmIntegration',
+         includeTags: 'integration', excludeTags: 'cm',
          needsStack: true],
         [name: 'testApi',         layer: 'api',
-         description: 'Pyramid api — @Tag(api), exclude local-only & cm (CM → testCmApi)',
-         includeTags: 'api', excludeTags: 'local-only,cm'],
+         description: 'Pyramid api — @Tag(api); CM → testCmApi',
+         includeTags: 'api', excludeTags: 'cm'],
         [name: 'testE2e',         layer: 'e2e',
-         description: 'Pyramid e2e smoke — @Tag(smoke), exclude playwright/resilience/local-only/cm',
-         includeTags: 'smoke', excludeTags: 'playwright,resilience,local-only,cm',
+         description: 'Pyramid e2e smoke — @Tag(smoke); CM → testCmE2e',
+         includeTags: 'smoke', excludeTags: 'cm',
          needsStack: true],
         [name: 'testWebdriverE2e', layer: 'e2e',
          description: 'WebDriver image smoke — tests.HubSession*Tests @Tag(smoke)',
          testPatterns: ['tests.HubSession*Tests'],
-         includeTags: 'smoke', excludeTags: 'playwright,resilience,local-only',
+         includeTags: 'smoke',
          needsStack: true],
         [name: 'testUiE2e',       layer: 'e2e',
          description: 'Selenoid UI smoke — tests.Ui*Tests @Tag(smoke)',
          testPatterns: ['tests.Ui*Tests'],
-         includeTags: 'smoke', excludeTags: 'playwright,resilience,local-only',
+         includeTags: 'smoke',
          needsStack: true],
         [name: 'testPlaywright',  layer: 'e2e',
-         description: 'Playwright smoke — @Tag(playwright)',
-         includeTags: 'playwright', excludeTags: 'local-only',
+         description: 'Playwright — @Tag(playwright)',
+         includeTags: 'playwright',
          needsStack: true],
         [name: 'testResilience',  layer: 'integration',
-         description: 'Resilience — @Tag(resilience), local hub kill/recovery',
+         description: 'Resilience — @Tag(resilience), hub restart recovery',
          includeTags: 'resilience',
          needsStack: true],
+        [name: 'testMin',         layer: 'min_integration',
+         description: 'Playwright-chromium-min + chrome-min — @Tag(min)',
+         includeTags: 'min',
+         envOverride: 'selenoid_github_min_integration',
+         needsStack: true],
         [name: 'testCmIntegration', layer: 'cm_integration',
-         description: 'CM installer lifecycle — @Tag(cm), exclude smoke/api/local-only',
-         includeTags: 'cm', excludeTags: 'smoke,api,local-only',
+         description: 'CM installer lifecycle — @Tag(cm), exclude smoke/api',
+         includeTags: 'cm', excludeTags: 'smoke,api',
          needsStack: false],
         [name: 'testCmApi',         layer: 'cm_integration',
          description: 'CM hub/UI API — @Tag(api & cm); requires start-ci-cm-stack.sh',
@@ -293,6 +298,23 @@ layerTestSlices.each { slice ->
             }
         }
     }
+}
+
+tasks.register('testHubAll') {
+    group = 'verification'
+    description = 'Full hub/UI pyramid — all slices (CI push gate)'
+    dependsOn(
+            'testUnit',
+            'testComponent',
+            'testIntegration',
+            'testApi',
+            'testE2e',
+            'testWebdriverE2e',
+            'testUiE2e',
+            'testPlaywright',
+            'testResilience',
+            'testMin'
+    )
 }
 
 if (allureReportMode == 'none') {

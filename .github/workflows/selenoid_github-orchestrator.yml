@@ -143,7 +143,7 @@ jobs:
   java-e2e:
     name: Java hub tests
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       ALLURE_RESULTS: build/allure-results
       TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
@@ -254,8 +254,7 @@ jobs:
                 ;;
               *)
                 ./gradlew test "${GRADLE_ARGS[@]}" \
-                  -DincludeTags="$TEST_TAGS" \
-                  -DexcludeTags=resilience,local-only
+                  -DincludeTags="$TEST_TAGS"
                 JAVA_TEST_EXIT=$?
                 ;;
             esac
@@ -265,46 +264,12 @@ jobs:
           elif [ "$ENV_PROFILE" = "selenoid_github_api" ]; then
             ./gradlew testApi "${GRADLE_PYRAMID[@]}"
             JAVA_TEST_EXIT=$?
-          elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ] && [ "${{ github.event_name }}" != "push" ]; then
-            ./gradlew testUnit "${GRADLE_PYRAMID[@]}"
-            UNIT_EXIT=$?
-            ./gradlew testComponent "${GRADLE_PYRAMID[@]}"
-            COMPONENT_EXIT=$?
-            ./gradlew testIntegration "${GRADLE_PYRAMID[@]}"
-            INTEGRATION_EXIT=$?
-            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
-            API_EXIT=$?
-            ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
-            E2E_EXIT=$?
-            if [ "$UNIT_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$UNIT_EXIT
-            elif [ "$COMPONENT_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$COMPONENT_EXIT
-            elif [ "$INTEGRATION_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$INTEGRATION_EXIT
-            elif [ "$API_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$API_EXIT
-            elif [ "$E2E_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$E2E_EXIT
-            else
-              JAVA_TEST_EXIT=0
-            fi
+          elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ]; then
+            ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
           else
-            ./gradlew testUnit "${GRADLE_PYRAMID[@]}"
-            UNIT_EXIT=$?
-            ./gradlew testComponent "${GRADLE_PYRAMID[@]}"
-            COMPONENT_EXIT=$?
-            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
-            API_EXIT=$?
-            if [ "$UNIT_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$UNIT_EXIT
-            elif [ "$COMPONENT_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$COMPONENT_EXIT
-            elif [ "$API_EXIT" -ne 0 ]; then
-              JAVA_TEST_EXIT=$API_EXIT
-            else
-              JAVA_TEST_EXIT=0
-            fi
+            ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
           fi
           echo "JAVA_TEST_EXIT=${JAVA_TEST_EXIT}" >> "$GITHUB_ENV"
           set -e
@@ -587,9 +552,8 @@ jobs:
             fi
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java push default: \`testUnit\` + \`testComponent\` (gate) + \`testApi\` (hub via CI stack)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Java hub push/default: \`testHubAll\` (unit→component→integration→api→e2e→webdriver→ui→playwright→resilience→min)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java CM push: \`testCmIntegration\` + \`testCmApi\` + \`testCmE2e\` (CM :4445/:8081)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch default (\`selenoid_github_e2e\`): full Java pyramid + \`testE2e\` (unit→component→integration→api→e2e)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → \`testWebdriverE2e\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
