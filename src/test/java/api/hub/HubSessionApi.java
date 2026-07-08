@@ -36,6 +36,26 @@ public final class HubSessionApi {
         return create(config.browser(), config.browserVersion());
     }
 
+    @Step("POST /wd/hub/session with selenoid:options")
+    public static String createWithSelenoidOptions(TestConfig config, java.util.Map<String, Object> selenoidOptions) {
+        var alwaysMatch = new LinkedHashMap<String, Object>();
+        alwaysMatch.put("browserName", config.browser());
+        alwaysMatch.put("browserVersion", config.browserVersion());
+        alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
+        if (selenoidOptions != null && !selenoidOptions.isEmpty()) {
+            alwaysMatch.put("selenoid:options", selenoidOptions);
+        }
+        return hubRequest()
+                .contentType(ContentType.JSON)
+                .body(Map.of("capabilities", Map.of("alwaysMatch", alwaysMatch)))
+                .when()
+                .post("/wd/hub/session")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("value.sessionId");
+    }
+
     @Step("POST /wd/hub/session")
     public static String create() {
         return create(ConfigReader.testConfig);
@@ -103,10 +123,6 @@ public final class HubSessionApi {
     }
 
     private static RequestSpecification hubRequest() {
-        return given().baseUri(trimTrailingSlash(ConfigReader.resolveApiBaseUrl()));
-    }
-
-    private static String trimTrailingSlash(String baseUri) {
-        return baseUri.endsWith("/") ? baseUri.substring(0, baseUri.length() - 1) : baseUri;
+        return given().baseUri(HubRequest.baseUri());
     }
 }

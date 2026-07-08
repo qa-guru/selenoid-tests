@@ -117,7 +117,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
-| **selenoid** | Go | 8 | 1 | 10 | △¹ | — | `go-unit` + `testHubAll` |
+| **selenoid** | Go | 8 | 1 | 18 | △¹ | — | `go-unit` + `testHubAll` |
 | **selenoid-ui** | Go + 1 | 6 | 7 | 7 | 5 | △ | `go-unit` + `testHubAll` |
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
@@ -253,6 +253,14 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | HubSessionHeadingTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionTitleTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubCapabilitiesApiTests | selenoid | selenoid | api | api |
+| HubClipboardApiTests | selenoid | selenoid | api | api, negative |
+| HubDownloadApiTests | selenoid | selenoid | api | api, negative |
+| HubErrorApiTests | selenoid | selenoid | api | api, negative |
+| HubLogsSessionApiTests | selenoid | selenoid | api | api, positive |
+| HubVideoApiTests | selenoid | selenoid | api | api |
+| HubVideoSessionApiTests | selenoid | selenoid | api | api, positive |
+| HubVncSessionApiTests | selenoid | selenoid | api | api, positive |
+| HubWelcomeApiTests | selenoid | selenoid | api | api, positive |
 | HubWebDriverStatusApiTests | selenoid | selenoid | api | api |
 | WebDriverStatusApiTests | webdriver-image | webdriver-image | api | api |
 | WebDriverSessionApiTests | webdriver-image | webdriver-image | api | api |
