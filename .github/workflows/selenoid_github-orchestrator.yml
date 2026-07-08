@@ -396,6 +396,9 @@ jobs:
           }
           EOF
 
+      - name: Validate allurerc.mjs
+        run: node scripts/validate-allurerc.mjs allurerc.mjs
+
       - name: Allure 3 quality gate
         if: always() && hashFiles('build/allure-results/**') != ''
         run: |
