@@ -644,9 +644,6 @@ jobs:
             --arg run_url "${RUN_URL}" \
             --arg report_built "${report_built}" \
             --arg quality_gate "${quality_gate}" \
-            --arg env_profile "${ENV_PROFILE}" \
-            --arg test_tags "${{ github.event.client_payload.test_tags || '' }}" \
-            --arg source_version "${SOURCE_VERSION}" \
             '{
               trigger_run_id: $trigger_run_id,
               tests_run_id: $tests_run_id,
@@ -656,10 +653,7 @@ jobs:
               testops_url: $testops_url,
               run_url: $run_url,
               report_built: $report_built,
-              quality_gate: $quality_gate,
-              env_profile: $env_profile,
-              test_tags: $test_tags,
-              source_version: $source_version
+              quality_gate: $quality_gate
             }')"
 
           curl -fsSL -X POST \
