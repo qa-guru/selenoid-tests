@@ -63,6 +63,8 @@ jobs:
     name: Go unit — ${{ matrix.repo }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      GOTOOLCHAIN: auto
     strategy:
       fail-fast: false
       matrix:
@@ -78,10 +80,10 @@ jobs:
             go_repo: qa-guru/cm
     steps:
       - name: Checkout tests repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout ${{ matrix.repo }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ matrix.go_repo }}
           ref: ${{ env.SOURCE_REF }}
@@ -90,7 +92,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: ~1.23.8
+          go-version-file: repos/${{ matrix.repo }}/go.mod
           cache-dependency-path: repos/${{ matrix.repo }}/go.sum
 
       - name: Setup Node 12 (selenoid-ui yarn)
@@ -144,13 +146,14 @@ jobs:
       ALLURE_RESULTS: build/allure-results
       TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
       TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
+      GOTOOLCHAIN: auto
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout selenoid
         if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: qa-guru/selenoid
           ref: ${{ env.SOURCE_REF }}
@@ -158,7 +161,7 @@ jobs:
 
       - name: Checkout selenoid-ui
         if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: qa-guru/selenoid-ui
           ref: ${{ env.SOURCE_REF }}
@@ -168,7 +171,7 @@ jobs:
         if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/setup-go@v6
         with:
-          go-version: ~1.23.8
+          go-version-file: repos/selenoid/go.mod
           cache-dependency-path: |
             repos/selenoid/go.sum
             repos/selenoid-ui/go.sum
@@ -323,26 +326,27 @@ jobs:
     timeout-minutes: 60
     env:
       ALLURE_RESULTS: build/allure-results
+      GOTOOLCHAIN: auto
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout cm
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: qa-guru/cm
           ref: ${{ env.SOURCE_REF }}
           path: repos/cm
 
       - name: Checkout selenoid
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: qa-guru/selenoid
           ref: ${{ env.SOURCE_REF }}
           path: repos/selenoid
 
       - name: Checkout selenoid-ui
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: qa-guru/selenoid-ui
           ref: ${{ env.SOURCE_REF }}
@@ -351,7 +355,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: ~1.23.8
+          go-version-file: repos/cm/go.mod
           cache-dependency-path: |
             repos/cm/go.sum
             repos/selenoid/go.sum
@@ -406,10 +410,10 @@ jobs:
       ALLURE_RESULTS: build/allure-results
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Load Allure history
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         continue-on-error: true
         with:
           ref: gh-pages
@@ -418,21 +422,21 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Download Go Allure artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: allure-go-*
           path: build/allure-results
           merge-multiple: true
 
       - name: Download Java Allure artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: allure-java
           path: build/allure-results
           merge-multiple: true
 
       - name: Download Java CM Allure artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         continue-on-error: true
         with:
           name: allure-java-cm

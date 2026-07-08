@@ -13,6 +13,7 @@ mkdir -p "${JUNIT_DIR}" "${ALLURE_DIR}"
 JUNIT_FILE="${JUNIT_DIR}/go-${REPO}.xml"
 
 export GO111MODULE=on
+export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 export PATH="${PATH}:$(go env GOPATH)/bin"
 
 if ! command -v gotestsum >/dev/null 2>&1; then
