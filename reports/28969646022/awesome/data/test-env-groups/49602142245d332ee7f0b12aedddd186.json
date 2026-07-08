@@ -1,0 +1,1 @@
+{"id":"49602142245d332ee7f0b12aedddd186","fullName":"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","name":"POST /wd/hub/session echoes browserName in capabilities","status":"failed","testResultsByEnv":{"default":"35a4f9c53766d52d0b476f88b9e098f4"}}
