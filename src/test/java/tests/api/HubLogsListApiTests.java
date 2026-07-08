@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 @Epic("selenoid")
 @Feature("Hub logs")
 @DisplayName("Hub logs endpoint API")
+@Tag("local-only")
 class HubLogsListApiTests extends ApiTestBase {
 
     @Test

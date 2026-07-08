@@ -67,6 +67,8 @@ Profiles: `selenoid_autotests_cloud_api`, `selenoid_autotests_cloud_e2e` — rem
 
 Post-deploy: `selenoid.autotests.cloud` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_autotests_cloud_api`).
 
+Prod caveats (nginx → selenoid-ui): `GET /status` — counters in `.state` (`HubStatusApi` unwraps); `GET /logs/{id}` — not proxied (404), `HubLogsListApiTests` is `@Tag(local-only)`.
+
 ### `testPlaywright` prerequisite
 
 Hub на `:4444` и Docker-образ из `fixtures/ci-browsers.json` / `dev/browsers.json`:
@@ -188,7 +190,7 @@ CM api / local-only: `./gradlew test -DincludeTags=api,cm -Denv=local_cm_integra
 | PlaywrightBrowserCapsJsonTest | playwright-image | playwright-image | component | — |
 | PlaywrightMinCatalogJsonTest | playwright-image | playwright-image | component | min |
 | HubStatusTests | selenoid | selenoid | api | api |
-| HubLogsListApiTests | selenoid | selenoid | api | api, negative |
+| HubLogsListApiTests | selenoid | selenoid | api | api, negative, local-only |
 | HubStatusSessionApiTests | selenoid | selenoid | api | api |
 | HubSessionApiTests | selenoid | selenoid | api | api |
 | PlaywrightEndpointTests | playwright-image | playwright-image | api | api |

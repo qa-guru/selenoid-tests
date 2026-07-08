@@ -2,6 +2,7 @@ package api.hub;
 
 import config.ConfigReader;
 import io.qameta.allure.Step;
+import io.restassured.response.ResponseBodyExtractionOptions;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,14 +18,18 @@ public final class HubStatusApi {
 
     @Step("GET {baseUri}/status")
     public static HubStatus fetchFrom(String baseUri) {
-        return given()
+        ResponseBodyExtractionOptions body = given()
                 .baseUri(trimTrailingSlash(baseUri))
                 .when()
                 .get("/status")
                 .then()
                 .statusCode(200)
                 .extract()
-                .as(HubStatus.class);
+                .body();
+        if (body.path("state") != null) {
+            return body.jsonPath().getObject("state", HubStatus.class);
+        }
+        return body.as(HubStatus.class);
     }
 
     private static String trimTrailingSlash(String baseUri) {
