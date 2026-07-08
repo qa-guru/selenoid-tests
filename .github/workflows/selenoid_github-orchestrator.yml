@@ -110,10 +110,10 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
-      - name: Setup Node 20 (Allure JUnit conversion)
+      - name: Setup Node 24 (Allure JUnit conversion)
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Run Go unit tests → Allure
         id: go-tests
@@ -126,7 +126,7 @@ jobs:
 
       - name: Upload Allure results
         if: always() && hashFiles(format('build/allure-results/go-{0}/**', matrix.repo)) != ''
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: allure-go-${{ matrix.repo }}
           path: build/allure-results/go-${{ matrix.repo }}/
@@ -306,7 +306,7 @@ jobs:
 
       - name: Upload Allure results
         if: always() && hashFiles('build/allure-results/**') != ''
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: allure-java
           path: build/allure-results/
@@ -338,14 +338,14 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Download Go Allure artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: allure-go-*
           path: build/allure-results
           merge-multiple: true
 
       - name: Download Java Allure artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: allure-java
           path: build/allure-results
