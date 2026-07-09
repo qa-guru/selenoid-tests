@@ -1,0 +1,834 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.UiSessionsListTests.activeSessionAppearsInSessionsList","Active hub session appears in dashboard sessions list","passed","4s 281ms",,,"Create hub session via API passed (2s 877ms)
+  POST /wd/hub/session passed (2s 862ms)
+    POST /wd/hub/session passed (2s 861ms)
+      POST /wd/hub/session (chrome 148.0-min) passed (2s 860ms)
+ Open dashboard and wait for stack CONNECTED passed (1s 124ms)
+   Open Selenoid UI dashboard passed (72ms)
+   Wait until SSE and SELENOID are CONNECTED passed (1s 52ms)
+     Wait until SSE is CONNECTED passed (1s 34ms)
+     Wait until SELENOID is CONNECTED passed (18ms)
+  Verify session row shows browser name passed (19ms)
+   Verify empty-state message is hidden passed (16ms)
+    Delete hub session passed (241ms)
+      DELETE /wd/hub/session/8b9cadd452a344986fbf6db5144465cc passed (240ms)",,"UI sessions list",,"selenoid-ui","UI sessions list",
+"github.com/aerokube/cm/selenoid.TestAllUrlsAreValid/All_urls_are_valid","All_urls_are_valid","passed","1s 390ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopProcess/Based_on_https://npf.io/2015/06/testing-exec-command/","Based_on_https://npf.io/2015/06/testing-exec-command/","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestBrowserName/Browser_name","Browser_name","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserNotFound/Browser_not_found","Browser_not_found","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedStripsMinSuffixForDriver/browserVersion_-min_is_stripped_before_driver","browserVersion_-min_is_stripped_before_driver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestCheckOrigin/Check_origin","Check_origin","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestChooseVolumeConfigDir/Choose_volume_config_dir","Choose_volume_config_dir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestClientDisconnected/Client_disconnected","Client_disconnected","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboard/Clipboard","Clipboard","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardMissingSession/Clipboard_missing_session","Clipboard_missing_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardProtocolExtension/Clipboard_protocol_extension","Clipboard_protocol_extension","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.CmCliVersionTests.cmHelpListsSubcommands","cm --help exits zero and lists subcommands","passed","34ms",,,"Run cm --help passed (9ms)
+  cm --help passed (9ms)
+ Verify exit code and output passed (13ms)",,"CM CLI version",,"cm",,
+"tests.integration.CmCliVersionTests.cmVersionPrintsRevision","cm version exits zero and prints revision","passed","13ms",,,"Run cm version passed (12ms)
+  cm version passed (11ms)
+ Verify exit code and output passed (0s)",,"CM CLI version",,"cm",,
+"github.com/aerokube/selenoid.TestConfig/Config","Config","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoad/Config_concurrent_load","Config_concurrent_load","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoadAndRead/Config_concurrent_load_and_read","Config_concurrent_load_and_read","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentRead/Config_concurrent_read","Config_concurrent_read","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyState/Config_empty_state","Config_empty_state","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyVersions/Config_empty_versions","Config_empty_versions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigError/Config_error","Config_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersion/Config_find_default_version","Config_find_default_version","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersionError/Config_find_default_version_error","Config_find_default_version_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByEmptyPrefix/Config_find_found_by_empty_prefix","Config_find_found_by_empty_prefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByMatch/Config_find_found_by_match","Config_find_found_by_match","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByPrefix/Config_find_found_by_prefix","Config_find_found_by_prefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindImage/Config_find_image","Config_find_image","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMicrosoftEdgeAlias/Config_find_microsoft_edge_alias","Config_find_microsoft_edge_alias","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMissingBrowser/Config_find_missing_browser","Config_find_missing_browser","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyState/Config_non_empty_state","Config_non_empty_state","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyVersions/Config_non_empty_versions","Config_non_empty_versions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigParseError/Config_parse_error","Config_parse_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.CmInstallerLifecycleTests.configureWritesBrowsersJson","configure writes browsers.json from dev catalog","passed","244ms",,,"cm selenoid configure -n passed (30ms)
+  cm selenoid configure passed (29ms)
+    Ensure Linux selenoid binary for Docker wrapper passed (4ms)
+    Ensure Linux selenoid-ui binary for Docker wrapper passed (4ms)
+ Verify browsers.json exists and contains chrome passed (29ms)
+  cm selenoid status passed (23ms)
+    cm selenoid status passed (23ms)
+   Verify status reports configuration file passed (0s)",,"CM installer lifecycle",,"cm","Installer lifecycle",
+"github.com/aerokube/cm/selenoid.TestConfigureDocker/Configure_docker","Configure_docker","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestConfigureDrivers/Configure_drivers","Configure_drivers","passed","90ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.UiDashboardLoadTests.dashboardOpensRootUrl","Dashboard opens root URL","passed","2s 118ms",,,"Open dashboard passed (2s 66ms)
+  Open Selenoid UI dashboard passed (2s 48ms)
+ Verify root URL is loaded passed (26ms)",,"UI dashboard load",,"selenoid-ui","UI dashboard",
+"tests.UiReloadTests.dashboardReloadKeepsConnected","Dashboard reload keeps CONNECTED indicators","passed","4s 687ms",,,"Open dashboard and wait for CONNECTED passed (809ms)
+  Open Selenoid UI dashboard passed (115ms)
+  Wait until SSE and SELENOID are CONNECTED passed (694ms)
+    Wait until SSE is CONNECTED passed (671ms)
+    Wait until SELENOID is CONNECTED passed (23ms)
+ Reload dashboard passed (3s 872ms)
+   Reload dashboard passed (44ms)
+   Wait until SSE and SELENOID are CONNECTED passed (3s 826ms)
+     Wait until SSE is CONNECTED passed (3s 809ms)
+     Wait until SELENOID is CONNECTED passed (17ms)",,"UI dashboard reload",,"selenoid-ui","UI dashboard",
+"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","DELETE unknown session returns client error","passed","12ms",,,"DELETE unknown session id passed (11ms)
+  DELETE /wd/hub/session/missing-session-id — expect HTTP 404 passed (11ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API",
+"github.com/aerokube/selenoid.TestDeleteContainerOnStartupError/Delete_container_on_startup_error","Delete_container_on_startup_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.component.CmStatusOutputTest.detectsRunningContainerInStatusOutput","detects running container in cm status output","passed","4ms",,,,,"CM status output fixture",,"cm",,
+"github.com/aerokube/selenoid.TestDetermineVideoScreenSizeFromScreenResolution/Determine_video_screen_size_from_screen_resolution","Determine_video_screen_size_from_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDevtools/Devtools","Devtools","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestResolveBrowsersConfPath/Discovers_browsers.json_in_temp_dir","Discovers_browsers.json_in_temp_dir","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestDockerAvailable/Docker_available","Docker_available","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDockerUnavailable/Docker_unavailable","Docker_unavailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownload/Download","Download","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadFile/Download_file","Download_file","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadLatestRelease/Download_latest_release","Download_latest_release","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadSpecificRelease/Download_specific_release","Download_specific_release","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadUI/Download_UI","Download_UI","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestBrowsersConfig/Empty_map_when_no_config_loaded","Empty_map_when_no_config_loaded","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"tests.component.SessionCreateJsonTest.extractsSessionId","extracts sessionId from create session response","passed","290ms",,,,,"Session create fixture",,,,
+"github.com/aerokube/cm/selenoid.TestFetchImageTags/Fetch_image_tags","Fetch_image_tags","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFileDownload/File_download","File_download","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadMissingSession/File_download_missing_session","File_download_missing_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadProtocolExtension/File_download_protocol_extension","File_download_protocol_extension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileMatches/File_matches","File_matches","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUpload/File_upload","File_upload","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadBadJson/File_upload_bad_JSON","File_upload_bad_JSON","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadNoFile/File_upload_no_file","File_upload_no_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadTwoFiles/File_upload_two_files","File_upload_two_files","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFilterOutLatest/Filter_out_latest","Filter_out_latest","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindDockerIPSpecified/Find_docker_ip_specified","Find_docker_ip_specified","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindDriver/Find_driver","Find_driver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindInsideOfDocker/Find_inside_of_docker","Find_inside_of_docker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFindMatchingImage/Find_matching_image","Find_matching_image","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindOutsideOfDocker/Find_outside_of_docker","Find_outside_of_docker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestResolveBrowsersConfPath/Flag_path_wins","Flag_path_wins","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"tests.integration.CmInstallerLifecycleTests.startFullStackUiProxiesHub","full stack start — UI /status mirrors hub counters","passed","3s 902ms",,,"Configure CM stack passed (29ms)
+  cm selenoid configure passed (29ms)
+    Ensure Linux selenoid binary for Docker wrapper passed (5ms)
+    Ensure Linux selenoid-ui binary for Docker wrapper passed (6ms)
+ Start hub via cm passed (780ms)
+   cm selenoid start passed (780ms)
+     Ensure Linux selenoid binary for Docker wrapper passed (0s)
+  Wait for hub readiness passed (3ms)
+    Wait until hub /status is ready passed (3ms)
+   Start UI via cm passed (1s 535ms)
+     cm selenoid-ui start passed (1s 535ms)
+       Ensure Linux selenoid-ui binary for Docker wrapper passed (0s)
+    Wait for UI readiness passed (510ms)
+      Wait until UI /status is ready passed (510ms)
+     GET hub /status passed (10ms)
+       GET http://127.0.0.1:4445/{hubStatusPath} passed (10ms)
+      GET UI /status passed (650ms)
+        GET http://127.0.0.1:8081//status passed (649ms)
+       Verify proxied counters match hub passed (0s)",,"CM installer lifecycle",,"cm","Installer lifecycle",
+"tests.api.HubWelcomeApiTests.welcomeReturnsSelenoidBanner","GET / returns Selenoid welcome text","passed","12ms",,,"GET / passed (10ms)
+  GET / passed (10ms)
+ Verify welcome text passed (0s)",,"Hub welcome page API",,"selenoid","Hub welcome",
+"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","GET /browsers-config returns browser catalog JSON","passed","13ms",,,"GET /browsers-config passed (11ms)
+  GET /browsers-config passed (10ms)
+    GET http://127.0.0.1:8080/browsers-config passed (10ms)
+ Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config",
+"tests.api.HubClipboardApiTests.clipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} for unknown session returns 404 JSON","passed","1s 269ms",,,"GET /clipboard/unknown-session passed (1s 253ms)
+  GET /clipboard/unknown-session — expect HTTP 404 passed (1s 252ms)",,"Hub clipboard proxy API",,"selenoid","Hub clipboard proxy",
+"tests.api.UiClipboardApiTests.uiClipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","passed","11ms",,,"GET UI /clipboard/unknown-session passed (10ms)
+  GET UI /clipboard/unknown-session — expect HTTP 404 passed (10ms)",,"UI /clipboard proxy API",,"selenoid-ui","UI clipboard proxy",
+"tests.api.HubDownloadApiTests.downloadUnknownSessionReturnsNotFound","GET /download/{sessionId} for unknown session returns 404 JSON","passed","18ms",,,"GET /download/unknown-session passed (17ms)
+  GET /download/unknown-session — expect HTTP 404 passed (16ms)",,"Hub download proxy API",,"selenoid","Hub download proxy",
+"tests.api.HubErrorApiTests.errorReturnsInvalidSessionJson","GET /error returns invalid session id JSON","passed","1s 5ms",,,"GET /error passed (1s 4ms)
+  GET /error passed (1s 3ms)",,"Hub /error API",,"selenoid","Hub error",
+"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","91ms",,,"GET /logs/unknown-session without WebSocket headers passed (89ms)",,"Hub logs endpoint API",,"selenoid","Hub logs",
+"tests.api.HubLogsSessionApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","passed","786ms",,,"Create hub session passed (537ms)
+  POST /wd/hub/session passed (537ms)
+    POST /wd/hub/session passed (537ms)
+      POST /wd/hub/session (chrome 148.0-min) passed (536ms)
+ GET /logs/{sessionId} without WebSocket headers passed (18ms)
+  Delete hub session passed (227ms)
+    DELETE /wd/hub/session/bdc47f776878c833e1246d530e95f34a passed (224ms)",,"Hub session logs WebSocket API",,"selenoid","Hub logs WebSocket",
+"tests.api.HubPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","24ms",,,"GET /ping passed (22ms)
+  GET /ping passed (22ms)
+    GET http://127.0.0.1:4444//ping passed (22ms)
+ Verify uptime and version passed (0s)",,"Hub ping API",,"selenoid","Hub ping",
+"tests.api.UiPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","8ms",,,"GET /ping passed (7ms)
+  GET /ping passed (7ms)
+    GET http://127.0.0.1:8080//ping passed (7ms)
+ Verify uptime and version passed (0s)",,"UI ping API",,"selenoid-ui","UI ping",
+"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","GET /ping version contains git revision marker","passed","13ms",,,"GET /ping passed (7ms)
+  GET /ping passed (7ms)
+    GET http://127.0.0.1:8080//ping passed (7ms)
+ Verify version looks like revision passed (3ms)",,"UI ping version",,"selenoid-ui","UI ping",
+"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","GET /status lists configured browser families","passed","12ms",,,"GET /status passed (10ms)
+  GET /status passed (10ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (9ms)
+ Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status",
+"tests.api.CmHubStatusApiTests.cmHubStatusReturnsStatisticsJson","GET /status on CM hub port returns statistics JSON","passed","34ms",,,"GET CM hub /status passed (30ms)
+  GET http://127.0.0.1:4445/{hubStatusPath} passed (24ms)
+ Verify hub counters are non-negative passed (0s)",,"CM hub status API",,"cm","CM-managed hub",
+"tests.api.CmUiStatusApiTests.cmUiStatusReturnsProxiedCounters","GET /status on CM UI port returns proxied hub counters","passed","2s 485ms",,,"GET CM UI /status passed (2s 454ms)
+  GET http://127.0.0.1:8081//status passed (2s 439ms)
+ Verify UI status counters are present passed (0s)",,"CM UI status API",,"cm","CM-managed UI",
+"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","GET /status returns hub statistics JSON","passed","19ms",,,"GET /status passed (17ms)
+  GET /status passed (16ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (16ms)
+ Verify root counters passed (0s)
+  Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status",
+"tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle","GET /status used counter tracks session lifecycle","passed","3s 538ms",,,"Snapshot hub used counter passed (1s 916ms)
+  GET /status passed (1s 898ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (1s 892ms)
+ Create hub session passed (1s 299ms)
+   POST /wd/hub/session passed (1s 299ms)
+     POST /wd/hub/session (chrome 148.0-min) passed (1s 298ms)
+  Verify used counter incremented passed (32ms)
+    Wait until hub used counter = 1 passed (18ms)
+      GET /status passed (18ms)
+        GET http://127.0.0.1:4444/{hubStatusPath} passed (17ms)
+   Delete hub session passed (270ms)
+     DELETE /wd/hub/session/bf9d489af74f8e395b7f889e1562fc0d passed (270ms)
+    Verify used counter returned to baseline passed (14ms)
+      Wait until hub used counter = 0 passed (12ms)
+        GET /status passed (11ms)
+          GET http://127.0.0.1:4444/{hubStatusPath} passed (11ms)",,"Hub status session counters API",,"selenoid","Hub status with session",
+"tests.api.HubVideoApiTests.videoListJsonReturnsArray","GET /video/?json returns file name list","passed","37ms",,,"GET /video/?json passed (36ms)
+  GET /video/?json passed (36ms)
+ Verify list payload passed (0s)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","GET /video/?json via UI proxy returns file name list","passed","27ms",,,"GET UI /video/?json passed (21ms)
+  GET UI /video/?json passed (19ms)
+ Verify list payload passed (0s)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVideoApiTests.missingVideoFileReturnsNotFound","GET /video/{missing}.mp4 returns 404","passed","22ms",,,"GET missing video file passed (21ms)
+  GET /video/missing-session-id.mp4 passed (21ms)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiMissingVideoFileReturnsNotFound","GET /video/{missing}.mp4 via UI proxy returns 404","passed","11ms",,,"GET missing video via UI passed (9ms)
+  GET UI /video/missing-session-id.mp4 — expect HTTP 404 passed (9ms)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVncSessionApiTests.sessionVncPathRequiresWebSocketUpgrade","GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","passed","1s 43ms",,,"Create hub session with VNC passed (762ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (762ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (762ms)
+ GET /vnc/{sessionId} without WebSocket headers passed (8ms)
+  Delete hub session passed (271ms)
+    DELETE /wd/hub/session/4f55b78d15f2fa38620b45ad68e1ffb5 passed (271ms)",,"Hub session VNC WebSocket API",,"selenoid","Hub VNC WebSocket",
+"tests.api.HubWebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub","passed","13ms",,,"GET /wd/hub/status passed (12ms)
+  GET /wd/hub/status passed (11ms)
+    GET http://127.0.0.1:4444//wd/hub/status passed (11ms)
+ Verify ready flag and message passed (0s)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status",
+"tests.api.WebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","27ms",,,"GET /wd/hub/status passed (23ms)
+  GET /wd/hub/status passed (19ms)
+    GET http://127.0.0.1:4444//wd/hub/status passed (19ms)
+ Verify ready flag and message passed (1ms)",,"WebDriver image hub status API",,"webdriver-image","WebDriver hub status",
+"tests.api.UiLogsWsApiTests.uiLogsPathRequiresWebSocketUpgrade","GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","767ms",,,"Create hub session passed (540ms)
+  POST /wd/hub/session passed (539ms)
+    POST /wd/hub/session passed (539ms)
+      POST /wd/hub/session (chrome 148.0-min) passed (539ms)
+ GET /ws/logs/{sessionId} without WebSocket headers passed (12ms)
+  Delete hub session passed (213ms)
+    DELETE /wd/hub/session/c6fa826260792314d8b286daa2fa5967 passed (213ms)",,"UI /ws/logs WebSocket API",,"selenoid-ui","UI logs WebSocket proxy",
+"tests.api.UiVncWsApiTests.uiVncPathRequiresWebSocketUpgrade","GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","10ms",,,"GET /ws/vnc/{sessionId} without WebSocket headers passed (10ms)",,"UI /ws/vnc WebSocket API",,"selenoid-ui","UI VNC WebSocket proxy",
+"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","GET playwright path without upgrade returns 400","passed","12ms",,,"GET playwright path without WebSocket headers passed (11ms)
+  GET {path} without WebSocket upgrade passed (11ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint",
+"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","GET UI /status exposes total quota counter","passed","61ms",,,"GET UI /status passed (57ms)
+  GET /status passed (57ms)
+    GET http://127.0.0.1:8080//status passed (57ms)
+ Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy",
+"tests.api.UiStatusTests.uiStatusReturnsProxiedHubJson","GET UI /status returns proxied hub statistics JSON","passed","123ms",,,"GET UI /status passed (118ms)
+  GET /status passed (118ms)
+    GET http://127.0.0.1:8080//status passed (118ms)
+ Verify proxied state counters passed (0s)
+  Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy",
+"tests.api.PlaywrightUnknownPathTests.unknownPlaywrightPathRejected","GET unknown playwright path returns 400","passed","17ms",,,"GET unknown playwright path passed (15ms)
+  GET unknown playwright path without WebSocket upgrade passed (15ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint",
+"github.com/aerokube/selenoid.TestNewSessionWithGet/GET_/wd/hub/session_returns_405_Method_Not_Allowed","GET_/wd/hub/session_returns_405_Method_Not_Allowed","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetConfigDir/Get_config_dir","Get_config_dir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetDefaultScreenResolution/Get_default_screen_resolution","Get_default_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetFullScreenResolution/Get_full_screen_resolution","Get_full_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetKey/Get_key","Get_key","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetLogs/Get_logs","Get_logs","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithVNC/Get_playwright_port_config_with_vnc","Get_playwright_port_config_with_vnc","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithoutVNC/Get_playwright_port_config_without_vnc","Get_playwright_port_config_without_vnc","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetSelenoidImage/Get_selenoid_image","Get_selenoid_image","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetShortScreenResolution/Get_short_screen_resolution","Get_short_screen_resolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVideoScreenSizeFromCapability/Get_video_screen_size_from_capability","Get_video_screen_size_from_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVNC/Get_vnc","Get_vnc","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.HubStatusSessionIntegrationTests.statusBrowsersReflectActiveSession","Hub /status browsers map reflects active session browser family","passed","798ms",,,"Create hub session passed (563ms)
+  POST /wd/hub/session passed (563ms)
+    POST /wd/hub/session passed (562ms)
+      POST /wd/hub/session (chrome 148.0-min) passed (562ms)
+ GET hub /status passed (12ms)
+   GET /status passed (12ms)
+     GET http://127.0.0.1:4444/{hubStatusPath} passed (12ms)
+  Verify active session browser family is listed passed (1ms)
+   Delete hub session passed (218ms)
+     DELETE /wd/hub/session/f29acb656a354167d6ed3713e9ee7cd8 passed (218ms)",,"Hub status browsers with active session",,"selenoid","Hub status with session",
+"tests.integration.StackHealthTests.hubAndUiRespondOnHealthEndpoints","Hub and UI respond on health endpoints","passed","16ms",,,"GET hub /status passed (8ms)
+  GET /status passed (8ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (8ms)
+ GET UI /ping passed (6ms)
+   GET /ping passed (6ms)
+     GET http://127.0.0.1:8080//ping passed (5ms)
+  Verify UI ping uptime passed (0s)",,"Stack health integration",,"selenoid-ui","Stack health",
+"tests.component.HubStatusForwardCompatJsonTest.ignoresUnknownFields","ignores unknown JSON fields","passed","3ms",,,,,"Hub status forward compatibility",,,,
+"github.com/aerokube/cm/selenoid.TestImageWithTag/Image_with_tag","Image_with_tag","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestInvalidSessionTimeoutCapability/Invalid_session_timeout_capability","Invalid_session_timeout_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestIsPlaywrightBrowser/Is_playwright_browser","Is_playwright_browser","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestIsVideoRecordingSupported/Is_video_recording_supported","Is_video_recording_supported","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLifecycle/Lifecycle","Lifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLimitNoPull/Limit_no_pull","Limit_no_pull","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.component.PlaywrightBrowserCapsJsonTest.listsPlaywrightChromiumFamily","lists playwright-chromium in browser families map","passed","11ms",,,,,"Playwright browser caps fixture",,"playwright-image",,
+"tests.component.CmHelpOutputTest.listsCoreSubcommandsInHelp","lists selenoid and selenoid-ui subcommands in help","passed","4ms",,,,,"CM help output fixture",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestLoadBrowserProtocols/Load_browser_protocols","Load_browser_protocols","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestLogConfigError/Log_config_error","Log_config_error","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedScreenResolutionCapability/Malformed_screen_resolution_capability","Malformed_screen_resolution_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedVideoScreenSizeCapability/Malformed_video_screen_size_capability","Malformed_video_screen_size_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionBadHostResponse/New_session_bad_host_response","New_session_bad_host_response","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionHostDown/New_session_host_down","New_session_host_down","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionNotFound/New_session_not_found","New_session_not_found","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionTimeout/New_session_timeout","New_session_timeout","passed","50ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestDefaultManagerFindPlaywright/no_client","no_client","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestDefaultManagerFindPlaywright/not_playwright_protocol","not_playwright_protocol","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestDefaultManagerFindPlaywright/ok","ok","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestParseGgrHost/Parse_GGR_host","Parse_GGR_host","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequest/Parse_playwright_request","Parse_playwright_request","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestDefaultVersion/Parse_playwright_request_default_version","Parse_playwright_request_default_version","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestLabels/Parse_playwright_request_labels","Parse_playwright_request_labels","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestParseRequestedBrowsers/Parse_requested_browsers","Parse_requested_browsers","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"tests.component.BrowsersConfigJsonTest.parsesBrowsersCatalog","parses browsers catalog map","passed","846ms",,,,,"Browsers config fixture",,,,
+"tests.component.HubStatusBrowsersJsonTest.parsesBrowsersMap","parses browsers map with version entries","passed","7ms",,,,,"Hub status browsers fixture",,,,
+"tests.component.ChromeMinCatalogJsonTest.parsesChromeMinCatalogVersionBlock","parses chrome-min catalog version block port and path","passed","1s 178ms",,,,,"Chrome min browser catalog fixture",,"webdriver-image",,
+"tests.component.CmBrowsersConfigJsonTest.parsesCmBrowsersChromeMinImage","parses cm browsers.json chrome-min image tag","passed","20ms",,,,,"CM browsers.json fixture",,"cm",,
+"tests.component.CmBrowsersConfigJsonTest.parsesCmBrowsersDefaultVersion","parses cm browsers.json default chrome version","passed","46ms",,,,,"CM browsers.json fixture",,"cm",,
+"tests.component.UiErrorJsonTest.parsesErrorPayload","parses error list payload","passed","22ms",,,,,"UI error fixture",,,,
+"tests.component.HubStatusParserTest.parsesFlatHubStatus","parses flat hub /status JSON","passed","19ms",,,,,"Hub status parser",,,,
+"tests.component.CmVersionOutputTest.parsesGitRevisionFromVersionOutput","parses git revision from cm version output","passed","1ms",,,,,"CM version output fixture",,"cm",,
+"tests.component.HubLogsListJsonTest.parsesHubLogsJsonArray","parses hub logs JSON array with session file names","passed","8ms",,,,,"Hub logs list fixture",,"selenoid",,
+"tests.component.HubStatusJsonTest.parsesIdleHubStatus","parses idle hub status counters","passed","2ms",,,,,"Hub status fixture",,,,
+"tests.component.PlaywrightMinCatalogJsonTest.parsesMinImageTagInCatalog","parses min image tag in catalog entry","passed","16ms",,,,,"Playwright min browser catalog fixture",,"playwright-image",,
+"tests.component.ChromeMinCatalogJsonTest.parsesMinImageTagInChromeCatalog","parses min image tag in chrome catalog entry","passed","18ms",,,,,"Chrome min browser catalog fixture",,"webdriver-image",,
+"tests.component.PlaywrightWsPathJsonTest.parsesPlaywrightDefaultVersion","parses playwright browser catalog default version","passed","16ms",,,,,"Playwright WS path fixture",,"playwright-image",,
+"tests.component.PlaywrightWsPathJsonTest.parsesPlaywrightProtocolFlag","parses playwright protocol flag in catalog entry","passed","61ms",,,,,"Playwright WS path fixture",,"playwright-image",,
+"tests.component.PlaywrightBrowserCapsJsonTest.parsesPlaywrightVersionFromCatalog","parses playwrightVersion from catalog version block","passed","19ms",,,,,"Playwright browser caps fixture",,"playwright-image",,
+"tests.component.PlaywrightMinCatalogJsonTest.parsesPlaywrightVersionFromMinCatalog","parses playwrightVersion from min catalog version block","passed","40ms",,,,,"Playwright min browser catalog fixture",,"playwright-image",,
+"tests.component.UiStatusJsonTest.parsesUiStatusWrapper","parses proxied UI status wrapper","passed","1s 31ms",,,,,"UI status fixture",,,,
+"tests.component.HubWebDriverStatusJsonTest.parsesReadyWebDriverStatus","parses ready WebDriver status payload","passed","7ms",,,,,"Hub WebDriver status fixture",,,,
+"tests.component.SseErrorsJsonTest.parsesSseErrorsPayload","parses SSE payload with errors list","passed","3ms",,,,,"SSE errors fixture",,,,
+"tests.component.SseStateJsonTest.parsesSseStatePayload","parses SSE payload with hub state","passed","9ms",,,,,"SSE state fixture",,,,
+"tests.component.HubStatusParserTest.parsesUiWrappedStatus","parses UI-shaped /status JSON with .state wrapper","passed","29ms",,,,,"Hub status parser",,,,
+"tests.component.UiPingJsonTest.parsesPingFields","parses uptime and version fields","passed","11ms",,,,,"UI ping fixture",,,,
+"github.com/aerokube/selenoid.TestPing/Ping","Ping","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestPing/Ping","Ping","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestWsProxyRejectsPlainGet/Plain_GET_without_upgrade_returns_400","Plain_GET_without_upgrade_returns_400","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"tests.integration.HubPlaywrightNavigateTests.playwrightSessionNavigatesToExampleDomain","Playwright session navigates to example.com","passed","1s 224ms",,,"Snapshot hub used counter passed (14ms)
+  GET /status passed (14ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (13ms)
+ Connect Playwright via hub WS endpoint passed (648ms)
+   Connect Playwright browser via hub WS passed (648ms)
+     Connect Playwright browser via hub WS (ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1?name=java-playwright-integration&sessionTimeout=5m&enableVNC=false&enableVideo=false) passed (647ms)
+  Navigate to example.com passed (64ms)
+   Verify page title passed (25ms)
+    Close remote session passed (2ms)
+      Close Playwright remote browser session passed (2ms)
+     Verify hub released session passed (9ms)
+       GET /status passed (9ms)
+         GET http://127.0.0.1:4444/{hubStatusPath} passed (9ms)",,"Playwright navigate integration",,"playwright-image","Playwright WS session",
+"github.com/aerokube/selenoid.TestPlaywrightConnectBrowserNotFound/Playwright_connect_browser_not_found","Playwright_connect_browser_not_found","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightConnectProxiesWebSocket/Playwright_connect_proxies_websocket","Playwright_connect_proxies_websocket","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightConnectRejectsNonWebSocket/Playwright_connect_rejects_non_websocket","Playwright_connect_rejects_non_websocket","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightContainerEnv/Playwright_container_env","Playwright_container_env","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestPlaywrightProxyHubDown/Playwright_proxy_error_when_hub_unreachable","Playwright_proxy_error_when_hub_unreachable","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestPlaywrightSessionDeletedViaHub/Playwright_session_deleted_via_hub","Playwright_session_deleted_via_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.api.HubSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates and DELETE removes session","passed","756ms",,,"Create remote session passed (526ms)
+  POST /wd/hub/session passed (525ms)
+    POST /wd/hub/session (chrome 148.0-min) passed (525ms)
+ Verify session id passed (0s)
+  Delete session passed (229ms)
+    DELETE /wd/hub/session/d4cfc695451009ddb3d8712f94ef8874 passed (228ms)",,"Hub session API",,"selenoid","WebDriver session API",
+"tests.api.WebDriverSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates chrome session via webdriver-image node","passed","880ms",,,"Create remote session passed (625ms)
+  POST /wd/hub/session and read browserName from capabilities passed (625ms)
+ Verify session id and browserName passed (0s)
+  Delete session passed (253ms)
+    DELETE /wd/hub/session/c4590f2b5fa6427c7ea2f265b8fdf294 passed (252ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API",
+"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","POST /wd/hub/session echoes browserName in capabilities","passed","802ms",,,"Create remote session passed (572ms)
+  POST /wd/hub/session and read browserName from capabilities passed (572ms)
+ Verify capabilities.browserName passed (2ms)
+  Delete session passed (226ms)
+    DELETE /wd/hub/session/297da19181a0cf84916d52face23ec12 passed (226ms)",,"Hub session capabilities",,"selenoid","WebDriver session API",
+"tests.api.CmHubSessionApiTests.cmHubCreateAndDeleteSession","POST /wd/hub/session on CM hub creates and DELETE removes session","passed","2s 228ms",,,"Create session on CM hub passed (1s 976ms)
+  POST /wd/hub/session passed (1s 975ms)
+    POST /wd/hub/session (chrome 148.0-min) passed (1s 967ms)
+ Verify session id passed (23ms)
+  Delete session on CM hub passed (227ms)
+    DELETE /wd/hub/session/a7346a8b65d9b9375eef89b10e3b90c0 passed (227ms)",,"CM hub session API",,"cm","CM-managed hub session",
+"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","POST /wd/hub/session rejects unknown browser","passed","17ms",,,"POST session with unknown browser passed (17ms)
+  POST /wd/hub/session — expect HTTP 400 passed (17ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API",
+"github.com/aerokube/selenoid.TestBadJsonFormat/POST_/wd/hub/session_rejects_malformed_JSON_body","POST_/wd/hub/session_rejects_malformed_JSON_body","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestPostProcessPath/Post_process_path","Post_process_path","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestPrepareCommand/Prepare_command","Prepare_command","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestProcessExtensionCapabilities/Process_extension_capabilities","Process_extension_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxyPlaywright/Proxy_playwright_to_backend","Proxy_playwright_to_backend","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySession/Proxy_session","Proxy_session","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionCanceled/Proxy_session_canceled","Proxy_session_canceled","passed","1s 0ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionPanicOnAbortHandler/Proxy_session_panic_on_abort_handler","Proxy_session_panic_on_abort_handler","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionTimeout/Proxy_session_timeout","Proxy_session_timeout","passed","90ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.HubChromeMinSessionTests.remoteChromeMinSessionStartsAndCompletes","Remote Chrome min WebDriver session starts browser node and completes","passed","1s 902ms",,,"Snapshot hub /status used counter passed (971ms)
+  GET /status passed (956ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (950ms)
+ Create Chrome min hub session passed (640ms)
+   POST /wd/hub/session (chrome 148.0-min) passed (639ms)
+  Verify hub reports active session passed (20ms)
+    GET /status passed (19ms)
+      GET http://127.0.0.1:4444/{hubStatusPath} passed (18ms)
+   Verify session id is assigned passed (0s)
+    Delete Chrome min session passed (259ms)
+      DELETE /wd/hub/session/aeb8af40959561f94382e02aeaea35a7 passed (259ms)
+     Verify hub released session passed (10ms)
+       GET /status passed (9ms)
+         GET http://127.0.0.1:4444/{hubStatusPath} passed (8ms)",,"WebDriver hub session (chrome-min)",,"webdriver-image","WebDriver session (min)",
+"tests.CmInstallerSessionTests.remoteSessionOpensExampleDomain","Remote Chrome session opens example.com","passed","2s 72ms",,,"Open smoke URL via remote WebDriver passed (1s 705ms)
+ Verify session id is assigned passed (23ms)
+  Verify page title passed (17ms)
+   Verify heading text passed (156ms)",,"CM installer session",,"cm","Installed stack session",
+"tests.HubSessionTests.remoteSessionOpensExampleDomain","Remote Chrome session opens example.com","passed","74ms",,,"Open smoke URL via remote WebDriver passed (39ms)
+ Verify session id is assigned passed (0s)
+  Verify page title passed (8ms)
+   Verify heading text passed (22ms)",,"WebDriver session",,"webdriver-image","WebDriver session",
+"tests.integration.HubChromeSessionIntegrationTests.remoteChromeSessionStartsAndCompletes","Remote Chrome WebDriver session starts browser node and completes","passed","861ms",,,"Snapshot hub /status used counter passed (9ms)
+  GET /status passed (9ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (9ms)
+ Create Chrome hub session passed (589ms)
+   POST /wd/hub/session (chrome 148.0-min) passed (589ms)
+  Verify hub reports active session passed (23ms)
+    GET /status passed (21ms)
+      GET http://127.0.0.1:4444/{hubStatusPath} passed (19ms)
+   Verify session id is assigned passed (2ms)
+    Delete Chrome session passed (227ms)
+      DELETE /wd/hub/session/7a1792f097ba7708e15f12e535a0f577 passed (225ms)
+     Verify hub released session passed (7ms)
+       GET /status passed (7ms)
+         GET http://127.0.0.1:4444/{hubStatusPath} passed (6ms)",,"WebDriver hub session (chrome)",,"webdriver-image","WebDriver session",
+"tests.HubPlaywrightMinSessionTests.remotePlaywrightMinSessionOpensExampleDomain","Remote Playwright min WS session opens example.com","passed","2s 522ms",,,"Navigate to smoke URL passed (86ms)
+ Verify page title passed (53ms)
+  Verify heading text passed (18ms)
+   Verify browser is connected passed (10ms)",,"Playwright WS session (min)",,"playwright-image","Playwright WS session (min)",
+"tests.integration.HubPlaywrightMinSessionTests.remotePlaywrightMinSessionStartsAndCompletes","Remote Playwright min WS session starts browser node and completes","passed","1s 26ms",,,"Snapshot hub /status used counter passed (10ms)
+  GET /status passed (9ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (9ms)
+ Connect Playwright via hub WS endpoint (min) passed (651ms)
+   Connect Playwright browser via hub WS passed (650ms)
+     Connect Playwright browser via hub WS (ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1-min?name=java-playwright-min-integration&sessionTimeout=5m&enableVNC=false&enableVideo=false) passed (650ms)
+  Verify remote browser is connected passed (0s)
+   Verify hub reports active session passed (9ms)
+     GET /status passed (9ms)
+       GET http://127.0.0.1:4444/{hubStatusPath} passed (8ms)
+    Close remote session passed (3ms)
+      Close Playwright remote browser session passed (3ms)
+     Verify browser is disconnected after close passed (0s)
+      Verify hub released session passed (10ms)
+        GET /status passed (10ms)
+          GET http://127.0.0.1:4444/{hubStatusPath} passed (9ms)",,"Playwright hub WS session (min)",,"playwright-image","Playwright WS session (min)",
+"tests.HubPlaywrightSessionTests.remotePlaywrightSessionOpensExampleDomain","Remote Playwright WS session opens example.com","passed","1s 3ms",,,"Navigate to smoke URL passed (71ms)
+ Verify page title passed (48ms)
+  Verify heading text passed (18ms)
+   Verify browser is connected passed (13ms)",,"Playwright WS session",,"playwright-image","Playwright WS session",
+"tests.integration.HubPlaywrightSessionTests.remotePlaywrightSessionStartsAndCompletes","Remote Playwright WS session starts browser node and completes","passed","1s 54ms",,,"Snapshot hub /status used counter passed (17ms)
+  GET /status passed (17ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (16ms)
+ Connect Playwright via hub WS endpoint passed (660ms)
+   Connect Playwright browser via hub WS passed (660ms)
+     Connect Playwright browser via hub WS (ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1?name=java-playwright-integration&sessionTimeout=5m&enableVNC=false&enableVideo=false) passed (659ms)
+  Verify remote browser is connected passed (0s)
+   Verify hub reports active session passed (7ms)
+     GET /status passed (7ms)
+       GET http://127.0.0.1:4444/{hubStatusPath} passed (6ms)
+    Close remote session passed (1ms)
+      Close Playwright remote browser session passed (1ms)
+     Verify browser is disconnected after close passed (0s)
+      Verify hub released session passed (12ms)
+        GET /status passed (12ms)
+          GET http://127.0.0.1:4444/{hubStatusPath} passed (11ms)",,"Playwright hub WS session",,"playwright-image","Playwright WS session",
+"tests.HubSessionIdTests.remoteSessionAssignsSessionId","Remote session assigns session id","passed","71ms",,,"Open smoke URL passed (51ms)
+ Verify session id passed (15ms)",,"Hub session id",,"webdriver-image","WebDriver session",
+"tests.HubSessionTitleTests.remoteSessionHasExampleDomainTitle","Remote session page has Example Domain title","passed","36ms",,,"Open smoke URL passed (27ms)
+ Verify document title passed (5ms)",,"Hub session title",,"webdriver-image","WebDriver session",
+"tests.HubSessionHeadingTests.remoteSessionRendersHeading","Remote session renders Example Domain heading","passed","2s 214ms",,,"Open smoke URL passed (2s 34ms)
+ Verify heading passed (153ms)",,"Hub session heading",,"webdriver-image","WebDriver session",
+"helpers.CmRunResultTest.requireSuccessFailsOnNonZeroExit","requireSuccess fails on non-zero exit code","passed","5ms",,,,,"CmRunResult",,,,
+"helpers.CmRunResultTest.requireSuccessPassesOnZeroExit","requireSuccess passes on exit code zero","passed","1ms",,,,,"CmRunResult",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlFailsWhenBothEmpty","resolveApiBaseUrl fails fast when apiBaseUrl and hubUrl are empty","passed","4ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlFallsBackToHubUrl","resolveApiBaseUrl falls back to hubUrl when apiBaseUrl is empty","passed","5ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveApiBaseUrlPrefersExplicitKey","resolveApiBaseUrl prefers apiBaseUrl over hubUrl","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUrlTrimTest.resolveApiBaseUrlTrimsWhitespace","resolveApiBaseUrl trims explicit apiBaseUrl","passed","2ms",,,,,"ConfigReader URL trim",,,,
+"config.ConfigReaderCmTest.resolveCmHubUrlRespectsCustomPort","resolveCmHubUrl respects custom cmHubPort","passed","4ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmHubUrlUsesCmHubPort","resolveCmHubUrl uses cmHubPort with trailing slash","passed","2ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmRemoteUrlCombinesHubBaseAndWdHubPath","resolveCmRemoteUrl points WebDriver hub at CM-managed port","passed","2ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmUiUrlRespectsCustomPort","resolveCmUiUrl respects custom cmUiPort","passed","3ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderCmTest.resolveCmUiUrlUsesCmUiPort","resolveCmUiUrl uses cmUiPort with trailing slash","passed","127ms",,,,,"ConfigReader CM URLs",,,,
+"config.ConfigReaderTest.resolveHubStatusPathDefaultsToStatus","resolveHubStatusPath defaults to /status","passed","5ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubStatusPathNormalizesPath","resolveHubStatusPath normalizes path without leading slash","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubUrlAddsTrailingSlash","resolveHubUrl adds trailing slash","passed","3ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubUrlFailsWhenEmpty","resolveHubUrl fails fast when hubUrl is empty","passed","2ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderTest.resolveHubUrlKeepsTrailingSlash","resolveHubUrl keeps trailing slash","passed","3ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUrlTrimTest.resolveHubUrlTrimsWhitespace","resolveHubUrl trims surrounding whitespace","passed","5ms",,,,,"ConfigReader URL trim",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointAddsQueryParams","resolvePlaywrightWsEndpoint appends selenoid query params","passed","4ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointAppendsVncAndVideoFlags","resolvePlaywrightWsEndpoint appends VNC and video flags from config","passed","3ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointFailsWhenEmpty","resolvePlaywrightWsEndpoint fails fast when playwrightWsEndpoint is empty","passed","4ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointKeepsExistingQueryString","resolvePlaywrightWsEndpoint keeps endpoint that already has query string","passed","5ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderPlaywrightTest.resolvePlaywrightWsEndpointUrlEncodesSessionName","resolvePlaywrightWsEndpoint URL-encodes session name","passed","2ms",,,,,"ConfigReader Playwright endpoint",,,,
+"config.ConfigReaderTest.resolveUiUrlAddsTrailingSlash","resolveUiUrl adds trailing slash","passed","4ms",,,,,"ConfigReader",,,,
+"config.ConfigReaderUiTest.resolveUiUrlFailsWhenEmpty","resolveUiUrl fails fast when uiUrl is empty","passed","5ms",,,,,"ConfigReader UI URL",,,,
+"config.ConfigReaderUiTest.resolveUiUrlKeepsTrailingSlash","resolveUiUrl keeps trailing slash","passed","3ms",,,,,"ConfigReader UI URL",,,,
+"config.ConfigReaderUrlTrimTest.resolveUiUrlTrimsWhitespace","resolveUiUrl trims surrounding whitespace","passed","2ms",,,,,"ConfigReader URL trim",,,,
+"github.com/aerokube/selenoid-ui.TestBrowsersConfig/Returns_protocol_metadata","Returns_protocol_metadata","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestRootLoads/Root_loads","Root_loads","passed","60ms",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestS3Uploader/S_3_uploader","S_3_uploader","passed","20ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteLogFile/Serve_and_delete_log_file","Serve_and_delete_log_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteVideoFile/Serve_and_delete_video_file","Serve_and_delete_video_file","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServiceStartupFailure/Service_startup_failure","Service_startup_failure","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"config.CreateSessionRequestJsonTest.sessionBodyIncludesDockerSafeChromeArgs","session body includes docker-safe chrome args","passed","26ms",,,,,"CreateSessionRequest JSON",,,,
+"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","Session video is downloadable via UI /video proxy after delete","passed","4s 346ms",,,"Create hub session with video passed (756ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (756ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (756ms)
+ Keep session briefly for recorder passed (3s 0ms)
+  Delete hub session passed (568ms)
+    DELETE /wd/hub/session/bfb08c97845a9d8f271dfe379505c501 passed (568ms)
+   Wait for video artifact in UI GET /video/?json passed (9ms)
+     GET UI /video/?json passed (9ms)
+    Verify session video is listed via UI proxy passed (0s)
+     Download session video via UI proxy passed (9ms)
+       GET UI /video/bfb08c97845a9d8f271dfe379505c501.mp4 — download body passed (8ms)
+      Verify MP4 payload via UI proxy passed (1ms)",,"UI session video via /video proxy",,"selenoid-ui","UI session video proxy",
+"tests.api.HubVideoSessionApiTests.sessionVideoListedAfterClose","Session with enableVideo=true produces downloadable MP4 after delete","passed","4s 382ms",,,"Create hub session with video passed (709ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (709ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (709ms)
+ Keep session briefly for recorder passed (3s 0ms)
+  Delete hub session passed (633ms)
+    DELETE /wd/hub/session/0435cadc38f102e4af48b485bdf0ba07 passed (632ms)
+   Wait for video artifact in GET /video/?json passed (8ms)
+     GET /video/?json passed (8ms)
+    Verify session video is listed passed (0s)
+     Download session video passed (28ms)
+       GET /video/0435cadc38f102e4af48b485bdf0ba07.mp4 passed (27ms)
+      Verify MP4 payload passed (1ms)",,"Hub session video API",,"selenoid","Hub session video",
+"github.com/aerokube/selenoid.TestSessionCreated/Session_created","Session_created","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedFirstMatchOnly/Session_created_first_match_only","Session_created_first_match_only","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRedirect/Session_created_redirect","Session_created_redirect","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRemoveExtensionCapabilities/Session_created_remove_extension_capabilities","Session_created_remove_extension_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedW3C/Session_created_w_3_c","Session_created_w_3_c","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedWdHub/Session_created_wd_hub","Session_created_wd_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionDeleted/Session_deleted","Session_deleted","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTimeout/Session_failed_after_timeout","Session_failed_after_timeout","passed","100ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTwoTimeout/Session_failed_after_two_timeout","Session_failed_after_two_timeout","passed","110ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionOnClose/Session_on_close","Session_on_close","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestAddedSeCdpCapability/session_response_includes_se:cdp_and_se:cdpVersion_capabilities","session_response_includes_se:cdp_and_se:cdpVersion_capabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionWithContentTypeCreatedWdHub/Session_with_content_type_created_wd_hub","Session_with_content_type_created_wd_hub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestConfigureWsProxy/Sets_per-proxy_upgrader_when_allowed-origin_configured","Sets_per-proxy_upgrader_when_allowed-origin_configured","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"tests.api.UiSseStreamTests.sseDeliversPayload","SSE /events delivers state or error payload","passed","110ms",,,"Read first SSE event passed (108ms)
+  Read first SSE event from /events passed (108ms)
+    Read first SSE event from http://127.0.0.1:8080/events passed (107ms)
+ Verify payload has state or errors passed (0s)",,"UI SSE stream",,"selenoid-ui","UI SSE",
+"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","SSE /events delivers two consecutive payloads","passed","8s 612ms",,,"Read two SSE events passed (8s 611ms)
+  Read two SSE events from /events passed (8s 71ms)
+    Read two SSE events from http://127.0.0.1:8080/events passed (8s 71ms)
+ Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE",
+"tests.UiStatusBarTests.statusBarStaysConnected","SSE and SELENOID stay CONNECTED on stable stack","passed","9s 167ms",,,"Open dashboard and wait for CONNECTED passed (3s 819ms)
+  Open Selenoid UI dashboard passed (68ms)
+  Wait until SSE and SELENOID are CONNECTED passed (3s 750ms)
+    Wait until SSE is CONNECTED passed (3s 735ms)
+    Wait until SELENOID is CONNECTED passed (15ms)
+ Verify status indicators show ok styling passed (22ms)
+  Keep CONNECTED stable for 5 seconds passed (5s 323ms)
+    Keep CONNECTED stable for 5000 ms passed (5s 323ms)
+      Wait until SSE and SELENOID are CONNECTED passed (30ms)
+        Wait until SSE is CONNECTED passed (16ms)
+        Wait until SELENOID is CONNECTED passed (14ms)
+      Wait until SSE and SELENOID are CONNECTED passed (32ms)
+        Wait until SSE is CONNECTED passed (17ms)
+        Wait until SELENOID is CONNECTED passed (14ms)
+      Wait until SSE and SELENOID are CONNECTED passed (31ms)
+        Wait until SSE is CONNECTED passed (16ms)
+        Wait until SELENOID is CONNECTED passed (15ms)
+      Wait until SSE and SELENOID are CONNECTED passed (31ms)
+        Wait until SSE is CONNECTED passed (16ms)
+        Wait until SELENOID is CONNECTED passed (15ms)
+      Wait until SSE and SELENOID are CONNECTED passed (34ms)
+        Wait until SSE is CONNECTED passed (20ms)
+        Wait until SELENOID is CONNECTED passed (14ms)
+      Wait until SSE and SELENOID are CONNECTED passed (30ms)
+        Wait until SSE is CONNECTED passed (15ms)
+        Wait until SELENOID is CONNECTED passed (15ms)
+      Wait until SSE and SELENOID are CONNECTED passed (33ms)
+        Wait until SSE is CONNECTED passed (17ms)
+        Wait until SELENOID is CONNECTED passed (16ms)
+      Wait until SSE and SELENOID are CONNECTED passed (31ms)
+        Wait until SSE is CONNECTED passed (16ms)
+        Wait until SELENOID is CONNECTED passed (15ms)
+      Wait until SSE and SELENOID are CONNECTED passed (33ms)
+        Wait until SSE is CONNECTED passed (17ms)
+        Wait until SELENOID is CONNECTED passed (16ms)
+      Wait until SSE and SELENOID are CONNECTED passed (31ms)
+        Wait until SSE is CONNECTED passed (16ms)
+        Wait until SELENOID is CONNECTED passed (14ms)",,"UI status bar",,"selenoid-ui","UI status bar",
+"tests.UiSseIndicatorTests.sseIndicatorUsesOkStyling","SSE indicator uses ok styling when connected","passed","3s 839ms",,,"Open dashboard passed (3s 821ms)
+  Open Selenoid UI dashboard passed (59ms)
+  Wait until SSE and SELENOID are CONNECTED passed (3s 762ms)
+    Wait until SSE is CONNECTED passed (3s 745ms)
+    Wait until SELENOID is CONNECTED passed (17ms)
+ Verify SSE indicator uses ok styling passed (14ms)",,"UI SSE indicator",,"selenoid-ui","UI status bar",
+"tests.integration.UiSseWithSessionTests.ssePayloadParseableWithActiveSession","SSE payload remains parseable while hub session is active","passed","1s 947ms",,,"Create hub session passed (525ms)
+  POST /wd/hub/session passed (525ms)
+    POST /wd/hub/session passed (525ms)
+      POST /wd/hub/session (chrome 148.0-min) passed (524ms)
+ Read SSE event passed (1s 214ms)
+   Read first SSE event from /events passed (1s 151ms)
+     Read first SSE event from http://127.0.0.1:8080/events passed (1s 151ms)
+  Verify SSE payload has state or errors passed (0s)
+   Delete hub session passed (206ms)
+     DELETE /wd/hub/session/c6ca3ee78c8af78752df0d3feb6e9db2 passed (206ms)",,"UI SSE with hub session",,"selenoid-ui","UI SSE",
+"tests.integration.CmInstallerLifecycleTests.startHubExposesStatusEndpoint","start exposes hub /status","passed","3s 553ms",,,"Configure CM stack passed (44ms)
+  cm selenoid configure passed (43ms)
+    Ensure Linux selenoid binary for Docker wrapper passed (7ms)
+    Ensure Linux selenoid-ui binary for Docker wrapper passed (6ms)
+ Start hub via cm passed (967ms)
+   cm selenoid start passed (966ms)
+     Ensure Linux selenoid binary for Docker wrapper passed (0s)
+  Wait for hub readiness passed (115ms)
+    Wait until hub /status is ready passed (114ms)
+   cm selenoid status passed (37ms)
+     cm selenoid status passed (37ms)
+    Verify hub container is running passed (0s)
+     GET hub /status passed (1s 587ms)
+       GET http://127.0.0.1:4445/{hubStatusPath} passed (1s 580ms)",,"CM installer lifecycle",,"cm","Installer lifecycle",
+"github.com/aerokube/cm/selenoid.TestStartStopContainer/Start_stop_container","Start_stop_container","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopUIContainer/Start_stop_UI_container","Start_stop_UI_container","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui/selenoid.TestStatus/Status","Status","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestStatusError/Status_error","Status_error","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestSumUsedTotalGreaterThanPending/Sum_used_total_greater_than_pending","Sum_used_total_greater_than_pending","passed","200ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestSyncWithConfig/Sync_with_config","Sync_with_config","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"config.ConfigOwnerMergeTest.systemPropertyOverridesFileDefault","system property hubUrl overrides file default","passed","2ms",,,,,"Owner config merge",,,,
+"github.com/aerokube/selenoid.TestAddedSeCdpCapability","TestAddedSeCdpCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestAllUrlsAreValid","TestAllUrlsAreValid","passed","1s 390ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestBadJsonFormat","TestBadJsonFormat","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserName","TestBrowserName","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestBrowserNotFound","TestBrowserNotFound","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestBrowsersConfig","TestBrowsersConfig","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid/config.TestCanonicalWebDriverBrowserName","TestCanonicalWebDriverBrowserName","passed","0s",,,,,"github.com/aerokube/selenoid/config",,"selenoid",,
+"github.com/aerokube/selenoid/session.TestCapsBrowserName","TestCapsBrowserName","passed","0s",,,,,"github.com/aerokube/selenoid/session",,"selenoid",,
+"github.com/aerokube/selenoid/session.TestCapsProcessExtensionCapabilities","TestCapsProcessExtensionCapabilities","passed","0s",,,,,"github.com/aerokube/selenoid/session",,"selenoid",,
+"github.com/aerokube/selenoid.TestCatalogVersionForDriver","TestCatalogVersionForDriver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestCheckOrigin","TestCheckOrigin","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestChooseVolumeConfigDir","TestChooseVolumeConfigDir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestClientDisconnected","TestClientDisconnected","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboard","TestClipboard","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardMissingSession","TestClipboardMissingSession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestClipboardProtocolExtension","TestClipboardProtocolExtension","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfig","TestConfig","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoad","TestConfigConcurrentLoad","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentLoadAndRead","TestConfigConcurrentLoadAndRead","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigConcurrentRead","TestConfigConcurrentRead","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyState","TestConfigEmptyState","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigEmptyVersions","TestConfigEmptyVersions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigError","TestConfigError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersion","TestConfigFindDefaultVersion","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindDefaultVersionError","TestConfigFindDefaultVersionError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByEmptyPrefix","TestConfigFindFoundByEmptyPrefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByMatch","TestConfigFindFoundByMatch","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindFoundByPrefix","TestConfigFindFoundByPrefix","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindImage","TestConfigFindImage","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMicrosoftEdgeAlias","TestConfigFindMicrosoftEdgeAlias","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigFindMissingBrowser","TestConfigFindMissingBrowser","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyState","TestConfigNonEmptyState","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigNonEmptyVersions","TestConfigNonEmptyVersions","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestConfigParseError","TestConfigParseError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestConfigureDocker","TestConfigureDocker","passed","20ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestConfigureDrivers","TestConfigureDrivers","passed","100ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestConfigureWsProxy","TestConfigureWsProxy","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid/service.TestDefaultManagerFindPlaywright","TestDefaultManagerFindPlaywright","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestDeleteContainerOnStartupError","TestDeleteContainerOnStartupError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDetermineVideoScreenSizeFromScreenResolution","TestDetermineVideoScreenSizeFromScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestDevtools","TestDevtools","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestDockerAvailable","TestDockerAvailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDockerUnavailable","TestDockerUnavailable","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownload","TestDownload","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadFile","TestDownloadFile","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadLatestRelease","TestDownloadLatestRelease","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadSpecificRelease","TestDownloadSpecificRelease","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestDownloadUI","TestDownloadUI","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestFetchImageTags","TestFetchImageTags","passed","30ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid/event.TestFileCreatedNotifiesListener","TestFileCreatedNotifiesListener","passed","10ms",,,,,"github.com/aerokube/selenoid/event",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownload","TestFileDownload","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadMissingSession","TestFileDownloadMissingSession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileDownloadProtocolExtension","TestFileDownloadProtocolExtension","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileMatches","TestFileMatches","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUpload","TestFileUpload","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadBadJson","TestFileUploadBadJson","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadNoFile","TestFileUploadNoFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFileUploadTwoFiles","TestFileUploadTwoFiles","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFilterOutLatest","TestFilterOutLatest","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindDockerIPSpecified","TestFindDockerIPSpecified","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindDriver","TestFindDriver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestFindInsideOfDocker","TestFindInsideOfDocker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestFindMatchingImage","TestFindMatchingImage","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestFindOutsideOfDocker","TestFindOutsideOfDocker","passed","10ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/config.TestFindPlaywright","TestFindPlaywright","passed","0s",,,,,"github.com/aerokube/selenoid/config",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetConfigDir","TestGetConfigDir","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetDefaultScreenResolution","TestGetDefaultScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetFullScreenResolution","TestGetFullScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetKey","TestGetKey","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetLogs","TestGetLogs","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithoutVNC","TestGetPlaywrightPortConfigWithoutVNC","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestGetPlaywrightPortConfigWithVNC","TestGetPlaywrightPortConfigWithVNC","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestGetSelenoidImage","TestGetSelenoidImage","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestGetShortScreenResolution","TestGetShortScreenResolution","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVideoScreenSizeFromCapability","TestGetVideoScreenSizeFromCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestGetVNC","TestGetVNC","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestHostPortAddressInDockerCustomNetworkWithoutBindings","TestHostPortAddressInDockerCustomNetworkWithoutBindings","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestImageWithTag","TestImageWithTag","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid/event.TestInitIfNeeded","TestInitIfNeeded","passed","0s",,,,,"github.com/aerokube/selenoid/event",,"selenoid",,
+"github.com/aerokube/selenoid.TestInvalidSessionTimeoutCapability","TestInvalidSessionTimeoutCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestIsPlaywrightBrowser","TestIsPlaywrightBrowser","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestIsVideoRecordingSupported","TestIsVideoRecordingSupported","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLifecycle","TestLifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestLimitNoPull","TestLimitNoPull","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui/selenoid.TestLoadBrowserProtocols","TestLoadBrowserProtocols","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestLogConfigError","TestLogConfigError","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedScreenResolutionCapability","TestMalformedScreenResolutionCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestMalformedVideoScreenSizeCapability","TestMalformedVideoScreenSizeCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/session.TestMapPutGetRemoveEachLen","TestMapPutGetRemoveEachLen","passed","0s",,,,,"github.com/aerokube/selenoid/session",,"selenoid",,
+"github.com/aerokube/selenoid/config.TestNewConfigLoadEmpty","TestNewConfigLoadEmpty","passed","0s",,,,,"github.com/aerokube/selenoid/config",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionBadHostResponse","TestNewSessionBadHostResponse","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionHostDown","TestNewSessionHostDown","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionNotFound","TestNewSessionNotFound","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionTimeout","TestNewSessionTimeout","passed","50ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestNewSessionWithGet","TestNewSessionWithGet","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/config.TestNormalizeWebDriverBrowserNameInCaps","TestNormalizeWebDriverBrowserNameInCaps","passed","0s",,,,,"github.com/aerokube/selenoid/config",,"selenoid",,
+"github.com/aerokube/selenoid/upload.TestOnFileCreatedInvokesUploader","TestOnFileCreatedInvokesUploader","passed","0s",,,,,"github.com/aerokube/selenoid/upload",,"selenoid",,
+"github.com/aerokube/selenoid.TestParseGgrHost","TestParseGgrHost","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequest","TestParsePlaywrightRequest","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestDefaultVersion","TestParsePlaywrightRequestDefaultVersion","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestParsePlaywrightRequestLabels","TestParsePlaywrightRequestLabels","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestParseRequestedBrowsers","TestParseRequestedBrowsers","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestPing","TestPing","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestPing","TestPing","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightConnectBrowserNotFound","TestPlaywrightConnectBrowserNotFound","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightConnectProxiesWebSocket","TestPlaywrightConnectProxiesWebSocket","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestPlaywrightConnectRejectsNonWebSocket","TestPlaywrightConnectRejectsNonWebSocket","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightContainerEnv","TestPlaywrightContainerEnv","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_CreateError","TestPlaywrightDockerStartWithCancel_CreateError","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_StartError","TestPlaywrightDockerStartWithCancel_StartError","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_Success","TestPlaywrightDockerStartWithCancel_Success","passed","10ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_Video","TestPlaywrightDockerStartWithCancel_Video","passed","10ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_VideoCreateError","TestPlaywrightDockerStartWithCancel_VideoCreateError","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_VideoStartError","TestPlaywrightDockerStartWithCancel_VideoStartError","passed","10ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_WaitInspectError","TestPlaywrightDockerStartWithCancel_WaitInspectError","passed","160ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_WaitServerError","TestPlaywrightDockerStartWithCancel_WaitServerError","passed","500ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestPlaywrightDockerStartWithCancel_WaitServerErrorWithVideo","TestPlaywrightDockerStartWithCancel_WaitServerErrorWithVideo","passed","510ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestPlaywrightProxyHubDown","TestPlaywrightProxyHubDown","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestPlaywrightSessionDeletedViaHub","TestPlaywrightSessionDeletedViaHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestPostProcessPath","TestPostProcessPath","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestPrepareCommand","TestPrepareCommand","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestProcessExtensionCapabilities","TestProcessExtensionCapabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxyPlaywright","TestProxyPlaywright","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySession","TestProxySession","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionCanceled","TestProxySessionCanceled","passed","1s 0ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionPanicOnAbortHandler","TestProxySessionPanicOnAbortHandler","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestProxySessionTimeout","TestProxySessionTimeout","passed","90ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/protect.TestQueueCreateReleaseCounters","TestQueueCreateReleaseCounters","passed","0s",,,,,"github.com/aerokube/selenoid/protect",,"selenoid",,
+"github.com/aerokube/selenoid/protect.TestQueueDrop","TestQueueDrop","passed","0s",,,,,"github.com/aerokube/selenoid/protect",,"selenoid",,
+"github.com/aerokube/selenoid/protect.TestQueueWaitCanceled","TestQueueWaitCanceled","passed","0s",,,,,"github.com/aerokube/selenoid/protect",,"selenoid",,
+"github.com/aerokube/selenoid/info.TestRequestInfoBasicAuth","TestRequestInfoBasicAuth","passed","0s",,,,,"github.com/aerokube/selenoid/info",,"selenoid",,
+"github.com/aerokube/selenoid/info.TestRequestInfoForwardedFor","TestRequestInfoForwardedFor","passed","0s",,,,,"github.com/aerokube/selenoid/info",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestResolveBrowsersConfPath","TestResolveBrowsersConfPath","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestRewriteCatalogBrowserVersionForDriver","TestRewriteCatalogBrowserVersionForDriver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestRootLoads","TestRootLoads","passed","60ms",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/cm/cmd.TestRootRegistersCoreSubcommands","TestRootRegistersCoreSubcommands","passed","0s",,,,,"github.com/aerokube/cm/cmd",,"cm",,
+"github.com/aerokube/cm/cmd.TestRootWithoutArgsShowsUsage","TestRootWithoutArgsShowsUsage","passed","0s",,,,,"github.com/aerokube/cm/cmd",,"cm",,
+"github.com/aerokube/selenoid.TestS3Uploader","TestS3Uploader","passed","20ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid/info.TestSecondsSince","TestSecondsSince","passed","0s",,,,,"github.com/aerokube/selenoid/info",,"selenoid",,
+"github.com/aerokube/selenoid/jsonerror.TestSeleniumErrorEncode","TestSeleniumErrorEncode","passed","0s",,,,,"github.com/aerokube/selenoid/jsonerror",,"selenoid",,
+"github.com/aerokube/selenoid/jsonerror.TestSeleniumErrorString","TestSeleniumErrorString","passed","0s",,,,,"github.com/aerokube/selenoid/jsonerror",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteLogFile","TestServeAndDeleteLogFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServeAndDeleteVideoFile","TestServeAndDeleteVideoFile","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestServiceStartupFailure","TestServiceStartupFailure","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreated","TestSessionCreated","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedFirstMatchOnly","TestSessionCreatedFirstMatchOnly","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRedirect","TestSessionCreatedRedirect","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedRemoveExtensionCapabilities","TestSessionCreatedRemoveExtensionCapabilities","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedStripsMinSuffixForDriver","TestSessionCreatedStripsMinSuffixForDriver","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedW3C","TestSessionCreatedW3C","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionCreatedWdHub","TestSessionCreatedWdHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionDeleted","TestSessionDeleted","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTimeout","TestSessionFailedAfterTimeout","passed","100ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionFailedAfterTwoTimeout","TestSessionFailedAfterTwoTimeout","passed","110ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionOnClose","TestSessionOnClose","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid.TestSessionWithContentTypeCreatedWdHub","TestSessionWithContentTypeCreatedWdHub","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestStartStopContainer","TestStartStopContainer","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopProcess","TestStartStopProcess","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestStartStopUIContainer","TestStartStopUIContainer","passed","10ms",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui/selenoid.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestStatus","TestStatus","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui.TestStatusError","TestStatusError","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestSumUsedTotalGreaterThanPending","TestSumUsedTotalGreaterThanPending","passed","200ms",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestSyncWithConfig","TestSyncWithConfig","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid.TestTooBigSessionTimeoutCapability","TestTooBigSessionTimeoutCapability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/selenoid-ui/selenoid.TestToUI","TestToUI","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/cm/selenoid.TestUILifecycle","TestUILifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnavailableBinary","TestUnavailableBinary","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnknownRelease","TestUnknownRelease","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUntar","TestUntar","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnzip","TestUnzip","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestValidEnviron","TestValidEnviron","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/cmd.TestVersionCommandPrintsBuildInfo","TestVersionCommandPrintsBuildInfo","passed","0s",,,,,"github.com/aerokube/cm/cmd",,"cm",,
+"github.com/aerokube/selenoid-ui.TestVideo","TestVideo","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestVideoFail","TestVideoFail","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid/service.TestWaitPlaywrightServer","TestWaitPlaywrightServer","passed","500ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestWaitTCP","TestWaitTCP","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestWelcomeScreen","TestWelcomeScreen","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"github.com/aerokube/cm/render/rewriter.TestWriter","TestWriter","passed","0s",,,,,"github.com/aerokube/cm/render/rewriter",,"cm",,
+"github.com/aerokube/cm/selenoid.TestWrongBaseUrl","TestWrongBaseUrl","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestWsProxyHubDown","TestWsProxyHubDown","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestWsProxyRejectsPlainGet","TestWsProxyRejectsPlainGet","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui/selenoid.TestToUI/To_UI","To_UI","passed","0s",,,,,"github.com/aerokube/selenoid-ui/selenoid",,"selenoid-ui",,
+"github.com/aerokube/selenoid.TestTooBigSessionTimeoutCapability/Too_big_session_timeout_capability","Too_big_session_timeout_capability","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"tests.integration.UiBrowsersConfigIntegrationTests.browsersConfigIncludesHubBrowserVersions","UI /browsers-config includes chrome versions from hub /status","passed","14ms",,,"GET hub /status browsers passed (6ms)
+  GET /status passed (6ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (5ms)
+ GET UI /browsers-config passed (5ms)
+   GET /browsers-config passed (5ms)
+     GET http://127.0.0.1:8080/browsers-config passed (5ms)
+  Verify configured chrome version appears in hub status and UI catalog passed (0s)",,"UI browsers config vs hub status",,"selenoid-ui","UI browsers config proxy",
+"tests.integration.UiHubStatusConsistencyTests.uiStatusMirrorsHubCounters","UI /status state mirrors hub /status counters","passed","47ms",,,"GET hub /status passed (6ms)
+  GET http://127.0.0.1:4444/{hubStatusPath} passed (6ms)
+ GET UI /status passed (40ms)
+   GET http://127.0.0.1:8080//status passed (39ms)
+  Verify proxied counters match hub passed (0s)",,"UI hub status consistency",,"selenoid-ui","UI hub proxy",
+"tests.integration.UiStatusWithSessionTests.uiUsedCounterIncrementsWithHubSession","UI /status used counter increments while hub session is active","passed","821ms",,,"Snapshot hub used counter passed (6ms)
+  GET /status passed (6ms)
+    GET http://127.0.0.1:4444/{hubStatusPath} passed (5ms)
+ Create hub session passed (514ms)
+   POST /wd/hub/session passed (514ms)
+     POST /wd/hub/session passed (514ms)
+       POST /wd/hub/session (chrome 148.0-min) passed (514ms)
+  GET hub /status used passed (9ms)
+    GET /status passed (9ms)
+      GET http://127.0.0.1:4444/{hubStatusPath} passed (8ms)
+   GET UI /status used passed (52ms)
+     GET http://127.0.0.1:8080//status passed (51ms)
+    Verify hub and UI report incremented used counter passed (0s)
+     Delete hub session passed (229ms)
+       DELETE /wd/hub/session/930354973617645b4230ca6a7d0cafc5 passed (229ms)
+      Verify used counter returned to baseline passed (8ms)
+        GET /status passed (7ms)
+          GET http://127.0.0.1:4444/{hubStatusPath} passed (6ms)",,"UI status with active session",,"selenoid-ui","UI hub proxy",
+"github.com/aerokube/cm/selenoid.TestUILifecycle/UI_lifecycle","UI_lifecycle","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnavailableBinary/Unavailable_binary","Unavailable_binary","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid/service.TestDefaultManagerFindPlaywright/unknown_browser","unknown_browser","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/cm/selenoid.TestUnknownRelease/Unknown_release","Unknown_release","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUntar/Untar","Untar","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestUnzip/Unzip","Unzip","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/cm/selenoid.TestValidEnviron/Valid_environ","Valid_environ","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
+"github.com/aerokube/selenoid-ui.TestVideo/Video","Video","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestVideoFail/Video_fail","Video_fail","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid-ui.TestWsProxyHubDown/VNC_ws_proxy_error_when_hub_unreachable","VNC_ws_proxy_error_when_hub_unreachable","passed","0s",,,,,"github.com/aerokube/selenoid-ui",,"selenoid-ui",,
+"github.com/aerokube/selenoid/service.TestWaitPlaywrightServer/Wait_playwright_server","Wait_playwright_server","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestWaitPlaywrightServer/Wait_playwright_server_timeout","Wait_playwright_server_timeout","passed","500ms",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid/service.TestWaitTCP/Wait_tcp","Wait_tcp","passed","0s",,,,,"github.com/aerokube/selenoid/service",,"selenoid",,
+"github.com/aerokube/selenoid.TestWelcomeScreen/Welcome_screen","Welcome_screen","passed","0s",,,,,"github.com/aerokube/selenoid",,"selenoid",,
+"helpers.CmInstallerHelperTest.withTempConfigDirCreatesConfigDirectory","withTempConfigDir creates isolated config directory","passed","139ms",,,,,"CmInstallerHelper paths",,,,
+"github.com/aerokube/cm/render/rewriter.TestWriter/Writer","Writer","passed","0s",,,,,"github.com/aerokube/cm/render/rewriter",,"cm",,
+"github.com/aerokube/cm/selenoid.TestWrongBaseUrl/Wrong_base_URL","Wrong_base_URL","passed","0s",,,,,"github.com/aerokube/cm/selenoid",,"cm",,
