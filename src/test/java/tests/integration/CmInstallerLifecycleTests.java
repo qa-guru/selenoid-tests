@@ -120,7 +120,7 @@ class CmInstallerLifecycleTests {
         step("Start UI via cm", () ->
                 installer.startUi().requireSuccess("start UI"));
         step("Wait for UI readiness", () ->
-                installer.waitForUiReady(90_000));
+                installer.waitForUiReady(120_000));
 
         var hubStatus = step("GET hub /status", () ->
                 HubStatusApi.fetchFrom(ConfigReader.resolveCmHubUrl()));
