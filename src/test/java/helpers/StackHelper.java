@@ -7,8 +7,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class StackHelper {
 
@@ -16,7 +19,11 @@ public final class StackHelper {
             .connectTimeout(Duration.ofSeconds(5))
             .build();
 
-    private static final Path DEV_ROOT = Path.of(System.getProperty("user.dir")).resolve("..").resolve("dev").normalize();
+    private static final Path PROJECT_ROOT = Path.of(System.getProperty("user.dir")).toAbsolutePath().normalize();
+    private static final Path DEV_ROOT = PROJECT_ROOT.resolve("..").resolve("dev").normalize();
+    private static final Path CI_BIN = PROJECT_ROOT.resolve("build").resolve("ci-bin").resolve("selenoid");
+    private static final Path CI_BROWSERS = PROJECT_ROOT.resolve("fixtures").resolve("ci-browsers.json");
+    private static final Path DEV_START = DEV_ROOT.resolve("scripts").resolve("start-selenoid.sh");
 
     private StackHelper() {
     }
@@ -28,7 +35,20 @@ public final class StackHelper {
 
     @Step("Start hub detached")
     public static void startHubDetached() {
-        execDetached(DEV_ROOT.resolve("scripts/start-selenoid.sh").toString());
+        var ciBin = resolveCiHubBinary();
+        if (ciBin != null) {
+            execDetached(List.of(
+                    ciBin.toString(),
+                    "-conf", CI_BROWSERS.toString(),
+                    "-limit", "3",
+                    "-video-recorder-image", "qaguru/video-recorder:latest"));
+            return;
+        }
+        if (!Files.isRegularFile(DEV_START)) {
+            throw new IllegalStateException(
+                    "No hub binary: missing " + CI_BIN + " and " + DEV_START);
+        }
+        execDetached(List.of("bash", DEV_START.toString()));
     }
 
     @Step("Wait until hub /status is ready")
@@ -53,6 +73,20 @@ public final class StackHelper {
             Thread.sleep(500);
         }
         throw new IllegalStateException("Hub is still responding on :4444 after kill");
+    }
+
+    private static Path resolveCiHubBinary() {
+        var fromEnv = System.getenv("SELENOID_BIN");
+        if (fromEnv != null && !fromEnv.isBlank()) {
+            var path = Path.of(fromEnv);
+            if (Files.isExecutable(path)) {
+                return path;
+            }
+        }
+        if (Files.isExecutable(CI_BIN) && Files.isRegularFile(CI_BROWSERS)) {
+            return CI_BIN;
+        }
+        return null;
     }
 
     private static boolean hubResponds() {
@@ -83,14 +117,15 @@ public final class StackHelper {
         }
     }
 
-    private static void execDetached(String scriptPath) {
+    private static void execDetached(List<String> command) {
         try {
-            new ProcessBuilder("bash", scriptPath)
-                    .directory(DEV_ROOT.toFile())
-                    .redirectErrorStream(true)
-                    .start();
+            var builder = new ProcessBuilder(new ArrayList<>(command));
+            builder.directory(PROJECT_ROOT.toFile());
+            builder.redirectErrorStream(true);
+            builder.redirectOutput(ProcessBuilder.Redirect.DISCARD);
+            builder.start();
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to start: " + scriptPath, e);
+            throw new IllegalStateException("Failed to start: " + command, e);
         }
     }
 }
