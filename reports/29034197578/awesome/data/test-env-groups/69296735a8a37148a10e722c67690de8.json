@@ -1,1 +1,0 @@
-{"id":"69296735a8a37148a10e722c67690de8","fullName":"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","name":"POST /wd/hub/session rejects unknown browser","status":"passed","testResultsByEnv":{"default":"09f2c2d324825c033ff71149d5a6e452"}}

@@ -1,1 +1,0 @@
-{"id":"acb9d16bb2035d38876798eddc3e8d36","fullName":"tests.api.UiClipboardApiTests.uiClipboardUnknownSessionReturnsNotFound","name":"GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","status":"passed","testResultsByEnv":{"default":"85f6c045a8cbf32aa801be5f4c611870"}}
