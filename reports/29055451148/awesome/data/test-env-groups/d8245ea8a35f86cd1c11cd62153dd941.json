@@ -1,0 +1,1 @@
+{"id":"d8245ea8a35f86cd1c11cd62153dd941","fullName":"tests.integration.UiStatusWhenHubDownTests.uiStatusReportsHubError","name":"UI /status returns errors when hub is unavailable","status":"broken","testResultsByEnv":{"default":"79ecdd0e54c3d0601dd40ed7900f7c72"}}
