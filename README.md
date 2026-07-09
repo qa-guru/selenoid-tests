@@ -118,7 +118,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
 | **selenoid** | Go | 8 | 1 | 18 | △¹ | — | `go-unit` + `testHubAll` |
-| **selenoid-ui** | Go + 1 | 6 | 7 | 7 | 5 | △ | `go-unit` + `testHubAll` |
+| **selenoid-ui** | Go + 1 | 6 | 7 | 12 | 5 | △ | `go-unit` + `testHubAll` |
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
 | **webdriver-image** | — | 2 | 2 | 2 | 4 | — | `testHubAll` |
@@ -232,6 +232,11 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | PlaywrightEndpointTests | playwright-image | playwright-image | api | api |
 | UiStatusTests | selenoid-ui | selenoid-ui | api | api |
 | UiSseStreamTests | selenoid-ui | selenoid-ui | api | api |
+| UiClipboardApiTests | selenoid-ui | selenoid-ui | api | api, negative |
+| UiLogsWsApiTests | selenoid-ui | selenoid-ui | api | api, positive |
+| UiVideoApiTests | selenoid-ui | selenoid-ui | api | api |
+| UiVideoSessionApiTests | selenoid-ui | selenoid-ui | api | api, positive |
+| UiVncWsApiTests | selenoid-ui | selenoid-ui | api | api, positive |
 | UiPingTests | selenoid-ui | selenoid-ui | api | api |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | integration | integration |
 | HubPlaywrightMinSessionTests | playwright-image | playwright-image | integration | integration, min |
