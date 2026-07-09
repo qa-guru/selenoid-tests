@@ -1,1 +1,0 @@
-{"id":"6ced2591bee2f6532d1c184cb7a066f4","fullName":"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","name":"Session video appears in UI GET /video/?json after delete","status":"failed","testResultsByEnv":{"default":"044f756a6537b2d425e129d06c3832ee"}}
