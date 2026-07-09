@@ -38,9 +38,20 @@ public final class HubSessionApi {
 
     @Step("POST /wd/hub/session with selenoid:options")
     public static String createWithSelenoidOptions(TestConfig config, java.util.Map<String, Object> selenoidOptions) {
+        return createWithSelenoidOptions(config.browser(), config.browserVersion(), selenoidOptions);
+    }
+
+    @Step("POST /wd/hub/session with selenoid:options ({browserVersion})")
+    public static String createWithSelenoidOptions(String browserVersion, java.util.Map<String, Object> selenoidOptions) {
+        return createWithSelenoidOptions("chrome", browserVersion, selenoidOptions);
+    }
+
+    @Step("POST /wd/hub/session with selenoid:options ({browserName} {browserVersion})")
+    public static String createWithSelenoidOptions(String browserName, String browserVersion,
+            java.util.Map<String, Object> selenoidOptions) {
         var alwaysMatch = new LinkedHashMap<String, Object>();
-        alwaysMatch.put("browserName", config.browser());
-        alwaysMatch.put("browserVersion", config.browserVersion());
+        alwaysMatch.put("browserName", browserName);
+        alwaysMatch.put("browserVersion", browserVersion);
         alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
         if (selenoidOptions != null && !selenoidOptions.isEmpty()) {
             alwaysMatch.put("selenoid:options", selenoidOptions);

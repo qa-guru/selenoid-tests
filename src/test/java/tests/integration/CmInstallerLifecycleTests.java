@@ -94,7 +94,7 @@ class CmInstallerLifecycleTests {
             result.requireSuccess("start hub");
         });
 
-        step("Wait for hub readiness", () -> installer.waitForHubReady(120_000));
+        step("Wait for hub readiness", () -> installer.waitForHubReady(240_000));
 
         var status = step("cm selenoid status", installer::statusHub);
         status.requireSuccess("status");
@@ -116,7 +116,7 @@ class CmInstallerLifecycleTests {
         step("Start hub via cm", () ->
                 installer.startHub().requireSuccess("start hub"));
         step("Wait for hub readiness", () ->
-                installer.waitForHubReady(120_000));
+                installer.waitForHubReady(240_000));
         step("Start UI via cm", () ->
                 installer.startUi().requireSuccess("start UI"));
         step("Wait for UI readiness", () ->

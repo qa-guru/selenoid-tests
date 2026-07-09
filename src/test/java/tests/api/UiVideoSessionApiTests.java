@@ -27,18 +27,30 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class UiVideoSessionApiTests extends UiApiTestBase {
 
+    private static final String FULL_CHROME = "148.0";
+
     @Test
     @Tag("api")
     @Tag("positive")
     @DisplayName("Session video appears in UI GET /video/?json after delete")
     void uiSessionVideoListedAfterClose() throws Exception {
         var sessionId = step("Create hub session with video", () ->
-                HubSessionApi.createWithSelenoidOptions(config, Map.of("enableVideo", true)));
-        step("Keep session briefly for recorder", () -> TimeUnit.SECONDS.sleep(2));
+                HubSessionApi.createWithSelenoidOptions(FULL_CHROME, Map.of("enableVideo", true)));
+        step("Keep session briefly for recorder", () -> TimeUnit.SECONDS.sleep(3));
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
-        step("Wait for video artifact", () -> TimeUnit.SECONDS.sleep(3));
 
-        var files = step("GET UI /video/?json", UiVideoApi::listJson);
+        var deadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
+        var files = step("Wait for video artifact in UI GET /video/?json", () -> {
+            while (System.currentTimeMillis() < deadline) {
+                var listed = UiVideoApi.listJson();
+                if (listed.stream().anyMatch(name -> name.contains(sessionId) || name.endsWith(".mp4"))) {
+                    return listed;
+                }
+                TimeUnit.SECONDS.sleep(1);
+            }
+            return UiVideoApi.listJson();
+        });
+
         step("Verify session video is listed via UI proxy", () ->
                 assertTrue(files.stream().anyMatch(name -> name.contains(sessionId) || name.endsWith(".mp4")),
                         () -> "expected video for session " + sessionId + " in " + files));

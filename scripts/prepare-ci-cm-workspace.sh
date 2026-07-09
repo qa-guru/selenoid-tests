@@ -80,4 +80,7 @@ go install github.com/rakyll/statik@latest
 
 pull_browser_images
 
+echo "    docker pull selenoid/video-recorder:latest-release"
+docker pull selenoid/video-recorder:latest-release
+
 echo "==> CM workspace ready (binaries in ${BIN}, repos linked under ${PARENT})"

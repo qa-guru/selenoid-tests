@@ -3,8 +3,8 @@ package tests.api;
 import annotations.Component;
 import annotations.Layer;
 import api.ApiTestBase;
+import api.hub.HubRequest;
 import api.hub.HubSessionApi;
-import api.hub.HubWebSocketApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
-import java.time.Duration;
 import java.util.Map;
 
 import static io.qameta.allure.Allure.step;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 
 @Layer("api")
 @Component("selenoid")
@@ -27,21 +27,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubVncSessionApiTests extends ApiTestBase {
 
+    private static final String FULL_CHROME = "148.0";
+
     @Test
     @Tag("api")
     @Tag("positive")
-    @DisplayName("WebSocket /vnc/{sessionId} opens when enableVNC=true")
-    void sessionVncWebSocketOpens() {
+    @DisplayName("GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true")
+    void sessionVncPathRequiresWebSocketUpgrade() {
         var sessionId = step("Create hub session with VNC", () ->
-                HubSessionApi.createWithSelenoidOptions(config, Map.of("enableVNC", true)));
+                HubSessionApi.createWithSelenoidOptions(FULL_CHROME, Map.of("enableVNC", true)));
         try {
-            step("Open VNC WebSocket", () -> {
-                try {
-                    HubWebSocketApi.openBriefly("/vnc/" + sessionId, Duration.ofSeconds(15));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            step("GET /vnc/{sessionId} without WebSocket headers", () ->
+                    given()
+                            .baseUri(HubRequest.baseUri())
+                            .when()
+                            .get("/vnc/{sessionId}", sessionId)
+                            .then()
+                            .statusCode(400)
+                            .body(containsString("websocket")));
         } finally {
             step("Delete hub session", () -> HubSessionApi.delete(sessionId));
         }

@@ -87,6 +87,8 @@ pull_browser_images() {
     echo "    docker pull ${img}"
     docker pull "$img"
   done < <(jq -r '.. | objects | select(has("image")) | .image' "$BROWSERS" | sort -u)
+  echo "    docker pull selenoid/video-recorder:latest-release"
+  docker pull selenoid/video-recorder:latest-release
 }
 
 start_stack() {
