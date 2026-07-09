@@ -16,7 +16,6 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$;
 import static io.qameta.allure.Allure.step;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("e2e")
 @Component("selenoid-ui")
@@ -39,11 +38,11 @@ class UiSessionsListTests extends UiTestBase {
                     uiDashboard.openPage().shouldBeConnected());
 
             step("Verify session row shows browser name", () ->
-                    $(".sessions-grid .session-browser .name")
+                    $(".sessions__list .session .browser .name")
                             .shouldHave(Condition.text(config.browser()), SESSION_APPEAR_TIMEOUT));
 
             step("Verify empty-state message is hidden", () ->
-                    assertTrue($("#sessions-empty").is(Condition.hidden)));
+                    $(".no-any").shouldBe(Condition.hidden, SESSION_APPEAR_TIMEOUT));
         } finally {
             step("Delete hub session", () -> HubSessionApi.delete(sessionId));
         }

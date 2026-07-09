@@ -40,21 +40,16 @@ public class UiTestBase {
         if (remoteUrl != null && !remoteUrl.isBlank()) {
             Configuration.remote = remoteUrl;
             Configuration.browserVersion = config.browserVersion();
-            var capabilities = new MutableCapabilities();
-            capabilities.setCapability("goog:chromeOptions", Map.of(
-                    "args", java.util.List.of(
-                            "--headless=new",
-                            "--no-sandbox",
-                            "--disable-dev-shm-usage"
-                    )
-            ));
-            capabilities.setCapability("selenoid:options", Map.of(
+            // Keep args docker-safe only — Selenide still merges host defaults (e.g. --use-mock-keychain on Mac).
+            var chrome = new org.openqa.selenium.chrome.ChromeOptions();
+            chrome.addArguments(api.hub.ChromeOptions.dockerHeadless().args());
+            chrome.setCapability("selenoid:options", Map.of(
                     "enableVNC", config.enableVnc(),
                     "enableVideo", config.enableVideo(),
                     "name", "selenoid-ui-e2e",
                     "sessionTimeout", "2m"
             ));
-            Configuration.browserCapabilities = capabilities;
+            Configuration.browserCapabilities = chrome;
         } else {
             Configuration.remote = null;
             Configuration.browserVersion = null;
