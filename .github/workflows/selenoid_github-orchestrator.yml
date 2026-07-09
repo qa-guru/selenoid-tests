@@ -237,6 +237,8 @@ jobs:
               smoke)
                 if [ "$SOURCE_VARIANT" = "webdriver" ]; then
                   ./gradlew testWebdriverE2e "${GRADLE_PYRAMID[@]}"
+                elif [ "$SOURCE_VARIANT" = "video-recorder" ]; then
+                  ./gradlew testVideoRecorder "${GRADLE_PYRAMID[@]}"
                 elif [ "$SOURCE_REPO" = "qa-guru/selenoid-ui" ]; then
                   ./gradlew testUiE2e "${GRADLE_PYRAMID[@]}"
                 else
@@ -554,7 +556,7 @@ jobs:
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java hub push/default: \`testHubAll\` (unit→component→integration→api→e2e→webdriver→ui→playwright→resilience→min)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java CM push: \`testCmIntegration\` + \`testCmApi\` + \`testCmE2e\` (CM :4445/:8081)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → \`testWebdriverE2e\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → \`testWebdriverE2e\`; \`smoke\` + \`source_variant=video-recorder\` → \`testVideoRecorder\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"

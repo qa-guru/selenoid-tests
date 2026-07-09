@@ -87,13 +87,17 @@ pull_browser_images() {
     echo "    docker pull ${img}"
     docker pull "$img"
   done < <(jq -r '.. | objects | select(has("image")) | .image' "$BROWSERS" | sort -u)
-  echo "    docker pull selenoid/video-recorder:latest-release"
-  docker pull selenoid/video-recorder:latest-release
+  echo "    docker pull qaguru/video-recorder:latest"
+  docker pull qaguru/video-recorder:latest
 }
 
 start_stack() {
   echo "==> Starting Selenoid hub"
-  nohup "${BIN}/selenoid" -conf "$BROWSERS" -limit 3 >"${LOG_DIR}/selenoid.log" 2>&1 &
+  nohup "${BIN}/selenoid" \
+    -conf "$BROWSERS" \
+    -limit 3 \
+    -video-recorder-image qaguru/video-recorder:latest \
+    >"${LOG_DIR}/selenoid.log" 2>&1 &
   echo $! >"${LOG_DIR}/selenoid.pid"
 
   echo "==> Starting Selenoid UI"

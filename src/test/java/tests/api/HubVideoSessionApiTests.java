@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +33,7 @@ class HubVideoSessionApiTests extends ApiTestBase {
     @Test
     @Tag("api")
     @Tag("positive")
-    @DisplayName("Session with enableVideo=true appears in GET /video/?json after delete")
+    @DisplayName("Session with enableVideo=true produces downloadable MP4 after delete")
     void sessionVideoListedAfterClose() throws Exception {
         var sessionId = step("Create hub session with video", () ->
                 HubSessionApi.createWithSelenoidOptions(FULL_CHROME, Map.of("enableVideo", true)));
@@ -40,19 +41,41 @@ class HubVideoSessionApiTests extends ApiTestBase {
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
 
         var deadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
-        var files = step("Wait for video artifact in GET /video/?json", () -> {
+        var videoFile = step("Wait for video artifact in GET /video/?json", () -> {
             while (System.currentTimeMillis() < deadline) {
                 var listed = HubVideoApi.listJson();
-                if (listed.stream().anyMatch(name -> name.contains(sessionId) || name.endsWith(".mp4"))) {
-                    return listed;
+                var match = findSessionVideo(listed, sessionId);
+                if (match != null) {
+                    return match;
                 }
                 TimeUnit.SECONDS.sleep(1);
             }
-            return HubVideoApi.listJson();
+            return findSessionVideo(HubVideoApi.listJson(), sessionId);
         });
 
         step("Verify session video is listed", () ->
-                assertTrue(files.stream().anyMatch(name -> name.contains(sessionId) || name.endsWith(".mp4")),
-                        () -> "expected video for session " + sessionId + " in " + files));
+                assertTrue(videoFile != null,
+                        () -> "expected video for session " + sessionId + " in hub video list"));
+
+        var body = step("Download session video", () -> HubVideoApi.download(videoFile));
+        step("Verify MP4 payload", () -> assertValidMp4(body, videoFile));
+    }
+
+    private static String findSessionVideo(List<String> files, String sessionId) {
+        return files.stream()
+                .filter(name -> name.contains(sessionId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static void assertValidMp4(byte[] body, String fileName) {
+        assertTrue(body.length > 1024,
+                () -> "expected non-trivial mp4 body for " + fileName + ", got " + body.length + " bytes");
+        assertTrue(body.length >= 8
+                        && body[4] == 'f'
+                        && body[5] == 't'
+                        && body[6] == 'y'
+                        && body[7] == 'p',
+                () -> "expected ISO BMFF ftyp box in " + fileName);
     }
 }

@@ -27,6 +27,18 @@ public final class HubVideoApi {
     }
 
     @Step("GET /video/{fileName}")
+    public static byte[] download(String fileName) {
+        return given()
+                .baseUri(HubRequest.baseUri())
+                .when()
+                .get("/video/{fileName}", fileName)
+                .then()
+                .statusCode(200)
+                .extract()
+                .asByteArray();
+    }
+
+    @Step("GET /video/{fileName}")
     public static void getExpectStatus(String fileName, int expectedStatus) {
         given()
                 .baseUri(HubRequest.baseUri())

@@ -25,6 +25,18 @@ public final class UiVideoApi {
                 .getList("", String.class);
     }
 
+    @Step("GET UI /video/{fileName} — download body")
+    public static byte[] download(String fileName) {
+        return given()
+                .baseUri(UiRequest.baseUri())
+                .when()
+                .get("/video/{fileName}", fileName)
+                .then()
+                .statusCode(200)
+                .extract()
+                .asByteArray();
+    }
+
     @Step("GET UI /video/{fileName} — expect HTTP {expectedStatus}")
     public static void getExpectStatus(String fileName, int expectedStatus) {
         given()
