@@ -1,1 +1,0 @@
-{"id":"43c613c2e4f43c015ea827ddb73084b6","fullName":"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","name":"GET /video/?json via UI proxy returns file name list","status":"passed","testResultsByEnv":{"default":"23ed3ef93e38499974f13a05b1deae09"}}
