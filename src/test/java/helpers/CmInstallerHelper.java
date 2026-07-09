@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ public final class CmInstallerHelper {
     public void stopAll() {
         stopUiQuietly();
         stopHubQuietly();
+        forceRemoveCmContainers();
         releasePublishedPorts(config.cmHubPort(), config.cmUiPort());
     }
 
@@ -100,6 +102,7 @@ public final class CmInstallerHelper {
         ensureLinuxBinary("selenoid", config.cmSelenoidBinary(), selenoidRepoDir());
         return runSelenoid(
                 "start",
+                "-f",
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmHubPort()),
                 "-n",
@@ -113,6 +116,7 @@ public final class CmInstallerHelper {
         ensureLinuxBinary("selenoid-ui", config.cmSelenoidUiBinary(), selenoidUiRepoDir());
         return runSelenoidUi(
                 "start",
+                "-f",
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmUiPort()));
     }
@@ -166,7 +170,7 @@ public final class CmInstallerHelper {
 
         if (config.cmUseLocalBinaries() && isLinuxHost()) {
             var local = resolveExecutable(localBinaryProperty, binaryName + " binary");
-            Files.copy(local, target);
+            Files.copy(local, target, StandardCopyOption.REPLACE_EXISTING);
             makeExecutable(target);
             return;
         }
@@ -258,6 +262,17 @@ public final class CmInstallerHelper {
         }
     }
 
+    private static void forceRemoveCmContainers() {
+        try {
+            var rm = new ProcessBuilder("docker", "rm", "-f", "selenoid", "selenoid-ui")
+                    .redirectErrorStream(true)
+                    .start();
+            rm.waitFor(30, TimeUnit.SECONDS);
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     private static void stopDockerPublishPort(int port) {
         try {
             var list = new ProcessBuilder("docker", "ps", "-q", "--filter", "publish=" + port)
@@ -331,9 +346,25 @@ public final class CmInstallerHelper {
         } catch (RuntimeException ignored) {
             // best-effort diagnostics
         }
+        var containerLogs = dockerLogsTail("selenoid");
         throw new IllegalStateException(label + " did not become ready at " + statusUri
                 + " within " + timeoutMs + "ms"
-                + (lastStatusOutput.isBlank() ? "" : "\ncm status:\n" + lastStatusOutput));
+                + (lastStatusOutput.isBlank() ? "" : "\ncm status:\n" + lastStatusOutput)
+                + (containerLogs.isBlank() ? "" : "\ndocker logs selenoid:\n" + containerLogs));
+    }
+
+    private static String dockerLogsTail(String containerName) {
+        try {
+            var logs = new ProcessBuilder("docker", "logs", "--tail", "50", containerName)
+                    .redirectErrorStream(true)
+                    .start();
+            var output = new String(logs.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            logs.waitFor(10, TimeUnit.SECONDS);
+            return output.trim();
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return "";
+        }
     }
 
     private static boolean statusResponds(URI statusUri) {

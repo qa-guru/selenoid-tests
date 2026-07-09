@@ -54,7 +54,7 @@ echo "==> CM configure"
   >"${LOG_DIR}/cm-configure.log" 2>&1
 
 echo "==> CM start hub"
-"$CM" selenoid start -c "$CONFIG_DIR" -p 4445 -n -j "$BROWSERS" \
+"$CM" selenoid start -f -c "$CONFIG_DIR" -p 4445 -n -j "$BROWSERS" \
   --selenoid-binary "${CONFIG_DIR}/bin/selenoid" \
   --selenoid-ui-binary "${CONFIG_DIR}/bin/selenoid-ui" \
   >"${LOG_DIR}/cm-hub-start.log" 2>&1
@@ -62,7 +62,7 @@ echo "==> CM start hub"
 wait_for_url "${HUB_URL}status" "CM hub" 90
 
 echo "==> CM start UI"
-"$CM" selenoid-ui start -c "$CONFIG_DIR" -p 8081 \
+"$CM" selenoid-ui start -f -c "$CONFIG_DIR" -p 8081 \
   >"${LOG_DIR}/cm-ui-start.log" 2>&1
 
 wait_for_url "${UI_URL}status" "CM UI" 90

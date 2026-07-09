@@ -70,16 +70,20 @@ cp -f "$BROWSERS" "${PARENT}/dev/browsers.json"
 echo "==> Building cm"
 (cd "${REPOS}/cm" && go build -o "${BIN}/cm" .)
 
-echo "==> Building selenoid hub binary"
-(cd "${REPOS}/selenoid" && go build -o "${BIN}/selenoid" .)
+echo "==> Building selenoid hub binary (linux/amd64)"
+(cd "${REPOS}/selenoid" && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o "${BIN}/selenoid" .)
 
 build_selenoid_ui_frontend
-echo "==> Building selenoid-ui binary"
+echo "==> Building selenoid-ui binary (linux/amd64)"
 go install github.com/rakyll/statik@latest
-(cd "${REPOS}/selenoid-ui" && go generate . && go build -o "${BIN}/selenoid-ui" .)
+(cd "${REPOS}/selenoid-ui" && go generate . && GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o "${BIN}/selenoid-ui" .)
 
 pull_browser_images
 
+echo "    docker pull qaguru/selenoid:latest-release"
+docker pull qaguru/selenoid:latest-release
+echo "    docker pull qaguru/selenoid-ui:latest-release"
+docker pull qaguru/selenoid-ui:latest-release
 echo "    docker pull qaguru/video-recorder:latest"
 docker pull qaguru/video-recorder:latest
 
