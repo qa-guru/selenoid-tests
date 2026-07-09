@@ -1,1 +1,0 @@
-{"id":"9f0fa71ced8d8072be4136d047a4d491","fullName":"tests.api.HubLogsSessionApiTests.sessionLogsWebSocketOpens","name":"WebSocket /logs/{sessionId} opens for active session","status":"broken","testResultsByEnv":{"default":"4f8f35daa82c8da936554041570d55ae"}}

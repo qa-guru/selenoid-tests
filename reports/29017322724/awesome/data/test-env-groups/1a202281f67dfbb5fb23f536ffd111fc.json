@@ -1,0 +1,1 @@
+{"id":"1a202281f67dfbb5fb23f536ffd111fc","fullName":"tests.api.UiLogsWsApiTests.uiLogsWebSocketOpens","name":"WebSocket /ws/logs/{sessionId} opens via UI proxy","status":"broken","testResultsByEnv":{"default":"a428c99f89063d4e18ca604234a5915b"}}

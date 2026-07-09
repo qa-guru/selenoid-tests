@@ -1,0 +1,1 @@
+{"id":"a18c473158e66b27318f53835bb350e0","fullName":"tests.api.UiVncWsApiTests.uiVncWebSocketOpens","name":"WebSocket /ws/vnc/{sessionId} opens via UI when enableVNC=true","status":"broken","testResultsByEnv":{"default":"928bc517b017e42fddfed574aee9b0c5"}}

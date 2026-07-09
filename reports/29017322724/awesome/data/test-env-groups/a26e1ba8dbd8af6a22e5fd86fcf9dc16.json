@@ -1,0 +1,1 @@
+{"id":"a26e1ba8dbd8af6a22e5fd86fcf9dc16","fullName":"tests.api.HubVideoSessionApiTests.sessionVideoListedAfterClose","name":"Session with enableVideo=true appears in GET /video/?json after delete","status":"failed","testResultsByEnv":{"default":"ed2ef39d122ed36417cbd6c2ff392931"}}
