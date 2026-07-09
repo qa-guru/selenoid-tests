@@ -1,0 +1,1 @@
+{"id":"0b7db7bc4a177b8ec960f25a84e3c117","fullName":"tests.api.HubVncSessionApiTests.sessionVncWebSocketOpens","name":"WebSocket /vnc/{sessionId} opens when enableVNC=true","status":"broken","testResultsByEnv":{"default":"eaf1c278ee27b326252cd5d68480831e"}}
