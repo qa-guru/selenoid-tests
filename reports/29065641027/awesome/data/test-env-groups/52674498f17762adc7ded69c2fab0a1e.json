@@ -1,0 +1,1 @@
+{"id":"52674498f17762adc7ded69c2fab0a1e","fullName":"tests.api.HubErrorApiTests.errorReturnsInvalidSessionJson","name":"GET /error returns invalid session id JSON","status":"broken","testResultsByEnv":{"default":"6ac78f06fada0102c233ae4e9c99947a"}}
