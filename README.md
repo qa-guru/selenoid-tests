@@ -17,7 +17,7 @@
 | **selenoid-tests** (этот) | [github.com/qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests) | E2e/integration ethalon |
 | Docker Hub | [hub.docker.com/u/qaguru](https://hub.docker.com/u/qaguru) | Образы `qaguru/*` |
 
-**Stack binary cut:** hub / UI / cm → **v2.2.1** (patch после v2.2.0). Browser-image — image tags (`playwright/1.61.1`, `webdriver/*`), не git `v2.2.1`.
+**Stack binary cut:** hub / UI / cm → **v2.2.1** — **Selenoid 2** (maintenance @ [selenoid.autotests.cloud](https://selenoid.autotests.cloud)). **Selenoid 3** → [selenoid.qa.guru](https://selenoid.qa.guru) (planning). Browser-image — image tags, не git semver.
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
