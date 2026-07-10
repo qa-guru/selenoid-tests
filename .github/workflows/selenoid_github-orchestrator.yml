@@ -499,19 +499,16 @@ jobs:
       - name: Validate allurerc.mjs
         run: node scripts/validate-allurerc.mjs allurerc.mjs
 
-      - name: Allure 3 quality gate
+      - name: Allure 3 quality gate + report
         if: always() && hashFiles('build/allure-results/**') != ''
+        id: allure-report
+        continue-on-error: true
         run: |
           set +e
           ./gradlew allureQualityGate
           echo "QUALITY_GATE_EXIT=$?" >> "$GITHUB_ENV"
+          ./gradlew allureReport
           set -e
-
-      - name: Generate Allure 3 report
-        if: always() && hashFiles('build/allure-results/**') != ''
-        id: allure-report
-        continue-on-error: true
-        run: ./gradlew allureReport
 
       - name: Verify Allure awesome section chunks
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
@@ -548,7 +545,7 @@ jobs:
           publish_branch: gh-pages
           publish_dir: pages
           enable_jekyll: false
-          # Keep prior reports/<run-id>/ trees — URLs must stay stable for posts/CI callbacks.
+          # Keep prior reports/<run-id>/ trees — per-run URLs must stay stable.
           keep_files: true
 
       - name: Upload results to Allure TestOps
