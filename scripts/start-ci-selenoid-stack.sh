@@ -101,7 +101,7 @@ pull_browser_images() {
     echo "==> SKIP_BROWSER_PULL=1 — skipping docker pull"
     return 0
   fi
-  echo "==> Pulling CI smoke images (chrome + firefox + msedge + playwright-chromium) from ${BROWSERS}"
+  echo "==> Pulling CI smoke images (chrome + firefox + msedge + playwright) from ${BROWSERS}"
   if [[ ! -f "$BROWSERS" ]]; then
     echo "Missing browsers.json: ${BROWSERS}" >&2
     exit 1
@@ -115,7 +115,9 @@ pull_browser_images() {
     .firefox.versions[.firefox.default].image // empty,
     .msedge.versions[.msedge.default].image // empty,
     .["playwright-chromium"].versions["1.61.1"].image // empty,
-    .["playwright-chromium"].versions["1.61.1-min"].image // empty
+    .["playwright-chromium"].versions["1.61.1-min"].image // empty,
+    .["playwright-firefox"].versions["1.61.1"].image // empty,
+    .["playwright-webkit"].versions["1.61.1"].image // empty
   ' "$BROWSERS" | sort -u)
   docker_pull_image qaguru/video-recorder:latest
 }

@@ -25,12 +25,14 @@ public final class StackHelper {
     private static final Path CI_BROWSERS = PROJECT_ROOT.resolve("fixtures").resolve("ci-browsers.json");
     private static final Path DEV_START = DEV_ROOT.resolve("scripts").resolve("start-selenoid.sh");
 
+    private static final Path CI_UI_BIN = PROJECT_ROOT.resolve("build").resolve("ci-bin").resolve("selenoid-ui");
+
     private StackHelper() {
     }
 
     @Step("Stop hub on :4444")
     public static void killHub() {
-        execShell("lsof -nP -iTCP:4444 -sTCP:LISTEN -t | xargs kill 2>/dev/null || true");
+        execShell("lsof -nP -iTCP:4444 -sTCP:LISTEN -t | xargs kill -9 2>/dev/null || true");
     }
 
     @Step("Start hub detached")
@@ -49,6 +51,49 @@ public final class StackHelper {
                     "No hub binary: missing " + CI_BIN + " and " + DEV_START);
         }
         execDetached(List.of("bash", DEV_START.toString()));
+    }
+
+    @Step("Start UI detached")
+    public static void startUiDetached() {
+        if (Files.isExecutable(CI_UI_BIN) && Files.isRegularFile(CI_BROWSERS)) {
+            execDetached(List.of(
+                    CI_UI_BIN.toString(),
+                    "-listen", ":8080",
+                    "-selenoid-uri", "http://127.0.0.1:4444",
+                    "-browsers-conf", CI_BROWSERS.toString(),
+                    "-period", "4s"));
+            return;
+        }
+        var devUiStart = DEV_ROOT.resolve("scripts").resolve("start-selenoid-ui.sh");
+        if (Files.isRegularFile(devUiStart)) {
+            execDetached(List.of("bash", devUiStart.toString()));
+            return;
+        }
+        throw new IllegalStateException("No UI binary: missing " + CI_UI_BIN + " and " + devUiStart);
+    }
+
+    @Step("Wait until UI /status is ready")
+    public static void waitForUiReady(long timeoutMs) throws InterruptedException {
+        var deadline = System.currentTimeMillis() + timeoutMs;
+        while (System.currentTimeMillis() < deadline) {
+            if (uiResponds()) {
+                return;
+            }
+            Thread.sleep(500);
+        }
+        throw new IllegalStateException("UI did not become ready on :8080 within " + timeoutMs + "ms");
+    }
+
+    @Step("Ensure hub and UI are running")
+    public static void ensureStackRunning() throws InterruptedException {
+        if (!hubResponds()) {
+            startHubDetached();
+            waitForHubReady(30_000);
+        }
+        if (!uiResponds()) {
+            startUiDetached();
+            waitForUiReady(30_000);
+        }
     }
 
     @Step("Wait until hub /status is ready")
@@ -87,6 +132,22 @@ public final class StackHelper {
             return CI_BIN;
         }
         return null;
+    }
+
+    private static boolean uiResponds() {
+        try {
+            var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:8080/status"))
+                    .timeout(Duration.ofSeconds(3))
+                    .GET()
+                    .build();
+            var response = HTTP.send(request, HttpResponse.BodyHandlers.discarding());
+            return response.statusCode() == 200;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private static boolean hubResponds() {

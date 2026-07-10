@@ -30,7 +30,6 @@ class HubPlaywrightWebkitSessionTests {
     @Test
     @Tag("integration")
     @Tag("playwright")
-    @Tag("local-only")
     @DisplayName("Remote Playwright WebKit WS session connects via hub")
     void remoteWebkitSessionConnects() {
         var endpoint = ConfigReader.resolvePlaywrightWsEndpoint(ConfigReader.testConfig, "playwright-webkit");

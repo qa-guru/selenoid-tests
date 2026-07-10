@@ -44,7 +44,7 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testE2e -DskipHealthCheck=true                             # e2e smoke (hub + UI)
 ./gradlew testWebdriverE2e -DskipHealthCheck=true                    # webdriver-image smoke (HubSession*)
 ./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
-./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (incl. firefox/webkit local-only)
+./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (chromium + firefox + webkit)
 ./gradlew testResilience -DskipHealthCheck=true                      # hub restart recovery
 ./gradlew testMin -DskipHealthCheck=true                             # chromium-min + chrome-min
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (CI: java-cm job; local: ports :4445/:8081)
@@ -179,7 +179,7 @@ EOF
 | Сервис | unit | component | integration | api | e2e | Добавлено / статус |
 |--------|------|-----------|-------------|-----|-----|--------------------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
-| **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
+| **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS in `testHubAll` |
 | **webdriver-image** (`browser-image/webdriver/`) | ✓ | ✓ (+min) | ✓ (+firefox/msedge warm) | ✓ | ✓ | +unit session body (chrome/firefox/msedge); chrome warm + min + firefox + msedge integration |
 | **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
@@ -203,7 +203,8 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | `testWebdriverE2e` + `testE2e` | ✓ | последний прогон; ранее flake на amd64 chrome @ arm64 host |
 | `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:148*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; msedge = **amd64 only** (arm64 host — skip/note); CI linux/amd64 — канон |
 | `testCm*` | не гоняли | отдельный `start-ci-cm-stack.sh` (:4445/:8081); ячейки cm закрыты классами |
-| `local-only` / `resilience` | — | осознанно вне push-gate (`excludeTags` в slice) |
+| `local-only` | — | `UiStatusWhenHubDownTests`, CM lifecycle start methods — вне push-gate |
+| `testResilience` | ✓ | `UiStatusRecoveryTests` — последний slice в `testHubAll` (hub kill/restart) |
 
 Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder:latest` (+ `-video-output-dir`). `warm-pool` — OUT.
 
@@ -279,7 +280,7 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | HubChromeMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
 | HubFirefoxSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
 | HubMsedgeSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
-| UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | integration, resilience, local-only |
+| UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | resilience |
 | HubSessionTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionIdTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionHeadingTests | webdriver-image | webdriver-image | e2e | smoke |
@@ -302,8 +303,8 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | CmVersionOutputTest | cm | cm | component | — |
 | CmHelpOutputTest | cm | cm | component | — |
 | CmCliVersionTests | cm | cm | integration | cm |
-| HubPlaywrightFirefoxSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
-| HubPlaywrightWebkitSessionTests | playwright-image | playwright-image | integration | playwright, local-only |
+| HubPlaywrightFirefoxSessionTests | playwright-image | playwright-image | integration | integration, playwright |
+| HubPlaywrightWebkitSessionTests | playwright-image | playwright-image | integration | integration, playwright |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | e2e | playwright, smoke |
 | HubPlaywrightMinSessionTests | playwright-image | playwright-image | e2e | min |
 | UiStatusBarTests | selenoid-ui | selenoid-ui | e2e | smoke |

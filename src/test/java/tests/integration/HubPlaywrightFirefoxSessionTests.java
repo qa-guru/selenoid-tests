@@ -30,7 +30,6 @@ class HubPlaywrightFirefoxSessionTests {
     @Test
     @Tag("integration")
     @Tag("playwright")
-    @Tag("local-only")
     @DisplayName("Remote Playwright Firefox WS session connects via hub")
     void remoteFirefoxSessionConnects() {
         var endpoint = ConfigReader.resolvePlaywrightWsEndpoint(ConfigReader.testConfig, "playwright-firefox");

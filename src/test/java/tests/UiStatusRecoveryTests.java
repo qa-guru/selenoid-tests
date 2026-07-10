@@ -3,6 +3,7 @@ package tests;
 import annotations.Component;
 import annotations.Layer;
 import allure.Attachments;
+import api.ui.UiStatusApi;
 import helpers.StackHelper;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static io.qameta.allure.Allure.step;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Layer("integration")
 @Component("selenoid-ui")
@@ -22,8 +24,6 @@ import static io.qameta.allure.Allure.step;
 @Feature("UI status recovery")
 @DisplayName("UI status recovery")
 @Tag("resilience")
-@Tag("integration")
-@Tag("local-only")
 @Execution(ExecutionMode.SAME_THREAD)
 class UiStatusRecoveryTests extends UiTestBase {
 
@@ -32,6 +32,7 @@ class UiStatusRecoveryTests extends UiTestBase {
     @Timeout(120)
     @DisplayName("SELENOID recovers after hub restart")
     void selenoidRecoversAfterHubRestart() throws Exception {
+        step("Ensure hub and UI are up", () -> StackHelper.ensureStackRunning());
         step("Baseline CONNECTED", () -> uiDashboard.openPage().shouldBeConnected());
         attachScreenshot("Before hub kill");
 
@@ -39,15 +40,16 @@ class UiStatusRecoveryTests extends UiTestBase {
             StackHelper.killHub();
             StackHelper.waitForHubDown(15_000);
         });
-        uiDashboard.openPage().shouldBeDegraded();
-        attachScreenshot("Hub down");
+        step("Close browser after hub stop", () -> closeWebDriver());
+        step("UI /status reports hub error", () -> {
+            var response = UiStatusApi.fetchWhenHubUnavailable();
+            assertFalse(response.errors().isEmpty());
+        });
 
         step("Restart hub", () -> {
             StackHelper.startHubDetached();
             StackHelper.waitForHubReady(30_000);
         });
-
-        step("Fresh browser after hub recovery", () -> closeWebDriver());
 
         step("Both indicators recover within UI retry window", () -> {
             uiDashboard.openPage();

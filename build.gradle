@@ -234,12 +234,13 @@ def layerTestSlices = [
          includeTags: 'smoke',
          needsStack: true],
         [name: 'testPlaywright',  layer: 'e2e',
-         description: 'Playwright — @Tag(playwright)',
+         description: 'Playwright — @Tag(playwright); chromium + firefox + webkit',
          includeTags: 'playwright', excludeTags: 'local-only',
          needsStack: true],
         [name: 'testResilience',  layer: 'integration',
          description: 'Resilience — @Tag(resilience), hub restart recovery',
          includeTags: 'resilience', excludeTags: 'local-only',
+         envOverride: 'selenoid_github_e2e',
          needsStack: true],
         [name: 'testMin',         layer: 'min_integration',
          description: 'Playwright-chromium-min + chrome-min — @Tag(min)',
@@ -302,6 +303,20 @@ layerTestSlices.each { slice ->
             }
         }
     }
+}
+
+tasks.named('testResilience', Test).configure {
+    mustRunAfter(
+            'testUnit',
+            'testComponent',
+            'testIntegration',
+            'testApi',
+            'testE2e',
+            'testWebdriverE2e',
+            'testUiE2e',
+            'testPlaywright',
+            'testMin'
+    )
 }
 
 tasks.register('testHubAll') {
