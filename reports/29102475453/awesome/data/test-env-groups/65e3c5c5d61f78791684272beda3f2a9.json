@@ -1,0 +1,1 @@
+{"id":"65e3c5c5d61f78791684272beda3f2a9","fullName":"config.ConfigReaderWebdriverTest.resolveUiBrowserUrlMapsLoopbackForRemoteSessions","name":"resolveUiBrowserUrl maps loopback to host.docker.internal for remote sessions","status":"passed","testResultsByEnv":{"default":"dce1dc63abbe054b3dbe35cbe8d23bdf"}}
