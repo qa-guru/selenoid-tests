@@ -1,0 +1,1 @@
+{"id":"a3f6bf3bb314a275ef1a5be597742acb","fullName":"tests.api.UiVncWsApiTests.uiVncPathRequiresWebSocketUpgrade","name":"GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","status":"passed","testResultsByEnv":{"default":"5ffbcdbb28494e6faef4fcbae2d63983"}}
