@@ -293,6 +293,11 @@ jobs:
                 echo "CM suite runs in java-cm job (testCmIntegration + testCmApi + testCmE2e)"
                 JAVA_TEST_EXIT=0
                 ;;
+              api,smoke)
+                # Release smoke: pyramid slices exclude @Tag(cm) — raw includeTags=api,smoke pulls CM installer/API on prod.
+                ./gradlew testApi testE2e "${GRADLE_PYRAMID[@]}"
+                JAVA_TEST_EXIT=$?
+                ;;
               *)
                 ./gradlew test "${GRADLE_ARGS[@]}" \
                   -DincludeTags="$TEST_TAGS"
