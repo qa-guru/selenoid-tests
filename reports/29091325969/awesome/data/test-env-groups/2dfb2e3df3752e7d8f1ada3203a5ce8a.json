@@ -1,0 +1,1 @@
+{"id":"2dfb2e3df3752e7d8f1ada3203a5ce8a","fullName":"tests.api.CmHubSessionApiTests.cmHubCreateAndDeleteSession","name":"POST /wd/hub/session on CM hub creates and DELETE removes session","status":"failed","testResultsByEnv":{"default":"14b0c980d3465a5eb7770b039df0348c"}}
