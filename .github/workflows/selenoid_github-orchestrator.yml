@@ -548,6 +548,8 @@ jobs:
           publish_branch: gh-pages
           publish_dir: pages
           enable_jekyll: false
+          # Keep prior reports/<run-id>/ trees — URLs must stay stable for posts/CI callbacks.
+          keep_files: true
 
       - name: Upload results to Allure TestOps
         if: always() && steps.setup-allurectl.outcome == 'success' && hashFiles('build/allure-results/**') != ''
