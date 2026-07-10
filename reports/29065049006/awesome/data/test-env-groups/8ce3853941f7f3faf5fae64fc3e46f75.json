@@ -1,1 +1,0 @@
-{"id":"8ce3853941f7f3faf5fae64fc3e46f75","fullName":"tests.api.WebDriverStatusApiTests.webDriverStatusReportsReady","name":"GET /wd/hub/status reports ready hub for webdriver-image sessions","status":"passed","testResultsByEnv":{"default":"fa76d353746f3756e7d94efcc19bb619"}}
