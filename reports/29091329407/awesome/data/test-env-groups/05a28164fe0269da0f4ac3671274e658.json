@@ -1,0 +1,1 @@
+{"id":"05a28164fe0269da0f4ac3671274e658","fullName":"tests.api.UiPingTests.pingReturnsMetadata","name":"GET /ping returns uptime and version","status":"failed","testResultsByEnv":{"default":"06bdc0bf569e03461e3abb9529d75092"}}
