@@ -4,6 +4,7 @@ import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import api.hub.HubStatusApi;
+import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubFirefoxMinSessionTests {
 
-    private static final String FIREFOX_MIN_VERSION = "151.0-min";
-
     @Test
     @Tag("integration")
     @Tag("min")
@@ -36,7 +35,7 @@ class HubFirefoxMinSessionTests {
                 HubStatusApi.fetch().used());
 
         var sessionId = step("Create Firefox min hub session", () ->
-                HubSessionApi.create("firefox", FIREFOX_MIN_VERSION));
+                HubSessionApi.create("firefox", ConfigReader.testConfig.firefoxMinVersion()));
 
         try {
             step("Verify hub reports active session", () ->

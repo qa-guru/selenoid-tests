@@ -28,15 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubVideoSessionApiTests extends ApiTestBase {
 
-    private static final String FULL_CHROME = "148.0";
-
     @Test
     @Tag("api")
     @Tag("positive")
     @DisplayName("Session with enableVideo=true produces downloadable MP4 after delete")
     void sessionVideoListedAfterClose() throws Exception {
         var sessionId = step("Create hub session with video", () ->
-                HubSessionApi.createWithSelenoidOptions(FULL_CHROME, Map.of("enableVideo", true)));
+                HubSessionApi.createWithSelenoidOptions(config.browserVersion(), Map.of("enableVideo", true)));
         step("Keep session briefly for recorder", () -> TimeUnit.SECONDS.sleep(3));
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
 

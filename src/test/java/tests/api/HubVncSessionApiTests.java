@@ -27,15 +27,13 @@ import static org.hamcrest.Matchers.containsString;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubVncSessionApiTests extends ApiTestBase {
 
-    private static final String FULL_CHROME = "148.0";
-
     @Test
     @Tag("api")
     @Tag("positive")
     @DisplayName("GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true")
     void sessionVncPathRequiresWebSocketUpgrade() {
         var sessionId = step("Create hub session with VNC", () ->
-                HubSessionApi.createWithSelenoidOptions(FULL_CHROME, Map.of("enableVNC", true)));
+                HubSessionApi.createWithSelenoidOptions(config.browserVersion(), Map.of("enableVNC", true)));
         try {
             step("GET /vnc/{sessionId} without WebSocket headers", () ->
                     given()

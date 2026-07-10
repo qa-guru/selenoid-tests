@@ -4,6 +4,7 @@ import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import api.hub.HubStatusApi;
+import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubFirefoxSessionIntegrationTests {
 
-    private static final String FIREFOX_WARM_VERSION = "151.0";
-
     @Test
     @Tag("integration")
     @Tag("positive")
@@ -35,7 +34,7 @@ class HubFirefoxSessionIntegrationTests {
                 HubStatusApi.fetch().used());
 
         var sessionId = step("Create Firefox hub session", () ->
-                HubSessionApi.create("firefox", FIREFOX_WARM_VERSION));
+                HubSessionApi.create("firefox", ConfigReader.testConfig.firefoxVersion()));
 
         try {
             step("Verify hub reports active session", () ->

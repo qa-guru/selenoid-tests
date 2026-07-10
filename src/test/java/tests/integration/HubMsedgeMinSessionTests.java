@@ -4,6 +4,7 @@ import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import api.hub.HubStatusApi;
+import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubMsedgeMinSessionTests {
 
-    private static final String MSEDGE_MIN_VERSION = "145.0-min";
-
     @Test
     @Tag("integration")
     @Tag("min")
@@ -36,7 +35,7 @@ class HubMsedgeMinSessionTests {
                 HubStatusApi.fetch().used());
 
         var sessionId = step("Create Edge min hub session", () ->
-                HubSessionApi.create("msedge", MSEDGE_MIN_VERSION));
+                HubSessionApi.create("msedge", ConfigReader.testConfig.msedgeMinVersion()));
 
         try {
             step("Verify hub reports active session", () ->

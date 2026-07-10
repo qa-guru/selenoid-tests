@@ -7,10 +7,6 @@ PARENT="$(cd "${ROOT}/.." && pwd)"
 REPOS="${ROOT}/repos"
 BIN="${ROOT}/build/ci-bin"
 BROWSERS="${ROOT}/fixtures/ci-browsers.json"
-DEV_SCRIPTS="${PARENT}/dev/scripts"
-
-# shellcheck source=../../dev/scripts/docker-pull-platform.sh
-source "${DEV_SCRIPTS}/docker-pull-platform.sh"
 
 export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.45}"
 export GO111MODULE=on
@@ -57,7 +53,8 @@ pull_browser_images() {
   echo "==> Pulling CI smoke images (chrome 149 + playwright-chromium) from ${BROWSERS}"
   while IFS= read -r img; do
     [[ -n "$img" ]] || continue
-    docker_pull_image "$img"
+    echo "    docker pull ${img}"
+    docker pull "$img"
   done < <(jq -r '
     .chrome.versions["149.0"].image // empty,
     .chrome.versions["149.0-min"].image // empty,
@@ -88,8 +85,11 @@ go install github.com/rakyll/statik@latest
 
 pull_browser_images
 
-docker_pull_image qaguru/selenoid:latest-release
-docker_pull_image qaguru/selenoid-ui:latest-release
-docker_pull_image qaguru/video-recorder:latest
+echo "    docker pull qaguru/selenoid:latest-release"
+docker pull qaguru/selenoid:latest-release
+echo "    docker pull qaguru/selenoid-ui:latest-release"
+docker pull qaguru/selenoid-ui:latest-release
+echo "    docker pull qaguru/video-recorder:latest"
+docker pull qaguru/video-recorder:latest
 
 echo "==> CM workspace ready (binaries in ${BIN}, repos linked under ${PARENT})"

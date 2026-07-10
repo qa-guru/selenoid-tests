@@ -2,6 +2,7 @@ package tests.component;
 
 import annotations.Component;
 import annotations.Layer;
+import config.WebDriverCatalog;
 import io.qameta.allure.Epic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -22,10 +23,11 @@ class ChromeMinCatalogJsonTest {
     @Tag("min")
     @DisplayName("parses chrome-min catalog version block port and path")
     void parsesChromeMinCatalogVersionBlock() {
-        var json = FixtureJson.load("fixtures/webdriver/browser-catalog.json");
+        var minVersion = WebDriverCatalog.minVersion("chrome");
+        var json = FixtureJson.load(WebDriverCatalog.CATALOG_RESOURCE);
         var path = io.restassured.path.json.JsonPath.from(json);
         @SuppressWarnings("unchecked")
-        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get("149.0-min");
+        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get(minVersion);
         assertEquals("4444", versionBlock.get("port"));
         assertEquals("/", versionBlock.get("path"));
     }
@@ -34,10 +36,11 @@ class ChromeMinCatalogJsonTest {
     @Tag("min")
     @DisplayName("parses min image tag in chrome catalog entry")
     void parsesMinImageTagInChromeCatalog() {
-        var json = FixtureJson.load("fixtures/webdriver/browser-catalog.json");
+        var minVersion = WebDriverCatalog.minVersion("chrome");
+        var json = FixtureJson.load(WebDriverCatalog.CATALOG_RESOURCE);
         var path = io.restassured.path.json.JsonPath.from(json);
         @SuppressWarnings("unchecked")
-        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get("149.0-min");
-        assertTrue(String.valueOf(versionBlock.get("image")).contains("149-min"));
+        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get(minVersion);
+        assertTrue(String.valueOf(versionBlock.get("image")).contains(WebDriverCatalog.minImageMajor("chrome") + "-min"));
     }
 }

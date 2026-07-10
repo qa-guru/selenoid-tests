@@ -3,16 +3,12 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PARENT="$(cd "${ROOT}/.." && pwd)"
 REPOS="${ROOT}/repos"
 BIN="${ROOT}/build/ci-bin"
 LOG_DIR="${ROOT}/build/ci-logs"
 BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 HUB_URL="${HUB_URL:-http://127.0.0.1:4444/}"
 UI_URL="${UI_URL:-http://127.0.0.1:8080/}"
-
-# shellcheck source=../../dev/scripts/docker-pull-platform.sh
-source "${PARENT}/dev/scripts/docker-pull-platform.sh"
 
 export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.45}"
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
@@ -108,7 +104,8 @@ pull_browser_images() {
   fi
   while IFS= read -r img; do
     [[ -n "$img" ]] || continue
-    docker_pull_image "$img"
+    echo "    docker pull ${img}"
+    docker pull "$img"
   done < <(jq -r '
     .chrome.versions["149.0"].image // empty,
     .chrome.versions["149.0-min"].image // empty,
@@ -121,7 +118,8 @@ pull_browser_images() {
     .["playwright-firefox"].versions["1.61.1"].image // empty,
     .["playwright-webkit"].versions["1.61.1"].image // empty
   ' "$BROWSERS" | sort -u)
-  docker_pull_image qaguru/video-recorder:latest
+  echo "    docker pull qaguru/video-recorder:latest"
+  docker pull qaguru/video-recorder:latest
 }
 
 start_stack() {

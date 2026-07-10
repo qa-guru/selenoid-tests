@@ -329,5 +329,12 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | cmHubPort | 4445 (CM installer; dev hub stays :4444) |
 | cmUiPort | 8081 |
 | playwrightWsEndpoint | ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1 |
+| browser / browserVersion | chrome / **149.0** (Selenide e2e + warm chrome API) |
+| chromeVersion | 149.0 |
+| chromeMinVersion | 149.0-min |
+| firefoxVersion | 151.0 |
+| firefoxMinVersion | 151.0-min |
+| msedgeVersion | 145.0 |
+| msedgeMinVersion | 145.0-min |
 
-Override: `-DhubUrl`, `-DuiUrl`, `-DapiBaseUrl`, …
+Override: `-DhubUrl`, `-DuiUrl`, `-DchromeMinVersion=149.0-min`, … (Owner `system:properties` — любой ключ из `TestConfig`).

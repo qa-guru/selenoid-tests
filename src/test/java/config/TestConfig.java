@@ -64,8 +64,34 @@ public interface TestConfig extends Config {
     String browserSize();
 
     @Key("browserVersion")
-    @DefaultValue("148.0")
+    @DefaultValue("149.0")
     String browserVersion();
+
+    /** WebDriver chrome warm — override: {@code -DchromeVersion=149.0} */
+    @Key("chromeVersion")
+    @DefaultValue("149.0")
+    String chromeVersion();
+
+    /** WebDriver chrome min — override: {@code -DchromeMinVersion=149.0-min} */
+    @Key("chromeMinVersion")
+    @DefaultValue("149.0-min")
+    String chromeMinVersion();
+
+    @Key("firefoxVersion")
+    @DefaultValue("151.0")
+    String firefoxVersion();
+
+    @Key("firefoxMinVersion")
+    @DefaultValue("151.0-min")
+    String firefoxMinVersion();
+
+    @Key("msedgeVersion")
+    @DefaultValue("145.0")
+    String msedgeVersion();
+
+    @Key("msedgeMinVersion")
+    @DefaultValue("145.0-min")
+    String msedgeMinVersion();
 
     @Key("closeBrowserAfterEach")
     @DefaultValue("true")

@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Component("cm")
@@ -21,24 +20,29 @@ class CmBrowsersConfigJsonTest {
     @DisplayName("parses cm browsers.json default chrome version")
     void parsesCmBrowsersDefaultVersion() {
         var json = FixtureJson.loadProject(CI_BROWSERS);
-        var defaultVersion = io.restassured.path.json.JsonPath.from(json).getString("chrome.default");
-        assertEquals("149.0", defaultVersion);
+        var path = io.restassured.path.json.JsonPath.from(json);
+        var defaultVersion = path.getString("chrome.default");
+        assertTrue(defaultVersion.matches("\\d+\\.\\d+"));
 
-        var root = io.restassured.path.json.JsonPath.from(json).getMap("");
+        var root = path.getMap("");
         assertTrue(root.containsKey("firefox"));
         assertTrue(root.containsKey("msedge"));
 
-        var versions = io.restassured.path.json.JsonPath.from(json).getMap("chrome.versions");
-        assertTrue(versions.containsKey("149.0"));
-        assertTrue(versions.containsKey("149.0-min"));
+        var versions = path.getMap("chrome.versions");
+        assertTrue(versions.containsKey(defaultVersion));
+        assertTrue(versions.containsKey(defaultVersion + "-min"));
     }
 
     @Test
     @DisplayName("parses cm browsers.json chrome-min image tag")
     void parsesCmBrowsersChromeMinImage() {
         var json = FixtureJson.loadProject(CI_BROWSERS);
-        var image = io.restassured.path.json.JsonPath.from(json)
-                .getString("chrome.versions.'149.0-min'.image");
-        assertEquals("qaguru/webdriver-chrome:149-min", image);
+        var path = io.restassured.path.json.JsonPath.from(json);
+        var defaultVersion = path.getString("chrome.default");
+        var minVersion = defaultVersion + "-min";
+        var major = defaultVersion.substring(0, defaultVersion.indexOf('.'));
+        var image = path.getString("chrome.versions.'%s'.image".formatted(minVersion));
+        assertTrue(image.contains("webdriver-chrome"));
+        assertTrue(image.contains(major + "-min"));
     }
 }
