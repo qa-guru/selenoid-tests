@@ -1,0 +1,265 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","DELETE unknown session returns client error","passed","1s 169ms",,,"DELETE unknown session id passed (1s 168ms)
+  DELETE /wd/hub/session/missing-session-id — expect HTTP 404 passed (1s 167ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API",
+"tests.api.HubWelcomeApiTests.welcomeReturnsSelenoidBanner","GET / returns Selenoid welcome text","passed","1s 396ms",,,"GET / passed (1s 395ms)
+  GET / passed (1s 395ms)
+ Verify welcome text passed (0s)",,"Hub welcome page API",,"selenoid","Hub welcome",
+"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","GET /browsers-config returns browser catalog JSON","passed","1s 140ms",,,"GET /browsers-config passed (1s 138ms)
+  GET /browsers-config passed (1s 138ms)
+    GET https://selenoid.autotests.cloud/browsers-config passed (1s 138ms)
+ Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config",
+"tests.api.HubClipboardApiTests.clipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} for unknown session returns 404 JSON","passed","2s 601ms",,,"GET /clipboard/unknown-session passed (2s 571ms)
+  GET /clipboard/unknown-session — expect HTTP 404 passed (2s 568ms)",,"Hub clipboard proxy API",,"selenoid","Hub clipboard proxy",
+"tests.api.UiClipboardApiTests.uiClipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","passed","1s 148ms",,,"GET UI /clipboard/unknown-session passed (1s 147ms)
+  GET UI /clipboard/unknown-session — expect HTTP 404 passed (1s 147ms)",,"UI /clipboard proxy API",,"selenoid-ui","UI clipboard proxy",
+"tests.api.HubDownloadApiTests.downloadUnknownSessionReturnsNotFound","GET /download/{sessionId} for unknown session returns 404 JSON","passed","1s 125ms",,,"GET /download/unknown-session passed (1s 123ms)
+  GET /download/unknown-session — expect HTTP 404 passed (1s 122ms)",,"Hub download proxy API",,"selenoid","Hub download proxy",
+"tests.api.HubErrorApiTests.errorReturnsInvalidSessionJson","GET /error returns invalid session id JSON","broken","1s 266ms","Expected response body to be verified as JSON, HTML or XML but content-type 'text/plain' is not supported out of the box.
+Try registering a custom parser using:
+   RestAssured.registerParser(""text/plain"", <parser type>);
+Content was:
+404 page not found
+
+","java.lang.IllegalStateException: Expected response body to be verified as JSON, HTML or XML but content-type 'text/plain' is not supported out of the box.
+Try registering a custom parser using:
+   RestAssured.registerParser(""text/plain"", <parser type>);
+Content was:
+404 page not found
+
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.reflection.CachedConstructor.doConstructorInvoke(CachedConstructor.java:60)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrap.callConstructor(ConstructorSite.java:86)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:57)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.assertion.StreamVerifier.newAssertion(StreamVerifier.groovy:49)
+	at io.restassured.internal.assertion.BodyMatcher.validate(BodyMatcher.java:93)
+	at io.restassured.internal.assertion.BodyMatcherGroup.lambda$validate$0(BodyMatcherGroup.java:30)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at io.restassured.internal.assertion.BodyMatcherGroup.validate(BodyMatcherGroup.java:30)
+	at io.restassured.internal.assertion.BodyMatcherGroup$validate$5.call(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:45)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:157)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:499)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$3.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.body(ResponseSpecificationImpl.groovy:270)
+	at io.restassured.specification.ResponseSpecification$body$3.callCurrent(Unknown Source)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:49)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:212)
+	at io.restassured.internal.ResponseSpecificationImpl.body(ResponseSpecificationImpl.groovy:117)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.body(ValidatableResponseOptionsImpl.java:244)
+	at api.hub.HubErrorApi.fetchExpectInvalidSessionJson(HubErrorApi.java:21)
+	at io.qameta.allure.Allure.lambda$step$0(Allure.java:113)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at io.qameta.allure.Allure.step(Allure.java:112)
+	at tests.api.HubErrorApiTests.errorReturnsInvalidSessionJson(HubErrorApiTests.java:27)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+","GET /error broken (1s 257ms)
+  GET /error broken (1s 256ms)",,"Hub /error API",,"selenoid","Hub error",
+"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","1s 172ms",,,"GET /logs/unknown-session without WebSocket headers passed (1s 171ms)",,"Hub logs endpoint API",,"selenoid","Hub logs",
+"tests.api.HubLogsSessionApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","passed","7s 21ms",,,"Create hub session passed (3s 365ms)
+  POST /wd/hub/session passed (3s 365ms)
+    POST /wd/hub/session passed (3s 365ms)
+      POST /wd/hub/session (chrome 148.0) passed (3s 364ms)
+ GET /logs/{sessionId} without WebSocket headers passed (1s 151ms)
+  Delete hub session passed (2s 503ms)
+    DELETE /wd/hub/session/bd17c25ddc6283081e891b2ce5c14062 passed (2s 503ms)",,"Hub session logs WebSocket API",,"selenoid","Hub logs WebSocket",
+"tests.api.HubPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","1s 155ms",,,"GET /ping passed (1s 155ms)
+  GET /ping passed (1s 154ms)
+    GET https://user1:1234@selenoid.autotests.cloud//ping passed (1s 154ms)
+ Verify uptime and version passed (0s)",,"Hub ping API",,"selenoid","Hub ping",
+"tests.api.UiPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","1s 150ms",,,"GET /ping passed (1s 150ms)
+  GET /ping passed (1s 150ms)
+    GET https://selenoid.autotests.cloud//ping passed (1s 150ms)
+ Verify uptime and version passed (0s)",,"UI ping API",,"selenoid-ui","UI ping",
+"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","GET /ping version contains git revision marker","passed","1s 158ms",,,"GET /ping passed (1s 157ms)
+  GET /ping passed (1s 157ms)
+    GET https://selenoid.autotests.cloud//ping passed (1s 156ms)
+ Verify version looks like revision passed (0s)",,"UI ping version",,"selenoid-ui","UI ping",
+"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","GET /status lists configured browser families","passed","1s 140ms",,,"GET /status passed (1s 138ms)
+  GET /status passed (1s 138ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 137ms)
+ Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status",
+"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","GET /status returns hub statistics JSON","passed","1s 140ms",,,"GET /status passed (1s 138ms)
+  GET /status passed (1s 138ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 137ms)
+ Verify root counters passed (0s)
+  Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status",
+"tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle","GET /status used counter tracks session lifecycle","passed","12s 367ms",,,"Snapshot hub used counter passed (3s 247ms)
+  GET /status passed (3s 233ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (3s 226ms)
+ Create hub session passed (4s 184ms)
+   POST /wd/hub/session passed (4s 184ms)
+     POST /wd/hub/session (chrome 148.0) passed (4s 183ms)
+  Verify used counter incremented passed (1s 193ms)
+    Wait until hub used counter = 1 passed (1s 185ms)
+      GET /status passed (1s 185ms)
+        GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 184ms)
+   Delete hub session passed (2s 570ms)
+     DELETE /wd/hub/session/6c93ccb749f2d8f2508318b4ff6ef379 passed (2s 569ms)
+    Verify used counter returned to baseline passed (1s 166ms)
+      Wait until hub used counter = 0 passed (1s 163ms)
+        GET /status passed (1s 163ms)
+          GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (1s 163ms)",,"Hub status session counters API",,"selenoid","Hub status with session",
+"tests.api.HubVideoApiTests.videoListJsonReturnsArray","GET /video/?json returns file name list","passed","3s 408ms",,,"GET /video/?json passed (3s 406ms)
+  GET /video/?json passed (3s 406ms)
+ Verify list payload passed (0s)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","GET /video/?json via UI proxy returns file name list","passed","2s 836ms",,,"GET UI /video/?json passed (2s 835ms)
+  GET UI /video/?json passed (2s 835ms)
+ Verify list payload passed (0s)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVideoApiTests.missingVideoFileReturnsNotFound","GET /video/{missing}.mp4 returns 404","passed","1s 353ms",,,"GET missing video file passed (1s 351ms)
+  GET /video/missing-session-id.mp4 passed (1s 351ms)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiMissingVideoFileReturnsNotFound","GET /video/{missing}.mp4 via UI proxy returns 404","passed","1s 150ms",,,"GET missing video via UI passed (1s 150ms)
+  GET UI /video/missing-session-id.mp4 — expect HTTP 404 passed (1s 150ms)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVncSessionApiTests.sessionVncPathRequiresWebSocketUpgrade","GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","failed","6s 951ms","1 expectation failed.
+Expected status code <400> but was <404>.
+","java.lang.AssertionError: 1 expectation failed.
+Expected status code <400> but was <404>.
+
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.codehaus.groovy.reflection.CachedConstructor.invoke(CachedConstructor.java:73)
+	at org.codehaus.groovy.runtime.callsite.ConstructorSite$ConstructorSiteNoUnwrapNoCoerce.callConstructor(ConstructorSite.java:108)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallConstructor(CallSiteArray.java:57)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:263)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callConstructor(AbstractCallSite.java:277)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure.validate(ResponseSpecificationImpl.groovy:512)
+	at io.restassured.internal.ResponseSpecificationImpl$HamcrestAssertionClosure$validate$3.call(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.validateResponseIfRequired(ResponseSpecificationImpl.groovy:696)
+	at io.restassured.internal.ResponseSpecificationImpl.this$2$validateResponseIfRequired(ResponseSpecificationImpl.groovy)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.runtime.callsite.PlainObjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.java:43)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite$PogoCachedMethodSiteNoUnwrapNoCoerce.invoke(PogoMetaMethodSite.java:198)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaMethodSite.callCurrent(PogoMetaMethodSite.java:62)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:135)
+	at io.restassured.specification.ResponseSpecification$statusCode$1.callCurrent(Unknown Source)
+	at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
+	at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
+	at tests.api.HubVncSessionApiTests.lambda$sessionVncPathRequiresWebSocketUpgrade$1(HubVncSessionApiTests.java:46)
+	at io.qameta.allure.Allure.lambda$step$1(Allure.java:127)
+	at io.qameta.allure.Allure.step(Allure.java:181)
+	at io.qameta.allure.Allure.step(Allure.java:125)
+	at tests.api.HubVncSessionApiTests.sessionVncPathRequiresWebSocketUpgrade(HubVncSessionApiTests.java:40)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:387)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1312)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1843)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1808)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:188)
+","Create hub session with VNC passed (3s 263ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (3s 263ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (3s 263ms)
+ GET /vnc/{sessionId} without WebSocket headers failed (1s 167ms)
+  Delete hub session passed (2s 518ms)
+    DELETE /wd/hub/session/1cef62f9af407ed3662c85836fd2cad9 passed (2s 518ms)",,"Hub session VNC WebSocket API",,"selenoid","Hub VNC WebSocket",
+"tests.api.HubWebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub","passed","1s 160ms",,,"GET /wd/hub/status passed (1s 158ms)
+  GET /wd/hub/status passed (1s 158ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (1s 158ms)
+ Verify ready flag and message passed (0s)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status",
+"tests.api.WebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","1s 166ms",,,"GET /wd/hub/status passed (1s 161ms)
+  GET /wd/hub/status passed (1s 161ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (1s 161ms)
+ Verify ready flag and message passed (1ms)",,"WebDriver image hub status API",,"webdriver-image","WebDriver hub status",
+"tests.api.UiLogsWsApiTests.uiLogsPathRequiresWebSocketUpgrade","GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","6s 700ms",,,"Create hub session passed (3s 27ms)
+  POST /wd/hub/session passed (3s 27ms)
+    POST /wd/hub/session passed (3s 27ms)
+      POST /wd/hub/session (chrome 148.0) passed (3s 27ms)
+ GET /ws/logs/{sessionId} without WebSocket headers passed (1s 153ms)
+  Delete hub session passed (2s 518ms)
+    DELETE /wd/hub/session/560c6086715263ff4315df89f7ba5e04 passed (2s 518ms)",,"UI /ws/logs WebSocket API",,"selenoid-ui","UI logs WebSocket proxy",
+"tests.api.UiVncWsApiTests.uiVncPathRequiresWebSocketUpgrade","GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","1s 185ms",,,"GET /ws/vnc/{sessionId} without WebSocket headers passed (1s 184ms)",,"UI /ws/vnc WebSocket API",,"selenoid-ui","UI VNC WebSocket proxy",
+"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","GET playwright path without upgrade returns 400","passed","1s 164ms",,,"GET playwright path without WebSocket headers passed (1s 162ms)
+  GET {path} without WebSocket upgrade passed (1s 162ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint",
+"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","GET UI /status exposes total quota counter","passed","3s 268ms",,,"GET UI /status passed (3s 266ms)
+  GET /status passed (3s 266ms)
+    GET https://selenoid.autotests.cloud//status passed (3s 266ms)
+ Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy",
+"tests.api.UiStatusTests.uiStatusReturnsProxiedHubJson","GET UI /status returns proxied hub statistics JSON","passed","3s 325ms",,,"GET UI /status passed (3s 323ms)
+  GET /status passed (3s 323ms)
+    GET https://selenoid.autotests.cloud//status passed (3s 321ms)
+ Verify proxied state counters passed (0s)
+  Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy",
+"tests.api.PlaywrightUnknownPathTests.unknownPlaywrightPathRejected","GET unknown playwright path returns 400","passed","1s 160ms",,,"GET unknown playwright path passed (1s 159ms)
+  GET unknown playwright path without WebSocket upgrade passed (1s 159ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint",
+"tests.api.HubSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates and DELETE removes session","passed","5s 624ms",,,"Create remote session passed (3s 121ms)
+  POST /wd/hub/session passed (3s 120ms)
+    POST /wd/hub/session (chrome 148.0) passed (3s 120ms)
+ Verify session id passed (0s)
+  Delete session passed (2s 501ms)
+    DELETE /wd/hub/session/1d4807b8e6cb0411ad1ece24c5b3ee26 passed (2s 501ms)",,"Hub session API",,"selenoid","WebDriver session API",
+"tests.api.WebDriverSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates chrome session via webdriver-image node","passed","5s 961ms",,,"Create remote session passed (3s 359ms)
+  POST /wd/hub/session and read browserName from capabilities passed (3s 359ms)
+ Verify session id and browserName passed (0s)
+  Delete session passed (2s 600ms)
+    DELETE /wd/hub/session/b332422faca9632dcea682faad5f0057 passed (2s 600ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API",
+"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","POST /wd/hub/session echoes browserName in capabilities","passed","5s 921ms",,,"Create remote session passed (3s 372ms)
+  POST /wd/hub/session and read browserName from capabilities passed (3s 372ms)
+ Verify capabilities.browserName passed (1ms)
+  Delete session passed (2s 545ms)
+    DELETE /wd/hub/session/ba72b5a7911eb2c8a15d8ab195c43697 passed (2s 545ms)",,"Hub session capabilities",,"selenoid","WebDriver session API",
+"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","POST /wd/hub/session rejects unknown browser","passed","1s 146ms",,,"POST session with unknown browser passed (1s 145ms)
+  POST /wd/hub/session — expect HTTP 400 passed (1s 145ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API",
+"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","Session video is downloadable via UI /video proxy after delete","passed","17s 0ms",,,"Create hub session with video passed (5s 364ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (5s 364ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (5s 363ms)
+ Keep session briefly for recorder passed (3s 0ms)
+  Delete hub session passed (3s 973ms)
+    DELETE /wd/hub/session/5e016189b5253610b7b3bbc8034d9ab8 passed (3s 973ms)
+   Wait for video artifact in UI GET /video/?json passed (3s 469ms)
+     GET UI /video/?json passed (3s 466ms)
+    Verify session video is listed via UI proxy passed (1ms)
+     Download session video via UI proxy passed (1s 189ms)
+       GET UI /video/5e016189b5253610b7b3bbc8034d9ab8.mp4 — download body passed (1s 189ms)
+      Verify MP4 payload via UI proxy passed (0s)",,"UI session video via /video proxy",,"selenoid-ui","UI session video proxy",
+"tests.api.HubVideoSessionApiTests.sessionVideoListedAfterClose","Session with enableVideo=true produces downloadable MP4 after delete","passed","16s 466ms",,,"Create hub session with video passed (5s 119ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (5s 119ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (5s 119ms)
+ Keep session briefly for recorder passed (3s 1ms)
+  Delete hub session passed (3s 957ms)
+    DELETE /wd/hub/session/1429e206a1b8bcc5b9ba6b53250d9774 passed (3s 957ms)
+   Wait for video artifact in GET /video/?json passed (3s 219ms)
+     GET /video/?json passed (3s 219ms)
+    Verify session video is listed passed (1ms)
+     Download session video passed (1s 168ms)
+       GET /video/1429e206a1b8bcc5b9ba6b53250d9774.mp4 passed (1s 168ms)
+      Verify MP4 payload passed (0s)",,"Hub session video API",,"selenoid","Hub session video",
+"tests.api.UiSseStreamTests.sseDeliversPayload","SSE /events delivers state or error payload","passed","10s 145ms",,,"Read first SSE event passed (10s 142ms)
+  Read first SSE event from /events passed (10s 14ms)
+    Read first SSE event from https://selenoid.autotests.cloud/events passed (10s 14ms)
+ Verify payload has state or errors passed (0s)",,"UI SSE stream",,"selenoid-ui","UI SSE",
+"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","SSE /events delivers two consecutive payloads","passed","10s 619ms",,,"Read two SSE events passed (10s 619ms)
+  Read two SSE events from /events passed (10s 619ms)
+    Read two SSE events from https://selenoid.autotests.cloud/events passed (10s 618ms)
+ Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE",
