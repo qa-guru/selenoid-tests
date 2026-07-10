@@ -15,29 +15,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("webdriver-image")
 @Layer("component")
 @Epic("webdriver-image")
-@DisplayName("Chrome min browser catalog fixture")
-class ChromeMinCatalogJsonTest {
+@DisplayName("Edge min browser catalog fixture")
+class MsedgeMinCatalogJsonTest {
 
     @Test
     @Tag("min")
-    @DisplayName("parses chrome-min catalog version block port and path")
-    void parsesChromeMinCatalogVersionBlock() {
+    @DisplayName("parses msedge-min catalog version block port and path")
+    void parsesMsedgeMinCatalogVersionBlock() {
         var json = FixtureJson.load("fixtures/webdriver/browser-catalog.json");
         var path = io.restassured.path.json.JsonPath.from(json);
         @SuppressWarnings("unchecked")
-        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get("149.0-min");
+        var versionBlock = (Map<String, Object>) path.getMap("msedge.versions").get("145.0-min");
         assertEquals("4444", versionBlock.get("port"));
         assertEquals("/", versionBlock.get("path"));
     }
 
     @Test
     @Tag("min")
-    @DisplayName("parses min image tag in chrome catalog entry")
-    void parsesMinImageTagInChromeCatalog() {
+    @DisplayName("parses min image tag in msedge catalog entry")
+    void parsesMinImageTagInMsedgeCatalog() {
         var json = FixtureJson.load("fixtures/webdriver/browser-catalog.json");
         var path = io.restassured.path.json.JsonPath.from(json);
         @SuppressWarnings("unchecked")
-        var versionBlock = (Map<String, Object>) path.getMap("chrome.versions").get("149.0-min");
-        assertTrue(String.valueOf(versionBlock.get("image")).contains("149-min"));
+        var versionBlock = (Map<String, Object>) path.getMap("msedge.versions").get("145.0-min");
+        assertTrue(String.valueOf(versionBlock.get("image")).contains("145-min"));
     }
 }

@@ -247,12 +247,22 @@ jobs:
                 if [ "$SOURCE_VARIANT" = "webdriver" ]; then
                   case "$SOURCE_BROWSER" in
                     firefox)
-                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                        --tests tests.integration.HubFirefoxSessionIntegrationTests
+                      if [ "$WEBDRIVER_VARIANT" = "min" ]; then
+                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                          --tests tests.integration.HubFirefoxMinSessionTests
+                      else
+                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                          --tests tests.integration.HubFirefoxSessionIntegrationTests
+                      fi
                       ;;
                     msedge)
-                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                        --tests tests.integration.HubMsedgeSessionIntegrationTests
+                      if [ "$WEBDRIVER_VARIANT" = "min" ]; then
+                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                          --tests tests.integration.HubMsedgeMinSessionTests
+                      else
+                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                          --tests tests.integration.HubMsedgeSessionIntegrationTests
+                      fi
                       ;;
                     chrome)
                       if [ "$WEBDRIVER_VARIANT" = "min" ]; then

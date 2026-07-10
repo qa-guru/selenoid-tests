@@ -19,11 +19,11 @@ class CreateSessionRequestJsonTest {
     @Test
     @DisplayName("session body includes docker-safe chrome args")
     void sessionBodyIncludesDockerSafeChromeArgs() {
-        var json = GSON.toJson(HubSessionApi.createSessionBody("chrome", "148.0-min"));
+        var json = GSON.toJson(HubSessionApi.createSessionBody("chrome", "149.0-min"));
         assertTrue(json.contains("browserName"));
         assertTrue(json.contains("chrome"));
         assertTrue(json.contains("browserVersion"));
-        assertTrue(json.contains("148.0-min"));
+        assertTrue(json.contains("149.0-min"));
         assertTrue(json.contains("goog:chromeOptions"));
         assertTrue(json.contains("no-sandbox"));
         assertTrue(json.contains("disable-dev-shm-usage"));

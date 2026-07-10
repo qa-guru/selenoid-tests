@@ -1,15 +1,15 @@
 {
   "chrome": {
-    "default": "148.0",
+    "default": "149.0",
     "versions": {
-      "148.0": {
-        "image": "qaguru/webdriver-chrome:148",
+      "149.0": {
+        "image": "qaguru/webdriver-chrome:149",
         "port": "4444",
         "path": "/",
         "tmpfs": { "/tmp": "size=512m" }
       },
-      "148.0-min": {
-        "image": "qaguru/webdriver-chrome:148-min",
+      "149.0-min": {
+        "image": "qaguru/webdriver-chrome:149-min",
         "port": "4444",
         "path": "/",
         "tmpfs": { "/tmp": "size=512m" }

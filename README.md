@@ -46,7 +46,7 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 ./gradlew testUiE2e -DskipHealthCheck=true                           # selenoid-ui smoke (Ui*)
 ./gradlew testPlaywright -DskipHealthCheck=true                      # Playwright WS (chromium + firefox + webkit)
 ./gradlew testResilience -DskipHealthCheck=true                      # hub restart recovery
-./gradlew testMin -DskipHealthCheck=true                             # chromium-min + chrome-min
+./gradlew testMin -DskipHealthCheck=true                             # chromium-min + chrome/firefox/msedge min
 ./gradlew testCmIntegration -DskipHealthCheck=true                   # CM lifecycle (CI: java-cm job; local: ports :4445/:8081)
 
 # CI-эквиваленты (slice-only dispatch)
@@ -159,7 +159,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-video-recorder.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testVideoRecorder` (`source_variant=video-recorder`) |
 
 Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`), `source_browser` (`chrome` \| `firefox` \| `msedge`), `webdriver_variant` (`warm` \| `min`).  
-WebDriver dispatch: chrome warm → `testWebdriverE2e`; chrome min → `HubChromeMinSessionTests`; firefox → `HubFirefoxSessionIntegrationTests`; msedge → `HubMsedgeSessionIntegrationTests`.
+WebDriver dispatch: chrome warm → `testWebdriverE2e`; chrome min → `HubChromeMinSessionTests` (149.0-min); firefox warm → `HubFirefoxSessionIntegrationTests`; firefox min → `HubFirefoxMinSessionTests` (151.0-min); msedge warm → `HubMsedgeSessionIntegrationTests`; msedge min → `HubMsedgeMinSessionTests` (145.0-min).
 TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
 
 Ручная проверка:
@@ -180,13 +180,13 @@ EOF
 |--------|------|-----------|-------------|-----|-----|--------------------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS in `testHubAll` |
-| **webdriver-image** (`browser-image/webdriver/`) | ✓ | ✓ (+min) | ✓ (+firefox/msedge warm) | ✓ | ✓ | +unit session body (chrome/firefox/msedge); chrome warm + min + firefox + msedge integration |
+| **webdriver-image** (`browser-image/webdriver/`) | ✓ | ✓ (+min) | ✓ (+firefox/msedge warm + min) | ✓ | ✓ | +unit session body (chrome/firefox/msedge warm + min); chrome 149.0-min + firefox 151.0-min + msedge 145.0-min integration |
 | **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 | **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
 | **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
 
-Сверка класс-матрицы (ниже): **100/100** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
+Сверка класс-матрицы (ниже): **104/104** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
 Обоснования «—»: см. сноски ¹–⁷ в таблице Component × Layer выше.
@@ -201,7 +201,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | `testVideoRecorder` | ✓ | после fix video dir |
 | `testPlaywright` + `testUiE2e` | ✓ | arm64 playwright-chromium |
 | `testWebdriverE2e` + `testE2e` | ✓ | последний прогон; ранее flake на amd64 chrome @ arm64 host |
-| `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:148*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; msedge = **amd64 only** (arm64 host — skip/note); CI linux/amd64 — канон |
+| `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:149*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; msedge = **amd64 only** (arm64 host — skip/note); CI linux/amd64 — канон |
 | `testCm*` | не гоняли | отдельный `start-ci-cm-stack.sh` (:4445/:8081); ячейки cm закрыты классами |
 | `local-only` | — | `UiStatusWhenHubDownTests`, CM lifecycle start methods — вне push-gate |
 | `testResilience` | ✓ | `UiStatusRecoveryTests` — последний slice в `testHubAll` (hub kill/restart) |
@@ -279,7 +279,9 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | HubChromeWarmSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
 | HubChromeMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
 | HubFirefoxSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
+| HubFirefoxMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
 | HubMsedgeSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
+| HubMsedgeMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
 | UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | resilience |
 | HubSessionTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionIdTests | webdriver-image | webdriver-image | e2e | smoke |
@@ -300,6 +302,8 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | WebDriverSessionApiTests | webdriver-image | webdriver-image | api | api |
 | HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |
 | ChromeMinCatalogJsonTest | webdriver-image | webdriver-image | component | min |
+| FirefoxMinCatalogJsonTest | webdriver-image | webdriver-image | component | min |
+| MsedgeMinCatalogJsonTest | webdriver-image | webdriver-image | component | min |
 | CmVersionOutputTest | cm | cm | component | — |
 | CmHelpOutputTest | cm | cm | component | — |
 | CmCliVersionTests | cm | cm | integration | cm |

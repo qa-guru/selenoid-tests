@@ -243,7 +243,7 @@ def layerTestSlices = [
          envOverride: 'selenoid_github_e2e',
          needsStack: true],
         [name: 'testMin',         layer: 'min_integration',
-         description: 'Playwright-chromium-min + chrome-min — @Tag(min)',
+         description: 'Playwright-chromium-min + chrome/firefox/msedge min — @Tag(min)',
          includeTags: 'min', excludeTags: 'local-only',
          envOverride: 'selenoid_github_min_integration',
          needsStack: true],

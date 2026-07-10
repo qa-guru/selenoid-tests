@@ -56,12 +56,34 @@ class WebDriverCreateSessionBodyTest {
     @Test
     @DisplayName("chrome min session body includes docker-safe chrome args")
     void chromeMinSessionBodyIncludesDockerSafeChromeArgs() {
-        var minVersion = "148.0-min";
+        var minVersion = "149.0-min";
         var body = HubSessionApi.createSessionBody("chrome", minVersion);
         var json = GSON.toJson(body);
 
         assertSessionBody(json, "chrome", minVersion, "goog:chromeOptions", "no-sandbox");
-        assertTrue(catalogVersionBlock("chrome", minVersion).get("image").toString().contains("148-min"));
+        assertTrue(catalogVersionBlock("chrome", minVersion).get("image").toString().contains("149-min"));
+    }
+
+    @Test
+    @DisplayName("firefox min session body includes docker-safe firefox args")
+    void firefoxMinSessionBodyIncludesDockerSafeFirefoxArgs() {
+        var minVersion = "151.0-min";
+        var body = HubSessionApi.createSessionBody("firefox", minVersion);
+        var json = GSON.toJson(body);
+
+        assertSessionBody(json, "firefox", minVersion, "moz:firefoxOptions", "-headless");
+        assertTrue(catalogVersionBlock("firefox", minVersion).get("image").toString().contains("151-min"));
+    }
+
+    @Test
+    @DisplayName("msedge min session body includes docker-safe edge args")
+    void msedgeMinSessionBodyIncludesDockerSafeEdgeArgs() {
+        var minVersion = "145.0-min";
+        var body = HubSessionApi.createSessionBody("msedge", minVersion);
+        var json = GSON.toJson(body);
+
+        assertSessionBody(json, "msedge", minVersion, "ms:edgeOptions", "no-sandbox");
+        assertTrue(catalogVersionBlock("msedge", minVersion).get("image").toString().contains("145-min"));
     }
 
     private static String catalogDefaultVersion(String browser) {
