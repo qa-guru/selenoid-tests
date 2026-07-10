@@ -49,10 +49,7 @@ public final class HubSessionApi {
     @Step("POST /wd/hub/session with selenoid:options ({browserName} {browserVersion})")
     public static String createWithSelenoidOptions(String browserName, String browserVersion,
             java.util.Map<String, Object> selenoidOptions) {
-        var alwaysMatch = new LinkedHashMap<String, Object>();
-        alwaysMatch.put("browserName", browserName);
-        alwaysMatch.put("browserVersion", browserVersion);
-        alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
+        var alwaysMatch = createAlwaysMatch(browserName, browserVersion);
         if (selenoidOptions != null && !selenoidOptions.isEmpty()) {
             alwaysMatch.put("selenoid:options", selenoidOptions);
         }
@@ -121,16 +118,31 @@ public final class HubSessionApi {
     }
 
     public static Map<String, Object> createSessionBody(String browserName, String browserVersion) {
+        return Map.of("capabilities", Map.of("alwaysMatch", createAlwaysMatch(browserName, browserVersion)));
+    }
+
+    private static LinkedHashMap<String, Object> createAlwaysMatch(String browserName, String browserVersion) {
         var alwaysMatch = new LinkedHashMap<String, Object>();
         alwaysMatch.put("browserName", browserName);
         alwaysMatch.put("browserVersion", browserVersion);
-        alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
-
-        return Map.of("capabilities", Map.of("alwaysMatch", alwaysMatch));
+        switch (browserName) {
+            case "firefox" -> alwaysMatch.put("moz:firefoxOptions", Map.of("args", dockerFirefoxArgs()));
+            case "msedge" -> alwaysMatch.put("ms:edgeOptions", Map.of("args", dockerEdgeArgs()));
+            default -> alwaysMatch.put("goog:chromeOptions", Map.of("args", dockerChromeArgs()));
+        }
+        return alwaysMatch;
     }
 
     private static List<String> dockerChromeArgs() {
         return ChromeOptions.dockerHeadless().args();
+    }
+
+    private static List<String> dockerFirefoxArgs() {
+        return FirefoxOptions.dockerHeadless().args();
+    }
+
+    private static List<String> dockerEdgeArgs() {
+        return EdgeOptions.dockerHeadless().args();
     }
 
     private static RequestSpecification hubRequest() {

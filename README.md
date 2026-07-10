@@ -82,7 +82,7 @@ docker pull qaguru/playwright-chromium:1.61.1   # или ./scripts/pull-browser-
 ./gradlew testPlaywright -DskipHealthCheck=true
 ```
 
-В CI `scripts/start-ci-selenoid-stack.sh` тянет образы из `fixtures/ci-browsers.json` (chrome + playwright-chromium).
+В CI `scripts/start-ci-selenoid-stack.sh` тянет образы из `fixtures/ci-browsers.json` (chrome + firefox + msedge warm + playwright-chromium).
 
 ### Playwright-chromium-min (`1.61.1-min`)
 
@@ -122,7 +122,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | **selenoid-ui** | Go + 1 | 6 | 7 | 12 | 5 | —⁶ | `go-unit` + `testHubAll` |
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
-| **webdriver-image** | —⁷ | 1 | 2 | 2 | 4 | — | `testHubAll` |
+| **webdriver-image** | 2 | 1 | 4 | 2 | 4 | — | `testHubAll` |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
@@ -132,7 +132,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 ⁴ **cloud api:** post-deploy `selenoid_autotests_cloud_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
 ⁵ **cloud e2e:** профиль `selenoid_autotests_cloud_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** VNC viewer / video playback — runbook (ниже), не автоматизированы в pyramid.  
-⁷ **webdriver-image unit:** в `browser-image/webdriver/` нет Go/`*_test.go`; покрытие — component+ JSON catalog + integration/api/e2e.
+⁷ **webdriver-image unit:** Java `@Layer unit` в `config/WebDriverCreateSessionBodyTest` + `ConfigReaderWebdriverTest` (`HubSessionApi.createSessionBody`, `resolveUiBrowserUrl`); Go unit в `browser-image/webdriver/` нет.
 
 ### Manual (runbook)
 
@@ -155,10 +155,11 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
 | [qa-guru/cm](https://github.com/qa-guru/cm) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api` |
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `playwright` (`source_variant=playwright`) |
-| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testWebdriverE2e` (`source_variant=webdriver`) |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → browser slice (`source_variant=webdriver`, `source_browser`, `webdriver_variant`) |
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-video-recorder.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testVideoRecorder` (`source_variant=video-recorder`) |
 
-Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`).  
+Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`), `source_browser` (`chrome` \| `firefox` \| `msedge`), `webdriver_variant` (`warm` \| `min`).  
+WebDriver dispatch: chrome warm → `testWebdriverE2e`; chrome min → `HubChromeMinSessionTests`; firefox → `HubFirefoxSessionIntegrationTests`; msedge → `HubMsedgeSessionIntegrationTests`.
 TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
 
 Ручная проверка:
@@ -179,13 +180,13 @@ EOF
 |--------|------|-----------|-------------|-----|-----|--------------------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
-| **webdriver-image** (`browser-image/webdriver/`) | —⁷ | ✓ (+min) | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min |
+| **webdriver-image** (`browser-image/webdriver/`) | ✓ | ✓ (+min) | ✓ (+firefox/msedge warm) | ✓ | ✓ | +unit session body (chrome/firefox/msedge); chrome warm + min + firefox + msedge integration |
 | **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 | **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
 | **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
 
-Сверка класс-матрицы (ниже): **96/96** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
+Сверка класс-матрицы (ниже): **100/100** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
 Обоснования «—»: см. сноски ¹–⁷ в таблице Component × Layer выше.
@@ -200,7 +201,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | `testVideoRecorder` | ✓ | после fix video dir |
 | `testPlaywright` + `testUiE2e` | ✓ | arm64 playwright-chromium |
 | `testWebdriverE2e` + `testE2e` | ✓ | последний прогон; ранее flake на amd64 chrome @ arm64 host |
-| `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:148*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; CI linux/amd64 — канон |
+| `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:148*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; msedge = **amd64 only** (arm64 host — skip/note); CI linux/amd64 — канон |
 | `testCm*` | не гоняли | отдельный `start-ci-cm-stack.sh` (:4445/:8081); ячейки cm закрыты классами |
 | `local-only` / `resilience` | — | осознанно вне push-gate (`excludeTags` в slice) |
 
@@ -213,6 +214,7 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | ConfigReaderTest | selenoid | — | unit | — |
 | ConfigReaderCmTest | cm | — | unit | — |
 | ConfigReaderPlaywrightTest | playwright-image | — | unit | — |
+| ConfigReaderWebdriverTest | webdriver-image | — | unit | — |
 | ConfigReaderUiTest | selenoid-ui | — | unit | — |
 | ConfigReaderUrlTrimTest | selenoid | — | unit | — |
 | CreateSessionRequestJsonTest | selenoid | — | unit | — |
@@ -273,8 +275,10 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | UiStatusWhenHubDownTests | selenoid-ui | selenoid-ui | integration | integration, local-only |
 | UiBrowsersConfigIntegrationTests | selenoid-ui | selenoid-ui | integration | integration |
 | HubStatusSessionIntegrationTests | selenoid | selenoid | integration | integration |
-| HubChromeSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
+| HubChromeWarmSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
 | HubChromeMinSessionTests | webdriver-image | webdriver-image | integration | integration, min |
+| HubFirefoxSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
+| HubMsedgeSessionIntegrationTests | webdriver-image | webdriver-image | integration | integration |
 | UiStatusRecoveryTests | selenoid-ui | selenoid-ui | integration | integration, resilience, local-only |
 | HubSessionTests | webdriver-image | webdriver-image | e2e | smoke |
 | HubSessionIdTests | webdriver-image | webdriver-image | e2e | smoke |
@@ -290,6 +294,7 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | HubVncSessionApiTests | selenoid | selenoid | api | api, positive |
 | HubWelcomeApiTests | selenoid | selenoid | api | api, positive |
 | HubWebDriverStatusApiTests | selenoid | selenoid | api | api |
+| WebDriverCreateSessionBodyTest | webdriver-image | — | unit | — |
 | WebDriverStatusApiTests | webdriver-image | webdriver-image | api | api |
 | WebDriverSessionApiTests | webdriver-image | webdriver-image | api | api |
 | HubWebDriverStatusJsonTest | selenoid | selenoid | component | — |

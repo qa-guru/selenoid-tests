@@ -15,5 +15,39 @@
         "tmpfs": { "/tmp": "size=512m" }
       }
     }
+  },
+  "firefox": {
+    "default": "151.0",
+    "versions": {
+      "151.0": {
+        "image": "qaguru/webdriver-firefox:151",
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
+      },
+      "151.0-min": {
+        "image": "qaguru/webdriver-firefox:151-min",
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
+      }
+    }
+  },
+  "msedge": {
+    "default": "145.0",
+    "versions": {
+      "145.0": {
+        "image": "qaguru/webdriver-msedge:145",
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
+      },
+      "145.0-min": {
+        "image": "qaguru/webdriver-msedge:145-min",
+        "port": "4444",
+        "path": "/",
+        "tmpfs": { "/tmp": "size=512m" }
+      }
+    }
   }
 }

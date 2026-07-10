@@ -116,7 +116,6 @@ public final class CmInstallerHelper {
         ensureLinuxBinary("selenoid-ui", config.cmSelenoidUiBinary(), selenoidUiRepoDir());
         return runSelenoidUi(
                 "start",
-                "-f",
                 "-c", configDir.toString(),
                 "-p", Integer.toString(config.cmUiPort()));
     }
@@ -175,7 +174,62 @@ public final class CmInstallerHelper {
             return;
         }
 
+        if ("selenoid-ui".equals(binaryName)) {
+            runGoGenerate(sourceRepo);
+        }
         crossCompileLinuxBinary(sourceRepo, target);
+    }
+
+    private static void runGoGenerate(Path sourceRepo) {
+        try {
+            var goPath = goPath();
+            var path = goPath + "/bin:" + System.getenv("PATH");
+            installGoTool(path, "github.com/rakyll/statik@latest");
+            var process = new ProcessBuilder("go", "generate", ".")
+                    .directory(sourceRepo.toFile())
+                    .redirectErrorStream(true);
+            process.environment().put("PATH", path);
+            var started = process.start();
+            if (!started.waitFor(2, TimeUnit.MINUTES)) {
+                started.destroyForcibly();
+                throw new IllegalStateException("go generate timed out in " + sourceRepo);
+            }
+            if (started.exitValue() != 0) {
+                var output = new String(started.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                throw new IllegalStateException(
+                        "go generate failed in " + sourceRepo + " (exit " + started.exitValue() + "):\n" + output);
+            }
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("go generate failed in " + sourceRepo + ": " + e.getMessage(), e);
+        }
+    }
+
+    private static String goPath() {
+        try {
+            var process = new ProcessBuilder("go", "env", "GOPATH")
+                    .redirectErrorStream(true)
+                    .start();
+            if (!process.waitFor(30, TimeUnit.SECONDS) || process.exitValue() != 0) {
+                throw new IllegalStateException("go env GOPATH failed");
+            }
+            return new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("go env GOPATH failed: " + e.getMessage(), e);
+        }
+    }
+
+    private static void installGoTool(String path, String module) {
+        try {
+            var process = new ProcessBuilder("go", "install", module)
+                    .redirectErrorStream(true);
+            process.environment().put("PATH", path);
+            process.start().waitFor(2, TimeUnit.MINUTES);
+        } catch (IOException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("go install " + module + " failed: " + e.getMessage(), e);
+        }
     }
 
     private void crossCompileLinuxBinary(Path sourceRepo, Path target) {
@@ -222,7 +276,13 @@ public final class CmInstallerHelper {
     }
 
     private static String linuxGoArch() {
+        var os = System.getProperty("os.name", "").toLowerCase();
         var arch = System.getProperty("os.arch", "").toLowerCase();
+        // CM Docker release images are linux/amd64 (selenoid-ui has no arm64 manifest).
+        // On Apple Silicon cross-compile amd64 ELF even though the host is arm64.
+        if (os.contains("mac") && (arch.contains("arm") || arch.contains("aarch64"))) {
+            return "amd64";
+        }
         return arch.contains("arm") || arch.contains("aarch64") ? "arm64" : "amd64";
     }
 

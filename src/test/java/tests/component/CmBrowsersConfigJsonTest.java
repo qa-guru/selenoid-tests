@@ -15,10 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("CM browsers.json fixture")
 class CmBrowsersConfigJsonTest {
 
+    private static final String CI_BROWSERS = "fixtures/ci-browsers.json";
+
     @Test
     @DisplayName("parses cm browsers.json default chrome version")
     void parsesCmBrowsersDefaultVersion() {
-        var json = FixtureJson.load("fixtures/cm/browsers-config.json");
+        var json = FixtureJson.loadProject(CI_BROWSERS);
         var defaultVersion = io.restassured.path.json.JsonPath.from(json).getString("chrome.default");
         assertEquals("149.0", defaultVersion);
 
@@ -34,7 +36,7 @@ class CmBrowsersConfigJsonTest {
     @Test
     @DisplayName("parses cm browsers.json chrome-min image tag")
     void parsesCmBrowsersChromeMinImage() {
-        var json = FixtureJson.load("fixtures/cm/browsers-config.json");
+        var json = FixtureJson.loadProject(CI_BROWSERS);
         var image = io.restassured.path.json.JsonPath.from(json)
                 .getString("chrome.versions.'149.0-min'.image");
         assertEquals("qaguru/webdriver-chrome:149-min", image);

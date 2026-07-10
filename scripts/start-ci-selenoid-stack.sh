@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PARENT="$(cd "${ROOT}/.." && pwd)"
 REPOS="${ROOT}/repos"
 BIN="${ROOT}/build/ci-bin"
 LOG_DIR="${ROOT}/build/ci-logs"
@@ -10,12 +11,31 @@ BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 HUB_URL="${HUB_URL:-http://127.0.0.1:4444/}"
 UI_URL="${UI_URL:-http://127.0.0.1:8080/}"
 
+# shellcheck source=../../dev/scripts/docker-pull-platform.sh
+source "${PARENT}/dev/scripts/docker-pull-platform.sh"
+
 export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.45}"
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 export GO111MODULE=on
 export PATH="$(go env GOPATH)/bin:${PATH:-}"
 
 mkdir -p "$BIN" "$LOG_DIR"
+
+stop_existing_stack() {
+  for name in selenoid selenoid-ui; do
+    local pid_file="${LOG_DIR}/${name}.pid"
+    if [[ -f "$pid_file" ]]; then
+      local pid
+      pid="$(cat "$pid_file")"
+      if kill -0 "$pid" 2>/dev/null; then
+        echo "==> Stopping existing ${name} (pid ${pid})"
+        kill "$pid" 2>/dev/null || true
+        wait "$pid" 2>/dev/null || true
+      fi
+      rm -f "$pid_file"
+    fi
+  done
+}
 
 require_repo() {
   local name="$1"
@@ -77,23 +97,27 @@ build_selenoid_ui() {
 }
 
 pull_browser_images() {
-  echo "==> Pulling CI smoke images (chrome 148 + playwright-chromium) from ${BROWSERS}"
+  if [[ "${SKIP_BROWSER_PULL:-}" == "1" ]]; then
+    echo "==> SKIP_BROWSER_PULL=1 — skipping docker pull"
+    return 0
+  fi
+  echo "==> Pulling CI smoke images (chrome + firefox + msedge + playwright-chromium) from ${BROWSERS}"
   if [[ ! -f "$BROWSERS" ]]; then
     echo "Missing browsers.json: ${BROWSERS}" >&2
     exit 1
   fi
   while IFS= read -r img; do
     [[ -n "$img" ]] || continue
-    echo "    docker pull ${img}"
-    docker pull "$img"
+    docker_pull_image "$img"
   done < <(jq -r '
     .chrome.versions["148.0"].image // empty,
     .chrome.versions["148.0-min"].image // empty,
+    .firefox.versions[.firefox.default].image // empty,
+    .msedge.versions[.msedge.default].image // empty,
     .["playwright-chromium"].versions["1.61.1"].image // empty,
     .["playwright-chromium"].versions["1.61.1-min"].image // empty
   ' "$BROWSERS" | sort -u)
-  echo "    docker pull qaguru/video-recorder:latest"
-  docker pull qaguru/video-recorder:latest
+  docker_pull_image qaguru/video-recorder:latest
 }
 
 start_stack() {
@@ -119,6 +143,7 @@ start_stack() {
 
 require_repo selenoid
 require_repo selenoid-ui
+stop_existing_stack
 build_selenoid
 build_selenoid_ui
 pull_browser_images
