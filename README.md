@@ -6,6 +6,19 @@
 
 **Scope:** `warm-pool-orchestrator/` — out of scope (deferred), не в матрице и не в CI.
 
+## Экосистема qa-guru Selenoid
+
+| Ресурс | Ссылка | Роль |
+|--------|--------|------|
+| selenoid | [github.com/qa-guru/selenoid](https://github.com/qa-guru/selenoid) | Hub |
+| selenoid-ui | [github.com/qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | Web UI |
+| cm | [github.com/qa-guru/cm](https://github.com/qa-guru/cm) | Установщик |
+| browser-image | [github.com/qa-guru/browser-image](https://github.com/qa-guru/browser-image) | Docker browser nodes |
+| **selenoid-tests** (этот) | [github.com/qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests) | E2e/integration ethalon |
+| Docker Hub | [hub.docker.com/u/qaguru](https://hub.docker.com/u/qaguru) | Образы `qaguru/*` |
+
+**Stack binary cut:** hub / UI / cm → **v2.2.1** (patch после v2.2.0). Browser-image — image tags (`playwright/1.61.1`, `webdriver/*`), не git `v2.2.1`.
+
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
 - Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
@@ -114,7 +127,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 ### Component × Layer × CI (push `main`)
 
 Пирамида: `unit → component → integration → api → e2e → manual`. Числа — Java-классы в матрице ниже; **Go unit** — отдельно в `go-unit`.  
-**Матрица 100% (фаза E / stack v2.2.0):** каждая ячейка = ✓ (число / Go) или «—» с обоснованием ниже. Binary cut: hub/ui/cm **v2.2.0** (фаза G). `warm-pool` — OUT.
+**Матрица 100% (stack v2.2.1):** каждая ячейка = ✓ (число / Go) или «—» с обоснованием ниже. Binary cut: hub/ui/cm **v2.2.1**. `warm-pool` — OUT.
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
