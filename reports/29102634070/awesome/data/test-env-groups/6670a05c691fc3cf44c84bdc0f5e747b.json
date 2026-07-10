@@ -1,0 +1,1 @@
+{"id":"6670a05c691fc3cf44c84bdc0f5e747b","fullName":"tests.component.HubStatusParserTest.parsesUiWrappedStatus","name":"parses UI-shaped /status JSON with .state wrapper","status":"passed","testResultsByEnv":{"default":"6e2c40f7e2190ee8dd22f1a3e11f1bad"}}
