@@ -20,11 +20,15 @@ class CmBrowsersConfigJsonTest {
     void parsesCmBrowsersDefaultVersion() {
         var json = FixtureJson.load("fixtures/cm/browsers-config.json");
         var defaultVersion = io.restassured.path.json.JsonPath.from(json).getString("chrome.default");
-        assertEquals("148.0", defaultVersion);
+        assertEquals("149.0", defaultVersion);
+
+        var root = io.restassured.path.json.JsonPath.from(json).getMap("");
+        assertTrue(root.containsKey("firefox"));
+        assertTrue(root.containsKey("msedge"));
 
         var versions = io.restassured.path.json.JsonPath.from(json).getMap("chrome.versions");
-        assertTrue(versions.containsKey("148.0"));
-        assertTrue(versions.containsKey("148.0-min"));
+        assertTrue(versions.containsKey("149.0"));
+        assertTrue(versions.containsKey("149.0-min"));
     }
 
     @Test
@@ -32,7 +36,7 @@ class CmBrowsersConfigJsonTest {
     void parsesCmBrowsersChromeMinImage() {
         var json = FixtureJson.load("fixtures/cm/browsers-config.json");
         var image = io.restassured.path.json.JsonPath.from(json)
-                .getString("chrome.versions.'148.0-min'.image");
-        assertEquals("qaguru/webdriver-chrome:148-min", image);
+                .getString("chrome.versions.'149.0-min'.image");
+        assertEquals("qaguru/webdriver-chrome:149-min", image);
     }
 }

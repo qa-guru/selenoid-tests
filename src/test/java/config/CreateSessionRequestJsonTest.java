@@ -1,5 +1,6 @@
 package config;
 
+import annotations.Component;
 import annotations.Layer;
 import api.hub.HubSessionApi;
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Component("selenoid")
 @Layer("unit")
 @DisplayName("CreateSessionRequest JSON")
 class CreateSessionRequestJsonTest {

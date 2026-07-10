@@ -50,12 +50,17 @@ build_selenoid_ui_frontend() {
 }
 
 pull_browser_images() {
-  echo "==> Pulling browser images from ${BROWSERS}"
+  echo "==> Pulling CI smoke images (chrome 148 + playwright-chromium) from ${BROWSERS}"
   while IFS= read -r img; do
     [[ -n "$img" ]] || continue
     echo "    docker pull ${img}"
     docker pull "$img"
-  done < <(jq -r '.. | objects | select(has("image")) | .image' "$BROWSERS" | sort -u)
+  done < <(jq -r '
+    .chrome.versions["148.0"].image // empty,
+    .chrome.versions["148.0-min"].image // empty,
+    .["playwright-chromium"].versions["1.61.1"].image // empty,
+    .["playwright-chromium"].versions["1.61.1-min"].image // empty
+  ' "$BROWSERS" | sort -u)
 }
 
 require_repo cm

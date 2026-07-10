@@ -1,5 +1,6 @@
 package config;
 
+import annotations.Component;
 import annotations.Layer;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Component("selenoid")
 @Layer("unit")
 @DisplayName("Owner config merge")
 class ConfigOwnerMergeTest {

@@ -113,23 +113,26 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 
 ### Component × Layer × CI (push `main`)
 
-Пирамида: `unit → component → integration → api → e2e → manual`. Числа — Java-классы в матрице ниже; **Go unit** — отдельно в `go-unit`.
+Пирамида: `unit → component → integration → api → e2e → manual`. Числа — Java-классы в матрице ниже; **Go unit** — отдельно в `go-unit`.  
+**Матрица 100% (фаза E / stack v2.2.0):** каждая ячейка = ✓ (число / Go) или «—» с обоснованием ниже. Binary cut: hub/ui/cm **v2.2.0** (фаза G). `warm-pool` — OUT.
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
-| **selenoid** | Go | 8 | 1 | 18 | △¹ | — | `go-unit` + `testHubAll` |
-| **selenoid-ui** | Go + 1 | 6 | 7 | 12 | 5 | △ | `go-unit` + `testHubAll` |
+| **selenoid** | Go + 4 | 7 | 1 | 18 | —¹ | — | `go-unit` + `testHubAll` |
+| **selenoid-ui** | Go + 1 | 6 | 7 | 12 | 5 | —⁶ | `go-unit` + `testHubAll` |
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
-| **webdriver-image** | — | 2 | 2 | 2 | 4 | — | `testHubAll` |
-| **dev** | — | △² | △³ | — | — | ✓ | — |
-| **selenoid-autotests-cloud** | — | — | — | △⁴ | △⁵ | ✓ | deploy-smoke dispatch |
+| **webdriver-image** | —⁷ | 1 | 2 | 2 | 4 | — | `testHubAll` |
+| **dev** | — | —² | —³ | — | — | ✓ | — |
+| **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
-¹ **selenoid e2e:** нет `@Component("selenoid")` e2e-класса; hub-path — `webdriver-image` / `playwright-image` e2e в `testHubAll`.  
-² `browsers.json` — косвенно через component JSON fixtures.  
-³ `start-ci-selenoid-stack.sh` — оркестрация CI, без отдельного test-class.  
-⁴ Post-deploy: `selenoid_autotests_cloud_api` (default `trigger-deploy-smoke`).  
-⁵ Профиль `selenoid_autotests_cloud_e2e` — вручную / расширенный deploy-smoke.
+¹ **selenoid e2e:** нет `@Component("selenoid")` e2e-класса — осознанно; сквозной hub-path покрыт `HubSession*` / `HubPlaywrightSession*` (`webdriver-image` / `playwright-image`, `@Layer e2e`) в `testHubAll`.  
+² **dev component:** отдельного test-class нет; `browsers.json` SSOT проверяется косвенно component JSON fixtures (`*CatalogJsonTest`, `BrowsersConfigJsonTest`, …).  
+³ **dev integration:** `start-ci-selenoid-stack.sh` — оркестрация CI, не test-class.  
+⁴ **cloud api:** post-deploy `selenoid_autotests_cloud_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
+⁵ **cloud e2e:** профиль `selenoid_autotests_cloud_e2e` — manual / расширенный deploy-smoke.  
+⁶ **selenoid-ui manual:** VNC viewer / video playback — runbook (ниже), не автоматизированы в pyramid.  
+⁷ **webdriver-image unit:** в `browser-image/webdriver/` нет Go/`*_test.go`; покрытие — component+ JSON catalog + integration/api/e2e.
 
 ### Manual (runbook)
 
@@ -170,30 +173,49 @@ EOF
 
 Пирамида: `unit → component → integration → api → e2e → manual`.
 
-## Пробелы → закрыто (2026-07)
+## Пробелы → закрыто (2026-07 / фаза E v2.2.0)
 
-| Сервис | unit | component | integration | api | e2e | Добавлено |
-|--------|------|-----------|-------------|-----|-----|-----------|
+| Сервис | unit | component | integration | api | e2e | Добавлено / статус |
+|--------|------|-----------|-------------|-----|-----|--------------------|
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS (local-only) |
-| **webdriver-image** (`browser-image/webdriver/`) | — | ✓ (+min) | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min integration |
-| **selenoid** | ✓ | **+2** | **+1** | **+2** | ✓¹ | logs, status+session, HubStatusParserTest |
+| **webdriver-image** (`browser-image/webdriver/`) | —⁷ | ✓ (+min) | ✓ | ✓ | ✓ | WD status + session API; chrome + chrome-min |
+| **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
+| **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
+| **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
 
+Сверка класс-матрицы (ниже): **96/96** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
-¹ **selenoid e2e:** `@Component("selenoid")` — нет отдельного e2e-класса; сквозной путь hub покрыт `HubSessionTests` / `HubPlaywrightSessionTests` (`webdriver-image` / `playwright-image`, `@Layer e2e`).
+Обоснования «—»: см. сноски ¹–⁷ в таблице Component × Layer выше.
+
+### Фаза E verify (v2.2.0) — локальные probes
+
+| Slice | Результат | Примечание |
+|-------|-----------|------------|
+| `go test ./... -cover` (selenoid / ui / cm) | ✓ | Go gaps: см. отчёт фазы E (не цель 100% lines) |
+| `testUnit` + `testComponent` | ✓ | offline |
+| `testApi` | ✓ | hub+UI; `-video-output-dir` + `chmod 755` на video dir (иначе FileServer → 403) |
+| `testVideoRecorder` | ✓ | после fix video dir |
+| `testPlaywright` + `testUiE2e` | ✓ | arm64 playwright-chromium |
+| `testWebdriverE2e` + `testE2e` | ✓ | последний прогон; ранее flake на amd64 chrome @ arm64 host |
+| `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:148*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; CI linux/amd64 — канон |
+| `testCm*` | не гоняли | отдельный `start-ci-cm-stack.sh` (:4445/:8081); ячейки cm закрыты классами |
+| `local-only` / `resilience` | — | осознанно вне push-gate (`excludeTags` в slice) |
+
+Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder:latest` (+ `-video-output-dir`). `warm-pool` — OUT.
 
 ## Матрица
 
 | Класс | Сервис | @Epic | @Layer | @Tag |
 |-------|--------|-------|--------|------|
-| ConfigReaderTest | — | — | unit | — |
-| ConfigReaderCmTest | — | — | unit | — |
-| ConfigReaderPlaywrightTest | — | — | unit | — |
-| ConfigReaderUiTest | — | — | unit | — |
-| ConfigReaderUrlTrimTest | — | — | unit | — |
-| CreateSessionRequestJsonTest | — | — | unit | — |
+| ConfigReaderTest | selenoid | — | unit | — |
+| ConfigReaderCmTest | cm | — | unit | — |
+| ConfigReaderPlaywrightTest | playwright-image | — | unit | — |
+| ConfigReaderUiTest | selenoid-ui | — | unit | — |
+| ConfigReaderUrlTrimTest | selenoid | — | unit | — |
+| CreateSessionRequestJsonTest | selenoid | — | unit | — |
 | CmInstallerHelperTest | cm | CM | unit | — |
 | CmRunResultTest | cm | CM | unit | — |
 | CmBrowsersConfigJsonTest | cm | cm | component | — |
@@ -201,7 +223,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | CmHubStatusApiTests | cm | cm | api | api, cm |
 | CmHubSessionApiTests | cm | cm | api | api, cm |
 | CmUiStatusApiTests | cm | cm | api | api, cm |
-| ConfigOwnerMergeTest | — | — | unit | — |
+| ConfigOwnerMergeTest | selenoid | — | unit | — |
 | HubStatusJsonTest | selenoid | selenoid | component | — |
 | HubStatusParserTest | selenoid | — | component | — |
 | HubStatusBrowsersJsonTest | selenoid | selenoid | component | — |
