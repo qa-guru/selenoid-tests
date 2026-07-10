@@ -1,1 +1,0 @@
-{"id":"61fc0d4582019e7951bcf7f5e4e7b79a","fullName":"tests.api.HubVncSessionApiTests.sessionVncPathRequiresWebSocketUpgrade","name":"GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","status":"passed","testResultsByEnv":{"default":"a138b7cad1383f9b3255e41915e38c89"}}
