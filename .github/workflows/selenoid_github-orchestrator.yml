@@ -47,8 +47,9 @@ on:
   repository_dispatch:
     types: [deploy-smoke]
 
+# Per trigger_run_id (deploy-smoke) — параллельные релизы selenoid/selenoid-ui/cm не отменяют чужие pending runs.
 concurrency:
-  group: selenoid_github-orchestrator-${{ github.ref }}-${{ github.event_name }}
+  group: selenoid_github-orchestrator-${{ github.event.client_payload.trigger_run_id || github.run_id }}
   cancel-in-progress: false
 
 permissions:
