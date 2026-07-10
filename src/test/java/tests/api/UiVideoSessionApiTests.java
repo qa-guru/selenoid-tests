@@ -34,7 +34,7 @@ class UiVideoSessionApiTests extends UiApiTestBase {
     @DisplayName("Session video is downloadable via UI /video proxy after delete")
     void uiSessionVideoListedAfterClose() throws Exception {
         var sessionId = step("Create hub session with video", () ->
-                HubSessionApi.createWithSelenoidOptions(config.browserVersion(), Map.of("enableVideo", true)));
+                HubSessionApi.createWithSelenoidOptions(config.chromeVersion(), Map.of("enableVideo", true)));
         step("Keep session briefly for recorder", () -> TimeUnit.SECONDS.sleep(3));
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
 

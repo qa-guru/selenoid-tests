@@ -34,7 +34,7 @@ class HubVideoSessionApiTests extends ApiTestBase {
     @DisplayName("Session with enableVideo=true produces downloadable MP4 after delete")
     void sessionVideoListedAfterClose() throws Exception {
         var sessionId = step("Create hub session with video", () ->
-                HubSessionApi.createWithSelenoidOptions(config.browserVersion(), Map.of("enableVideo", true)));
+                HubSessionApi.createWithSelenoidOptions(config.chromeVersion(), Map.of("enableVideo", true)));
         step("Keep session briefly for recorder", () -> TimeUnit.SECONDS.sleep(3));
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
 
