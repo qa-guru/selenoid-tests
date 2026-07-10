@@ -1,0 +1,158 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","DELETE unknown session returns client error","passed","981ms",,,"DELETE unknown session id passed (981ms)
+  DELETE /wd/hub/session/missing-session-id — expect HTTP 404 passed (981ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API",
+"tests.api.HubWelcomeApiTests.welcomeReturnsSelenoidBanner","GET / returns Selenoid welcome text","passed","1s 243ms",,,"GET / passed (1s 241ms)
+  GET / passed (1s 241ms)
+ Verify welcome text passed (0s)",,"Hub welcome page API",,"selenoid","Hub welcome",
+"tests.api.UiBrowsersConfigTests.browsersConfigReturnsCatalog","GET /browsers-config returns browser catalog JSON","passed","964ms",,,"GET /browsers-config passed (962ms)
+  GET /browsers-config passed (962ms)
+    GET https://selenoid.autotests.cloud/browsers-config passed (961ms)
+ Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config",
+"tests.api.HubClipboardApiTests.clipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} for unknown session returns 404 JSON","passed","2s 135ms",,,"GET /clipboard/unknown-session passed (2s 112ms)
+  GET /clipboard/unknown-session — expect HTTP 404 passed (2s 111ms)",,"Hub clipboard proxy API",,"selenoid","Hub clipboard proxy",
+"tests.api.UiClipboardApiTests.uiClipboardUnknownSessionReturnsNotFound","GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","passed","1s 0ms",,,"GET UI /clipboard/unknown-session passed (1s 0ms)
+  GET UI /clipboard/unknown-session — expect HTTP 404 passed (999ms)",,"UI /clipboard proxy API",,"selenoid-ui","UI clipboard proxy",
+"tests.api.HubDownloadApiTests.downloadUnknownSessionReturnsNotFound","GET /download/{sessionId} for unknown session returns 404 JSON","passed","1s 17ms",,,"GET /download/unknown-session passed (1s 12ms)
+  GET /download/unknown-session — expect HTTP 404 passed (1s 12ms)",,"Hub download proxy API",,"selenoid","Hub download proxy",
+"tests.api.HubErrorApiTests.errorReturnsInvalidSessionJson","GET /error returns invalid session id JSON","passed","1s 666ms",,,"GET /error passed (1s 665ms)
+  GET /error passed (1s 665ms)",,"Hub /error API",,"selenoid","Hub error",
+"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","988ms",,,"GET /logs/unknown-session without WebSocket headers passed (988ms)",,"Hub logs endpoint API",,"selenoid","Hub logs",
+"tests.api.HubLogsSessionApiTests.sessionLogsRequireWebSocketUpgrade","GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","passed","6s 449ms",,,"Create hub session passed (3s 124ms)
+  POST /wd/hub/session passed (3s 124ms)
+    POST /wd/hub/session passed (3s 124ms)
+      POST /wd/hub/session (chrome 148.0) passed (3s 123ms)
+ GET /logs/{sessionId} without WebSocket headers passed (1s 4ms)
+  Delete hub session passed (2s 318ms)
+    DELETE /wd/hub/session/a764d2c49d569a3f258fba8d2443da39 passed (2s 318ms)",,"Hub session logs WebSocket API",,"selenoid","Hub logs WebSocket",
+"tests.api.UiPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","1s 4ms",,,"GET /ping passed (1s 3ms)
+  GET /ping passed (1s 3ms)
+    GET https://selenoid.autotests.cloud//ping passed (1s 3ms)
+ Verify uptime and version passed (0s)",,"UI ping API",,"selenoid-ui","UI ping",
+"tests.api.HubPingTests.pingReturnsMetadata","GET /ping returns uptime and version","passed","947ms",,,"GET /ping passed (945ms)
+  GET /ping passed (945ms)
+    GET https://user1:1234@selenoid.autotests.cloud//ping passed (944ms)
+ Verify uptime and version passed (0s)",,"Hub ping API",,"selenoid","Hub ping",
+"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","GET /ping version contains git revision marker","passed","966ms",,,"GET /ping passed (965ms)
+  GET /ping passed (964ms)
+    GET https://selenoid.autotests.cloud//ping passed (964ms)
+ Verify version looks like revision passed (0s)",,"UI ping version",,"selenoid-ui","UI ping",
+"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","GET /status lists configured browser families","passed","971ms",,,"GET /status passed (969ms)
+  GET /status passed (969ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (969ms)
+ Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status",
+"tests.api.HubStatusTests.statusReturnsHubStatisticsJson","GET /status returns hub statistics JSON","passed","965ms",,,"GET /status passed (964ms)
+  GET /status passed (964ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (963ms)
+ Verify root counters passed (0s)
+  Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status",
+"tests.api.HubStatusSessionApiTests.statusUsedCounterTracksSessionLifecycle","GET /status used counter tracks session lifecycle","passed","10s 58ms",,,"Snapshot hub used counter passed (2s 665ms)
+  GET /status passed (2s 650ms)
+    GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (2s 644ms)
+ Create hub session passed (3s 120ms)
+   POST /wd/hub/session passed (3s 119ms)
+     POST /wd/hub/session (chrome 148.0) passed (3s 119ms)
+  Verify used counter incremented passed (995ms)
+    Wait until hub used counter = 1 passed (987ms)
+      GET /status passed (987ms)
+        GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (986ms)
+   Delete hub session passed (2s 279ms)
+     DELETE /wd/hub/session/9ebca6ab17b4796ca7b600f9f81c6391 passed (2s 278ms)
+    Verify used counter returned to baseline passed (992ms)
+      Wait until hub used counter = 0 passed (990ms)
+        GET /status passed (990ms)
+          GET https://user1:1234@selenoid.autotests.cloud/{hubStatusPath} passed (989ms)",,"Hub status session counters API",,"selenoid","Hub status with session",
+"tests.api.HubVideoApiTests.videoListJsonReturnsArray","GET /video/?json returns file name list","passed","2s 825ms",,,"GET /video/?json passed (2s 824ms)
+  GET /video/?json passed (2s 823ms)
+ Verify list payload passed (0s)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","GET /video/?json via UI proxy returns file name list","passed","2s 639ms",,,"GET UI /video/?json passed (2s 637ms)
+  GET UI /video/?json passed (2s 636ms)
+ Verify list payload passed (0s)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVideoApiTests.missingVideoFileReturnsNotFound","GET /video/{missing}.mp4 returns 404","passed","962ms",,,"GET missing video file passed (961ms)
+  GET /video/missing-session-id.mp4 passed (961ms)",,"Hub video API",,"selenoid","Hub video",
+"tests.api.UiVideoApiTests.uiMissingVideoFileReturnsNotFound","GET /video/{missing}.mp4 via UI proxy returns 404","passed","1s 426ms",,,"GET missing video via UI passed (1s 425ms)
+  GET UI /video/missing-session-id.mp4 — expect HTTP 404 passed (1s 425ms)",,"UI /video proxy API",,"selenoid-ui","UI video proxy",
+"tests.api.HubVncSessionApiTests.sessionVncPathRequiresWebSocketUpgrade","GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","passed","6s 735ms",,,"Create hub session with VNC passed (3s 454ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (3s 453ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (3s 453ms)
+ GET /vnc/{sessionId} without WebSocket headers passed (959ms)
+  Delete hub session passed (2s 321ms)
+    DELETE /wd/hub/session/884a09b305ebe9e4d637c80a4bf885bf passed (2s 321ms)",,"Hub session VNC WebSocket API",,"selenoid","Hub VNC WebSocket",
+"tests.api.HubWebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub","passed","1s 256ms",,,"GET /wd/hub/status passed (1s 254ms)
+  GET /wd/hub/status passed (1s 254ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (1s 254ms)
+ Verify ready flag and message passed (0s)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status",
+"tests.api.WebDriverStatusApiTests.webDriverStatusReportsReady","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","990ms",,,"GET /wd/hub/status passed (988ms)
+  GET /wd/hub/status passed (988ms)
+    GET https://user1:1234@selenoid.autotests.cloud//wd/hub/status passed (987ms)
+ Verify ready flag and message passed (1ms)",,"WebDriver image hub status API",,"webdriver-image","WebDriver hub status",
+"tests.api.UiLogsWsApiTests.uiLogsPathRequiresWebSocketUpgrade","GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","6s 245ms",,,"Create hub session passed (2s 928ms)
+  POST /wd/hub/session passed (2s 928ms)
+    POST /wd/hub/session passed (2s 928ms)
+      POST /wd/hub/session (chrome 148.0) passed (2s 928ms)
+ GET /ws/logs/{sessionId} without WebSocket headers passed (972ms)
+  Delete hub session passed (2s 343ms)
+    DELETE /wd/hub/session/1559b287172c14a199135c949c6913d6 passed (2s 343ms)",,"UI /ws/logs WebSocket API",,"selenoid-ui","UI logs WebSocket proxy",
+"tests.api.UiVncWsApiTests.uiVncPathRequiresWebSocketUpgrade","GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","986ms",,,"GET /ws/vnc/{sessionId} without WebSocket headers passed (985ms)",,"UI /ws/vnc WebSocket API",,"selenoid-ui","UI VNC WebSocket proxy",
+"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","GET playwright path without upgrade returns 400","passed","960ms",,,"GET playwright path without WebSocket headers passed (959ms)
+  GET {path} without WebSocket upgrade passed (959ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint",
+"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","GET UI /status exposes total quota counter","passed","2s 548ms",,,"GET UI /status passed (2s 546ms)
+  GET /status passed (2s 545ms)
+    GET https://selenoid.autotests.cloud//status passed (2s 545ms)
+ Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy",
+"tests.api.UiStatusTests.uiStatusReturnsProxiedHubJson","GET UI /status returns proxied hub statistics JSON","passed","2s 595ms",,,"GET UI /status passed (2s 592ms)
+  GET /status passed (2s 592ms)
+    GET https://selenoid.autotests.cloud//status passed (2s 592ms)
+ Verify proxied state counters passed (0s)
+  Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy",
+"tests.api.PlaywrightUnknownPathTests.unknownPlaywrightPathRejected","GET unknown playwright path returns 400","passed","937ms",,,"GET unknown playwright path passed (937ms)
+  GET unknown playwright path without WebSocket upgrade passed (937ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint",
+"tests.api.HubSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates and DELETE removes session","passed","5s 385ms",,,"Create remote session passed (3s 59ms)
+  POST /wd/hub/session passed (3s 58ms)
+    POST /wd/hub/session (chrome 148.0) passed (3s 58ms)
+ Verify session id passed (0s)
+  Delete session passed (2s 326ms)
+    DELETE /wd/hub/session/bad63b216d08009f75761f210f9433f0 passed (2s 326ms)",,"Hub session API",,"selenoid","WebDriver session API",
+"tests.api.WebDriverSessionApiTests.createAndDeleteSession","POST /wd/hub/session creates chrome session via webdriver-image node","passed","5s 232ms",,,"Create remote session passed (2s 999ms)
+  POST /wd/hub/session and read browserName from capabilities passed (2s 998ms)
+ Verify session id and browserName passed (0s)
+  Delete session passed (2s 232ms)
+    DELETE /wd/hub/session/9decde6ffa72e6704278fb786e58e114 passed (2s 232ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API",
+"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","POST /wd/hub/session echoes browserName in capabilities","passed","5s 305ms",,,"Create remote session passed (3s 28ms)
+  POST /wd/hub/session and read browserName from capabilities passed (3s 26ms)
+ Verify capabilities.browserName passed (1ms)
+  Delete session passed (2s 275ms)
+    DELETE /wd/hub/session/2de6de7fbc1f1ad06ff5ae02e32510f1 passed (2s 275ms)",,"Hub session capabilities",,"selenoid","WebDriver session API",
+"tests.api.HubSessionInvalidBrowserTests.createSessionRejectsUnknownBrowser","POST /wd/hub/session rejects unknown browser","passed","1s 14ms",,,"POST session with unknown browser passed (1s 13ms)
+  POST /wd/hub/session — expect HTTP 400 passed (1s 12ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API",
+"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","Session video is downloadable via UI /video proxy after delete","passed","15s 590ms",,,"Create hub session with video passed (5s 175ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (5s 175ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (5s 175ms)
+ Keep session briefly for recorder passed (3s 1ms)
+  Delete hub session passed (3s 704ms)
+    DELETE /wd/hub/session/618510db4b7f3f99bfc04464f29bb494 passed (3s 704ms)
+   Wait for video artifact in UI GET /video/?json passed (2s 727ms)
+     GET UI /video/?json passed (2s 725ms)
+    Verify session video is listed via UI proxy passed (0s)
+     Download session video via UI proxy passed (979ms)
+       GET UI /video/618510db4b7f3f99bfc04464f29bb494.mp4 — download body passed (979ms)
+      Verify MP4 payload via UI proxy passed (0s)",,"UI session video via /video proxy",,"selenoid-ui","UI session video proxy",
+"tests.api.HubVideoSessionApiTests.sessionVideoListedAfterClose","Session with enableVideo=true produces downloadable MP4 after delete","passed","15s 441ms",,,"Create hub session with video passed (5s 183ms)
+  POST /wd/hub/session with selenoid:options (148.0) passed (5s 183ms)
+    POST /wd/hub/session with selenoid:options (chrome 148.0) passed (5s 183ms)
+ Keep session briefly for recorder passed (3s 0ms)
+  Delete hub session passed (3s 810ms)
+    DELETE /wd/hub/session/d6bb812f050e53e2284f8a0d37ef96b1 passed (3s 810ms)
+   Wait for video artifact in GET /video/?json passed (2s 451ms)
+     GET /video/?json passed (2s 448ms)
+    Verify session video is listed passed (0s)
+     Download session video passed (994ms)
+       GET /video/d6bb812f050e53e2284f8a0d37ef96b1.mp4 passed (994ms)
+      Verify MP4 payload passed (0s)",,"Hub session video API",,"selenoid","Hub session video",
+"tests.api.UiSseStreamTests.sseDeliversPayload","SSE /events delivers state or error payload","passed","6s 327ms",,,"Read first SSE event passed (6s 325ms)
+  Read first SSE event from /events passed (6s 297ms)
+    Read first SSE event from https://selenoid.autotests.cloud/events passed (6s 297ms)
+ Verify payload has state or errors passed (1ms)",,"UI SSE stream",,"selenoid-ui","UI SSE",
+"tests.api.UiSseMultipleEventsTests.sseDeliversTwoEvents","SSE /events delivers two consecutive payloads","passed","14s 983ms",,,"Read two SSE events passed (14s 982ms)
+  Read two SSE events from /events passed (14s 982ms)
+    Read two SSE events from https://selenoid.autotests.cloud/events passed (14s 981ms)
+ Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE",
