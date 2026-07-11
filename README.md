@@ -165,8 +165,8 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
-| **selenoid** | Go + 4 | 7 | 1 | 18 | —¹ | — | `go-unit` + `testHubAll` |
-| **selenoid-ui** | Go + 1 | 6 | 7 | 12 | 5 | —⁶ | `go-unit` + `testHubAll` |
+| **selenoid** | Go + 4 | 7 | 1 | 17 | —¹ | — | `go-unit` + `testHubAll` |
+| **selenoid-ui** | Go + 1 | 6 | 7 | 11 | 5 | —⁶ | `go-unit` + `testHubAll` |
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
 | **webdriver-image** | 2 | 1 | 4 | 2 | 4 | — | `testHubAll` |
