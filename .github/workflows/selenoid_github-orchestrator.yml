@@ -47,9 +47,8 @@ on:
   repository_dispatch:
     types: [deploy-smoke]
 
-# Per trigger_run_id (deploy-smoke) — параллельные релизы selenoid/selenoid-ui/cm не отменяют чужие pending runs.
 concurrency:
-  group: selenoid_github-orchestrator-${{ github.event.client_payload.trigger_run_id || github.run_id }}
+  group: selenoid_github-orchestrator-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: false
 
 permissions:
@@ -247,22 +246,12 @@ jobs:
                 if [ "$SOURCE_VARIANT" = "webdriver" ]; then
                   case "$SOURCE_BROWSER" in
                     firefox)
-                      if [ "$WEBDRIVER_VARIANT" = "min" ]; then
-                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                          --tests tests.integration.HubFirefoxMinSessionTests
-                      else
-                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                          --tests tests.integration.HubFirefoxSessionIntegrationTests
-                      fi
+                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                        --tests tests.integration.HubFirefoxSessionIntegrationTests
                       ;;
                     msedge)
-                      if [ "$WEBDRIVER_VARIANT" = "min" ]; then
-                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                          --tests tests.integration.HubMsedgeMinSessionTests
-                      else
-                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                          --tests tests.integration.HubMsedgeSessionIntegrationTests
-                      fi
+                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
+                        --tests tests.integration.HubMsedgeSessionIntegrationTests
                       ;;
                     chrome)
                       if [ "$WEBDRIVER_VARIANT" = "min" ]; then
@@ -529,11 +518,29 @@ jobs:
           done
           test "$missing" -eq 0
 
+      - name: Generate README dashboard assets
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/allure-results/**') != ''
+        run: |
+          mkdir -p pages/readme
+          BUILD="#${{ github.run_number }}"
+          GEN=".github/scripts/generate-readme-badge.sh"
+          gen() {
+            bash "${GEN}" build/allure-results pages/readme main "${BUILD}" "$@"
+          }
+          gen "" "Selenoid Stack" "Go 1.26 · Java 21 · Allure 3" ""
+          gen selenoid "Selenoid Hub" "Go 1.26 · Docker API 1.45 · Allure 3" selenoid
+          gen selenoid-ui "Selenoid UI" "Go · React · Allure 3" selenoid-ui
+          gen cm "Configuration Manager" "Go · Allure 3" cm
+          gen webdriver-image "WebDriver Nodes" "Docker · Allure 3" webdriver-image
+          gen playwright-image "Playwright Nodes" "Docker · Allure 3" playwright-image
+
       - name: Prepare GitHub Pages
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
         run: |
           mkdir -p pages/reports/${REPORT_ID}
           cp -r build/reports/allure-report/allureReport/. "pages/reports/${REPORT_ID}/"
+          rm -rf pages/reports/latest
+          cp -r "pages/reports/${REPORT_ID}" pages/reports/latest
           if [ -f history.jsonl ]; then
             cp history.jsonl pages/history.jsonl
           elif [ -f build/reports/allure-report/allureReport/history.jsonl ]; then

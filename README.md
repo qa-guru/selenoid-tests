@@ -1,5 +1,26 @@
 # selenoid-tests
 
+
+[![Selenoid Stack](https://qa-guru.github.io/selenoid-tests/readme/badge.svg)](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/)
+
+[![Selenoid Stack stats](https://qa-guru.github.io/selenoid-tests/readme/stats.svg)](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/)
+
+[![Selenoid Stack metrics](https://qa-guru.github.io/selenoid-tests/readme/metrics-panel.svg)](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/)
+
+## Automated Tests Dashboard
+
+Live SVG metrics + Allure 3 dashboard (pyramid tile **testingPyramid**), updated after each orchestrator run on `main`:
+
+| Link | Description |
+|------|-------------|
+| [Dashboard](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/) | Pyramid: Go unit ×3 + Java hub + CM |
+| [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image |
+| [TestOps project](https://allure.autotests.cloud/project/5271) | Cloud launches |
+| [CI workflow](https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml) | `workflow_dispatch` max run: `env_profile=selenoid_github_e2e` |
+
+Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,playwright-image}.svg` — for hub repo READMEs.
+
+
 Центральный репозиторий автотестов Selenoid-стека: [qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests).
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
