@@ -5,6 +5,45 @@ import {
   TITLES,
 } from "./constants.mjs";
 
+/** Filter tests by Allure `component` label (hub README dashboard crops). */
+export function componentLabelFilter(component) {
+  return ({ labels }) =>
+    labels.some(({ name, value }) => name === "component" && value === component);
+}
+
+/**
+ * Compact 2×2 dashboard for README PNG (status + pyramid + dynamics + treemap).
+ * Per-widget filter — no sibling components (webdriver vs playwright).
+ */
+export function buildComponentReadmeDashboardLayout(component) {
+  const filter = componentLabelFilter(component);
+
+  return [
+    {
+      type: "currentStatus",
+      title: TITLES.currentStatus,
+      filter,
+    },
+    {
+      type: "testingPyramid",
+      title: TITLES.testingPyramid,
+      layers: [...PYRAMID_LAYERS],
+      filter,
+    },
+    {
+      type: "statusDynamics",
+      title: TITLES.statusDynamics,
+      limit: 20,
+      filter,
+    },
+    {
+      type: "successRateDistribution",
+      title: TITLES.successRateDistribution,
+      filter,
+    },
+  ];
+}
+
 /**
  * Dashboard plugin layout.
  * Invariant: index 0 = currentStatus, index 1 = testingPyramid.

@@ -570,6 +570,7 @@ jobs:
           PREVIEW_URL="http://127.0.0.1:8765/reports/latest/dashboard/" \
             PREVIEW_OUTPUT_DIR="pages/readme" \
             node .github/scripts/capture-dashboard-preview.mjs
+          bash .github/scripts/generate-component-dashboard-previews.sh build/allure-results pages/readme
           kill "${SERVE_PID}" || true
 
       - name: Deploy Allure report to GitHub Pages
