@@ -8,5 +8,6 @@ export default createAllureConfig({
     "cm",
     "playwright-image",
     "webdriver-image",
+    "video-recorder",
   ],
 });

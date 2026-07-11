@@ -21,8 +21,8 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("api")
-@Component("selenoid")
-@Epic("selenoid")
+@Component("video-recorder")
+@Epic("video-recorder")
 @Feature("Hub session video")
 @DisplayName("Hub session video API")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)

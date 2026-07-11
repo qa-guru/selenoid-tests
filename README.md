@@ -27,11 +27,11 @@ Live SVG metrics + Allure 3 dashboard (pyramid tile **testingPyramid**), updated
 | Link | Description |
 |------|-------------|
 | [Dashboard](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/) | Pyramid: Go unit ×3 + Java hub + CM |
-| [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image |
+| [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image, video-recorder |
 | [TestOps project](https://allure.autotests.cloud/project/5271) | Cloud launches |
 | [CI workflow](https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml) | `workflow_dispatch` max run: `env_profile=selenoid_github_e2e` |
 
-Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,playwright-image}.svg` — for hub repo READMEs.
+Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,playwright-image,video-recorder}.svg` — for hub repo READMEs.
 
 
 Центральный репозиторий автотестов Selenoid-стека: [qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests).
@@ -55,7 +55,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
-- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
+- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`, `video-recorder`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
 - Allure 3 GitHub Pages: `https://qa-guru.github.io/selenoid-tests/reports/<run-id>/` (per-run URLs retained on gh-pages — CI `keep_files: true`)
 - Dashboard: `.../reports/<run-id>/dashboard/index.html`
 
@@ -170,6 +170,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | **cm** | Go + 3 | 4 | 2 | 3 | 1 | — | `go-unit` + `java-cm` |
 | **playwright-image** | 1 | 3 | 5 | 2 | 2 | — | `testHubAll` |
 | **webdriver-image** | 2 | 1 | 4 | 2 | 4 | — | `testHubAll` |
+| **video-recorder** | — | — | — | 4 | — | — | `testApi` + `testVideoRecorder` smoke |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
@@ -228,6 +229,7 @@ EOF
 | **cm** | ✓ | **+4** | **+1** | **+3** | ✓ | version/help fixtures; CI job `java-cm` |
 | **playwright-image** (`browser-image/playwright/`) | ✓ | **+4** | **+3** | ✓ | ✓ | +firefox/webkit WS in `testHubAll` |
 | **webdriver-image** (`browser-image/webdriver/`) | ✓ | ✓ (+min) | ✓ (+firefox/msedge warm + min) | ✓ | ✓ | +unit session body (chrome/firefox/msedge warm + min); chrome 149.0-min + firefox 151.0-min + msedge 145.0-min integration |
+| **video-recorder** (`browser-image/video-recorder/`) | — | — | — | ✓ (4) | — | `@Component video-recorder`; hub `/video` + UI proxy; `testVideoRecorder` dispatch smoke |
 | **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+1** | browsers-config integration, sessions list e2e |
 | **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
@@ -307,8 +309,8 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | UiSseStreamTests | selenoid-ui | selenoid-ui | api | api |
 | UiClipboardApiTests | selenoid-ui | selenoid-ui | api | api, negative |
 | UiLogsWsApiTests | selenoid-ui | selenoid-ui | api | api, positive |
-| UiVideoApiTests | selenoid-ui | selenoid-ui | api | api |
-| UiVideoSessionApiTests | selenoid-ui | selenoid-ui | api | api, positive |
+| UiVideoApiTests | video-recorder | video-recorder | api | api |
+| UiVideoSessionApiTests | video-recorder | video-recorder | api | api, positive |
 | UiVncWsApiTests | selenoid-ui | selenoid-ui | api | api, positive |
 | UiPingTests | selenoid-ui | selenoid-ui | api | api |
 | HubPlaywrightSessionTests | playwright-image | playwright-image | integration | integration |
@@ -339,8 +341,8 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | HubDownloadApiTests | selenoid | selenoid | api | api, negative |
 | HubErrorApiTests | selenoid | selenoid | api | api, negative |
 | HubLogsSessionApiTests | selenoid | selenoid | api | api, positive |
-| HubVideoApiTests | selenoid | selenoid | api | api |
-| HubVideoSessionApiTests | selenoid | selenoid | api | api, positive |
+| HubVideoApiTests | video-recorder | video-recorder | api | api |
+| HubVideoSessionApiTests | video-recorder | video-recorder | api | api, positive |
 | HubVncSessionApiTests | selenoid | selenoid | api | api, positive |
 | HubWelcomeApiTests | selenoid | selenoid | api | api, positive |
 | HubWebDriverStatusApiTests | selenoid | selenoid | api | api |

@@ -14,8 +14,8 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Layer("api")
-@Component("selenoid")
-@Epic("selenoid")
+@Component("video-recorder")
+@Epic("video-recorder")
 @Feature("Hub video")
 @DisplayName("Hub video API")
 class HubVideoApiTests extends ApiTestBase {

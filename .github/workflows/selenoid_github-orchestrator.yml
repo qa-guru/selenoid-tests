@@ -533,6 +533,7 @@ jobs:
           gen cm "Configuration Manager" "Go · Allure 3" cm
           gen webdriver-image "WebDriver Nodes" "Docker · Allure 3" webdriver-image
           gen playwright-image "Playwright Nodes" "Docker · Allure 3" playwright-image
+          gen video-recorder "Video Recorder" "Docker · Allure 3" video-recorder
 
       - name: Prepare GitHub Pages
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''

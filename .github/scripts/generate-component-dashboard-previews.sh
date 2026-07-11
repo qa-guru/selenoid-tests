@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SSOT: generators/ethalon/readme/generate-component-dashboard-previews.sh
-# Per-component README dashboard PNGs (playwright-image, webdriver-image).
+# Per-component README dashboard PNGs (playwright-image, webdriver-image, video-recorder).
 #
 # Usage: generate-component-dashboard-previews.sh [RESULTS_DIR] [OUTPUT_DIR]
 set -euo pipefail
@@ -19,7 +19,7 @@ if [ ! -d "${RESULTS_DIR}" ]; then
 fi
 
 mkdir -p "${OUTPUT_DIR}"
-components=(playwright-image webdriver-image)
+components=(playwright-image webdriver-image video-recorder)
 
 for comp in "${components[@]}"; do
   work="build/readme-dashboard/${comp}"
@@ -60,4 +60,4 @@ for comp in "${components[@]}"; do
   wait "${serve_pid}" 2>/dev/null || true
 done
 
-echo "generate-component-dashboard-previews: done → ${OUTPUT_DIR}/dashboard-preview-{playwright-image,webdriver-image}*.png"
+echo "generate-component-dashboard-previews: done → ${OUTPUT_DIR}/dashboard-preview-{playwright-image,webdriver-image,video-recorder}*.png"

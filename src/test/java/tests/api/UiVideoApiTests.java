@@ -14,8 +14,8 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Layer("api")
-@Component("selenoid-ui")
-@Epic("selenoid-ui")
+@Component("video-recorder")
+@Epic("video-recorder")
 @Feature("UI video proxy")
 @DisplayName("UI /video proxy API")
 class UiVideoApiTests extends UiApiTestBase {
