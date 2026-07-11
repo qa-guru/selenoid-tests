@@ -29,6 +29,15 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
       layers: [...PYRAMID_LAYERS],
     },
     {
+      type: "statusDynamics",
+      title: TITLES.statusDynamics,
+      limit: 20,
+    },
+    {
+      type: "successRateDistribution",
+      title: TITLES.successRateDistribution,
+    },
+    {
       type: "stabilityDistribution",
       title: TITLES.stabilityByComponent,
       threshold: STABILITY_THRESHOLD,
@@ -36,13 +45,8 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
       groupBy: "label-name:component",
     },
     {
-      type: "successRateDistribution",
-      title: TITLES.successRateDistribution,
-    },
-    {
-      type: "statusDynamics",
-      title: TITLES.statusDynamics,
-      limit: 20,
+      type: "coverageDiff",
+      title: TITLES.coverageDiff,
     },
     {
       type: "statusTransitions",
@@ -58,10 +62,6 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
       type: "durationDynamics",
       title: TITLES.durationDynamics,
       limit: 20,
-    },
-    {
-      type: "coverageDiff",
-      title: TITLES.coverageDiff,
     },
     {
       type: "problemsDistribution",
