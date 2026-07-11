@@ -2,9 +2,11 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 
+// Trailing slash required: Allure sets <base> from pathname; `…/index.html` breaks
+// relative assets when served locally (`serve` strips index.html → wrong base).
 const baseUrl =
   process.env.PREVIEW_URL ??
-  "http://127.0.0.1:8765/reports/latest/dashboard/index.html";
+  "http://127.0.0.1:8765/reports/latest/dashboard/";
 const outputDir = process.env.PREVIEW_OUTPUT_DIR ?? "pages/readme";
 const viewportWidth = Number(process.env.PREVIEW_WIDTH ?? "1280");
 const suffix = process.env.PREVIEW_SUFFIX ?? "";

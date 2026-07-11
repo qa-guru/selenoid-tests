@@ -564,10 +564,10 @@ jobs:
           npx --yes serve pages -l 8765 >/tmp/serve.log 2>&1 &
           SERVE_PID=$!
           for _ in $(seq 1 30); do
-            curl -sf http://127.0.0.1:8765/reports/latest/dashboard/index.html >/dev/null && break
+            curl -sf http://127.0.0.1:8765/reports/latest/dashboard/ >/dev/null && break
             sleep 1
           done
-          PREVIEW_URL="http://127.0.0.1:8765/reports/latest/dashboard/index.html" \
+          PREVIEW_URL="http://127.0.0.1:8765/reports/latest/dashboard/" \
             PREVIEW_OUTPUT_DIR="pages/readme" \
             node .github/scripts/capture-dashboard-preview.mjs
           kill "${SERVE_PID}" || true
