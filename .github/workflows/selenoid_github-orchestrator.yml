@@ -549,6 +549,29 @@ jobs:
           echo "${REPORT_ID}" > pages/latest-run-id.txt
           touch pages/.nojekyll
 
+      - name: Setup Node for dashboard preview capture
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Capture dashboard preview for README
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
+        continue-on-error: true
+        run: |
+          npm install --no-save playwright@1.50.1
+          npx playwright install chromium --with-deps
+          npx --yes serve pages -l 8765 >/tmp/serve.log 2>&1 &
+          SERVE_PID=$!
+          for _ in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8765/reports/latest/dashboard/index.html >/dev/null && break
+            sleep 1
+          done
+          PREVIEW_URL="http://127.0.0.1:8765/reports/latest/dashboard/index.html" \
+            PREVIEW_OUTPUT_DIR="pages/readme" \
+            node .github/scripts/capture-dashboard-preview.mjs
+          kill "${SERVE_PID}" || true
+
       - name: Deploy Allure report to GitHub Pages
         if: always() && hashFiles('pages/reports/**/awesome/index.html') != ''
         uses: peaceiris/actions-gh-pages@v4

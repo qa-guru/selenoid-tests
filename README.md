@@ -11,6 +11,19 @@
 
 Live SVG metrics + Allure 3 dashboard (pyramid tile **testingPyramid**), updated after each orchestrator run on `main`:
 
+<a href="https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://qa-guru.github.io/selenoid-tests/readme/dashboard-preview-dark.png">
+    <img
+      src="https://qa-guru.github.io/selenoid-tests/readme/dashboard-preview.png"
+      alt="Allure 3 dashboard — pyramid, stability, success distribution"
+      width="800"
+    />
+  </picture>
+</a>
+
+> Dashboard PNG updates after each orchestrator run on `main`.
+
 | Link | Description |
 |------|-------------|
 | [Dashboard](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/) | Pyramid: Go unit ×3 + Java hub + CM |
