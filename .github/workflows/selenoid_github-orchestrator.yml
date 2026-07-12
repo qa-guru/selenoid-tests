@@ -105,21 +105,20 @@ jobs:
           go-version-file: repos/${{ matrix.repo }}/go.mod
           cache-dependency-path: repos/${{ matrix.repo }}/go.sum
 
-      - name: Setup Node 12 (selenoid-ui yarn)
+      - name: Setup Node 24 (selenoid-ui yarn)
         if: matrix.repo == 'selenoid-ui'
         uses: actions/setup-node@v6
         with:
-          node-version: 12.x
+          node-version: 24
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
-      - name: Build selenoid-ui frontend
+      - name: Test and build selenoid-ui frontend
         if: matrix.repo == 'selenoid-ui'
         working-directory: repos/selenoid-ui/ui
-        env:
-          CI: false
         run: |
           yarn install --frozen-lockfile
+          yarn test
           yarn build
 
       - name: Setup Node 24 (Allure JUnit conversion)
@@ -142,6 +141,14 @@ jobs:
         with:
           name: allure-go-${{ matrix.repo }}
           path: build/allure-results/go-${{ matrix.repo }}/
+          retention-days: 7
+
+      - name: Upload selenoid-ui React Testing Library Allure results
+        if: always() && matrix.repo == 'selenoid-ui' && hashFiles('repos/selenoid-ui/ui/allure-results/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-ui-react-testing-library
+          path: repos/selenoid-ui/ui/allure-results/
           retention-days: 7
 
       - name: Fail if Go tests failed
@@ -186,11 +193,11 @@ jobs:
             repos/selenoid/go.sum
             repos/selenoid-ui/go.sum
 
-      - name: Setup Node 12 (selenoid-ui yarn)
+      - name: Setup Node 24 (selenoid-ui yarn)
         if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/setup-node@v6
         with:
-          node-version: 12.x
+          node-version: 24
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
@@ -363,10 +370,10 @@ jobs:
             repos/selenoid/go.sum
             repos/selenoid-ui/go.sum
 
-      - name: Setup Node 12 (selenoid-ui yarn)
+      - name: Setup Node 24 (selenoid-ui yarn)
         uses: actions/setup-node@v6
         with:
-          node-version: 12.x
+          node-version: 24
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
@@ -427,6 +434,14 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           pattern: allure-go-*
+          path: build/allure-results
+          merge-multiple: true
+
+      - name: Download selenoid-ui React Testing Library Allure artifacts
+        uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          name: allure-ui-react-testing-library
           path: build/allure-results
           merge-multiple: true
 
@@ -552,9 +567,9 @@ jobs:
 
       - name: Setup Node for dashboard preview capture
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Capture dashboard preview for README
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''

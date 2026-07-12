@@ -161,7 +161,7 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 ### Component × Layer × CI (push `main`)
 
 Пирамида: `unit → component → integration → api → e2e → manual`. Числа — Java-классы в матрице ниже; **Go unit** — отдельно в `go-unit`.  
-**Матрица 100% (stack v2.2.1):** каждая ячейка = ✓ (число / Go) или «—» с обоснованием ниже. Binary cut: hub/ui/cm **v2.2.1**. `warm-pool` — OUT.
+**Матрица 100% (stack v2.3.0):** каждая ячейка = ✓ (число / Go) или «—» с обоснованием ниже. Binary cut: hub/ui/cm **v2.3.0**. `warm-pool` — OUT.
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
@@ -239,6 +239,17 @@ EOF
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
 Обоснования «—»: см. сноски ¹–⁷ в таблице Component × Layer выше.
+
+### Фаза E verify (v2.3.0) — локальные probes
+
+| Slice | Результат | Примечание |
+|-------|-----------|------------|
+| `go test ./... -cover` (selenoid / ui / cm) | ✓ | После moby API 1.55 repair; service package re-tested |
+| `npm test` + `npm run build` (selenoid-ui/ui) | ✓ | React 17 + CRA 5: 8 tests, production build OK |
+| `testUnit` + `testComponent` | ✓ | offline (2026-07-12) |
+| CI scripts `DOCKER_API_VERSION` | ✓ | `start-ci-selenoid-stack.sh`, `prepare-ci-cm-workspace.sh` → 1.55 |
+| Matrix header | ✓ | v2.3.0; ячейки без изменений от v2.2.1 (100% conscious) |
+| `testIntegration` / `testMin` / `testCm*` | deferred | arm64 host / CM stack — CI linux/amd64 канон; см. v2.2.0 verify |
 
 ### Фаза E verify (v2.2.0) — локальные probes
 

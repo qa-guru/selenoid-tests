@@ -35,6 +35,9 @@ case "${REPO}" in
       echo "ui/build/index.html missing — run yarn build in ui/" >&2
       exit 1
     }
+    if [ -d ui/allure-results ] && [ "$(ls -A ui/allure-results 2>/dev/null)" ]; then
+      cp -R ui/allure-results/. "${ALLURE_DIR}/"
+    fi
     go install github.com/rakyll/statik@latest
     go generate github.com/aerokube/selenoid-ui
     gotestsum --junitfile "${JUNIT_FILE}" -- \

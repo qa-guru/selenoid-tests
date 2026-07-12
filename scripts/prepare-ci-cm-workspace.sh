@@ -8,7 +8,7 @@ REPOS="${ROOT}/repos"
 BIN="${ROOT}/build/ci-bin"
 BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 
-export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.45}"
+export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.55}"
 export GO111MODULE=on
 export PATH="$(go env GOPATH)/bin:${PATH:-}"
 

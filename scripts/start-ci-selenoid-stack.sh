@@ -10,7 +10,7 @@ BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 HUB_URL="${HUB_URL:-http://127.0.0.1:4444/}"
 UI_URL="${UI_URL:-http://127.0.0.1:8080/}"
 
-export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.45}"
+export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.55}"
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 export GO111MODULE=on
 export PATH="$(go env GOPATH)/bin:${PATH:-}"
