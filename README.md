@@ -244,8 +244,8 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 
 | Slice | Результат | Примечание |
 |-------|-----------|------------|
-| `go test ./... -cover` (selenoid / ui / cm) | ✓ | После moby API 1.55 repair; service package re-tested |
-| `npm test` + `npm run build` (selenoid-ui/ui) | ✓ | React 17 + CRA 5: 8 tests, production build OK |
+| `go test ./... -cover` (selenoid / ui / cm) | ✓ | ui: `ci/test.sh` green (2026-07-12); Vite/React18 migration landed |
+| `yarn test` + `yarn build` (selenoid-ui/ui) | ✓ | React 18 + Vite 6: 22 Vitest/RTL tests; Node 24 CI; `allure-ui-react-testing-library` → orchestrator merge |
 | `testUnit` + `testComponent` | ✓ | offline (2026-07-12) |
 | CI scripts `DOCKER_API_VERSION` | ✓ | `start-ci-selenoid-stack.sh`, `prepare-ci-cm-workspace.sh` → 1.55 |
 | Matrix header | ✓ | v2.3.0; ячейки без изменений от v2.2.1 (100% conscious) |
