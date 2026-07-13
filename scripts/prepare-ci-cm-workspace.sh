@@ -38,15 +38,10 @@ build_selenoid_ui_frontend() {
     echo "==> reusing existing selenoid-ui ui/build"
     return 0
   fi
-  echo "==> Building selenoid-ui frontend"
+  echo "==> Building selenoid-ui frontend (Vite 6 / React 18)"
   yarn --cwd "$ui" install --frozen-lockfile
-  local node_major
-  node_major="$(node -p "process.versions.node.split('.')[0]")"
-  if (( node_major >= 17 )); then
-    (cd "$ui" && node --openssl-legacy-provider ./node_modules/.bin/react-scripts build)
-  else
-    yarn --cwd "$ui" build
-  fi
+  # v2.3.0 UI is Vite (yarn build → ui/build/); works on modern Node (CI Node 24).
+  yarn --cwd "$ui" build
 }
 
 pull_browser_images() {
