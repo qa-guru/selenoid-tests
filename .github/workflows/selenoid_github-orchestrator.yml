@@ -564,6 +564,7 @@ jobs:
           fi
           echo "${REPORT_ID}" > pages/latest-run-id.txt
           touch pages/.nojekyll
+          bash .github/scripts/prepare-allure-pages-colors.sh pages "pages/reports/latest"
 
       - name: Setup Node for dashboard preview capture
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
