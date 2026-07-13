@@ -14,6 +14,10 @@ export const STABILITY_THRESHOLD = 90;
 
 export const STABILITY_SKIP_STATUSES = ["skipped", "unknown"];
 
+// Min history data points required before stabilityDistribution renders bars
+// (Allure default 5). Lowered so charts populate with a shorter history.
+export const STABILITY_STABILIZATION_PERIOD = 3;
+
 export const HISTORY_DEFAULTS = {
   historyPath: "./history.jsonl",
   appendHistory: true,
