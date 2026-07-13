@@ -6,6 +6,7 @@ import api.ApiTestBase;
 import api.hub.HubStatusApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component("selenoid")
 @Epic("selenoid")
 @Feature("Hub status")
+@Story("Hub status browsers")
 @DisplayName("Hub status browsers")
 class HubStatusBrowsersTests extends ApiTestBase {
 

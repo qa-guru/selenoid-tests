@@ -8,6 +8,7 @@ import config.ConfigReader;
 import helpers.CmInstallerHelper;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("cm")
 @Epic("cm")
 @Feature("Installer lifecycle")
+@Story("Installer lifecycle")
 @DisplayName("CM installer lifecycle")
 @Tag("integration")
 @Tag("cm")

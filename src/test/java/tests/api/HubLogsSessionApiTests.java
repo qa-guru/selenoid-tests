@@ -7,6 +7,7 @@ import api.hub.HubRequest;
 import api.hub.HubSessionApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.containsString;
 @Component("selenoid")
 @Epic("selenoid")
 @Feature("Hub logs WebSocket")
+@Story("Hub logs WebSocket")
 @DisplayName("Hub session logs WebSocket API")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubLogsSessionApiTests extends ApiTestBase {

@@ -7,6 +7,7 @@ import api.ui.UiBrowsersConfigApi;
 import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI browsers config proxy")
+@Story("UI browsers config vs hub status")
 @DisplayName("UI browsers config vs hub status")
 class UiBrowsersConfigIntegrationTests {
 

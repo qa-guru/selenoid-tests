@@ -7,6 +7,7 @@ import api.hub.HubStatusApi;
 import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Component("webdriver-image")
 @Epic("webdriver-image")
 @Feature("WebDriver session (min)")
+@Story("WebDriver session (min)")
 @DisplayName("WebDriver hub session (firefox-min)")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubFirefoxMinSessionTests {

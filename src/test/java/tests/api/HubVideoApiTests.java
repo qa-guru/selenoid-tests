@@ -6,6 +6,7 @@ import api.ApiTestBase;
 import api.hub.HubVideoApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component("video-recorder")
 @Epic("video-recorder")
 @Feature("Hub video")
+@Story("Hub video API")
 @DisplayName("Hub video API")
 class HubVideoApiTests extends ApiTestBase {
 

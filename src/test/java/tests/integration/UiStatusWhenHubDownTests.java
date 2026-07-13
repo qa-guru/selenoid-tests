@@ -6,6 +6,7 @@ import api.ui.UiStatusApi;
 import helpers.StackHelper;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI status when hub down")
+@Story("UI status when hub down")
 @DisplayName("UI status when hub down")
 @Tag("integration")
 @Tag("local-only")

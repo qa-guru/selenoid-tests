@@ -4,6 +4,7 @@ import annotations.Component;
 import annotations.Layer;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI dashboard")
+@Story("UI dashboard load")
 @DisplayName("UI dashboard load")
 class UiDashboardLoadTests extends UiTestBase {
 

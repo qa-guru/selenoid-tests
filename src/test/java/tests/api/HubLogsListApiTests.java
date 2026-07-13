@@ -5,6 +5,7 @@ import annotations.Layer;
 import api.ApiTestBase;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 @Component("selenoid")
 @Epic("selenoid")
 @Feature("Hub logs")
+@Story("Hub logs endpoint API")
 @DisplayName("Hub logs endpoint API")
 class HubLogsListApiTests extends ApiTestBase {
 

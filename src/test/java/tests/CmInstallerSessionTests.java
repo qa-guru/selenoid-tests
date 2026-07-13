@@ -7,6 +7,7 @@ import config.ConfigReader;
 import helpers.CmInstallerHelper;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Component("cm")
 @Epic("cm")
 @Feature("Installed stack session")
+@Story("Installed stack session")
 @DisplayName("CM installer session")
 @Tag("smoke")
 @Tag("cm")

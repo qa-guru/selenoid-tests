@@ -8,6 +8,7 @@ import api.ui.UiStatusApi;
 import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI hub proxy")
+@Story("UI hub proxy")
 @DisplayName("UI status with active session")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class UiStatusWithSessionTests {

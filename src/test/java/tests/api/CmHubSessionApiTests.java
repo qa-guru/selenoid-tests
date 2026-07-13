@@ -6,6 +6,7 @@ import api.CmApiTestBase;
 import api.hub.HubSessionApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Component("cm")
 @Epic("cm")
 @Feature("CM-managed hub session")
+@Story("CM hub session API")
 @DisplayName("CM hub session API")
 class CmHubSessionApiTests extends CmApiTestBase {
 

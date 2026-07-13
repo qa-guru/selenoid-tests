@@ -6,6 +6,7 @@ import api.hub.HubSessionApi;
 import com.codeborne.selenide.Condition;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static io.qameta.allure.Allure.step;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI sessions list")
+@Story("UI sessions list")
 @DisplayName("UI sessions list")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class UiSessionsListTests extends UiTestBase {

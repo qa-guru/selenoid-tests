@@ -6,6 +6,7 @@ import api.ui.UiStatusApi;
 import config.ConfigReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("cm")
 @Epic("cm")
 @Feature("CM-managed UI")
+@Story("CM UI status API")
 @DisplayName("CM UI status API")
 class CmUiStatusApiTests {
 

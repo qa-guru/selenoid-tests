@@ -7,6 +7,7 @@ import api.hub.PlaywrightSessionApi;
 import com.microsoft.playwright.Playwright;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Component("playwright-image")
 @Epic("playwright-image")
 @Feature("Playwright WS session")
+@Story("Playwright WS session")
 @DisplayName("Playwright navigate integration")
 @ResourceLock(value = "hubSessions", mode = ResourceAccessMode.READ_WRITE)
 class HubPlaywrightNavigateTests {

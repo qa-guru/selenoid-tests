@@ -6,6 +6,7 @@ import api.ApiTestBase;
 import api.hub.HubWelcomeApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Component("selenoid")
 @Epic("selenoid")
 @Feature("Hub welcome")
+@Story("Hub welcome page API")
 @DisplayName("Hub welcome page API")
 class HubWelcomeApiTests extends ApiTestBase {
 

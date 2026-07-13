@@ -6,6 +6,7 @@ import api.UiApiTestBase;
 import api.ui.UiVideoApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Component("video-recorder")
 @Epic("video-recorder")
 @Feature("UI video proxy")
+@Story("UI /video proxy API")
 @DisplayName("UI /video proxy API")
 class UiVideoApiTests extends UiApiTestBase {
 

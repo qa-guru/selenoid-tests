@@ -6,6 +6,7 @@ import api.UiApiTestBase;
 import api.ui.UiProxyApi;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import static io.qameta.allure.Allure.step;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("UI clipboard proxy")
+@Story("UI /clipboard proxy API")
 @DisplayName("UI /clipboard proxy API")
 class UiClipboardApiTests extends UiApiTestBase {
 
