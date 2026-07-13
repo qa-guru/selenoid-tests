@@ -1,1 +1,1 @@
-{"id":"ec42cbc0724bafbe417d9c1ab1927585","fullName":"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","name":"GET UI /status exposes total quota counter","status":"failed","testResultsByEnv":{"default":"a677abf649f54d5ae063834ddc7c196d"}}
+{"id":"ec42cbc0724bafbe417d9c1ab1927585","fullName":"tests.api.UiStatusTotalTests.uiStatusExposesTotalCounter","name":"GET UI /status exposes total quota counter","status":"passed","testResultsByEnv":{"default":"621ea574357a265aba9043121da69500"}}

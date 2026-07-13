@@ -1,1 +1,1 @@
-{"id":"a9072c7f2445044a4941f9f88be366f5","fullName":"tests.api.HubVideoApiTests.missingVideoFileReturnsNotFound","name":"GET /video/{missing}.mp4 returns 404","status":"failed","testResultsByEnv":{"default":"1e647bec51ec38f59d775dcc5133d44f"}}
+{"id":"a9072c7f2445044a4941f9f88be366f5","fullName":"tests.api.HubVideoApiTests.missingVideoFileReturnsNotFound","name":"GET /video/{missing}.mp4 returns 404","status":"passed","testResultsByEnv":{"default":"7ea7e754099b3a6b837996cc42e9059e"}}

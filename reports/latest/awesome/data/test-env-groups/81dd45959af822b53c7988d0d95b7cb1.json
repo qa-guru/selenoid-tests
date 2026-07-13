@@ -1,1 +1,1 @@
-{"id":"81dd45959af822b53c7988d0d95b7cb1","fullName":"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","name":"DELETE unknown session returns client error","status":"failed","testResultsByEnv":{"default":"32a4c7c2fdd20eaebf9e45d9cdb8ac62"}}
+{"id":"81dd45959af822b53c7988d0d95b7cb1","fullName":"tests.api.HubSessionDeleteUnknownTests.deleteUnknownSessionReturnsError","name":"DELETE unknown session returns client error","status":"passed","testResultsByEnv":{"default":"fa5f5abc333baede5b620c357e69a6df"}}

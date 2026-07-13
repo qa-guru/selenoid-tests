@@ -1,1 +1,1 @@
-{"id":"83087b7e0fda129ef6c52e1119f9b620","fullName":"tests.api.HubVideoApiTests.videoListJsonReturnsArray","name":"GET /video/?json returns file name list","status":"failed","testResultsByEnv":{"default":"875b4aa33516eb944a9be632b9a22bb7"}}
+{"id":"83087b7e0fda129ef6c52e1119f9b620","fullName":"tests.api.HubVideoApiTests.videoListJsonReturnsArray","name":"GET /video/?json returns file name list","status":"passed","testResultsByEnv":{"default":"27fd3adf2c99ff013c04585055f24c9b"}}

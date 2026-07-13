@@ -1,1 +1,1 @@
-{"id":"a5d3cc10cb2c45c8d005099bdd989fb5","fullName":"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","name":"GET /status lists configured browser families","status":"failed","testResultsByEnv":{"default":"7b4e2baf9eda150176bea6f80396eecc"}}
+{"id":"a5d3cc10cb2c45c8d005099bdd989fb5","fullName":"tests.api.HubStatusBrowsersTests.statusListsBrowserFamilies","name":"GET /status lists configured browser families","status":"passed","testResultsByEnv":{"default":"3c6461e015b26acce3db9c52662d7f3d"}}

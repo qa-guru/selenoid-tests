@@ -1,1 +1,1 @@
-{"id":"49602142245d332ee7f0b12aedddd186","fullName":"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","name":"POST /wd/hub/session echoes browserName in capabilities","status":"passed","testResultsByEnv":{"default":"c0fb768e447e31543cd377b7b27db868"}}
+{"id":"49602142245d332ee7f0b12aedddd186","fullName":"tests.api.HubCapabilitiesApiTests.createSessionEchoesBrowserName","name":"POST /wd/hub/session echoes browserName in capabilities","status":"passed","testResultsByEnv":{"default":"af6fff939737d94b41841867d3d2ed2b"}}

@@ -1,1 +1,1 @@
-{"id":"022fe9a8c61162753730b2824b742564","fullName":"tests.api.UiSseStreamTests.sseDeliversPayload","name":"SSE /events delivers state or error payload","status":"broken","testResultsByEnv":{"default":"9f72d15564f49ec7433295b6bcb3b5cd"}}
+{"id":"022fe9a8c61162753730b2824b742564","fullName":"tests.api.UiSseStreamTests.sseDeliversPayload","name":"SSE /events delivers state or error payload","status":"passed","testResultsByEnv":{"default":"a54bd949c58c9214cfec533330c11e6d"}}

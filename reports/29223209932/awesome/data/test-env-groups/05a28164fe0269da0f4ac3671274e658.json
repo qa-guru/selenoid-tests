@@ -1,1 +1,1 @@
-{"id":"05a28164fe0269da0f4ac3671274e658","fullName":"tests.api.UiPingTests.pingReturnsMetadata","name":"GET /ping returns uptime and version","status":"failed","testResultsByEnv":{"default":"9a8a236babfe427d38a95acf90a8020f"}}
+{"id":"05a28164fe0269da0f4ac3671274e658","fullName":"tests.api.UiPingTests.pingReturnsMetadata","name":"GET /ping returns uptime and version","status":"passed","testResultsByEnv":{"default":"1477228c118a50ede229d432584cc8f4"}}

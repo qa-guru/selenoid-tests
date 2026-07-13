@@ -1,1 +1,1 @@
-{"id":"e0a9f6f98cffa8caa5f2ec4921c16481","fullName":"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","name":"GET /logs/{sessionId} without WebSocket upgrade returns 400","status":"passed","testResultsByEnv":{"default":"a7ef5866d1923be4c465843562b4f237"}}
+{"id":"e0a9f6f98cffa8caa5f2ec4921c16481","fullName":"tests.api.HubLogsListApiTests.sessionLogsRequireWebSocketUpgrade","name":"GET /logs/{sessionId} without WebSocket upgrade returns 400","status":"passed","testResultsByEnv":{"default":"46b85f382af4442b61cf76c958ded129"}}

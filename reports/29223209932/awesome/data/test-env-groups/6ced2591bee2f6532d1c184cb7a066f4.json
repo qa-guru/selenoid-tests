@@ -1,1 +1,1 @@
-{"id":"6ced2591bee2f6532d1c184cb7a066f4","fullName":"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","name":"Session video is downloadable via UI /video proxy after delete","status":"failed","testResultsByEnv":{"default":"c49ed01a3d4b1ee0f418f5bc9655249c"}}
+{"id":"6ced2591bee2f6532d1c184cb7a066f4","fullName":"tests.api.UiVideoSessionApiTests.uiSessionVideoListedAfterClose","name":"Session video is downloadable via UI /video proxy after delete","status":"passed","testResultsByEnv":{"default":"c8c3f37284e4d138664c8aa36a5e8105"}}

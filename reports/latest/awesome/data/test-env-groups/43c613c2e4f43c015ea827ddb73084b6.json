@@ -1,1 +1,1 @@
-{"id":"43c613c2e4f43c015ea827ddb73084b6","fullName":"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","name":"GET /video/?json via UI proxy returns file name list","status":"failed","testResultsByEnv":{"default":"c493f8e06190ef46868473c34d191af5"}}
+{"id":"43c613c2e4f43c015ea827ddb73084b6","fullName":"tests.api.UiVideoApiTests.uiVideoListJsonReturnsArray","name":"GET /video/?json via UI proxy returns file name list","status":"passed","testResultsByEnv":{"default":"6bcd4bbef0b9f7ee0f5abf4f01463b2a"}}
