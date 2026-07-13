@@ -1,0 +1,23 @@
+/* Injected into Allure 3 dashboard/awesome via allure-shell.js + build-pyramid-mock-report.mjs */
+/* Pyramid layer colors — palette A — applied in dashboard-overrides.js (Allure uses one CSS var per bar). */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Narrow shell — overrides Allure CSS-module grids + inline widget widths */
+html[data-shell-layout="narrow"] [class*="styles_grid__"] {
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+  gap: 12px !important;
+}
+
+html[data-shell-layout="narrow"] [class*="styles_grid-item__"] {
+  grid-template-columns: 1fr !important;
+  width: 100% !important;
+}
+
+html[data-shell-layout="narrow"] [class*="styles_widget__"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
