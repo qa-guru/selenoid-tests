@@ -10,7 +10,12 @@ BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 HUB_URL="${HUB_URL:-http://127.0.0.1:4444/}"
 UI_URL="${UI_URL:-http://127.0.0.1:8080/}"
 
-export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.55}"
+# Do NOT pin DOCKER_API_VERSION: the CI runner's Docker daemon maxes at API 1.48,
+# while the v2.3.0 hub canon is 1.55. moby client + docker CLI auto-negotiate the
+# API version when it is unset. Honor an explicit caller override if provided.
+if [[ -n "${DOCKER_API_VERSION:-}" ]]; then
+  export DOCKER_API_VERSION
+fi
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 export GO111MODULE=on
 export PATH="$(go env GOPATH)/bin:${PATH:-}"

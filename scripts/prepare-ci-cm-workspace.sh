@@ -8,7 +8,12 @@ REPOS="${ROOT}/repos"
 BIN="${ROOT}/build/ci-bin"
 BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 
-export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.55}"
+# Do NOT pin DOCKER_API_VERSION: the CI runner's Docker daemon maxes at API 1.48,
+# while the v2.3.0 hub canon is 1.55. moby client + docker CLI auto-negotiate when
+# unset. Honor an explicit caller override if provided.
+if [[ -n "${DOCKER_API_VERSION:-}" ]]; then
+  export DOCKER_API_VERSION
+fi
 export GO111MODULE=on
 export PATH="$(go env GOPATH)/bin:${PATH:-}"
 
