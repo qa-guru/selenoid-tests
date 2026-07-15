@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.hidden;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
@@ -25,6 +26,7 @@ public class UiCapabilitiesPage {
         open("/#/capabilities");
         setupPanel.shouldBe(visible, BROWSER_LIST_TIMEOUT);
         browserSelect.shouldBe(visible, BROWSER_LIST_TIMEOUT);
+        browserSelect.$(".Select__loading-indicator").shouldBe(hidden, BROWSER_LIST_TIMEOUT);
         createSessionButton.shouldBe(visible, BROWSER_LIST_TIMEOUT);
         return this;
     }
@@ -32,8 +34,10 @@ public class UiCapabilitiesPage {
     @Step("Open browser select menu")
     public UiCapabilitiesPage openBrowserMenu() {
         browserSelect.shouldBe(enabled, BROWSER_LIST_TIMEOUT);
+        browserSelect.$(".Select__loading-indicator").shouldBe(hidden, BROWSER_LIST_TIMEOUT);
         browserSelect.$(".Select__control").click();
         browserSelect.$(".Select__menu").shouldBe(visible, BROWSER_LIST_TIMEOUT);
+        browserSelect.$$(".Select__option").findBy(visible).shouldBe(visible, BROWSER_LIST_TIMEOUT);
         return this;
     }
 
@@ -44,6 +48,7 @@ public class UiCapabilitiesPage {
                 .findBy(text("chrome: " + version))
                 .click();
         createSessionButton.shouldBe(enabled);
+        createSessionButton.shouldHave(text("Create Session"));
         return this;
     }
 

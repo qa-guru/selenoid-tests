@@ -53,8 +53,8 @@ public final class ScreenshotBaseline {
             step("Missing baseline: " + attachmentName, () ->
                     attachPng(attachmentName + "-actual-unmatched", actual));
             throw new AssertionError(
-                    "Baseline missing for %s. Commit PNG to src/test/resources/screenshots/%s/ "
-                            + "or run with -DupdateBaselines=true"
+                    ("Baseline missing for %s. Commit PNG to src/test/resources/screenshots/%s/ "
+                                    + "or run with -DupdateBaselines=true")
                             .formatted(label, area));
         }
 

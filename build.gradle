@@ -192,6 +192,23 @@ test {
     }
     systemProperty 'env', System.getProperty('env', defaultEnv)
     systemProperty 'allureReportMode', allureReportMode
+    [
+            'updateBaselines',
+            'baselinesDir',
+            'visualDiffThreshold',
+            'uiUrl',
+            'hubUrl',
+            'remoteUrl',
+            'browserSize',
+            'browser',
+            'headless',
+            'chromeVersion',
+    ].each { key ->
+        def value = System.getProperty(key)
+        if (value != null) {
+            systemProperty key, value
+        }
+    }
     maxParallelForks = testParallelForks
 }
 

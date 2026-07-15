@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.UiCapabilitiesPage;
 
+import static com.codeborne.selenide.Selenide.$;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
@@ -47,7 +48,7 @@ class UiCapabilitiesVisualTests extends UiTestBase {
 
         step("Compare open select menu", () ->
                 ScreenshotBaseline.captureAndCompare(
-                        uiCapabilities.setupPanel(),
+                        $(".Select__menu"),
                         "capabilities-open",
                         viewportWidth(),
                         "capabilities-open-select-menu"));
