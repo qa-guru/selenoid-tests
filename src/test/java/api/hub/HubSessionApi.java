@@ -69,6 +69,39 @@ public final class HubSessionApi {
         return create(ConfigReader.testConfig);
     }
 
+    @Step("POST /wd/hub/session/{sessionId}/url — navigate to {url}")
+    public static void navigate(String sessionId, String url) {
+        hubRequest()
+                .contentType(ContentType.JSON)
+                .body(Map.of("url", url))
+                .when()
+                .post("/wd/hub/session/{sessionId}/url", sessionId)
+                .then()
+                .statusCode(200);
+    }
+
+    @Step("GET /wd/hub/session/{sessionId}/title")
+    public static String getTitle(String sessionId) {
+        return hubRequest()
+                .when()
+                .get("/wd/hub/session/{sessionId}/title", sessionId)
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("value");
+    }
+
+    @Step("GET /wd/hub/session/{sessionId}/url")
+    public static String getCurrentUrl(String sessionId) {
+        return hubRequest()
+                .when()
+                .get("/wd/hub/session/{sessionId}/url", sessionId)
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("value");
+    }
+
     @Step("DELETE /wd/hub/session/{sessionId}")
     public static void delete(String sessionId) {
         hubRequest()
