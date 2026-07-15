@@ -18,11 +18,6 @@ if (!pagesDir || !reportRoot) {
   process.exit(1);
 }
 
-const ABSOLUTE_CSS = /href="\/dashboard-overrides\.css"/g;
-const ABSOLUTE_JS = /src="\/dashboard-overrides\.js"/g;
-const RELATIVE_CSS = /href="[^"]*dashboard-overrides\.css"/g;
-const RELATIVE_JS = /src="[^"]*dashboard-overrides\.js"/g;
-
 function assetHref(htmlDir, assetName) {
   const rel = path.relative(htmlDir, pagesDir);
   const prefix = rel ? `${rel.split(path.sep).join("/")}/` : "";
@@ -46,10 +41,6 @@ function hasCorrectOverrides(html, cssHref, jsHref) {
   return html.includes(`href="${cssHref}"`) && html.includes(`src="${jsHref}"`);
 }
 
-function needsUpgrade(html) {
-  return ABSOLUTE_CSS.test(html) || ABSOLUTE_JS.test(html);
-}
-
 const targets = ["awesome/index.html", "dashboard/index.html"];
 
 for (const rel of targets) {
@@ -71,10 +62,14 @@ for (const rel of targets) {
 
   if (html.includes("dashboard-overrides.js") || html.includes("dashboard-overrides.css")) {
     html = stripExistingOverrides(html);
-    console.log(`inject-pyramid-colors: upgraded absolute paths in ${filePath}`);
+    console.log(`inject-pyramid-colors: upgraded paths in ${filePath}`);
   }
 
   const inject = buildInject(cssHref, jsHref);
+  if (!html.includes("</head>")) {
+    console.error(`inject-pyramid-colors: no </head> in ${filePath}`);
+    process.exit(1);
+  }
   html = html.replace("</head>", `${inject}\n</head>`);
   fs.writeFileSync(filePath, html);
   console.log(`inject-pyramid-colors: patched ${filePath} (${cssHref})`);
