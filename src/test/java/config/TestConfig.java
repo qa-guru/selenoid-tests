@@ -167,4 +167,16 @@ public interface TestConfig extends Config {
     @Key("cmUiPort")
     @DefaultValue("8081")
     int cmUiPort();
+
+    @Key("updateBaselines")
+    @DefaultValue("false")
+    boolean updateBaselines();
+
+    @Key("baselinesDir")
+    @DefaultValue("screenshots")
+    String baselinesDir();
+
+    @Key("visualDiffThreshold")
+    @DefaultValue("0.015")
+    double visualDiffThreshold();
 }
