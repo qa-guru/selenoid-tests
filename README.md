@@ -7,7 +7,7 @@
 
 | Ветка | Стабильный билд | Docker API | Engine | Go | React | UI |
 |-------|-----------------|------------|--------|-----|-------|-----|
-| [`selenoid2-1.45-engine26.1-go1.26-react16`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.45-engine26.1-go1.26-react16) | **v2.2.1** — прежний prod ([selenoid.autotests.cloud](https://selenoid.autotests.cloud)) | 1.45 | 26.1.x | 1.26.5 | 16 | CRA (react-scripts 3.x) |
+| [`selenoid2-1.45-engine26.1-go1.26-react16`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.45-engine26.1-go1.26-react16) | **v2.2.1** — прежний prod ([selenoid.qa.guru](https://selenoid.qa.guru)) | 1.45 | 26.1.x | 1.26.5 | 16 | CRA (react-scripts 3.x) |
 | [`selenoid2-1.55-engine29.6-go1.26-react18`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.55-engine29.6-go1.26-react18) | **v2.3.0** — актуальный, до нового UI (Selenoid 3) | 1.55 | 29.6+ | 1.26.5 | 18 | Vite 6 |
 
 **Зачем две ветки:** каждая держит воспроизводимый набор версий (Docker API / Engine / Go / React). `main` — активная разработка. Точные версии — в `STACK-PIN.md`.
@@ -67,7 +67,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 | **selenoid-tests** (этот) | [github.com/qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests) | E2e/integration ethalon |
 | Docker Hub | [hub.docker.com/u/qaguru](https://hub.docker.com/u/qaguru) | Образы `qaguru/*` |
 
-**Stack binary cut:** hub / UI / cm → **v2.2.1** — **Selenoid 2** (maintenance @ [selenoid.autotests.cloud](https://selenoid.autotests.cloud)). **Selenoid 3** → [selenoid.qa.guru](https://selenoid.qa.guru) (planning). Browser-image — image tags, не git semver.
+**Stack binary cut:** hub / UI / cm → **v2.2.1** — **Selenoid 2** (maintenance @ [selenoid.qa.guru](https://selenoid.qa.guru)). **Selenoid 3** → [selenoid.qa.guru](https://selenoid.qa.guru) (planning). Browser-image — image tags, не git semver.
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
@@ -122,22 +122,22 @@ cd ../dev && ./scripts/build-selenoid-ui.sh   # ui/build для cross-compile se
 
 Stand override: `-DpyramidStand=selenoid_github` → env `selenoid_github_api`, `selenoid_github_integration`, …
 
-### Prod hub (`selenoid.autotests.cloud`)
+### Prod hub (`selenoid.qa.guru`)
 
-Profiles: `selenoid_autotests_cloud_api`, `selenoid_autotests_cloud_e2e` — remote hub `https://selenoid.autotests.cloud` (auth `user1:1234` in properties; e2e `uiUrl` embeds credentials for Capabilities create-session XHR).
+Profiles: `selenoid_qa_guru_api`, `selenoid_qa_guru_e2e` — remote hub `https://selenoid.qa.guru` (auth `user1:1234` in properties; e2e `uiUrl` embeds credentials for Capabilities create-session XHR).
 
 ```bash
-./gradlew testApi -DpyramidStand=selenoid_autotests_cloud -DskipHealthCheck=true
-./gradlew testE2e -DpyramidStand=selenoid_autotests_cloud -DskipHealthCheck=true
+./gradlew testApi -DpyramidStand=selenoid_qa_guru -DskipHealthCheck=true
+./gradlew testE2e -DpyramidStand=selenoid_qa_guru -DskipHealthCheck=true
 # VNC viewer smoke (subset):
-./gradlew testE2e -DpyramidStand=selenoid_autotests_cloud -DskipHealthCheck=true -DincludeTags=smoke
+./gradlew testE2e -DpyramidStand=selenoid_qa_guru -DskipHealthCheck=true -DincludeTags=smoke
 # VNC visual baseline (opt-in, not in testHubAll):
-./gradlew test -DpyramidStand=selenoid_autotests_cloud -DincludeTags=visual -DskipHealthCheck=true
+./gradlew test -DpyramidStand=selenoid_qa_guru -DincludeTags=visual -DskipHealthCheck=true
 # Refresh visual baseline after intentional UI change:
-./gradlew test -DpyramidStand=selenoid_autotests_cloud -DincludeTags=visual -DskipHealthCheck=true -DupdateBaselines=true
+./gradlew test -DpyramidStand=selenoid_qa_guru -DincludeTags=visual -DskipHealthCheck=true -DupdateBaselines=true
 ```
 
-Post-deploy: `selenoid.autotests.cloud` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_autotests_cloud_api`).
+Post-deploy: `selenoid.qa.guru` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_qa_guru_api`).
 
 Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
 
@@ -194,14 +194,14 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | **webdriver-image** | 2 | 1 | 4 | 2 | 4 | — | `testHubAll` |
 | **video-recorder** | — | — | — | 4 | — | — | `testApi` + `testVideoRecorder` smoke |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
-| **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
+| **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
 ¹ **selenoid e2e:** нет `@Component("selenoid")` e2e-класса — осознанно; сквозной hub-path покрыт `HubSession*` / `HubPlaywrightSession*` (`webdriver-image` / `playwright-image`, `@Layer e2e`) в `testHubAll`.  
 ² **dev component:** отдельного test-class нет; `browsers.json` SSOT проверяется косвенно component JSON fixtures (`*CatalogJsonTest`, `BrowsersConfigJsonTest`, …).  
 ³ **dev integration:** `start-ci-selenoid-stack.sh` — оркестрация CI, не test-class.  
-⁴ **cloud api:** post-deploy `selenoid_autotests_cloud_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
-⁵ **cloud e2e:** профиль `selenoid_autotests_cloud_e2e` — manual / расширенный deploy-smoke.  
-⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — `UiVncViewerE2eTests` (@Tag smoke, prod profile `selenoid_autotests_cloud_e2e`). Visual baseline — `UiVncViewerVisualTests` (@Tag visual, opt-in).  
+⁴ **cloud api:** post-deploy `selenoid_qa_guru_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
+⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
+⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — `UiVncViewerE2eTests` (@Tag smoke, prod profile `selenoid_qa_guru_e2e`). Visual baseline — `UiVncViewerVisualTests` (@Tag visual, opt-in).  
 ⁷ **webdriver-image unit:** Java `@Layer unit` в `config/WebDriverCreateSessionBodyTest` + `ConfigReaderWebdriverTest` (`HubSessionApi.createSessionBody`, `resolveUiBrowserUrl`); Go unit в `browser-image/webdriver/` нет.
 
 ### Manual (runbook)
@@ -209,8 +209,8 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | Сценарий | Где | Как |
 |----------|-----|-----|
 | Локальный стек hub/UI | `../dev/README.md` | `build-selenoid*.sh` + `start-selenoid*.sh` |
-| Prod hub smoke | `selenoid-autotests-cloud` | `./deploy/smoke-remote.sh https://selenoid.autotests.cloud` |
-| VNC viewer в UI | selenoid-ui | e2e ✓ — `UiVncViewerE2eTests` (`testE2e` / `selenoid_autotests_cloud_e2e`); visual opt-in — `UiVncViewerVisualTests` |
+| Prod hub smoke | `selenoid-qa-guru` | `./deploy/smoke-remote.sh https://selenoid.qa.guru` |
+| VNC viewer в UI | selenoid-ui | e2e ✓ — `UiVncViewerE2eTests` (`testE2e` / `selenoid_qa_guru_e2e`); visual opt-in — `UiVncViewerVisualTests` |
 | Video playback | selenoid-ui | Сессия с `enableVideo` → `/video/` в UI |
 | CM install на чистый хост | cm + autotests-cloud | `deploy/deploy.sh` / Actions deploy |
 | Полный hub pyramid локально | этот репо | `./gradlew testHubAll -DskipHealthCheck=true` |
@@ -255,7 +255,7 @@ EOF
 | **selenoid** | ✓ (Go) | **+2** | **+1** | **+2** | —¹ | logs, status+session, HubStatusParserTest |
 | **selenoid-ui** | ✓ | ✓ | **+1** | ✓ | **+2** | browsers-config integration, sessions list + VNC viewer e2e |
 | **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
-| **selenoid-autotests-cloud** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
+| **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
 
 Сверка класс-матрицы (ниже): **106/106** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).

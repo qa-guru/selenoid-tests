@@ -70,6 +70,26 @@
     return labels;
   }
 
+  // A layer with zero tests renders its callout as "Layer: <name>" + "No tests"
+  // (Allure i18n), never a "Number of tests:" line — so match the empty phrase.
+  const EMPTY_LAYER_RE = /no tests|нет тестов/i;
+
+  /**
+   * Layers whose callout says "No tests" — hidden from the funnel. The callout
+   * <text> concatenates its tspans ("manualNo tests"), so read the whole node.
+   */
+  function emptyLayersFromWidget(widget) {
+    const empty = new Set();
+    widget.querySelectorAll("text").forEach((node) => {
+      const text = node.textContent || "";
+      const match = text.match(/Layer:\s*(.+)/i);
+      if (!match) return;
+      const layer = normalizeLayer(match[1]);
+      if (layer && EMPTY_LAYER_RE.test(text)) empty.add(layer);
+    });
+    return empty;
+  }
+
   function pyramidShapes(svg) {
     return [...svg.querySelectorAll("path, polygon")]
       .filter((shape) => {
@@ -136,6 +156,23 @@
     shape.setAttribute("data-pyramid-layer", layer);
   }
 
+  /** Collapse or restore a band. Uses style so Allure's geometry stays intact. */
+  function setShapeHidden(shape, hidden) {
+    if (hidden) shape.style.setProperty("display", "none", "important");
+    else shape.style.removeProperty("display");
+  }
+
+  /** Hide the callout <text> of empty layers, restore the rest. */
+  function setEmptyLabelVisibility(widget, emptyLayers) {
+    widget.querySelectorAll("text").forEach((node) => {
+      const match = (node.textContent || "").match(/Layer:\s*(.+)/i);
+      if (!match) return;
+      const layer = normalizeLayer(match[1]);
+      if (!layer) return;
+      node.style.display = emptyLayers.has(layer) ? "none" : "";
+    });
+  }
+
   function paintPyramid(root = document) {
     const widget = findPyramidWidget(root);
     if (!widget) return false;
@@ -148,21 +185,134 @@
 
     const labels = layerLabelsFromWidget(widget);
     const layers = pairShapesToLayers(shapeEntries, labels);
+    const emptyLayers = emptyLayersFromWidget(widget);
+    setEmptyLabelVisibility(widget, emptyLayers);
 
     shapeEntries.forEach((entry, index) => {
       const layer = layers[index];
-      if (!layer) return;
+      const hidden = layer != null && emptyLayers.has(layer);
+      setShapeHidden(entry.shape, hidden);
+      if (!layer || hidden) return;
       setShapeFill(entry.shape, layer);
     });
 
     return true;
   }
 
-  function schedulePaint() {
+  // ---- Unified status indicators (widget header dots) ----
+  // Every dashboard widget gets macOS-window dots in its header showing ONLY the
+  // status-colour families actually present in that widget's chart, in a fixed
+  // priority order. Colours are read "по факту" from rendered SVG fills/strokes
+  // and matched to the nearest known palette anchor; noise (white, borders, text)
+  // is rejected by a distance threshold.
+  const INDICATOR_ORDER = ["red", "orange", "yellow", "purple", "gray", "green", "blue"];
+  const INDICATOR_ANCHORS = {
+    red: [[244, 63, 59], [255, 90, 80], [255, 100, 100], [153, 0, 24], [220, 38, 38], [244, 99, 134], [192, 57, 43], [255, 87, 68]],
+    orange: [[255, 130, 0], [255, 140, 66], [255, 168, 51]],
+    yellow: [[255, 216, 51], [255, 206, 87], [255, 224, 74], [201, 159, 0], [112, 93, 0], [255, 208, 80]],
+    green: [[59, 201, 93], [148, 202, 102], [0, 111, 45], [0, 185, 151], [86, 214, 111], [137, 190, 62], [144, 187, 56], [163, 177, 37], [105, 167, 85]],
+    blue: [[102, 186, 254], [84, 168, 237], [69, 155, 222], [97, 182, 251]],
+    purple: [[161, 129, 255], [120, 85, 208], [216, 97, 190], [142, 68, 173]],
+    gray: [[165, 183, 209], [170, 170, 170]],
+  };
+  const INDICATOR_THRESHOLD = 90;
+
+  function parseRgbColor(value) {
+    if (!value) return null;
+    const match = String(value).match(/rgba?\(([^)]+)\)/i);
+    if (!match) return null;
+    const parts = match[1].split(",").map((piece) => parseFloat(piece));
+    const alpha = parts.length > 3 ? parts[3] : 1;
+    if (!(alpha > 0.3)) return null;
+    if ([parts[0], parts[1], parts[2]].some((n) => Number.isNaN(n))) return null;
+    return [parts[0], parts[1], parts[2]];
+  }
+
+  function classifyIndicator(rgb) {
+    let best = null;
+    let bestDist = Infinity;
+    for (const family in INDICATOR_ANCHORS) {
+      const anchors = INDICATOR_ANCHORS[family];
+      for (let i = 0; i < anchors.length; i++) {
+        const anchor = anchors[i];
+        const dr = rgb[0] - anchor[0];
+        const dg = rgb[1] - anchor[1];
+        const db = rgb[2] - anchor[2];
+        const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = family;
+        }
+      }
+    }
+    return bestDist <= INDICATOR_THRESHOLD ? best : null;
+  }
+
+  function widgetIndicatorFamilies(widget) {
+    const present = Object.create(null);
+    const shapes = widget.querySelectorAll(
+      "svg path, svg polyline, svg polygon, svg rect, svg circle, svg ellipse, svg line",
+    );
+    shapes.forEach((node) => {
+      const cs = getComputedStyle(node);
+      [cs.fill, cs.stroke].forEach((raw) => {
+        const rgb = parseRgbColor(raw);
+        if (!rgb) return;
+        const family = classifyIndicator(rgb);
+        if (family) present[family] = true;
+      });
+    });
+    return INDICATOR_ORDER.filter((family) => present[family]);
+  }
+
+  function widgetHeader(widget) {
+    return (
+      widget.querySelector('[class*="styles_header__"]') ||
+      widget.firstElementChild ||
+      widget
+    );
+  }
+
+  // Idempotent: only mutates when a widget's family set changes, so the childList
+  // observer that watches the whole document never enters a repaint loop.
+  function paintWidgetIndicators(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    scope.querySelectorAll('[class*="styles_widget__"]').forEach((widget) => {
+      const header = widgetHeader(widget);
+      if (!header) return;
+      const families = widgetIndicatorFamilies(widget);
+      const key = families.join(",");
+      let dots = header.querySelector(":scope > .zds-widget-dots");
+      if (!families.length) {
+        if (dots) dots.remove();
+        return;
+      }
+      if (dots && dots.getAttribute("data-zds-fams") === key) return;
+      if (!dots) {
+        dots = document.createElement("span");
+        dots.className = "zds-widget-dots";
+        header.insertBefore(dots, header.firstChild);
+      }
+      dots.setAttribute("data-zds-fams", key);
+      dots.textContent = "";
+      families.forEach((family) => {
+        const dot = document.createElement("span");
+        dot.className = "zds-widget-dot zds-widget-dot--" + family;
+        dots.appendChild(dot);
+      });
+    });
+  }
+
+  function paint() {
     paintPyramid();
-    window.setTimeout(paintPyramid, 200);
-    window.setTimeout(paintPyramid, 800);
-    window.setTimeout(paintPyramid, 2000);
+    paintWidgetIndicators();
+  }
+
+  function schedulePaint() {
+    paint();
+    window.setTimeout(paint, 200);
+    window.setTimeout(paint, 800);
+    window.setTimeout(paint, 2000);
   }
 
   let paintQueued = false;
@@ -171,7 +321,7 @@
     paintQueued = true;
     requestAnimationFrame(() => {
       paintQueued = false;
-      paintPyramid();
+      paint();
     });
   }
 

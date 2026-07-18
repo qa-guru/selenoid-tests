@@ -65,7 +65,7 @@ env:
   WEBDRIVER_VARIANT: ${{ github.event.client_payload.webdriver_variant || github.event.inputs.webdriver_variant || '' }}
   SOURCE_REF: ${{ github.event.client_payload.source_ref || github.event.inputs.source_ref || 'main' }}
   TRIGGER_RUN_ID: ${{ github.event.client_payload.trigger_run_id || '' }}
-  PROD_CLOUD_STAND: ${{ startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_autotests_cloud') && 'true' || 'false' }}
+  PROD_CLOUD_STAND: ${{ startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') && 'true' || 'false' }}
 
 jobs:
   go-unit:
@@ -226,8 +226,8 @@ jobs:
             -Denv="${ENV_PROFILE}"
             -DskipHealthCheck=true
           )
-          if [[ "${ENV_PROFILE}" == selenoid_autotests_cloud_* ]]; then
-            PYRAMID_STAND=selenoid_autotests_cloud
+          if [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
+            PYRAMID_STAND=selenoid_qa_guru
           else
             PYRAMID_STAND=selenoid_github
           fi
@@ -330,7 +330,7 @@ jobs:
 
   java-cm:
     name: Java CM integration
-    if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_autotests_cloud') }}
+    if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
@@ -533,6 +533,53 @@ jobs:
           done
           test "$missing" -eq 0
 
+
+      - name: Send Telegram notification
+        if: always() && steps.allure-report.outcome == 'success'
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN || secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_SELENOID_TOPIC_ID || vars.TELEGRAM_SELENOID_TOPIC_ID }}
+          ALLURE_REPORT_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/awesome/index.html
+          ALLURE_DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/dashboard/index.html
+          BUILD_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TESTOPS_LAUNCH_URL: ${{ env.TESTOPS_LAUNCH_URL }}
+        run: |
+          AWESOME="build/reports/allure-report/allureReport/awesome"
+          if [ ! -f "$AWESOME/summary.json" ]; then
+            echo "No Allure summary — skip Telegram notification"
+            exit 0
+          fi
+          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
+            echo "TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID missing — skip"
+            exit 0
+          fi
+          CONFIG=notifications/config.runtime.json
+          python -c "
+          import json, os
+          from pathlib import Path
+          cfg = json.loads(Path('notifications/config.json').read_text())
+          cfg['base']['project'] = 'Selenoid Stack #${{ github.run_number }}'
+          cfg['base']['links'] = {
+              'report': os.environ['ALLURE_REPORT_URL'],
+              'dashboard': os.environ['ALLURE_DASHBOARD_URL'],
+              'testops': os.environ.get('TESTOPS_LAUNCH_URL') or '',
+              'build': os.environ['BUILD_URL'],
+          }
+          cfg['telegram']['token'] = os.environ['TELEGRAM_BOT_TOKEN']
+          cfg['telegram']['chat'] = os.environ['TELEGRAM_CHAT_ID']
+          cfg['telegram']['topic'] = os.environ.get('TELEGRAM_TOPIC_ID') or ''
+          cfg['telegram']['replyTo'] = ''
+          Path('notifications/config.runtime.json').write_text(json.dumps(cfg, indent=2))
+          "
+          JAR=allure-notifications-5.0.0.jar
+          if [ ! -f "$JAR" ]; then
+            curl -fsSL -o "$JAR" \
+              https://github.com/qa-guru/allure-notifications/releases/download/v5.0.0/"$JAR"
+          fi
+          java "-DconfigFile=${CONFIG}" -jar "$JAR"
+
       - name: Generate README dashboard assets
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/allure-results/**') != ''
         run: |
@@ -680,7 +727,7 @@ jobs:
         continue-on-error: true
         env:
           CALLBACK_TOKEN_PRIMARY: ${{ secrets.SELENOID_SMOKE_CALLBACK_TOKEN }}
-          CALLBACK_TOKEN_FALLBACK: ${{ secrets.SELENOID_AUTOTESTS_CLOUD_DISPATCH_TOKEN }}
+          CALLBACK_TOKEN_FALLBACK: ${{ secrets.SELENOID_QA_GURU_DISPATCH_TOKEN || secrets.SELENOID_AUTOTESTS_CLOUD_DISPATCH_TOKEN }}
           JAVA_E2E_RESULT: ${{ needs.java-e2e.result }}
         run: |
           set -euo pipefail

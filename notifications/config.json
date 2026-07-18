@@ -1,0 +1,37 @@
+{
+  "base": {
+    "project": "Selenoid Stack",
+    "environment": "prod",
+    "comment": "",
+    "language": "ru",
+    "allureFolder": "build/reports/allure-report/allureReport/awesome/",
+    "allureResultsFolder": "build/allure-results/",
+    "enableChart": true,
+    "enableSuitesPublishing": false,
+    "chart": {
+      "mode": "collage",
+      "panels": [
+        "pie",
+        "testingPyramid",
+        "durations"
+      ],
+      "pyramidFallback": "suites",
+      "width": 1000,
+      "height": 600,
+      "headerHeight": 68
+    },
+    "links": {
+      "report": "",
+      "dashboard": "",
+      "testops": "",
+      "build": ""
+    }
+  },
+  "telegram": {
+    "token": "",
+    "chat": "",
+    "topic": "",
+    "replyTo": "",
+    "templatePath": "/templates/telegram.ftl"
+  }
+}
