@@ -50,3 +50,39 @@ html[data-shell-layout="narrow"] [class*="styles_widget__"] {
   width: 100% !important;
   max-width: 100% !important;
 }
+
+/* Unified status indicators — macOS-window dots injected by dashboard-overrides.js
+ * into each widget's own header (styles_header__), left of the title. Only the
+ * status-colour FAMILIES actually present in that widget's chart are shown, in a
+ * fixed priority order: red -> orange -> yellow -> purple -> gray -> green -> blue.
+ * Families are read "по факту" from the rendered SVG fills (nearest-anchor match),
+ * so the dots always reflect the real result mix. Swatches mirror design-system
+ * --indicator-* hexes (design-system CSS does not cascade into the Allure iframe),
+ * muted toward the header background so they read as a decorative title-bar accent
+ * rather than chart data. */
+.zds-widget-dots {
+  --zds-dot-size: 11px;
+  --zds-dot-gap: 7px;
+  --zds-bar-bg: var(--color-bg-secondary, #f7f7f9);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zds-dot-gap);
+  margin-right: 12px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.zds-widget-dot {
+  width: var(--zds-dot-size);
+  height: var(--zds-dot-size);
+  border-radius: 50%;
+  background: rgba(127, 127, 127, 0.35);
+}
+
+.zds-widget-dot--red { background: color-mix(in srgb, #fd5a3e 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--orange { background: color-mix(in srgb, #ff8200 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--yellow { background: color-mix(in srgb, #ffd050 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--purple { background: color-mix(in srgb, #b46fd8 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--gray { background: color-mix(in srgb, #aaaaaa 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--green { background: color-mix(in srgb, #6bbf59 62%, var(--zds-bar-bg)); }
+.zds-widget-dot--blue { background: color-mix(in srgb, #4b9bff 62%, var(--zds-bar-bg)); }
