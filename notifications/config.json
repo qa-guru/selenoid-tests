@@ -17,8 +17,7 @@
       ],
       "pyramidFallback": "suites",
       "width": 1000,
-      "height": 600,
-      "headerHeight": 68
+      "height": 600
     },
     "links": {
       "report": "",
