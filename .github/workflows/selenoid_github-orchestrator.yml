@@ -55,7 +55,7 @@ permissions:
   contents: write
 
 env:
-  ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.autotests.cloud' }}
+  ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.qa.guru' }}
   REPORT_ID: ${{ github.run_id }}
   ENV_PROFILE: ${{ github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e' }}
   SOURCE_REPO: ${{ github.event.client_payload.source_repo || github.event.inputs.source_repo || '' }}

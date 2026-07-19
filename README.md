@@ -44,7 +44,7 @@ Dashboard PNG updates after each orchestrator run on `main`.
 |------|-------------|
 | [Dashboard](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/) | Pyramid: Go unit ×3 + Java hub + CM |
 | [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image, video-recorder |
-| [TestOps project](https://allure.autotests.cloud/project/5271) | Cloud launches |
+| [TestOps project](https://allure.qa.guru/project/5271) | Cloud launches |
 | [CI workflow](https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml) | `workflow_dispatch` max run: `env_profile=selenoid_github_e2e` |
 
 Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,playwright-image,video-recorder}.svg` — for hub repo READMEs.
