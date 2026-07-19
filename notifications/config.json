@@ -10,14 +10,18 @@
     "enableSuitesPublishing": false,
     "chart": {
       "mode": "collage",
-      "panels": [
-        "pie",
-        "testingPyramid",
-        "durations"
+      "layout": "free",
+      "width": 1024,
+      "height": 1280,
+      "headerHeight": 68,
+      "gridCols": 10,
+      "gridRows": 10,
+      "items": [
+        {"type": "pie", "x": 0, "y": 0, "w": 5, "h": 5},
+        {"type": "testingPyramid", "x": 5, "y": 0, "w": 5, "h": 5},
+        {"type": "durations", "x": 0, "y": 5, "w": 10, "h": 5}
       ],
-      "pyramidFallback": "suites",
-      "width": 1000,
-      "height": 600
+      "pyramidFallback": "suites"
     },
     "links": {
       "report": "",
