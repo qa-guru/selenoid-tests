@@ -1,0 +1,1 @@
+{"id":"87cbd6724651d9cd1c97659c49a0dc76","fullName":"ui:src/pwa/registerServiceWorker.test.ts#registerServiceWorker skips registration when serviceWorker is unavailable","name":"skips registration when serviceWorker is unavailable","status":"passed","testResultsByEnv":{"default":"0fe1a2e70d8a499b393f04a8b2c53c86"}}
