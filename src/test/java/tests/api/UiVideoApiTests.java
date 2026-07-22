@@ -12,7 +12,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Layer("api")
 @Component("video-recorder")
@@ -25,10 +27,17 @@ class UiVideoApiTests extends UiApiTestBase {
     @Test
     @Tag("api")
     @Tag("positive")
-    @DisplayName("GET /video/?json via UI proxy returns file name list")
-    void uiVideoListJsonReturnsArray() {
-        var files = step("GET UI /video/?json", UiVideoApi::listJson);
-        step("Verify list payload", () -> assertNotNull(files));
+    @DisplayName("GET /video/?json via UI proxy returns paginated page (default limit 10)")
+    void uiVideoListJsonReturnsPaginatedPage() {
+        var listed = step("GET UI /video/?json", () -> UiVideoApi.listJson());
+        step("Verify paginated payload", () -> {
+            assertNotNull(listed);
+            assertNotNull(listed.videos());
+            assertEquals(10, listed.limit());
+            assertEquals(0, listed.offset());
+            assertTrue(listed.videos().size() <= listed.limit());
+            assertTrue(listed.total() >= listed.videos().size());
+        });
     }
 
     @Test

@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceAccessMode;
 import org.junit.jupiter.api.parallel.ResourceLock;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -41,16 +40,15 @@ class UiVideoSessionApiTests extends UiApiTestBase {
         step("Delete hub session", () -> HubSessionApi.delete(sessionId));
 
         var deadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
-        var videoFile = step("Wait for video artifact in UI GET /video/?json", () -> {
+        var videoFile = step("Wait for video artifact in UI GET /video/?json&q=sessionId", () -> {
             while (System.currentTimeMillis() < deadline) {
-                var listed = UiVideoApi.listJson();
-                var match = findSessionVideo(listed, sessionId);
+                var match = UiVideoApi.findBySessionId(sessionId);
                 if (match != null) {
                     return match;
                 }
                 TimeUnit.SECONDS.sleep(1);
             }
-            return findSessionVideo(UiVideoApi.listJson(), sessionId);
+            return UiVideoApi.findBySessionId(sessionId);
         });
 
         step("Verify session video is listed via UI proxy", () ->
@@ -59,13 +57,6 @@ class UiVideoSessionApiTests extends UiApiTestBase {
 
         var body = step("Download session video via UI proxy", () -> UiVideoApi.download(videoFile));
         step("Verify MP4 payload via UI proxy", () -> assertValidMp4(body, videoFile));
-    }
-
-    private static String findSessionVideo(List<String> files, String sessionId) {
-        return files.stream()
-                .filter(name -> name.contains(sessionId))
-                .findFirst()
-                .orElse(null);
     }
 
     private static void assertValidMp4(byte[] body, String fileName) {
