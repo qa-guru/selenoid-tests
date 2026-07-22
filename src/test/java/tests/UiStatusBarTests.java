@@ -28,9 +28,9 @@ class UiStatusBarTests extends UiTestBase {
         step("Open dashboard and wait for CONNECTED", () ->
                 uiDashboard.openPage().shouldBeConnected());
 
-        step("Verify status indicators show ok styling", () -> {
-            $("#sse-status").shouldHave(com.codeborne.selenide.Condition.cssClass("indicator_ok"));
-            $("#selenoid-status").shouldHave(com.codeborne.selenide.Condition.cssClass("indicator_ok"));
+        step("Verify status indicators show connected StatusTile styling", () -> {
+            $("#sse-status").shouldHave(com.codeborne.selenide.Condition.cssClass("status-tile--connected"));
+            $("#selenoid-status").shouldHave(com.codeborne.selenide.Condition.cssClass("status-tile--connected"));
         });
 
         step("Keep CONNECTED stable for 5 seconds", () ->

@@ -18,7 +18,7 @@ import static io.qameta.allure.Allure.step;
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
 @Feature("Capabilities visual")
-@Story("Capabilities select and Create Session preserve Selenoid 2 look")
+@Story("Capabilities tagstrip and Create Session")
 @DisplayName("UI Capabilities visual")
 class UiCapabilitiesVisualTests extends UiTestBase {
 
@@ -31,7 +31,7 @@ class UiCapabilitiesVisualTests extends UiTestBase {
         step("Open Capabilities", () ->
                 uiCapabilities.openPage());
 
-        step("Compare closed select + disabled Create Session", () ->
+        step("Compare Driver tagstrip + disabled Create Session", () ->
                 ScreenshotBaseline.captureAndCompare(
                         uiCapabilities.setupPanel(),
                         "capabilities-closed",
@@ -41,14 +41,14 @@ class UiCapabilitiesVisualTests extends UiTestBase {
 
     @Test
     @Tag("visual")
-    @DisplayName("Open browser select menu matches baseline")
+    @DisplayName("Webdriver browser tagstrip matches baseline")
     void openBrowserSelectMenuMatchesBaseline() {
-        step("Open Capabilities and expand browser menu", () ->
+        step("Open Capabilities and wait for Webdriver chips", () ->
                 uiCapabilities.openPage().openBrowserMenu());
 
-        step("Compare open select menu", () ->
+        step("Compare Webdriver tagstrip", () ->
                 ScreenshotBaseline.captureAndCompare(
-                        $(".Select__menu"),
+                        $("[data-testid=capabilities-browser-select]"),
                         "capabilities-open",
                         viewportWidth(),
                         "capabilities-open-select-menu"));

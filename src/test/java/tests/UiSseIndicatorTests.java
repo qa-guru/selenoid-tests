@@ -23,10 +23,10 @@ class UiSseIndicatorTests extends UiTestBase {
     @Test
     @Tag("smoke")
     @Tag("positive")
-    @DisplayName("SSE indicator uses ok styling when connected")
+    @DisplayName("SSE indicator uses connected StatusTile styling when connected")
     void sseIndicatorUsesOkStyling() {
         step("Open dashboard", () -> uiDashboard.openPage().shouldBeConnected());
-        step("Verify SSE indicator uses ok styling", () ->
-                $("#sse-status").shouldHave(com.codeborne.selenide.Condition.cssClass("indicator_ok")));
+        step("Verify SSE indicator uses connected StatusTile styling", () ->
+                $("#sse-status").shouldHave(com.codeborne.selenide.Condition.cssClass("status-tile--connected")));
     }
 }
