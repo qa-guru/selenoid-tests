@@ -1,0 +1,1 @@
+{"id":"c6725bbae6036ed5a023ea72fca8925a","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic falls back to window/rect when maximize fails","name":"falls back to window/rect when maximize fails","status":"passed","testResultsByEnv":{"default":"a66e2d0edf47d6d846954bf4d4617c81"}}

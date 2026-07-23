@@ -1,0 +1,1 @@
+{"id":"52c57e37b29945a3d79b59e5e23caab0","fullName":"ui:src/util/hubOrigin.test.js#hubOrigin strips /wd/hub suffix from backend origin before resolving","name":"strips /wd/hub suffix from backend origin before resolving","status":"passed","testResultsByEnv":{"default":"ade915a42cec97120a1223dd106ff4c7"}}
