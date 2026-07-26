@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 /**
- * Capabilities page for Selenoid 3 UI.
+ * New Session page for Selenoid 3 UI (former Capabilities).
  * Browser choice is {@code PlaqueTagstrip} chips (not react-select).
  */
 public class UiCapabilitiesPage {
@@ -55,7 +55,7 @@ public class UiCapabilitiesPage {
         return this;
     }
 
-    @Step("Create session from Capabilities")
+    @Step("Create session from New Session page")
     public UiSessionPage createSession() {
         createSessionButton.click();
         return new UiSessionPage().waitForSessionPage(CREATE_SESSION_TIMEOUT);
