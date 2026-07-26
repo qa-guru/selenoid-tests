@@ -1,0 +1,1 @@
+{"id":"3de68a481ced232f89c85102f741fd54","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic falls back to window/current/size when rect fails","name":"falls back to window/current/size when rect fails","status":"passed","testResultsByEnv":{"default":"04c1c1915bca4ade8f64cc68732b0c36"}}
