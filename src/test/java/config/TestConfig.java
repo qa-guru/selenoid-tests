@@ -22,6 +22,10 @@ public interface TestConfig extends Config {
     @DefaultValue("false")
     boolean attachPageSource();
 
+    @Key("attachHarLogs")
+    @DefaultValue("false")
+    boolean attachHarLogs();
+
     @Key("allureReportMode")
     @DefaultValue("allure3")
     String allureReportMode();
