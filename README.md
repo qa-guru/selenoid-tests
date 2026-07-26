@@ -54,7 +54,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
 
-**Scope:** `warm-pool-orchestrator/` — out of scope (deferred), не в матрице и не в CI.
+**Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
 
 ## Экосистема qa-guru Selenoid
 
@@ -257,7 +257,7 @@ EOF
 | **dev** | — | —² | —³ | — | — | SSOT/CI scripts; manual runbook |
 | **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | deploy-smoke dispatch (не локальный pyramid) |
 
-Сверка класс-матрицы (ниже): **106/106** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e).  
+Сверка класс-матрицы (ниже): **109/109** строк = файлы `*Test(s).java` (дубликаты `HubPlaywright*SessionTests` — integration + e2e; HAR compare — `@Tag local-only`).  
 CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=true` (after `scripts/start-ci-cm-stack.sh`).
 
 Обоснования «—»: см. сноски ¹–⁷ в таблице Component × Layer выше.
@@ -285,7 +285,7 @@ CM api: `./gradlew testCmApi -DpyramidStand=selenoid_github -DskipHealthCheck=tr
 | `testWebdriverE2e` + `testE2e` | ✓ | последний прогон; ранее flake на amd64 chrome @ arm64 host |
 | `testIntegration` / `testMin` | local flake | `qaguru/webdriver-chrome:149*` = **linux/amd64** на host **arm64** → Chrome exited / `used` counters; msedge = **amd64 only** (arm64 host — skip/note); CI linux/amd64 — канон |
 | `testCm*` | не гоняли | отдельный `start-ci-cm-stack.sh` (:4445/:8081); ячейки cm закрыты классами |
-| `local-only` | — | `UiStatusWhenHubDownTests`, CM lifecycle start methods — вне push-gate |
+| `local-only` | — | `UiStatusWhenHubDownTests`, CM lifecycle; `HarCompletenessCompareTests` / `HubHarCompletenessCompareTests` (`@Tag har-compare`) — вне push-gate |
 | `testResilience` | ✓ | `UiStatusRecoveryTests` — последний slice в `testHubAll` (hub kill/restart) |
 
 Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder:latest` (+ `-video-output-dir`). `warm-pool` — OUT.
@@ -400,6 +400,9 @@ Hub для video/API: как CI — `-video-recorder-image qaguru/video-recorder
 | UiSessionsListTests | selenoid-ui | selenoid-ui | e2e | smoke |
 | UiVncViewerE2eTests | selenoid-ui | selenoid-ui | e2e | smoke |
 | UiVncViewerVisualTests | selenoid-ui | selenoid-ui | e2e | visual |
+| HarCaptureTest | selenoid | — | unit | unit |
+| HarCompletenessCompareTests | selenoid | selenoid | e2e | local-only, har-compare |
+| HubHarCompletenessCompareTests | selenoid | selenoid | e2e | local-only, har-compare, hub-har |
 
 ## Config keys
 
