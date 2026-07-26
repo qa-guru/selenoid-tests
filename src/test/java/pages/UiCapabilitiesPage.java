@@ -25,9 +25,9 @@ public class UiCapabilitiesPage {
     private final SelenideElement browserSelect = $("[data-testid=capabilities-browser-select]");
     private final SelenideElement createSessionButton = $("[data-testid=capabilities-create-session]");
 
-    @Step("Open Capabilities page")
+    @Step("Open New Session page")
     public UiCapabilitiesPage openPage() {
-        open("/#/capabilities");
+        open("/#/new-session");
         setupPanel.shouldBe(visible, BROWSER_LIST_TIMEOUT);
         browserSelect.shouldBe(visible, BROWSER_LIST_TIMEOUT);
         browserSelect.$(".plaque-field-seg").shouldBe(visible, BROWSER_LIST_TIMEOUT);
