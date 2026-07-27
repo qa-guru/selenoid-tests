@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.url;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,6 +27,14 @@ class UiDashboardLoadTests extends UiTestBase {
     @DisplayName("Dashboard opens root URL")
     void dashboardOpensRootUrl() {
         step("Open dashboard", () -> uiDashboard.openPage());
-        step("Verify root URL is loaded", () -> assertTrue(url().endsWith("/") || url().endsWith(":8080/")));
+        // v3 HashRouter: `/` redirects to `#/statistics` (legacy root `/` or `:8080/` still OK).
+        step("Verify Statistics route (or root) is loaded", () -> {
+            var current = url();
+            assertTrue(
+                    current.contains("/#/statistics")
+                            || current.endsWith("/")
+                            || current.endsWith(":8080/"),
+                    () -> "Expected Statistics hash route or root, got: " + current);
+        });
     }
 }

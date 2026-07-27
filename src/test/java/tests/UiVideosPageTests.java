@@ -15,9 +15,9 @@ import static io.qameta.allure.Allure.step;
 @Layer("e2e")
 @Component("selenoid-ui")
 @Epic("selenoid-ui")
-@Feature("UI videos")
-@Story("UI videos pagination")
-@DisplayName("UI videos page")
+@Feature("UI sessions archive")
+@Story("UI finished sessions archive")
+@DisplayName("UI sessions archive page")
 class UiVideosPageTests extends UiTestBase {
 
     private final UiVideosPage videosPage = new UiVideosPage();
@@ -25,10 +25,10 @@ class UiVideosPageTests extends UiTestBase {
     @Test
     @Tag("smoke")
     @Tag("positive")
-    @DisplayName("Videos tab loads list container without requiring full catalog")
+    @DisplayName("Sessions archive loads Finished sessions shell without requiring full catalog")
     void videosTabLoads() {
-        step("Open videos page", videosPage::openPage);
-        step("Verify list shell", videosPage::shouldShowListContainer);
+        step("Open Sessions page (archive)", videosPage::openPage);
+        step("Verify Finished sessions list shell", videosPage::shouldShowListContainer);
         step("Verify empty state or pager", videosPage::shouldShowEmptyOrPager);
     }
 }

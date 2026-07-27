@@ -30,32 +30,33 @@ public class UiDashboardPage {
         return this;
     }
 
-    @Step("Wait until SSE is CONNECTED")
+    @Step("Wait until SSE is Connected")
     public UiDashboardPage shouldSseBeConnected() {
-        sseStatus.shouldHave(text("CONNECTED"), RECOVERY_TIMEOUT);
+        // StatusTile state label is title-case ("Connected"), not ALL CAPS.
+        sseStatus.shouldHave(text("Connected"), RECOVERY_TIMEOUT);
         return this;
     }
 
-    @Step("Wait until SELENOID is CONNECTED")
+    @Step("Wait until Selenoid is Connected")
     public UiDashboardPage shouldSelenoidBeConnected() {
-        selenoidStatus.shouldHave(text("CONNECTED"), RECOVERY_TIMEOUT);
+        selenoidStatus.shouldHave(text("Connected"), RECOVERY_TIMEOUT);
         return this;
     }
 
-    @Step("Wait until SSE and SELENOID are CONNECTED")
+    @Step("Wait until SSE and Selenoid are Connected")
     public UiDashboardPage shouldBeConnected() {
         shouldSseBeConnected();
         shouldSelenoidBeConnected();
         return this;
     }
 
-    @Step("Wait until SELENOID is degraded")
+    @Step("Wait until Selenoid is degraded")
     public UiDashboardPage shouldBeDegraded() {
-        selenoidStatus.shouldHave(matchText("ISSUE|UNKNOWN"), RECOVERY_TIMEOUT);
+        selenoidStatus.shouldHave(matchText("Issue|Unknown"), RECOVERY_TIMEOUT);
         return this;
     }
 
-    @Step("Keep CONNECTED stable for {stableMs} ms")
+    @Step("Keep Connected stable for {stableMs} ms")
     public UiDashboardPage shouldStayConnected(long stableMs) throws InterruptedException {
         var stepMs = 500L;
         var steps = stableMs / stepMs;

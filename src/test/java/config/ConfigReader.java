@@ -71,6 +71,9 @@ public final class ConfigReader {
     /**
      * Selenide baseUrl when the browser runs in a Selenoid container: loopback in uiUrl
      * is unreachable from inside Docker — use host.docker.internal (requires hosts in browsers.json).
+     * <p>
+     * Strips {@code user:pass@} from the URL: modern {@code fetch()} rejects relative requests
+     * when the document URL includes credentials (breaks New Session → Create Session on prod).
      */
     public static String resolveUiBrowserUrl() {
         return resolveUiBrowserUrl(testConfig);
@@ -79,7 +82,7 @@ public final class ConfigReader {
     public static String resolveUiBrowserUrl(TestConfig config) {
         var remoteUrl = config.remoteUrl();
         if (remoteUrl == null || remoteUrl.isBlank()) {
-            return stripTrailingSlash(resolveUiUrl(config));
+            return stripUserInfo(stripTrailingSlash(resolveUiUrl(config)));
         }
         var uiUrl = config.uiUrl().trim();
         if (uiUrl.isEmpty()) {
@@ -88,7 +91,25 @@ public final class ConfigReader {
         var browserUrl = uiUrl
                 .replace("127.0.0.1", "host.docker.internal")
                 .replace("localhost", "host.docker.internal");
-        return stripTrailingSlash(withSlash(browserUrl));
+        return stripUserInfo(stripTrailingSlash(withSlash(browserUrl)));
+    }
+
+    /**
+     * Basic-auth pair from {@code remoteUrl} / {@code apiBaseUrl} / {@code uiUrl}
+     * ({@code https://user:pass@host/...}). Empty when absent.
+     */
+    public static String[] resolveHubBasicAuth() {
+        return resolveHubBasicAuth(testConfig);
+    }
+
+    public static String[] resolveHubBasicAuth(TestConfig config) {
+        for (var candidate : new String[]{config.remoteUrl(), config.apiBaseUrl(), config.uiUrl()}) {
+            var creds = parseUserInfo(candidate);
+            if (creds != null) {
+                return creds;
+            }
+        }
+        return new String[]{"", ""};
     }
 
     public static String resolveCmHubUrl() {
@@ -170,5 +191,49 @@ public final class ConfigReader {
 
     private static String stripTrailingSlash(String value) {
         return value.endsWith("/") ? value.substring(0, value.length() - 1) : value;
+    }
+
+    /** Drop {@code user:pass@} so the browser document URL is fetch()-safe. */
+    static String stripUserInfo(String url) {
+        if (url == null || url.isBlank()) {
+            return url;
+        }
+        var schemeSep = url.indexOf("://");
+        if (schemeSep < 0) {
+            return url;
+        }
+        var afterScheme = schemeSep + 3;
+        var slash = url.indexOf('/', afterScheme);
+        var authorityEnd = slash < 0 ? url.length() : slash;
+        var authority = url.substring(afterScheme, authorityEnd);
+        var at = authority.lastIndexOf('@');
+        if (at < 0) {
+            return url;
+        }
+        return url.substring(0, afterScheme) + authority.substring(at + 1) + url.substring(authorityEnd);
+    }
+
+    static String[] parseUserInfo(String url) {
+        if (url == null || url.isBlank()) {
+            return null;
+        }
+        var schemeSep = url.indexOf("://");
+        if (schemeSep < 0) {
+            return null;
+        }
+        var afterScheme = schemeSep + 3;
+        var slash = url.indexOf('/', afterScheme);
+        var authorityEnd = slash < 0 ? url.length() : slash;
+        var authority = url.substring(afterScheme, authorityEnd);
+        var at = authority.lastIndexOf('@');
+        if (at <= 0) {
+            return null;
+        }
+        var userInfo = authority.substring(0, at);
+        var colon = userInfo.indexOf(':');
+        if (colon <= 0) {
+            return null;
+        }
+        return new String[]{userInfo.substring(0, colon), userInfo.substring(colon + 1)};
     }
 }

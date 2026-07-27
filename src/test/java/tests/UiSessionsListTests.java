@@ -16,6 +16,7 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 
 @Layer("e2e")
@@ -36,15 +37,18 @@ class UiSessionsListTests extends UiTestBase {
     void activeSessionAppearsInSessionsList() {
         var sessionId = step("Create hub session via API", () -> HubSessionApi.create());
         try {
-            step("Open dashboard and wait for stack CONNECTED", () ->
+            step("Open dashboard and wait for stack Connected", () ->
                     uiDashboard.openPage().shouldBeConnected());
+
+            // Live sessions live on `#/sessions` (Statistics root no longer embeds the list).
+            step("Open Sessions page", () -> open("/#/sessions"));
 
             step("Verify session row shows browser name", () ->
                     $(".sessions__list .session .browser .name")
                             .shouldHave(Condition.text(config.browser()), SESSION_APPEAR_TIMEOUT));
 
-            step("Verify empty-state message is hidden", () ->
-                    $(".no-any").shouldBe(Condition.hidden, SESSION_APPEAR_TIMEOUT));
+            step("Verify live-sessions empty-state is hidden", () ->
+                    $(".sessions-panel .no-any").shouldBe(Condition.hidden, SESSION_APPEAR_TIMEOUT));
         } finally {
             step("Delete hub session", () -> HubSessionApi.delete(sessionId));
         }

@@ -66,4 +66,26 @@ class ConfigReaderWebdriverTest {
         var error = assertThrows(IllegalStateException.class, () -> ConfigReader.resolveUiBrowserUrl(config));
         assertTrue(error.getMessage().contains("uiUrl"));
     }
+
+    @Test
+    @DisplayName("resolveUiBrowserUrl strips userinfo so fetch() can create sessions")
+    void resolveUiBrowserUrlStripsEmbeddedBasicAuth() {
+        var config = configWith(Map.of(
+                "uiUrl", "https://user1:1234@selenoid.qa.guru/",
+                "remoteUrl", "https://user1:1234@selenoid.qa.guru/wd/hub"
+        ));
+        assertEquals("https://selenoid.qa.guru", ConfigReader.resolveUiBrowserUrl(config));
+    }
+
+    @Test
+    @DisplayName("resolveHubBasicAuth reads user:pass from remoteUrl")
+    void resolveHubBasicAuthFromRemoteUrl() {
+        var config = configWith(Map.of(
+                "uiUrl", "https://selenoid.qa.guru/",
+                "remoteUrl", "https://user1:secret@selenoid.qa.guru/wd/hub",
+                "apiBaseUrl", ""
+        ));
+        assertEquals("user1", ConfigReader.resolveHubBasicAuth(config)[0]);
+        assertEquals("secret", ConfigReader.resolveHubBasicAuth(config)[1]);
+    }
 }

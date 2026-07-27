@@ -137,9 +137,13 @@ Profiles: `selenoid_qa_guru_api`, `selenoid_qa_guru_e2e` — remote hub `https:/
 ./gradlew test -DpyramidStand=selenoid_qa_guru -DincludeTags=visual -DskipHealthCheck=true -DupdateBaselines=true
 ```
 
-Post-deploy: `selenoid.qa.guru` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_qa_guru_api`).
+Post-deploy: `selenoid.qa.guru` → Actions → `trigger-deploy-smoke` → `repository_dispatch deploy-smoke` → this repo (`skip_go_unit`, `env_profile=selenoid_qa_guru_api`, default tags **`api` only**).
+
+**Release smoke vs deploy smoke:** `selenoid-ui` `release.yml` dispatches `api,smoke` **after** polling prod `/ui/status` for the new UI pin (`wait_for_prod_ui_version`). Image publish alone is not a deploy — pre-pin smoke against transitional/old prod is a race, not a product regression. Post-deploy trigger from `selenoid.qa.guru` remains the hub/api gate (tags `api` by default; UI e2e gate is the waited release-smoke).
 
 Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
+
+UI e2e canon (v3): root → `#/statistics`; Sessions archive (ex-Videos) → `#/sessions` + `.archive__list`; New Session (ex-Capabilities) → `#/new-session`; status tiles → `Connected` / `Issue` / `Unknown`; VNC → `[data-testid=vnc-window].vnc-window--connected`.
 
 ### `testPlaywright` prerequisite
 
