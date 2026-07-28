@@ -41,6 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link HarCompletenessCompareTests}. Artifacts under {@code build/har-compare/}.
  *
  * <p>One writer per session: hub {@code enableHAR} only — no client {@code recordHar}/HarCapture.
+ *
+ * <p>Two content depths (ADR 009): default {@code harContent=meta} (omit text) and opt-in
+ * {@code harContent=bodies} (best-effort {@code content.text}; not ≡ Playwright {@code recordHar}).
  */
 @Layer("e2e")
 @Component("selenoid")
@@ -57,6 +60,13 @@ class HubHarCompletenessCompareTests {
     private static final Json JSON = new Json();
     private static final Path OUT = Path.of("build/har-compare");
 
+    /**
+     * Best-effort bodies gate on the local fixture: at least one HTTP entry with
+     * {@code content.text}. Explicitly <em>not</em> parity with Playwright {@code recordHar}
+     * (no equality on status/size/text counts).
+     */
+    private static final int BODIES_MIN_WITH_CONTENT_TEXT = 1;
+
     @Test
     @DisplayName("Hub WD + PW enableHAR vs 1-pw-local-recordHar baseline")
     void compareHubHarCompleteness() throws Exception {
@@ -71,46 +81,86 @@ class HubHarCompletenessCompareTests {
         HarStats baseline = step("0) Baseline 1-pw-local-recordHar", () -> loadOrCaptureBaseline(localUrl));
         stats.add(baseline);
 
-        HarStats wdHub = step("4) WebDriver → Selenoid hub enableHAR → " + remoteUrl, () ->
-                captureWebDriverHubHar(remoteUrl));
+        HarStats wdHub = step("4) WebDriver → Selenoid hub enableHAR (meta default) → " + remoteUrl, () ->
+                captureWebDriverHubHar(remoteUrl, null, "4-wd-hub-enableHAR"));
         stats.add(wdHub);
 
-        HarStats pwHub = step("5) Playwright → Selenoid hub enableHAR (no client recordHar) → " + remoteUrl, () ->
-                capturePlaywrightHubHar(remoteUrl, gaps));
+        HarStats pwHub = step("5) Playwright → Selenoid hub enableHAR meta (no client recordHar) → " + remoteUrl, () ->
+                capturePlaywrightHubHar(remoteUrl, null, "5-pw-hub-enableHAR", gaps));
         if (pwHub != null) {
             stats.add(pwHub);
+        }
+
+        HarStats wdHubBodies = step("4b) WebDriver → hub enableHAR + harContent=bodies → " + remoteUrl, () ->
+                captureWebDriverHubHar(remoteUrl, "bodies", "4b-wd-hub-enableHAR-bodies"));
+        stats.add(wdHubBodies);
+
+        HarStats pwHubBodies = step("5b) Playwright → hub enableHAR + harContent=bodies → " + remoteUrl, () ->
+                capturePlaywrightHubHar(remoteUrl, "bodies", "5b-pw-hub-enableHAR-bodies", gaps));
+        if (pwHubBodies != null) {
+            stats.add(pwHubBodies);
         }
 
         String table = HarStats.formatTable(stats);
         System.out.println("\n=== Hub HAR completeness ===\n" + table + "\n");
         System.out.printf(
-                "URL coverage vs baseline: wd-hub=%.0f%%%n",
+                "URL coverage vs baseline: wd-hub(meta)=%.0f%%%n",
                 wdHub.urlCoverageOf(baseline) * 100);
         if (pwHub != null) {
-            System.out.printf("URL coverage vs baseline: pw-hub=%.0f%%%n", pwHub.urlCoverageOf(baseline) * 100);
+            System.out.printf("URL coverage vs baseline: pw-hub(meta)=%.0f%%%n", pwHub.urlCoverageOf(baseline) * 100);
+        }
+        System.out.printf(
+                "URL coverage vs baseline: wd-hub(bodies)=%.0f%%  withContentText=%d%n",
+                wdHubBodies.urlCoverageOf(baseline) * 100,
+                wdHubBodies.withContentText);
+        if (pwHubBodies != null) {
+            System.out.printf(
+                    "URL coverage vs baseline: pw-hub(bodies)=%.0f%%  withContentText=%d%n",
+                    pwHubBodies.urlCoverageOf(baseline) * 100,
+                    pwHubBodies.withContentText);
         }
         if (!gaps.isEmpty()) {
             System.out.println("Gaps:\n- " + String.join("\n- ", gaps));
         }
 
-        // Document known field gaps vs client recordHar.
-        gaps.add("hub CDP HAR omits content.text — by design in selenoid/har (size/mimeType only)");
-        gaps.add("hub CDP HAR often has content.size=0 (no Network.getResponseBody) and status=0 for in-flight requests at quit");
+        // Document known field gaps vs client recordHar (ADR 009 — not absolute omit).
+        gaps.add("default hub enableHAR (harContent=meta|omit) omits content.text; bodies is opt-in best-effort");
+        gaps.add("hub CDP HAR often has content.size=0 and status=0 for in-flight requests at quit (meta and bodies)");
+        gaps.add("hub harContent=bodies ≠ Playwright recordHar (partial text; status/size gaps remain)");
         gaps.add("do not combine hub enableHAR with client recordHar/HarCapture on one session");
+
+        Map<String, Object> contentTextNote = new HashMap<>();
+        contentTextNote.put(
+                "meta",
+                "default enableHAR / harContent=meta|omit: withContentText==0 on fixture");
+        contentTextNote.put(
+                "bodies",
+                "enableHAR + harContent=bodies: withContentText>="
+                        + BODIES_MIN_WITH_CONTENT_TEXT
+                        + " best-effort on fixture; not ≡ recordHar");
 
         Map<String, Object> summary = new HashMap<>();
         summary.put("targetLocal", localUrl);
         summary.put("targetRemote", remoteUrl);
         summary.put("rows", stats.stream().map(HarStats::toRow).toList());
         summary.put("wdHubUrlCoverage", wdHub.urlCoverageOf(baseline));
+        summary.put("wdHubBodiesUrlCoverage", wdHubBodies.urlCoverageOf(baseline));
+        summary.put("wdHubBodiesWithContentText", wdHubBodies.withContentText);
         if (pwHub != null) {
             summary.put("pwHubUrlCoverage", pwHub.urlCoverageOf(baseline));
         } else {
             summary.put("pwHubUrlCoverage", 0.0);
             summary.put("pwHubSkipped", true);
         }
+        if (pwHubBodies != null) {
+            summary.put("pwHubBodiesUrlCoverage", pwHubBodies.urlCoverageOf(baseline));
+            summary.put("pwHubBodiesWithContentText", pwHubBodies.withContentText);
+        } else {
+            summary.put("pwHubBodiesSkipped", true);
+        }
         summary.put("gaps", gaps);
-        summary.put("contentTextNote", "hub CDP HAR: withContentText expected ~0; client recordHar fills content.text");
+        summary.put("contentTextNote", contentTextNote);
+        summary.put("bodiesMinWithContentText", BODIES_MIN_WITH_CONTENT_TEXT);
         Files.writeString(OUT.resolve("hub-summary.json"), JSON.toJson(summary), StandardCharsets.UTF_8);
         Files.writeString(
                 OUT.resolve("hub-summary.txt"),
@@ -127,17 +177,39 @@ class HubHarCompletenessCompareTests {
                 wdHub.httpEntries >= (int) Math.floor(baseline.httpEntries * 0.80),
                 () -> "WebDriver hub-HAR httpEntries worse than baseline: "
                         + wdHub.httpEntries + " < 80% of " + baseline.httpEntries);
-        // Hub CDP path: content.text always empty; status/size may be 0 for in-flight
+        // Default meta path: content.text must stay empty. status/size may be 0 for in-flight
         // entries cancelled at session quit — documented in hub-summary gaps, not a hard fail.
-        assertTrue(wdHub.withContentText == 0, "hub HAR must not include content.text");
+        assertTrue(wdHub.withContentText == 0, "hub HAR meta default must not include content.text");
         assertTrue(wdHub.withRequestHeaders >= (int) Math.floor(wdHub.httpEntries * 0.80));
 
         assertTrue(pwHub != null, "Playwright hub-HAR must be produced (Chromium image :7070)");
+        assertTrue(pwHub.withContentText == 0, "Playwright hub HAR meta default must not include content.text");
         assertTrue(
                 pwHub.urlCoverageOf(baseline) >= 0.80,
                 () -> "Playwright hub-HAR URL coverage < 80% of local baseline: "
                         + pwHub.urlCoverageOf(baseline)
                         + "\nbaseline=" + baseline.urls + "\ncandidate=" + pwHub.urls);
+
+        // Bodies opt-in: best-effort threshold only (not recordHar parity). URL cov gate unchanged.
+        assertTrue(
+                wdHubBodies.urlCoverageOf(baseline) >= 0.80,
+                () -> "WebDriver hub-HAR bodies URL coverage < 80% of local baseline: "
+                        + wdHubBodies.urlCoverageOf(baseline));
+        assertTrue(
+                wdHubBodies.withContentText >= BODIES_MIN_WITH_CONTENT_TEXT,
+                () -> "hub harContent=bodies expected withContentText>="
+                        + BODIES_MIN_WITH_CONTENT_TEXT
+                        + " on fixture (best-effort), got " + wdHubBodies.withContentText);
+        assertTrue(pwHubBodies != null, "Playwright hub-HAR bodies must be produced");
+        assertTrue(
+                pwHubBodies.urlCoverageOf(baseline) >= 0.80,
+                () -> "Playwright hub-HAR bodies URL coverage < 80% of local baseline: "
+                        + pwHubBodies.urlCoverageOf(baseline));
+        assertTrue(
+                pwHubBodies.withContentText >= BODIES_MIN_WITH_CONTENT_TEXT,
+                () -> "PW hub harContent=bodies expected withContentText>="
+                        + BODIES_MIN_WITH_CONTENT_TEXT
+                        + " on fixture (best-effort), got " + pwHubBodies.withContentText);
     }
 
     private static HarStats loadOrCaptureBaseline(String url) throws Exception {
@@ -161,15 +233,23 @@ class HubHarCompletenessCompareTests {
         return HarStats.fromFile("1-pw-local-recordHar", harPath);
     }
 
-    private static HarStats captureWebDriverHubHar(String url) throws Exception {
-        Path harPath = OUT.resolve("4-wd-hub-enableHAR.har");
+    /**
+     * @param harContent {@code null}/{@code "meta"} = default meta path; {@code "bodies"} = opt-in
+     * @param label      artifact stem under {@code build/har-compare/} (also HarStats label)
+     */
+    private static HarStats captureWebDriverHubHar(String url, String harContent, String label)
+            throws Exception {
+        Path harPath = OUT.resolve(label + ".har");
         Map<String, Object> selenoid = new HashMap<>();
         selenoid.put("enableVNC", true);
         selenoid.put("enableVideo", false);
         selenoid.put("enableHAR", true);
         selenoid.put("enableLog", false);
         selenoid.put("sessionTimeout", "2m");
-        selenoid.put("name", "hub-har-wd-compare");
+        selenoid.put("name", label);
+        if (harContent != null && !harContent.isBlank()) {
+            selenoid.put("harContent", harContent);
+        }
 
         String sessionId = HubSessionApi.createWithSelenoidOptions(config.chromeVersion(), selenoid);
         try {
@@ -183,18 +263,26 @@ class HubHarCompletenessCompareTests {
         assertTrue(file != null, () -> "expected hub HAR for WD session " + sessionId);
         byte[] body = HubHarApi.download(file);
         Files.write(harPath, body);
-        return HarStats.fromBytes("4-wd-hub-enableHAR", harPath, body);
+        return HarStats.fromBytes(label, harPath, body);
     }
 
     /**
      * Hub enableHAR on Playwright WS — no client recordHar.
      * Requires Chromium-family images with DevTools proxy on :7070.
+     *
+     * @param harContent {@code null} = meta default; {@code "bodies"} appends {@code harContent=} query
      */
-    private static HarStats capturePlaywrightHubHar(String url, List<String> gaps) throws Exception {
-        Path harPath = OUT.resolve("5-pw-hub-enableHAR.har");
+    private static HarStats capturePlaywrightHubHar(
+            String url, String harContent, String label, List<String> gaps) throws Exception {
+        Path harPath = OUT.resolve(label + ".har");
         String base = ConfigReader.resolvePlaywrightWsEndpoint();
         String sep = base.contains("?") ? "&" : "?";
-        String ws = base + sep + "enableHAR=true&enableVideo=false&enableVNC=false&name=hub-har-pw-compare";
+        StringBuilder qs = new StringBuilder("enableHAR=true&enableVideo=false&enableVNC=false&name=")
+                .append(label);
+        if (harContent != null && !harContent.isBlank()) {
+            qs.append("&harContent=").append(harContent);
+        }
+        String ws = base + sep + qs;
 
         Set<String> before = sessionIds();
         String sessionId;
@@ -223,20 +311,20 @@ class HubHarCompletenessCompareTests {
         }
 
         if (sessionId == null) {
-            gaps.add("Playwright hub session id not observed in /status — cannot fetch /har");
+            gaps.add("Playwright hub session id not observed in /status — cannot fetch /har (" + label + ")");
             return null;
         }
 
         String file = HubHarApi.waitForSessionHar(sessionId, Duration.ofSeconds(20));
         if (file == null) {
-            gaps.add("Playwright hub-HAR missing for " + sessionId
+            gaps.add("Playwright hub-HAR missing for " + sessionId + " (" + label + ")"
                     + " — expected DevTools :7070 on playwright-chromium/chrome/msedge"
                     + " (HAR_CAPTURE_FAILED)");
             return null;
         }
         byte[] body = HubHarApi.download(file);
         Files.write(harPath, body);
-        return HarStats.fromBytes("5-pw-hub-enableHAR", harPath, body);
+        return HarStats.fromBytes(label, harPath, body);
     }
 
     private static Set<String> sessionIds() {
@@ -248,9 +336,16 @@ class HubHarCompletenessCompareTests {
     @SuppressWarnings("unchecked")
     private static void collectSessionIds(Object node, Set<String> ids) {
         if (node instanceof Map<?, ?> map) {
-            Object id = map.get("id");
-            if (id instanceof String s && !s.isBlank()) {
-                ids.add(s);
+            Object sessionList = map.get("sessions");
+            if (sessionList instanceof List<?> list) {
+                for (Object item : list) {
+                    if (item instanceof Map<?, ?> sess) {
+                        Object id = sess.get("id");
+                        if (id instanceof String s && !s.isBlank()) {
+                            ids.add(s);
+                        }
+                    }
+                }
             }
             for (Object v : map.values()) {
                 collectSessionIds(v, ids);

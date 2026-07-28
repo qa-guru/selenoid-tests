@@ -162,7 +162,7 @@ public final class HarStats {
         List<String> lines = new ArrayList<>();
         lines.add(String.format(
                 Locale.ROOT,
-                "%-28s %8s %8s %8s %8s %8s %8s %8s %8s",
+                "%-32s %8s %8s %8s %8s %8s %8s %8s %8s %8s",
                 "label",
                 "entries",
                 "http",
@@ -171,11 +171,12 @@ public final class HarStats {
                 "reqHdr",
                 "resHdr",
                 "size>0",
+                "text",
                 "time>0"));
         for (HarStats s : stats) {
             lines.add(String.format(
                     Locale.ROOT,
-                    "%-28s %8d %8d %8d %8d %8d %8d %8d %8d",
+                    "%-32s %8d %8d %8d %8d %8d %8d %8d %8d %8d",
                     s.label,
                     s.entries,
                     s.httpEntries,
@@ -184,6 +185,7 @@ public final class HarStats {
                     s.withRequestHeaders,
                     s.withResponseHeaders,
                     s.withContentSize,
+                    s.withContentText,
                     s.withPositiveTime));
         }
         return String.join("\n", lines);

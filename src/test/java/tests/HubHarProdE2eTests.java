@@ -210,9 +210,16 @@ class HubHarProdE2eTests {
     @SuppressWarnings("unchecked")
     private static void collectSessionIds(Object node, Set<String> ids) {
         if (node instanceof Map<?, ?> map) {
-            Object id = map.get("id");
-            if (id instanceof String s && !s.isBlank()) {
-                ids.add(s);
+            Object sessionList = map.get("sessions");
+            if (sessionList instanceof List<?> list) {
+                for (Object item : list) {
+                    if (item instanceof Map<?, ?> sess) {
+                        Object id = sess.get("id");
+                        if (id instanceof String s && !s.isBlank()) {
+                            ids.add(s);
+                        }
+                    }
+                }
             }
             for (Object v : map.values()) {
                 collectSessionIds(v, ids);

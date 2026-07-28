@@ -90,14 +90,27 @@ class HarCompletenessCompareTests {
                 pwSelenoid.urlCoverageOf(baseline) * 100,
                 selenide.urlCoverageOf(baseline) * 100);
 
+        Map<String, Object> contentTextNote = new HashMap<>();
+        contentTextNote.put(
+                "meta",
+                "HarCapture default (HarContentMode.META): withContentText==0 on this fixture row");
+        contentTextNote.put(
+                "bodies",
+                "HarContentMode.BODIES opt-in: unit/synthetic CDP signal only (HarCaptureTest); "
+                        + "live e2e bodies row not claimed in MATRIX");
+
         Map<String, Object> summary = new HashMap<>();
         summary.put("targetLocal", localUrl);
         summary.put("targetRemote", remoteUrl);
         summary.put("rows", stats.stream().map(HarStats::toRow).toList());
         summary.put("pwSelenoidUrlCoverage", pwSelenoid.urlCoverageOf(baseline));
         summary.put("selenideUrlCoverage", selenide.urlCoverageOf(baseline));
+        summary.put("contentTextNote", contentTextNote);
         Files.writeString(OUT.resolve("summary.json"), JSON.toJson(summary), StandardCharsets.UTF_8);
         Files.writeString(OUT.resolve("summary.txt"), table + "\n", StandardCharsets.UTF_8);
+
+        // Meta default contract for the live HarCapture row (bodies is unit-only for now).
+        assertTrue(selenide.withContentText == 0, "HarCapture meta default must omit content.text");
 
         // Fair compare: same page, SW blocked — URL set and HTTP entry count within 80% of baseline.
         assertTrue(
