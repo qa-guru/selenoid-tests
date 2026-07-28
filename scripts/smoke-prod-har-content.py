@@ -78,6 +78,7 @@ def har_stats(har: dict) -> dict:
     entries = (((har or {}).get("log") or {}).get("entries")) or []
     http = 0
     with_text = 0
+    with_size = 0
     for e in entries:
         req = e.get("request") or {}
         url = req.get("url") or ""
@@ -88,10 +89,14 @@ def har_stats(har: dict) -> dict:
         text = content.get("text")
         if isinstance(text, str) and text != "":
             with_text += 1
+        size = content.get("size")
+        if isinstance(size, (int, float)) and size > 0:
+            with_size += 1
     return {
         "entries": len(entries),
         "http": http,
         "withContentText": with_text,
+        "withContentSize": with_size,
     }
 
 
@@ -166,9 +171,54 @@ def wd_session(har_content: str | None) -> dict:
         "harHttp": har_code,
         "stats": stats,
         "artifact": str(path) if path.exists() else None,
-        "ok_meta": label == "meta" and har_code == 200 and stats["withContentText"] == 0,
-        "ok_bodies": label == "bodies" and har_code == 200 and stats["withContentText"] >= 1,
+        "ok_meta": (
+            label == "meta"
+            and har_code == 200
+            and stats["http"] >= 1
+            and stats["withContentText"] == 0
+        ),
+        "ok_bodies": (
+            label == "bodies"
+            and har_code == 200
+            and stats["http"] >= 1
+            and stats["withContentText"] >= 1
+            and stats["withContentSize"] >= 1
+        ),
     }
+
+
+def collect_session_ids(status: dict | None) -> set[str]:
+    ids: set[str] = set()
+
+    def walk(node):
+        if isinstance(node, dict):
+            sessions = node.get("sessions")
+            if isinstance(sessions, list):
+                for sess in sessions:
+                    if isinstance(sess, dict):
+                        sid = sess.get("id")
+                        if isinstance(sid, str) and sid:
+                            ids.add(sid)
+            for v in node.values():
+                walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v)
+
+    walk(status)
+    return ids
+
+
+def wait_new_session_id(before: set[str], timeout_s: float = 30.0) -> str | None:
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        _, status = http_json("GET", f"{BASE}/hub/status", auth=False)
+        now = collect_session_ids(status if isinstance(status, dict) else {})
+        delta = now - before
+        if delta:
+            return next(iter(delta))
+        time.sleep(0.25)
+    return None
 
 
 def pw_session(har_content: str | None) -> dict:
@@ -203,49 +253,28 @@ def pw_session(har_content: str | None) -> dict:
     ws = f"{BASE.replace('https://', 'wss://').replace('http://', 'ws://')}/playwright/{PW_BROWSER}/{PW_VERSION}?{qs}"
 
     want_name = f"step5-pw-{label}"
+    _, status_before = http_json("GET", f"{BASE}/hub/status", auth=False)
+    before_ids = collect_session_ids(status_before if isinstance(status_before, dict) else {})
     sid = None
     with sync_playwright() as p:
         browser = p.chromium.connect(ws, timeout=120_000)
+        sid = wait_new_session_id(before_ids, timeout_s=30.0)
         page = browser.new_page()
-        page.goto(NAV_URL, wait_until="domcontentloaded", timeout=60_000)
-        time.sleep(2.5)
-        # Prefer session named by this smoke; fall back to sole used session.
-        _, status = http_json("GET", f"{BASE}/hub/status", auth=False)
-        named: list[str] = []
-        all_ids: list[str] = []
-        if isinstance(status, dict):
-            browsers = status.get("browsers") or {}
-            for _b, vers in browsers.items():
-                if not isinstance(vers, dict):
-                    continue
-                for _v, users in vers.items():
-                    if not isinstance(users, dict):
-                        continue
-                    for _u, info in users.items():
-                        if not isinstance(info, dict):
-                            continue
-                        for sess in info.get("sessions") or []:
-                            if not isinstance(sess, dict):
-                                continue
-                            sid_i = sess.get("id")
-                            if not sid_i:
-                                continue
-                            all_ids.append(sid_i)
-                            name = ((sess.get("caps") or {}).get("name")) or ""
-                            if name == want_name:
-                                named.append(sid_i)
-        if named:
-            sid = named[0]
-        elif len(all_ids) == 1:
-            sid = all_ids[0]
-        browser.close()
+        # Hub attaches CDP to /page asynchronously; yield before first navigation.
+        page.wait_for_timeout(750)
+        page.goto(NAV_URL, wait_until="load", timeout=60_000)
+        page.wait_for_timeout(1500)
+        try:
+            browser.close()
+        except Exception:
+            pass
 
     if not sid:
         return {
             "writer": "pw",
             "mode": label,
             "skipped": False,
-            "error": "could not resolve session id from /hub/status",
+            "error": "could not resolve new Playwright session id from /hub/status",
             "ok_meta": False,
             "ok_bodies": False,
         }
@@ -268,8 +297,19 @@ def pw_session(har_content: str | None) -> dict:
         "harHttp": har_code,
         "stats": stats,
         "artifact": str(path) if path.exists() else None,
-        "ok_meta": label == "meta" and har_code == 200 and stats["withContentText"] == 0,
-        "ok_bodies": label == "bodies" and har_code == 200 and stats["withContentText"] >= 1,
+        "ok_meta": (
+            label == "meta"
+            and har_code == 200
+            and stats["http"] >= 1
+            and stats["withContentText"] == 0
+        ),
+        "ok_bodies": (
+            label == "bodies"
+            and har_code == 200
+            and stats["http"] >= 1
+            and stats["withContentText"] >= 1
+            and stats["withContentSize"] >= 1
+        ),
     }
 
 
@@ -292,6 +332,9 @@ def main() -> int:
     summary = {
         "base": BASE,
         "nav": NAV_URL,
+        "hubVersionNote": "prod size gate requires hub ≥ v3.0.5 (content.size from decoded body)",
+        "bodiesMinWithContentText": 1,
+        "bodiesMinWithContentSize": 1,
         "results": results,
         "gates": {
             "wd_meta": next((x.get("ok_meta") for x in results if x["writer"] == "wd" and x["mode"] == "meta"), False),

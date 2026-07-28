@@ -40,6 +40,7 @@ def main() -> int:
         "harContent_hidden_when_enableHAR_off": False,
         "harContent_visible_when_enableHAR_on": False,
         "harViewer_shows_body_text": False,
+        "harViewer_size_not_dash": False,
         "bodiesSessionId": bodies_sid,
         "artifacts": {},
     }
@@ -74,9 +75,12 @@ def main() -> int:
         page.screenshot(path=str(shot_on), full_page=False)
         result["artifacts"]["caps_on"] = str(shot_on)
 
-        # HarViewer on finished bodies session — Response tab must show content.text
+        # HarViewer on finished bodies session — table Size + Response tab body/size
         page.goto(f"{BASE}/#/sessions/{bodies_sid}", wait_until="load", timeout=60_000)
         page.wait_for_selector('[data-testid="session-har-row-0"]', timeout=60_000)
+        table_size = page.locator('[data-testid="session-har-row-0"] td').nth(4).inner_text(timeout=10_000)
+        result["harViewer_table_size"] = table_size.strip()
+        result["harViewer_size_not_dash"] = table_size.strip() not in ("", "—", "-")
         page.locator('[data-testid="session-har-row-0"]').click(timeout=10_000)
         page.locator('[data-testid="session-har-tab-response"]').click(timeout=10_000)
         panel = page.locator('[data-testid="session-har-panel-response"]')
@@ -86,6 +90,14 @@ def main() -> int:
         muted = "Body not captured" in body
         result["harViewer_shows_body_text"] = bool(has_example and not muted)
         result["harViewer_snippet"] = body[:400]
+        # Response tab size kv — not em-dash when hub ≥ v3.0.5 filled content.size
+        size_lines = [ln.strip() for ln in body.splitlines() if ln.strip()]
+        size_idx = next((i for i, ln in enumerate(size_lines) if ln.lower() == "size"), None)
+        if size_idx is not None and size_idx + 1 < len(size_lines):
+            detail_size = size_lines[size_idx + 1]
+            result["harViewer_detail_size"] = detail_size
+            if detail_size not in ("—", "-", ""):
+                result["harViewer_size_not_dash"] = True
         shot_hv = OUT / "ui-harViewer-bodies-prod.png"
         page.locator('[data-testid="session-har-viewer"]').scroll_into_view_if_needed()
         page.screenshot(path=str(shot_hv), full_page=False)
@@ -99,6 +111,7 @@ def main() -> int:
         result["harContent_hidden_when_enableHAR_off"]
         and result["harContent_visible_when_enableHAR_on"]
         and result["harViewer_shows_body_text"]
+        and result["harViewer_size_not_dash"]
     )
     return 0 if ok else 2
 
