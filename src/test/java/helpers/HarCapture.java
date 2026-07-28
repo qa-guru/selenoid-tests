@@ -14,20 +14,50 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chromium.ChromiumOptions;
+import org.openqa.selenium.chromium.HasCdp;
 import org.openqa.selenium.json.Json;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 /**
- * Client-side HAR from Chrome/Edge Performance logs (CDP Network events).
- * Hub {@code enableHAR} is a no-op — capture lives in the test process.
+ * Client-side HAR writer from Chrome/Edge Performance logs (CDP Network events).
+ *
+ * <p><b>One writer per session:</b> do not combine with hub {@code enableHAR} or Playwright
+ * {@code recordHar} on the same session. Hub {@code enableHAR} is a separate writer — this class
+ * captures in the test process only.
+ *
+ * <p>{@link HarContentMode#META} (default): {@code content.size} + {@code mimeType}; no
+ * {@code content.text}. {@link HarContentMode#BODIES}: best-effort bodies via CDP
+ * {@code Network.getResponseBody} ({@link HasCdp#executeCdpCommand}) after reading Performance
+ * logs — response bodies are <em>not</em> present in the PERFORMANCE log stream. Failures
+ * (evicted buffer, redirect, binary race, no CDP) leave that entry meta-like; the session does
+ * not fail. Not equivalent to Playwright {@code recordHar}.
  */
 public final class HarCapture {
 
     private static final Json JSON = new Json();
+
+    /** HAR {@code content} depth for this client writer. Default {@link #META}. */
+    public enum HarContentMode {
+        /** size + mimeType only (current / default contract). */
+        META,
+        /** Opt-in: best-effort {@code content.text} via CDP {@code Network.getResponseBody}. */
+        BODIES
+    }
+
+    /**
+     * Body payload from CDP {@code Network.getResponseBody} (or a synthetic unit fixture).
+     * {@code base64Encoded} maps to HAR {@code content.encoding = "base64"} when true.
+     */
+    record CapturedBody(String text, boolean base64Encoded) {
+        CapturedBody {
+            text = text == null ? "" : text;
+        }
+    }
 
     private HarCapture() {
     }
@@ -50,7 +80,17 @@ public final class HarCapture {
         }
     }
 
+    /** Collect HAR in {@link HarContentMode#META} (default). */
     public static Optional<byte[]> collectHarJson() {
+        return collectHarJson(HarContentMode.META);
+    }
+
+    /**
+     * Collect HAR with explicit content mode. {@link HarContentMode#BODIES} attempts CDP
+     * {@code Network.getResponseBody} per finished requestId (best-effort).
+     */
+    public static Optional<byte[]> collectHarJson(HarContentMode mode) {
+        HarContentMode effective = mode == null ? HarContentMode.META : mode;
         if (!WebDriverRunner.hasWebDriverStarted()) {
             return Optional.empty();
         }
@@ -60,7 +100,11 @@ public final class HarCapture {
         }
         try {
             LogEntries entries = driver.manage().logs().get(LogType.PERFORMANCE);
-            String har = toHar(entries);
+            Map<String, CapturedBody> bodies = Map.of();
+            if (effective == HarContentMode.BODIES) {
+                bodies = fetchBodiesBestEffort(driver, entries);
+            }
+            String har = toHar(entries, effective, bodies);
             return Optional.of(har.getBytes(StandardCharsets.UTF_8));
         } catch (RuntimeException ex) {
             return Optional.empty();
@@ -75,8 +119,97 @@ public final class HarCapture {
         return supportsBrowser(caps.getBrowserName());
     }
 
+    /**
+     * Best-effort CDP bodies. Mechanism: {@link HasCdp#executeCdpCommand}{@code
+     * "Network.getResponseBody"} — not Performance-log parsing (bodies are absent there).
+     */
     @SuppressWarnings("unchecked")
+    static Map<String, CapturedBody> fetchBodiesBestEffort(WebDriver driver, LogEntries entries) {
+        HasCdp cdp = asHasCdp(driver);
+        if (cdp == null) {
+            return Map.of();
+        }
+        Map<String, CapturedBody> out = new LinkedHashMap<>();
+        for (String requestId : finishedRequestIds(entries)) {
+            try {
+                Map<String, Object> result = cdp.executeCdpCommand(
+                        "Network.getResponseBody",
+                        Map.of("requestId", requestId));
+                if (result == null) {
+                    continue;
+                }
+                String body = stringVal(result.get("body"));
+                if (body.isEmpty()) {
+                    continue;
+                }
+                boolean base64 = boolVal(result.get("base64Encoded"));
+                out.put(requestId, new CapturedBody(body, base64));
+            } catch (RuntimeException ignored) {
+                // best-effort: leave entry meta-like
+            }
+        }
+        return out;
+    }
+
+    private static HasCdp asHasCdp(WebDriver driver) {
+        if (driver instanceof HasCdp hasCdp) {
+            return hasCdp;
+        }
+        try {
+            WebDriver augmented = new Augmenter().augment(driver);
+            if (augmented instanceof HasCdp hasCdp) {
+                return hasCdp;
+            }
+        } catch (RuntimeException ignored) {
+            // no CDP — bodies stay empty
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    static List<String> finishedRequestIds(LogEntries entries) {
+        List<String> ids = new ArrayList<>();
+        for (LogEntry entry : entries) {
+            Map<String, Object> message = parseCdpMessage(entry);
+            if (message == null) {
+                continue;
+            }
+            if (!"Network.loadingFinished".equals(message.get("method"))) {
+                continue;
+            }
+            Object paramsObj = message.get("params");
+            if (!(paramsObj instanceof Map<?, ?> paramsRaw)) {
+                continue;
+            }
+            String id = stringVal(((Map<String, Object>) paramsRaw).get("requestId"));
+            if (!id.isEmpty()) {
+                ids.add(id);
+            }
+        }
+        return ids;
+    }
+
     static String toHar(LogEntries entries) {
+        return toHar(entries, HarContentMode.META, Map.of());
+    }
+
+    static String toHar(LogEntries entries, HarContentMode mode) {
+        return toHar(entries, mode == null ? HarContentMode.META : mode, Map.of());
+    }
+
+    /**
+     * Build HAR 1.2 JSON. For {@link HarContentMode#BODIES}, pass CDP (or synthetic) bodies keyed
+     * by requestId; missing keys stay meta-like for that entry.
+     */
+    @SuppressWarnings("unchecked")
+    static String toHar(
+            LogEntries entries,
+            HarContentMode mode,
+            Map<String, CapturedBody> bodiesByRequestId) {
+        HarContentMode effective = mode == null ? HarContentMode.META : mode;
+        Map<String, CapturedBody> bodies =
+                bodiesByRequestId == null ? Map.of() : bodiesByRequestId;
+
         Map<String, Map<String, Object>> requests = new LinkedHashMap<>();
         Map<String, Map<String, Object>> responses = new LinkedHashMap<>();
         Map<String, Double> finishedMs = new LinkedHashMap<>();
@@ -85,26 +218,8 @@ public final class HarCapture {
         double wallStart = Double.NaN;
 
         for (LogEntry entry : entries) {
-            Map<String, Object> root;
-            try {
-                root = JSON.toType(entry.getMessage(), Map.class);
-            } catch (RuntimeException ex) {
-                continue;
-            }
-            Object messageObj = root.get("message");
-            Map<String, Object> message;
-            if (messageObj instanceof String messageJson) {
-                try {
-                    message = JSON.toType(messageJson, Map.class);
-                } catch (RuntimeException ex) {
-                    continue;
-                }
-            } else if (messageObj instanceof Map<?, ?> messageRaw) {
-                message = (Map<String, Object>) messageRaw;
-            } else if (root.containsKey("method") && root.containsKey("params")) {
-                // bare CDP event (unit tests / some drivers)
-                message = root;
-            } else {
+            Map<String, Object> message = parseCdpMessage(entry);
+            if (message == null) {
                 continue;
             }
             Object methodObj = message.get("method");
@@ -176,11 +291,14 @@ public final class HarCapture {
                         - (long) ((end - wallStart) * 1000.0);
             }
 
+            CapturedBody body =
+                    effective == HarContentMode.BODIES ? bodies.get(id) : null;
+
             Map<String, Object> entry = new LinkedHashMap<>();
             entry.put("startedDateTime", Instant.ofEpochMilli(startedDateTimeMs).toString());
             entry.put("time", timeMs);
             entry.put("request", harRequest(req));
-            entry.put("response", harResponse(resp, encodedBytes.get(id)));
+            entry.put("response", harResponse(resp, encodedBytes.get(id), effective, body));
             entry.put("cache", Map.of());
             entry.put("timings", timings(timeMs));
             harEntries.add(entry);
@@ -209,6 +327,32 @@ public final class HarCapture {
         return JSON.toJson(Map.of("log", log));
     }
 
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> parseCdpMessage(LogEntry entry) {
+        Map<String, Object> root;
+        try {
+            root = JSON.toType(entry.getMessage(), Map.class);
+        } catch (RuntimeException ex) {
+            return null;
+        }
+        Object messageObj = root.get("message");
+        if (messageObj instanceof String messageJson) {
+            try {
+                return JSON.toType(messageJson, Map.class);
+            } catch (RuntimeException ex) {
+                return null;
+            }
+        }
+        if (messageObj instanceof Map<?, ?> messageRaw) {
+            return (Map<String, Object>) messageRaw;
+        }
+        if (root.containsKey("method") && root.containsKey("params")) {
+            // bare CDP event (unit tests / some drivers)
+            return root;
+        }
+        return null;
+    }
+
     private static Map<String, Object> harRequest(Map<String, Object> req) {
         Map<String, Object> out = new LinkedHashMap<>();
         String method = stringVal(req.get("method"));
@@ -223,7 +367,11 @@ public final class HarCapture {
         return out;
     }
 
-    private static Map<String, Object> harResponse(Map<String, Object> resp, Long finishedEncodedBytes) {
+    private static Map<String, Object> harResponse(
+            Map<String, Object> resp,
+            Long finishedEncodedBytes,
+            HarContentMode mode,
+            CapturedBody body) {
         Map<String, Object> out = new LinkedHashMap<>();
         out.put("status", intVal(resp.get("status")));
         out.put("statusText", stringVal(resp.get("statusText")));
@@ -236,6 +384,12 @@ public final class HarCapture {
         long size = finishedEncodedBytes != null ? finishedEncodedBytes : longVal(resp.get("encodedDataLength"));
         content.put("size", size);
         content.put("mimeType", stringVal(resp.get("mimeType")));
+        if (mode == HarContentMode.BODIES && body != null && !body.text().isEmpty()) {
+            content.put("text", body.text());
+            if (body.base64Encoded()) {
+                content.put("encoding", "base64");
+            }
+        }
         out.put("content", content);
         out.put("redirectURL", "");
         out.put("headersSize", -1);
@@ -272,6 +426,16 @@ public final class HarCapture {
 
     private static String stringVal(Object o) {
         return o == null ? "" : String.valueOf(o);
+    }
+
+    private static boolean boolVal(Object o) {
+        if (o instanceof Boolean b) {
+            return b;
+        }
+        if (o == null) {
+            return false;
+        }
+        return "true".equalsIgnoreCase(String.valueOf(o));
     }
 
     private static double doubleVal(Object o) {
