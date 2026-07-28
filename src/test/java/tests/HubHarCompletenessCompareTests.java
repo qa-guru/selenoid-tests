@@ -96,7 +96,6 @@ class HubHarCompletenessCompareTests {
         // Document known field gaps vs client recordHar.
         gaps.add("hub CDP HAR omits content.text — by design in selenoid/har (size/mimeType only)");
         gaps.add("hub CDP HAR often has content.size=0 (no Network.getResponseBody) and status=0 for in-flight requests at quit");
-        gaps.add("Playwright hub-HAR blocked until qaguru/playwright-* expose DevTools :7070");
         gaps.add("do not combine hub enableHAR with client recordHar/HarCapture on one session");
 
         Map<String, Object> summary = new HashMap<>();
@@ -133,17 +132,12 @@ class HubHarCompletenessCompareTests {
         assertTrue(wdHub.withContentText == 0, "hub HAR must not include content.text");
         assertTrue(wdHub.withRequestHeaders >= (int) Math.floor(wdHub.httpEntries * 0.80));
 
-        if (pwHub != null) {
-            assertTrue(
-                    pwHub.urlCoverageOf(baseline) >= 0.80,
-                    () -> "Playwright hub-HAR URL coverage < 80% of local baseline: "
-                            + pwHub.urlCoverageOf(baseline)
-                            + "\nbaseline=" + baseline.urls + "\ncandidate=" + pwHub.urls);
-        } else {
-            assertTrue(
-                    gaps.stream().anyMatch(g -> g.contains("7070") || g.contains("HAR_CAPTURE")),
-                    "PW hub-HAR skipped without documenting DevTools/7070 gap");
-        }
+        assertTrue(pwHub != null, "Playwright hub-HAR must be produced (Chromium image :7070)");
+        assertTrue(
+                pwHub.urlCoverageOf(baseline) >= 0.80,
+                () -> "Playwright hub-HAR URL coverage < 80% of local baseline: "
+                        + pwHub.urlCoverageOf(baseline)
+                        + "\nbaseline=" + baseline.urls + "\ncandidate=" + pwHub.urls);
     }
 
     private static HarStats loadOrCaptureBaseline(String url) throws Exception {
@@ -194,7 +188,7 @@ class HubHarCompletenessCompareTests {
 
     /**
      * Hub enableHAR on Playwright WS — no client recordHar.
-     * Returns null when capture cannot start (Playwright images lack DevTools :7070 today).
+     * Requires Chromium-family images with DevTools proxy on :7070.
      */
     private static HarStats capturePlaywrightHubHar(String url, List<String> gaps) throws Exception {
         Path harPath = OUT.resolve("5-pw-hub-enableHAR.har");
@@ -210,6 +204,9 @@ class HubHarCompletenessCompareTests {
             BrowserContext ctx = browser.newContext(new Browser.NewContextOptions()
                     .setServiceWorkers(ServiceWorkerPolicy.BLOCK));
             Page page = ctx.newPage();
+            // Hub attaches to /page asynchronously after newPage(); yield so
+            // Network.enable wins the race before the first navigation.
+            page.waitForTimeout(750);
             page.navigate(url);
             page.waitForLoadState();
             page.waitForTimeout(1500);
@@ -230,11 +227,11 @@ class HubHarCompletenessCompareTests {
             return null;
         }
 
-        String file = HubHarApi.waitForSessionHar(sessionId, Duration.ofSeconds(15));
+        String file = HubHarApi.waitForSessionHar(sessionId, Duration.ofSeconds(20));
         if (file == null) {
             gaps.add("Playwright hub-HAR missing for " + sessionId
-                    + " — qaguru/playwright-* images lack DevTools proxy on :7070"
-                    + " (HAR_CAPTURE_FAILED); use client recordHar for PW autotests");
+                    + " — expected DevTools :7070 on playwright-chromium/chrome/msedge"
+                    + " (HAR_CAPTURE_FAILED)");
             return null;
         }
         byte[] body = HubHarApi.download(file);
