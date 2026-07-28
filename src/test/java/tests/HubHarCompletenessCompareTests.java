@@ -62,10 +62,11 @@ class HubHarCompletenessCompareTests {
 
     /**
      * Best-effort bodies gate on the local fixture: at least one HTTP entry with
-     * {@code content.text}. Explicitly <em>not</em> parity with Playwright {@code recordHar}
-     * (no equality on status/size/text counts).
+     * {@code content.text} and matching {@code content.size} (hub ≥ v3.0.5 sets size from
+     * decoded body). Explicitly <em>not</em> parity with Playwright {@code recordHar}.
      */
     private static final int BODIES_MIN_WITH_CONTENT_TEXT = 1;
+    private static final int BODIES_MIN_WITH_CONTENT_SIZE = 1;
 
     @Test
     @DisplayName("Hub WD + PW enableHAR vs 1-pw-local-recordHar baseline")
@@ -125,8 +126,8 @@ class HubHarCompletenessCompareTests {
 
         // Document known field gaps vs client recordHar (ADR 009 — not absolute omit).
         gaps.add("default hub enableHAR (harContent=meta|omit) omits content.text; bodies is opt-in best-effort");
-        gaps.add("hub CDP HAR often has content.size=0 and status=0 for in-flight requests at quit (meta and bodies)");
-        gaps.add("hub harContent=bodies ≠ Playwright recordHar (partial text; status/size gaps remain)");
+        gaps.add("hub meta path may have content.size=0 and partial status for in-flight requests at quit");
+        gaps.add("hub harContent=bodies (≥ v3.0.5) sets content.size from decoded body; still ≠ recordHar parity");
         gaps.add("do not combine hub enableHAR with client recordHar/HarCapture on one session");
 
         Map<String, Object> contentTextNote = new HashMap<>();
@@ -135,8 +136,10 @@ class HubHarCompletenessCompareTests {
                 "default enableHAR / harContent=meta|omit: withContentText==0 on fixture");
         contentTextNote.put(
                 "bodies",
-                "enableHAR + harContent=bodies: withContentText>="
+                "enableHAR + harContent=bodies (hub ≥ v3.0.5): withContentText>="
                         + BODIES_MIN_WITH_CONTENT_TEXT
+                        + ", withContentSize>="
+                        + BODIES_MIN_WITH_CONTENT_SIZE
                         + " best-effort on fixture; not ≡ recordHar");
 
         Map<String, Object> summary = new HashMap<>();
@@ -161,6 +164,7 @@ class HubHarCompletenessCompareTests {
         summary.put("gaps", gaps);
         summary.put("contentTextNote", contentTextNote);
         summary.put("bodiesMinWithContentText", BODIES_MIN_WITH_CONTENT_TEXT);
+        summary.put("bodiesMinWithContentSize", BODIES_MIN_WITH_CONTENT_SIZE);
         Files.writeString(OUT.resolve("hub-summary.json"), JSON.toJson(summary), StandardCharsets.UTF_8);
         Files.writeString(
                 OUT.resolve("hub-summary.txt"),
@@ -200,6 +204,11 @@ class HubHarCompletenessCompareTests {
                 () -> "hub harContent=bodies expected withContentText>="
                         + BODIES_MIN_WITH_CONTENT_TEXT
                         + " on fixture (best-effort), got " + wdHubBodies.withContentText);
+        assertTrue(
+                wdHubBodies.withContentSize >= BODIES_MIN_WITH_CONTENT_SIZE,
+                () -> "hub harContent=bodies expected withContentSize>="
+                        + BODIES_MIN_WITH_CONTENT_SIZE
+                        + " on fixture (hub ≥ v3.0.5), got " + wdHubBodies.withContentSize);
         assertTrue(pwHubBodies != null, "Playwright hub-HAR bodies must be produced");
         assertTrue(
                 pwHubBodies.urlCoverageOf(baseline) >= 0.80,
@@ -210,6 +219,11 @@ class HubHarCompletenessCompareTests {
                 () -> "PW hub harContent=bodies expected withContentText>="
                         + BODIES_MIN_WITH_CONTENT_TEXT
                         + " on fixture (best-effort), got " + pwHubBodies.withContentText);
+        assertTrue(
+                pwHubBodies.withContentSize >= BODIES_MIN_WITH_CONTENT_SIZE,
+                () -> "PW hub harContent=bodies expected withContentSize>="
+                        + BODIES_MIN_WITH_CONTENT_SIZE
+                        + " on fixture (hub ≥ v3.0.5), got " + pwHubBodies.withContentSize);
     }
 
     private static HarStats loadOrCaptureBaseline(String url) throws Exception {
