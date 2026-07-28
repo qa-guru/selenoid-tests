@@ -27,7 +27,7 @@ case "${REPO}" in
   selenoid)
     gotestsum --junitfile "${JUNIT_FILE}" -- \
       -tags 's3 metadata' -race -coverprofile=coverage.txt -covermode=atomic \
-        -coverpkg github.com/aerokube/selenoid,github.com/aerokube/selenoid/session,github.com/aerokube/selenoid/config,github.com/aerokube/selenoid/protect,github.com/aerokube/selenoid/service,github.com/aerokube/selenoid/upload,github.com/aerokube/selenoid/info,github.com/aerokube/selenoid/jsonerror \
+        -coverpkg github.com/qa-guru/selenoid,github.com/qa-guru/selenoid/session,github.com/qa-guru/selenoid/config,github.com/qa-guru/selenoid/protect,github.com/qa-guru/selenoid/service,github.com/qa-guru/selenoid/upload,github.com/qa-guru/selenoid/info,github.com/qa-guru/selenoid/jsonerror \
         ./...
     ;;
   selenoid-ui)
@@ -39,14 +39,14 @@ case "${REPO}" in
       cp -R ui/allure-results/. "${ALLURE_DIR}/"
     fi
     go install github.com/rakyll/statik@latest
-    go generate github.com/aerokube/selenoid-ui
+    go generate github.com/qa-guru/selenoid-ui
     gotestsum --junitfile "${JUNIT_FILE}" -- \
       -race -coverprofile=coverage.txt -covermode=atomic ./...
     ;;
   cm)
     gotestsum --junitfile "${JUNIT_FILE}" -- \
       -race -coverprofile=coverage.txt -covermode=atomic \
-        -coverpkg github.com/aerokube/cm/...,github.com/aerokube/cm/cmd \
+        -coverpkg github.com/qa-guru/cm/...,github.com/qa-guru/cm/cmd \
         ./...
     ;;
   *)
