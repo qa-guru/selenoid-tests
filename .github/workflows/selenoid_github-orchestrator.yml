@@ -309,6 +309,10 @@ jobs:
           elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ]; then
             ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
             JAVA_TEST_EXIT=$?
+          elif [[ "$ENV_PROFILE" == selenoid_qa_guru_* ]]; then
+            # Prod cloud: no local stack — skip resilience (hub kill) and min (local envOverride).
+            ./gradlew testHubProd "${GRADLE_PYRAMID[@]}"
+            JAVA_TEST_EXIT=$?
           else
             ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
             JAVA_TEST_EXIT=$?

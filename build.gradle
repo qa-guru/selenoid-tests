@@ -355,6 +355,21 @@ tasks.register('testHubAll') {
     )
 }
 
+tasks.register('testHubProd') {
+    group = 'verification'
+    description = 'Prod cloud pyramid — hub/UI slices without local-only resilience/min'
+    dependsOn(
+            'testUnit',
+            'testComponent',
+            'testIntegration',
+            'testApi',
+            'testE2e',
+            'testWebdriverE2e',
+            'testUiE2e',
+            'testPlaywright'
+    )
+}
+
 if (allureReportMode == 'none') {
     tasks.named('test', Test).configure {
         systemProperties.remove('allure.results.directory')
