@@ -52,9 +52,13 @@ case "${SLICE}" in
     # P1: unit + component + api (−cm).
     run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/... ./tests/component/... ./tests/api/...
     ;;
+  integration)
+    # P2 WD warm sessions only (−min/−ui/−pw/−cm).
+    run_pkgs ./tests/integration/wd/...
+    ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|hub-prod|hub-all" >&2
+    echo "Known: unit|component|api|integration|hub-prod|hub-all" >&2
     exit 2
     ;;
 esac

@@ -21,6 +21,8 @@ type Config struct {
 	Browser                  string
 	BrowserVersion           string
 	ChromeVersion            string
+	FirefoxVersion           string
+	MsedgeVersion            string
 	PlaywrightWsEndpoint     string
 	PlaywrightSessionName    string
 	PlaywrightSessionTimeout string
@@ -89,6 +91,16 @@ func (c *Config) ChromeVersionForSession() string {
 	return strings.TrimSpace(c.BrowserVersion)
 }
 
+// FirefoxVersionForSession returns firefoxVersion (TestConfig.firefoxVersion).
+func (c *Config) FirefoxVersionForSession() string {
+	return strings.TrimSpace(c.FirefoxVersion)
+}
+
+// MsedgeVersionForSession returns msedgeVersion (TestConfig.msedgeVersion).
+func (c *Config) MsedgeVersionForSession() string {
+	return strings.TrimSpace(c.MsedgeVersion)
+}
+
 func configFromProps(envName string, props map[string]string) *Config {
 	return &Config{
 		Env:                      envName,
@@ -100,6 +112,8 @@ func configFromProps(envName string, props map[string]string) *Config {
 		Browser:                  firstNonEmpty(props["browser"], "chrome"),
 		BrowserVersion:           firstNonEmpty(props["browserVersion"], "149.0"),
 		ChromeVersion:            firstNonEmpty(props["chromeVersion"], props["browserVersion"]),
+		FirefoxVersion:           firstNonEmpty(props["firefoxVersion"], "151.0"),
+		MsedgeVersion:            firstNonEmpty(props["msedgeVersion"], "145.0"),
 		PlaywrightWsEndpoint:     strings.TrimSpace(props["playwrightWsEndpoint"]),
 		PlaywrightSessionName:    firstNonEmpty(props["playwrightSessionName"], "java-playwright-tests"),
 		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
@@ -215,6 +229,8 @@ func applyEnvOverrides(props map[string]string) {
 	set("browser", "browser")
 	set("browserVersion", "browserVersion")
 	set("chromeVersion", "chromeVersion")
+	set("firefoxVersion", "firefoxVersion")
+	set("msedgeVersion", "msedgeVersion")
 	set("logToConsole", "logToConsole")
 	set("playwrightWsEndpoint", "playwrightWsEndpoint")
 	set("playwrightSessionName", "playwrightSessionName")
