@@ -1,0 +1,42 @@
+HAR в Selenoid — что реально мерили 📊
+
+Привет, комьюнити 👋
+
+Прогнали HAR completeness benchmark на одной fixture (selenoid-ui) и коротком prod-smoke на selenoid.qa.guru — hub v3.0.5, UI v3.0.14. Цифры и артефакты: MATRIX.md в selenoid-tests (har-compare).
+
+Что подтвердили (best-effort, один writer на сессию):
+
+A · Client autotest
+• Playwright recordHar локально ≈ Playwright→Selenoid remote — 100% URL coverage на fixture (26 entries, 25 URLs)
+• Selenide HarCapture (meta) — те же URL, без content.text на fixture
+• Selenide HarCapture bodies (отдельная сессия, без hub enableHAR) — 27/27 withContentText на fixture; на prod example.com — 1/1 text+size
+
+B · Hub enableHAR (UI + /har/<id>.har)
+• meta (harContent по умолчанию) — URL coverage 100% на fixture; content.text=0 (ожидаемо)
+• bodies (harContent=bodies, hub ≥ v3.0.5) — fixture: WD 28/28, PW 25/25 text+size; prod smoke green для warm WD Chrome и Playwright Chromium
+• Playwright hub-HAR meta — green на hub с :7070 в playwright-образах
+
+UI на prod
+• harContent в capabilities — только когда enableHAR включён
+• HarViewer: Response tab показывает content.text на bodies-сессии; Size не «—» когда size>0
+
+Честно не заявляем
+• hub HAR ≠ Playwright recordHar (status/size/text отличаются)
+• bodies ≠ recordHar parity
+• Android HAR — out of scope
+• dual-writer (hub enableHAR + client recordHar/HarCapture на одной сессии)
+
+Prod
+https://selenoid.qa.guru
+Логин: qa_engineer · Пароль: aAb_-4gs53FD
+WebDriver: https://qa_engineer:aAb_-4gs53FD@selenoid.qa.guru/wd/hub
+Playwright WS: wss://selenoid.qa.guru/playwright/playwright-chromium/1.61.1?accessKey=qa_engineer%3AaAb_-4gs53FD
+
+Ссылки
+Selenoid UI — https://github.com/qa-guru/selenoid-ui
+Selenoid Hub — https://github.com/qa-guru/selenoid
+Allure dashboard — https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/
+
+Визуалы к посту — см. ASSETS.md (3 основных + prod UI).
+
+#selenoid #playwright #selenium #har #testing #opensource

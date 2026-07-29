@@ -1,6 +1,9 @@
 package helpers_test
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -104,4 +107,85 @@ func fixtureEntries() []string {
 		`{"message":{"method":"Network.responseReceived","params":{"requestId":"r1","response":{"status":200,"statusText":"OK","mimeType":"text/html","headers":{"content-type":"text/html"},"protocol":"http/1.1","encodedDataLength":42}}}}`,
 		`{"message":{"method":"Network.loadingFinished","params":{"requestId":"r1","timestamp":1.05,"encodedDataLength":1280}}}`,
 	}
+}
+
+type androidHarBlocker struct {
+	Phase           int      `json:"phase"`
+	Label           string   `json:"label"`
+	Status          string   `json:"status"`
+	Verdict         string   `json:"verdict"`
+	Scorecard       any      `json:"scorecard"`
+	HARPath         *string  `json:"harPath"`
+	AllowedClaims   []string `json:"allowedClaims"`
+	ForbiddenClaims []string `json:"forbiddenClaims"`
+	Blockers        []struct {
+		ID      string `json:"id"`
+		Layer   string `json:"layer"`
+		Summary string `json:"summary"`
+	} `json:"blockers"`
+}
+
+func moduleRoot(t *testing.T) string {
+	t.Helper()
+	dir, err := os.Getwd()
+	require.NoError(t, err)
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		require.NotEqual(t, parent, dir, "go.mod not found from %s", dir)
+		dir = parent
+	}
+}
+
+func TestHarBenchmarkAndroidNotClaimed(t *testing.T) {
+	allurex.Run(t, allurex.Meta{
+		Name:      "Phase 6 Android HAR remains not_claimed until CDP :7070 exists",
+		Package:   "helpers.HarBenchmark",
+		Layer:     "unit",
+		Component: "selenoid",
+		Epic:      "selenoid",
+		Feature:   "HAR",
+		Story:     "Android hub enableHAR is blocked by architecture",
+		Suite:     "HAR benchmark SSOT",
+		Tags:      []string{"har-benchmark", "android", "not-claimed"},
+	}, func(a *allurex.A) {
+		a.Step("Load docs/har-benchmark/7-android-blocker.json", func() {
+			path := filepath.Join(moduleRoot(t), "docs", "har-benchmark", "7-android-blocker.json")
+			raw, err := os.ReadFile(path)
+			require.NoError(t, err, "committed SSOT at %s", path)
+
+			var doc androidHarBlocker
+			require.NoError(t, json.Unmarshal(raw, &doc))
+
+			require.Equal(t, 6, doc.Phase)
+			require.Equal(t, "6-android-hub-enableHAR", doc.Label)
+			require.Equal(t, "not_claimed", doc.Status)
+			require.Equal(t, "blocker", doc.Verdict)
+			require.Nil(t, doc.Scorecard)
+			require.Nil(t, doc.HARPath)
+			require.Empty(t, doc.AllowedClaims)
+			require.NotEmpty(t, doc.ForbiddenClaims)
+			require.GreaterOrEqual(t, len(doc.Blockers), 3)
+
+			ids := map[string]bool{}
+			for _, b := range doc.Blockers {
+				ids[b.ID] = true
+			}
+			require.True(t, ids["no-7070"])
+			require.True(t, ids["hub-cdp-gate"])
+			require.True(t, ids["ui-no-cap"])
+		})
+
+		a.Step("Load docs/har-benchmark/7-android.NOT_CLAIMED.txt", func() {
+			path := filepath.Join(moduleRoot(t), "docs", "har-benchmark", "7-android.NOT_CLAIMED.txt")
+			raw, err := os.ReadFile(path)
+			require.NoError(t, err)
+			text := string(raw)
+			require.Contains(t, text, "not claimed")
+			require.Contains(t, text, "7070")
+			require.Contains(t, text, "Appium")
+		})
+	})
 }

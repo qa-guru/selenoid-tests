@@ -1,0 +1,51 @@
+Android HAR — not claimed (phase 6 verified)
+==============================================
+Date: 2026-07-29
+Plan: har-completeness-benchmark phase 6
+Verdict: BLOCKER — no CDP/enableHAR path on Android; honest not_claimed
+
+Summary
+-------
+Hub HAR is CDP-only (container port 7070 → ws://<host:7070>/page). Android
+sessions use Appium/UiAutomator2 (`qaguru/android:*`), not Chromium WebDriver.
+There is no DevTools proxy, no enableHAR in UI caps, and no scorecard run.
+
+Evidence (code / image / UI)
+----------------------------
+1. Hub — selenoid/har.go harCaptureEnabled():
+   requires caps.HAR && devtoolsHostPort != "" (7070 mapping).
+   Android Docker service does not publish 7070.
+
+2. Android image — browser-image/android/Dockerfile:
+   EXPOSE 4444 5900 only (Appium + VNC). No devtools-proxy, no 7070.
+   README § «Вне scope»: Chrome Mobile / chromedriver — deferred.
+
+3. UI — selenoid-ui Capabilities/index.tsx:
+   buildAndroidSelenoidOptions() — enableVNC, enableVideo, name, sessionTimeout, skin;
+   no enableHAR / harContent. enableHar toggle lives in WebDriver panel only
+   (isWebdriver); Android panel hides caps-enable-har (Capabilities.android.test.tsx).
+
+4. Docs — selenoid/docs/har.adoc + special-capabilities.adoc:
+   HAR scoped to Chromium WebDriver (Chrome/Edge) and PW Chromium-family :7070.
+   Android/Appium not listed as supported.
+
+5. Tests — selenoid-tests/scripts/smoke-prod-har-content.py:
+   explicitly skips android. No HAR compare row for Android (matrix.json 6-android:
+   status=not_claimed).
+
+What would unblock (roadmap — not in this phase)
+------------------------------------------------
+- Chrome Mobile inside emulator + chromedriver + devtools-proxy on 7070, OR
+- separate MITM sidecar (explicitly not implemented; har.adoc fallback only).
+- UI: expose enableHAR on Android only after image + hub path exists.
+- Forbidden without OK: dual-writer, MITM without design, image push.
+
+Marketing
+---------
+Do not claim Android HAR. See MATRIX.md § Do not claim · ASSETS.md § Not claimed.
+
+Artifacts
+---------
+- 7-android-blocker.json — structured blocker scorecard
+- MATRIX.md — phase 6 row
+- .cursor/plans/har-completeness-benchmark.plan.md — phase 6 outcome
