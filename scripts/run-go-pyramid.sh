@@ -29,7 +29,7 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "har-prod" ]]; then
+  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "playwright" || "${SLICE}" == "har-prod" ]]; then
     # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -77,14 +77,21 @@ case "${SLICE}" in
     # P3 WebDriver e2e smoke via raw WD HTTP (HubSession* parity).
     run_pkgs ./tests/e2e/webdriver/...
     ;;
+  playwright)
+    # P3 Playwright e2e smoke via remote WS connect (HubPlaywrightSessionTests parity, −min).
+    export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
+    run_pkgs ./tests/e2e/playwright/...
+    ;;
   e2e)
-    # Umbrella: UI + WebDriver e2e (+ har-prod when present).
+    # Umbrella: Playwright WS + UI local Chromium + WebDriver e2e (+ har when present).
+    export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
+    run_pkgs ./tests/e2e/playwright/...
     unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     run_pkgs ./tests/e2e/ui/... ./tests/e2e/webdriver/... ./tests/e2e/har/...
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|e2e|har-prod|hub-prod|hub-all" >&2
+    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all" >&2
     exit 2
     ;;
 esac
