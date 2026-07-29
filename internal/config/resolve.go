@@ -75,19 +75,38 @@ func (c *Config) ResolveHubBasicAuth() (user, pass string) {
 // ResolvePlaywrightWsEndpoint appends session query params when missing
 // (ConfigReader.resolvePlaywrightWsEndpoint).
 func (c *Config) ResolvePlaywrightWsEndpoint() (string, error) {
-	base := strings.TrimSpace(c.PlaywrightWsEndpoint)
-	if base == "" {
+	return c.resolvePlaywrightWsEndpoint("")
+}
+
+// ResolvePlaywrightWsEndpointForBrowser swaps playwright-chromium for another family
+// (ConfigReader.resolvePlaywrightWsEndpoint(config, playwrightBrowser)).
+func (c *Config) ResolvePlaywrightWsEndpointForBrowser(playwrightBrowser string) (string, error) {
+	return c.resolvePlaywrightWsEndpoint(playwrightBrowser)
+}
+
+func (c *Config) resolvePlaywrightWsEndpoint(playwrightBrowser string) (string, error) {
+	endpoint := strings.TrimSpace(c.PlaywrightWsEndpoint)
+	if endpoint == "" {
 		return "", fmt.Errorf("Set playwrightWsEndpoint in config/${env}.properties")
 	}
-	if strings.Contains(base, "?") {
-		return base, nil
+	pathOnly := endpoint
+	query := ""
+	if idx := strings.Index(endpoint, "?"); idx >= 0 {
+		pathOnly = endpoint[:idx]
+		query = endpoint[idx:]
+	}
+	if playwrightBrowser != "" {
+		pathOnly = strings.Replace(pathOnly, "playwright-chromium", playwrightBrowser, 1)
+	}
+	if query != "" {
+		return pathOnly + query, nil
 	}
 	q := url.Values{}
 	q.Set("name", c.PlaywrightSessionName)
 	q.Set("sessionTimeout", c.PlaywrightSessionTimeout)
 	q.Set("enableVNC", boolString(c.PlaywrightEnableVNC))
 	q.Set("enableVideo", boolString(c.PlaywrightEnableVideo))
-	return base + "?" + q.Encode(), nil
+	return pathOnly + "?" + q.Encode(), nil
 }
 
 func boolString(v bool) string {

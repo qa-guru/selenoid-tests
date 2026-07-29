@@ -27,8 +27,13 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 
 run_pkgs() {
   local pkgs=("$@")
+  local test_flags=(-count=1 -timeout=15m)
+  if [[ "${SLICE}" == "integration" ]]; then
+    # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
+    test_flags+=(-p 1)
+  fi
   echo "go pyramid slice=${SLICE} env=${SELENOID_TEST_ENV:-} allure=${ALLURE_RESULTS}"
-  go test "${pkgs[@]}" -count=1 -timeout=15m
+  go test "${pkgs[@]}" "${test_flags[@]}"
 }
 
 case "${SLICE}" in
@@ -53,8 +58,9 @@ case "${SLICE}" in
     run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/... ./tests/component/... ./tests/api/...
     ;;
   integration)
-    # P2 WD warm sessions + UI status/SSE (−min/−pw/−cm).
-    run_pkgs ./tests/integration/wd/... ./tests/integration/ui/...
+    # P2 WD warm sessions + UI status/SSE + PW sessions (−min/−cm).
+    export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
+    run_pkgs ./tests/integration/wd/... ./tests/integration/ui/... ./tests/integration/pw/...
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2

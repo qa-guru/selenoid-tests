@@ -73,6 +73,27 @@ func TestConfigReaderPlaywright_AppendsVncAndVideoFlags(t *testing.T) {
 	})
 }
 
+func TestConfigReaderPlaywright_ResolveForBrowserSwapsFamily(t *testing.T) {
+	allurex.Run(t, unitMeta("playwright-image", "resolvePlaywrightWsEndpoint swaps browser family"), func(a *allurex.A) {
+		a.Step("resolve firefox", func() {
+			cfg := config.FromMap(map[string]string{
+				"playwrightWsEndpoint": "ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1",
+			})
+			endpoint, err := cfg.ResolvePlaywrightWsEndpointForBrowser("playwright-firefox")
+			require.NoError(t, err)
+			require.Contains(t, endpoint, "/playwright/playwright-firefox/1.61.1")
+			require.Contains(t, endpoint, "name=")
+		})
+		a.Step("resolve webkit with preset query", func() {
+			preset := "wss://hub/playwright/playwright-chromium/1.61.1?accessKey=u:p&name=go"
+			cfg := config.FromMap(map[string]string{"playwrightWsEndpoint": preset})
+			endpoint, err := cfg.ResolvePlaywrightWsEndpointForBrowser("playwright-webkit")
+			require.NoError(t, err)
+			require.Equal(t, "wss://hub/playwright/playwright-webkit/1.61.1?accessKey=u:p&name=go", endpoint)
+		})
+	})
+}
+
 func TestConfigReaderPlaywright_URLEncodesSessionName(t *testing.T) {
 	allurex.Run(t, unitMeta("playwright-image", "resolvePlaywrightWsEndpoint URL-encodes name"), func(a *allurex.A) {
 		a.Step("resolve", func() {
