@@ -54,7 +54,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
 
-**Go pyramid (WIP → cutover):** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). P0: `scripts/run-go-pyramid.sh api` (Hub/UI status + UI ping). P1 unit (−cm): `SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit` (`internal/config|helpers|hubapi`). CI job `go-hub` dual-run с `java-e2e`. Цель v3 — заменить Java полностью.
+**Go pyramid (P5 wiring → cutover):** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (= `testHubProd` −cm/min/resilience + `har-prod`), `hub-all` (= github full −cm). Slices: `unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI `go-hub` dual-run с `java-e2e`.
 
 **Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
 
@@ -180,21 +180,26 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | Job | Что делает |
 |-----|------------|
 | `go-unit` (matrix) | Checkout `qa-guru/selenoid`, `selenoid-ui`, `cm` → Go unit → Allure |
-| `go-hub` | Go pyramid WIP (`run-go-pyramid.sh`); P0 = `api` vertical; dual-run с Java |
+| `go-hub` | Go pyramid (`run-go-pyramid.sh`); push/github → `hub-all`; prod profile → `hub-prod`; dispatch `test_tags` → slice; dual-run с Java |
 | `java-e2e` | Push/default: `testHubAll` (all hub slices incl. playwright, resilience, local-only, min); slice: `test_tags=…` |
 | `java-cm` | Push: `testCmIntegration` + `testCmApi` + `testCmE2e` (CM :4445/:8081); dispatch `test_tags=cm` |
 | `report` | Merge `build/allure-results/**` → `allureReport` → gh-pages → TestOps 5271 |
 
 ```bash
-# Go P1 unit (offline, −cm)
+# Go unit+component (offline, −cm)
 SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
-# Go P0 api (prod cloud)
+SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh component
+# Go api (prod cloud)
 SELENOID_TEST_ENV=selenoid_qa_guru_api ./scripts/run-go-pyramid.sh api
-# Go P0 api (local/CI github stack)
-PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh api
+# Go prod gate (full testHubProd semantics + har-prod)
+PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh hub-prod
+# Go CI push gate (github stack, −cm)
+PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh hub-all
+# Go HAR prod smoke
+SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ```
 
-`workflow_dispatch`: `test_tags=integration` для integration slice; `env_profile=selenoid_github_api` для api-only.
+`workflow_dispatch`: `test_tags=integration|api|smoke|playwright` → Go slice; `env_profile=selenoid_qa_guru_*` → `hub-prod`.
 
 ### Component × Layer × CI (push `main`)
 
