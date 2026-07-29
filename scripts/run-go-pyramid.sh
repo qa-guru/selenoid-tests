@@ -20,6 +20,7 @@ if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
                     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
     har-prod)       export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_qa_guru}_e2e" ;;
     min)            export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
+    resilience)     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
     *)              export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
   esac
 fi
@@ -29,7 +30,7 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${SLICE}" == "integration" || "${SLICE}" == "min" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "playwright" || "${SLICE}" == "har-prod" ]]; then
+  if [[ "${SLICE}" == "integration" || "${SLICE}" == "min" || "${SLICE}" == "resilience" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "playwright" || "${SLICE}" == "har-prod" ]]; then
     # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -94,9 +95,14 @@ case "${SLICE}" in
     export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
     run_pkgs ./tests/component/min/... ./tests/integration/min/...
     ;;
+  resilience)
+    # P4 local-only: hub kill/restart recovery + UI /status when hub down (Java testResilience parity).
+    unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+    run_pkgs ./tests/integration/resilience/...
+    ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min" >&2
+    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience" >&2
     exit 2
     ;;
 esac
