@@ -6,9 +6,9 @@
 
 ## Context
 
-Stack v3 target (`projects/selenoid-home/README.md`): autotests = **Go**.  
-Current pyramid is Java/JUnit5/Selenide/RestAssured/Playwright-Java (~121 classes) + product Go unit via `scripts/run-go-unit.sh`.  
-Prod gate: `testHubProd` on `selenoid_qa_guru_*` (unit→component→integration→api→e2e→webdriver→ui→playwright; no resilience/min/cm).
+Stack v3 (`projects/selenoid-home/README.md`): autotests = **Go**.  
+Hub pyramid: root module `github.com/qa-guru/selenoid-tests` + product Go unit via `scripts/run-go-unit.sh`.  
+Prod gate: `hub-prod` on `selenoid_qa_guru_*` (unit→component→integration→api→e2e→webdriver→ui→playwright→har-prod; no resilience/min/cm).
 
 ## Decision
 
@@ -18,7 +18,7 @@ Prod gate: `testHubProd` on `selenoid_qa_guru_*` (unit→component→integration
 4. **HTTP** — stdlib `net/http` (+ thin helpers). No RestAssured/resty for hub/UI JSON.
 5. **Browser** — `playwright-go` for UI e2e and Playwright WS slices (P3). WebDriver sessions stay raw WD HTTP (as today).
 6. **Allure** — native `*-result.json` writer (`internal/allurex`) with labels `layer`, `component`, `epic`, `feature`, `story`, `tag`; `framework=go`, `language=go`. Merge into existing `report` job / TestOps **5271** / gh-pages.
-7. **Slices** — `scripts/run-go-pyramid.sh` mirrors Gradle: `api`, `unit`, `component`, `integration`, `e2e`, `webdriver`, `ui`, `playwright`, `min`, `resilience`, `cm`, `hub-prod`, `hub-all`.
+7. **Slices** — `scripts/run-go-pyramid.sh`: `api`, `unit`, `component`, `integration`, `e2e`, `webdriver`, `ui`, `playwright`, `min`, `resilience`, `cm`, `hub-prod`, `hub-all`.
 8. **CI gate (P5)** — jobs `go-hub` + `go-cm` (+ `go-unit` from product repos). No Java dual-run. CM stays off prod tag lists (`hub-prod` / `selenoid_qa_guru_*`).
 
 ## Layout

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Run Go pyramid slices (ADR-go-pyramid). Mirrors Gradle testApi / testHubProd / testHubAll.
+# Run Go pyramid slices (ADR-go-pyramid).
 #
 # Composite gates (−cm; prod also −min/−resilience):
 #   hub-prod  = unit → component → integration → api → ui → webdriver → playwright → har-prod
-#               (testHubProd semantics; har-prod = HubHarProd/HarCapture on selenoid_qa_guru_e2e)
 #   hub-all   = hub-prod layers on selenoid_github + min + resilience (−cm; cm = slice only)
 set -euo pipefail
 
@@ -17,7 +16,7 @@ mkdir -p "${ALLURE_RESULTS}"
 
 STAND="${PYRAMID_STAND:-selenoid_github}"
 
-# Profile: SELENOID_TEST_ENV or env=… (Owner-compatible). Default per single slice only.
+# Profile: SELENOID_TEST_ENV or env=… Default per single slice only.
 if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
   case "${SLICE}" in
     unit|component) export SELENOID_TEST_ENV=local_unit ;;
@@ -110,7 +109,7 @@ run_resilience_pkgs() {
   run_pkgs resilience ./tests/integration/resilience/...
 }
 
-# hub-prod: testHubProd (−cm/−min/−resilience) + har-prod on qa_guru_e2e.
+# hub-prod: prod gate (−cm/−min/−resilience) + har-prod on selenoid_qa_guru_e2e.
 run_hub_prod() {
   local stand="${PYRAMID_STAND:-selenoid_qa_guru}"
   echo "go pyramid composite=hub-prod stand=${stand} (−cm/−min/−resilience + har-prod)"
@@ -124,7 +123,7 @@ run_hub_prod() {
   run_with_env har-prod selenoid_qa_guru_e2e run_har_prod_pkgs
 }
 
-# hub-all: testHubAll on github stand (−cm; cm = slice `cm` only).
+# hub-all: full github pyramid (−cm; cm = slice `cm` only).
 run_hub_all() {
   local stand="${PYRAMID_STAND:-selenoid_github}"
   echo "go pyramid composite=hub-all stand=${stand} (−cm; +min/−resilience on github)"

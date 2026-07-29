@@ -54,7 +54,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — **Go autotests** (hub pyramid + product unit из исходных репо).
 
-**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (= `testHubProd` −cm/min/resilience + `har-prod`), `hub-all` (= github full −cm). Slices: `unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix).
+**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix).
 
 **Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
 
@@ -147,7 +147,7 @@ Post-deploy: `selenoid.qa.guru` → Actions → `trigger-deploy-smoke` → `repo
 
 **Release smoke vs deploy smoke:** `selenoid-ui` `release.yml` dispatches `api,smoke` **after** polling prod `/ui/status` for the new UI pin (`wait_for_prod_ui_version`). Image publish alone is not a deploy — pre-pin smoke against transitional/old prod is a race, not a product regression. Post-deploy trigger from `selenoid.qa.guru` remains the hub/api gate (tags `api` by default; UI e2e gate is the waited release-smoke).
 
-Prod caveats (nginx): `HubStatusApi` uses raw `GET /hub/status` (not UI `/status` with `.state`). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
+Prod caveats (nginx): hub API uses raw `GET /hub/status` via `hubStatusPath` (not UI `/status` with `.state`). `GET /logs/{id}` — nginx → hub (auth); UI uses `/ws/logs/{id}`.
 
 UI e2e canon (v3): root → `#/statistics`; Sessions archive (ex-Videos) → `#/sessions` + `.archive__list`; New Session (ex-Capabilities) → `#/new-session`; status tiles → `Connected` / `Issue` / `Unknown`; VNC → `[data-testid=vnc-window].vnc-window--connected`.
 
@@ -193,7 +193,7 @@ SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
 SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh component
 # Go api (prod cloud)
 SELENOID_TEST_ENV=selenoid_qa_guru_api ./scripts/run-go-pyramid.sh api
-# Go prod gate (full testHubProd semantics + har-prod)
+# Go prod gate (hub-prod semantics + har-prod)
 PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh hub-prod
 # Go CI push gate (github stack, −cm)
 PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh hub-all
@@ -219,13 +219,13 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
-¹ **selenoid e2e:** нет `@Component("selenoid")` e2e-класса — осознанно; сквозной hub-path покрыт `HubSession*` / `HubPlaywrightSession*` (`webdriver-image` / `playwright-image`, `@Layer e2e`) в `testHubAll`.  
+¹ **selenoid e2e:** отдельного `@Component("selenoid")` e2e-пакета нет; сквозной hub-path покрыт `tests/e2e/webdriver` и `tests/e2e/playwright` в `hub-all`.  
 ² **dev component:** отдельного test-class нет; `browsers.json` SSOT проверяется косвенно component JSON fixtures (`*CatalogJsonTest`, `BrowsersConfigJsonTest`, …).  
 ³ **dev integration:** `start-ci-selenoid-stack.sh` — оркестрация CI, не test-class.  
 ⁴ **cloud api:** post-deploy `selenoid_qa_guru_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
-⁷ **webdriver-image unit:** Java `@Layer unit` в `config/WebDriverCreateSessionBodyTest` + `ConfigReaderWebdriverTest` (`HubSessionApi.createSessionBody`, `resolveUiBrowserUrl`); Go unit в `browser-image/webdriver/` нет.
+⁷ **webdriver-image unit:** Go — `internal/config` (`ConfigReaderWebdriver`, session body); product Go unit в `browser-image/webdriver/` нет.
 
 ### Manual (runbook)
 

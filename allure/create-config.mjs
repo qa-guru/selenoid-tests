@@ -28,7 +28,7 @@ export function createAllureConfig({
     name: `${slug} Tests`,
     ...HISTORY_DEFAULTS,
     variables: variables ?? {
-      Framework: "JUnit 5 + Selenide",
+      Framework: "Go + Allure 3",
       Report: "Allure 3",
     },
     qualityGate: {

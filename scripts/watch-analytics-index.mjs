@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Rebuild analytics-index.json while ./gradlew test is running (-DanalyticsLive=true).
+ * Rebuild analytics-index.json while Go pyramid tests are running (live Allure results).
  * Spawns build-analytics-index.mjs with --partial on an interval until SIGINT/SIGTERM.
  */
 import { spawn } from "node:child_process";
