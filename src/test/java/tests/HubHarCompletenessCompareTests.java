@@ -240,7 +240,7 @@ class HubHarCompletenessCompareTests {
             Page page = ctx.newPage();
             page.navigate(url);
             page.waitForLoadState();
-            page.waitForTimeout(1500);
+            page.waitForTimeout(4000);
             ctx.close();
             browser.close();
         }
@@ -268,7 +268,7 @@ class HubHarCompletenessCompareTests {
         String sessionId = HubSessionApi.createWithSelenoidOptions(config.chromeVersion(), selenoid);
         try {
             HubSessionApi.navigate(sessionId, url);
-            TimeUnit.MILLISECONDS.sleep(3000);
+            TimeUnit.MILLISECONDS.sleep(5000);
         } finally {
             HubSessionApi.delete(sessionId);
         }
@@ -311,7 +311,7 @@ class HubHarCompletenessCompareTests {
             page.waitForTimeout(750);
             page.navigate(url);
             page.waitForLoadState();
-            page.waitForTimeout(1500);
+            page.waitForTimeout(4000);
             try {
                 ctx.close();
             } catch (RuntimeException ignored) {

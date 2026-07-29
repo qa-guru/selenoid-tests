@@ -198,7 +198,7 @@ class HarCompletenessCompareTests {
             Page page = ctx.newPage();
             page.navigate(url);
             page.waitForLoadState();
-            page.waitForTimeout(1500);
+            page.waitForTimeout(4000);
             ctx.close(); // flush HAR
             browser.close();
         }
@@ -216,7 +216,7 @@ class HarCompletenessCompareTests {
             Page page = ctx.newPage();
             page.navigate(url);
             page.waitForLoadState();
-            page.waitForTimeout(1500);
+            page.waitForTimeout(4000);
             try {
                 ctx.close();
             } catch (RuntimeException ignored) {
@@ -275,7 +275,7 @@ class HarCompletenessCompareTests {
 
         try {
             open(url);
-            Selenide.sleep(1500);
+            Selenide.sleep(4000);
             byte[] har = HarCapture.collectHarJson(mode)
                     .orElseThrow(() -> new IllegalStateException(
                             "HarCapture " + mode + " produced empty HAR"));
