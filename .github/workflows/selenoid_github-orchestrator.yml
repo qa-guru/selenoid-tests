@@ -413,9 +413,102 @@ jobs:
         if: always() && env.CM_TEST_EXIT != '0'
         run: exit "${{ env.CM_TEST_EXIT }}"
 
+  # P0 Go pyramid (ADR-go-pyramid) — dual-run with java-e2e until cutover.
+  go-hub:
+    name: Go hub tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ALLURE_RESULTS: build/allure-results/go-hub
+      GOTOOLCHAIN: auto
+      TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Checkout selenoid
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid
+
+      - name: Checkout selenoid-ui
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid-ui
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid-ui
+
+      - name: Setup Go (stack build)
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: repos/selenoid/go.mod
+          cache-dependency-path: |
+            repos/selenoid/go.sum
+            repos/selenoid-ui/go.sum
+
+      - name: Setup Node 24 (selenoid-ui yarn)
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Start Selenoid stack for Go hub tests
+        if: env.PROD_CLOUD_STAND != 'true'
+        run: |
+          chmod +x scripts/start-ci-selenoid-stack.sh
+          ./scripts/start-ci-selenoid-stack.sh
+
+      - name: Setup Go (tests module)
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Run Go hub tests
+        id: go-hub-run
+        run: |
+          set +e
+          chmod +x scripts/run-go-pyramid.sh
+          if [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
+            export PYRAMID_STAND=selenoid_qa_guru
+          else
+            export PYRAMID_STAND=selenoid_github
+          fi
+          # P0: api vertical only. Expand slices in P1+; keep prod-safe (no cm/min/resilience).
+          SLICE=api
+          if [[ -n "${TEST_TAGS}" && "${TEST_TAGS}" != "api" && "${TEST_TAGS}" != "api,smoke" ]]; then
+            echo "Go hub P0 skips non-api dispatch tags=${TEST_TAGS} (Java still owns other slices)"
+            echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          ./scripts/run-go-pyramid.sh "${SLICE}"
+          GO_HUB_EXIT=$?
+          echo "GO_HUB_EXIT=${GO_HUB_EXIT}" >> "$GITHUB_ENV"
+          set -e
+          exit "${GO_HUB_EXIT}"
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/go-hub/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-go-hub
+          path: build/allure-results/go-hub/
+          retention-days: 7
+
+      - name: Fail if Go hub tests failed
+        if: always() && steps.go-hub-run.outcome == 'failure'
+        run: exit 1
+
   report:
     name: Allure report + TestOps
-    needs: [go-unit, java-e2e, java-cm]
+    needs: [go-unit, java-e2e, java-cm, go-hub]
     if: always() && !cancelled() && (needs.java-cm.result == 'success' || needs.java-cm.result == 'skipped' || needs.java-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 20
