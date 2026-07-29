@@ -12,14 +12,19 @@ import (
 
 // Config is the runtime test profile (keys match TestConfig / *.properties).
 type Config struct {
-	Env             string
-	HubURL          string
-	UIURL           string
-	APIBaseURL      string
-	HubStatusPath   string
-	RemoteURL       string
-	LogToConsole    bool
-	SkipHealthCheck bool
+	Env                      string
+	HubURL                   string
+	UIURL                    string
+	APIBaseURL               string
+	HubStatusPath            string
+	RemoteURL                string
+	PlaywrightWsEndpoint     string
+	PlaywrightSessionName    string
+	PlaywrightSessionTimeout string
+	PlaywrightEnableVNC      bool
+	PlaywrightEnableVideo    bool
+	LogToConsole             bool
+	SkipHealthCheck          bool
 }
 
 var (
@@ -52,6 +57,45 @@ func ResetForTest() {
 	loadErr = nil
 }
 
+// FromMap builds a Config from Owner-style key overrides (unit tests).
+// Unset keys use TestConfig @DefaultValue equivalents for resolve coverage.
+func FromMap(overrides map[string]string) *Config {
+	props := map[string]string{
+		"hubUrl":                   "http://127.0.0.1:4444/",
+		"uiUrl":                    "http://127.0.0.1:8080/",
+		"apiBaseUrl":               "",
+		"hubStatusPath":            "/status",
+		"remoteUrl":                "",
+		"playwrightWsEndpoint":     "ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1",
+		"playwrightSessionName":    "java-playwright-tests",
+		"playwrightSessionTimeout": "5m",
+		"playwrightEnableVnc":      "false",
+		"playwrightEnableVideo":    "false",
+	}
+	for k, v := range overrides {
+		props[k] = v
+	}
+	return configFromProps("from-map", props)
+}
+
+func configFromProps(envName string, props map[string]string) *Config {
+	return &Config{
+		Env:                      envName,
+		HubURL:                   strings.TrimSpace(props["hubUrl"]),
+		UIURL:                    strings.TrimSpace(props["uiUrl"]),
+		APIBaseURL:               strings.TrimSpace(props["apiBaseUrl"]),
+		HubStatusPath:            normalizePath(firstNonEmpty(props["hubStatusPath"], "/status")),
+		RemoteURL:                strings.TrimSpace(props["remoteUrl"]),
+		PlaywrightWsEndpoint:     strings.TrimSpace(props["playwrightWsEndpoint"]),
+		PlaywrightSessionName:    firstNonEmpty(props["playwrightSessionName"], "java-playwright-tests"),
+		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
+		PlaywrightEnableVNC:      parseBool(props["playwrightEnableVnc"], false),
+		PlaywrightEnableVideo:    parseBool(props["playwrightEnableVideo"], false),
+		LogToConsole:             parseBool(props["logToConsole"], true),
+		SkipHealthCheck:          parseBool(firstNonEmpty(os.Getenv("SELENOID_TEST_SKIP_HEALTH_CHECK"), props["skipHealthCheck"]), false),
+	}
+}
+
 func load() (*Config, error) {
 	envName := firstNonEmpty(os.Getenv("SELENOID_TEST_ENV"), os.Getenv("env"), "local")
 	root, err := findModuleRoot()
@@ -75,16 +119,11 @@ func load() (*Config, error) {
 
 	applyEnvOverrides(props)
 
-	cfg := &Config{
-		Env:             envName,
-		HubURL:          withSlash(props["hubUrl"]),
-		UIURL:           withSlash(props["uiUrl"]),
-		APIBaseURL:      withSlash(props["apiBaseUrl"]),
-		HubStatusPath:   normalizePath(firstNonEmpty(props["hubStatusPath"], "/status")),
-		RemoteURL:       strings.TrimSpace(props["remoteUrl"]),
-		LogToConsole:    parseBool(props["logToConsole"], true),
-		SkipHealthCheck: parseBool(firstNonEmpty(os.Getenv("SELENOID_TEST_SKIP_HEALTH_CHECK"), props["skipHealthCheck"]), false),
-	}
+	cfg := configFromProps(envName, props)
+	// Keep Load() URLs slash-normalized for API clients (P0 contract).
+	cfg.HubURL = withSlash(cfg.HubURL)
+	cfg.UIURL = withSlash(cfg.UIURL)
+	cfg.APIBaseURL = withSlash(cfg.APIBaseURL)
 	if cfg.HubURL == "" {
 		return nil, fmt.Errorf("set hubUrl in config/%s.properties", envName)
 	}
@@ -96,15 +135,15 @@ func load() (*Config, error) {
 
 // APIBase returns apiBaseUrl or hubUrl (Owner resolveApiBaseUrl).
 func (c *Config) APIBase() string {
-	if c.APIBaseURL != "" {
-		return c.APIBaseURL
+	if strings.TrimSpace(c.APIBaseURL) != "" {
+		return withSlash(c.APIBaseURL)
 	}
-	return c.HubURL
+	return withSlash(c.HubURL)
 }
 
 // HubStatusURL is GET target for hub capacity (prod: /hub/status).
 func (c *Config) HubStatusURL() string {
-	return strings.TrimRight(c.APIBase(), "/") + c.HubStatusPath
+	return strings.TrimRight(c.APIBase(), "/") + c.ResolveHubStatusPath()
 }
 
 func findModuleRoot() (string, error) {
@@ -160,6 +199,11 @@ func applyEnvOverrides(props map[string]string) {
 	set("hubStatusPath", "hubStatusPath")
 	set("remoteUrl", "remoteUrl")
 	set("logToConsole", "logToConsole")
+	set("playwrightWsEndpoint", "playwrightWsEndpoint")
+	set("playwrightSessionName", "playwrightSessionName")
+	set("playwrightSessionTimeout", "playwrightSessionTimeout")
+	set("playwrightEnableVnc", "playwrightEnableVnc")
+	set("playwrightEnableVideo", "playwrightEnableVideo")
 	// Explicit SELENOID_TEST_* overrides.
 	set("hubUrl", "SELENOID_TEST_HUB_URL")
 	set("uiUrl", "SELENOID_TEST_UI_URL")

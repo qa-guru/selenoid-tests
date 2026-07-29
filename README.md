@@ -54,7 +54,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — Go unit (в CI из исходных репо) + Java e2e/integration/api.
 
-**Go pyramid (WIP → cutover):** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). P0: `scripts/run-go-pyramid.sh api` (Hub/UI status + UI ping), CI job `go-hub` dual-run с `java-e2e`. Цель v3 — заменить Java полностью.
+**Go pyramid (WIP → cutover):** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). P0: `scripts/run-go-pyramid.sh api` (Hub/UI status + UI ping). P1 unit (−cm): `SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit` (`internal/config|helpers|hubapi`). CI job `go-hub` dual-run с `java-e2e`. Цель v3 — заменить Java полностью.
 
 **Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
 
@@ -186,6 +186,8 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | `report` | Merge `build/allure-results/**` → `allureReport` → gh-pages → TestOps 5271 |
 
 ```bash
+# Go P1 unit (offline, −cm)
+SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
 # Go P0 api (prod cloud)
 SELENOID_TEST_ENV=selenoid_qa_guru_api ./scripts/run-go-pyramid.sh api
 # Go P0 api (local/CI github stack)

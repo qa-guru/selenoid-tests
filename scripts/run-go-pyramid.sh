@@ -33,7 +33,8 @@ run_pkgs() {
 
 case "${SLICE}" in
   unit)
-    run_pkgs ./internal/config/... ./internal/hubapi/...
+    # Offline unit (−cm): config resolve/merge, WD session body, HarCapture pure.
+    run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/...
     ;;
   component)
     # P1: tests/component — until then hubapi parse fixtures count as component-ish offline.
