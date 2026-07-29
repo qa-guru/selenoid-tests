@@ -28,6 +28,7 @@ type Config struct {
 	PlaywrightSessionTimeout string
 	PlaywrightEnableVNC      bool
 	PlaywrightEnableVideo    bool
+	SmokeURL                 string
 	LogToConsole             bool
 	SkipHealthCheck          bool
 }
@@ -119,6 +120,7 @@ func configFromProps(envName string, props map[string]string) *Config {
 		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
 		PlaywrightEnableVNC:      parseBool(props["playwrightEnableVnc"], false),
 		PlaywrightEnableVideo:    parseBool(props["playwrightEnableVideo"], false),
+		SmokeURL:                 firstNonEmpty(props["smokeUrl"], "https://example.com/"),
 		LogToConsole:             parseBool(props["logToConsole"], true),
 		SkipHealthCheck:          parseBool(firstNonEmpty(os.Getenv("SELENOID_TEST_SKIP_HEALTH_CHECK"), props["skipHealthCheck"]), false),
 	}
@@ -237,6 +239,7 @@ func applyEnvOverrides(props map[string]string) {
 	set("playwrightSessionTimeout", "playwrightSessionTimeout")
 	set("playwrightEnableVnc", "playwrightEnableVnc")
 	set("playwrightEnableVideo", "playwrightEnableVideo")
+	set("smokeUrl", "smokeUrl")
 	// Explicit SELENOID_TEST_* overrides.
 	set("hubUrl", "SELENOID_TEST_HUB_URL")
 	set("uiUrl", "SELENOID_TEST_UI_URL")
