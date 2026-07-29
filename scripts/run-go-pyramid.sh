@@ -18,6 +18,7 @@ if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
     integration)    export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_integration" ;;
     e2e|webdriver|ui|playwright|hub-prod)
                     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
+    har-prod)       export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_qa_guru}_e2e" ;;
     min)            export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
     *)              export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
   esac
@@ -28,7 +29,7 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" ]]; then
+  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "har-prod" ]]; then
     # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -53,6 +54,11 @@ case "${SLICE}" in
     # Prod-safe: api only (−cm/min/resilience).
     run_pkgs ./tests/api/...
     ;;
+  har-prod)
+    # P3 prod HAR smoke: hub enableHAR + HarCapture bodies on qa_guru_e2e (−cm/min/resilience).
+    unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+    run_pkgs ./tests/e2e/har/...
+    ;;
   hub-all)
     # P1: unit + component + api (−cm).
     run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/... ./tests/component/... ./tests/api/...
@@ -72,13 +78,13 @@ case "${SLICE}" in
     run_pkgs ./tests/e2e/webdriver/...
     ;;
   e2e)
-    # Umbrella: UI + WebDriver e2e (playwright/har-prod additive when present).
+    # Umbrella: UI + WebDriver e2e (+ har-prod when present).
     unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
-    run_pkgs ./tests/e2e/ui/... ./tests/e2e/webdriver/...
+    run_pkgs ./tests/e2e/ui/... ./tests/e2e/webdriver/... ./tests/e2e/har/...
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|e2e|hub-prod|hub-all" >&2
+    echo "Known: unit|component|api|integration|ui|webdriver|e2e|har-prod|hub-prod|hub-all" >&2
     exit 2
     ;;
 esac
