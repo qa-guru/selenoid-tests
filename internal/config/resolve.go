@@ -42,6 +42,16 @@ func (c *Config) ResolveHubStatusPath() string {
 	return normalizePath(c.HubStatusPath)
 }
 
+// ResolveUiLocalBaseURL is the playwright-go UI e2e base URL (browser runs on the test host).
+// Unlike ResolveUiBrowserURL, does not map loopback to host.docker.internal (Selenide-in-container only).
+func (c *Config) ResolveUiLocalBaseURL() (string, error) {
+	ui, err := c.ResolveUiURL()
+	if err != nil {
+		return "", err
+	}
+	return stripUserInfo(stripTrailingSlash(ui)), nil
+}
+
 // ResolveUiBrowserURL maps loopback for remote sessions and strips userinfo
 // (ConfigReader.resolveUiBrowserUrl).
 func (c *Config) ResolveUiBrowserURL() (string, error) {

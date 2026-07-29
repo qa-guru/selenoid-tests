@@ -28,7 +28,7 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${SLICE}" == "integration" ]]; then
+  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" ]]; then
     # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -62,9 +62,19 @@ case "${SLICE}" in
     export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
     run_pkgs ./tests/integration/wd/... ./tests/integration/ui/... ./tests/integration/pw/...
     ;;
+  ui)
+    # P3 UI e2e smoke via local playwright-go Chromium (not remote WS connect).
+    unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+    run_pkgs ./tests/e2e/ui/...
+    ;;
+  e2e)
+    # Umbrella: UI e2e only until webdriver/playwright/har-prod slices land.
+    unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
+    run_pkgs ./tests/e2e/ui/...
+    ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|hub-prod|hub-all" >&2
+    echo "Known: unit|component|api|integration|ui|e2e|hub-prod|hub-all" >&2
     exit 2
     ;;
 esac
