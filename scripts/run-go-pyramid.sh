@@ -20,6 +20,7 @@ if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
                     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
     har-prod)       export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_qa_guru}_e2e" ;;
     min)            export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
+    cm)             export SELENOID_TEST_ENV=selenoid_github_cm_integration ;;
     resilience)     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
     *)              export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
   esac
@@ -100,9 +101,19 @@ case "${SLICE}" in
     unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     run_pkgs ./tests/integration/resilience/...
     ;;
+  cm)
+    # P4 local-only: CM pyramid on :4445/:8081 (github CM stack; −prod). Prerequisite: start-ci-cm-stack.sh for api.
+    echo "go pyramid slice=${SLICE} env=${SELENOID_TEST_ENV:-} allure=${ALLURE_RESULTS}"
+    go test ./internal/config/ -run 'TestConfigReader_ResolveCm' -count=1 -timeout=15m
+    go test ./internal/cm/... -count=1 -timeout=15m
+    go test ./tests/cm/component/... -count=1 -timeout=15m
+    go test ./tests/cm/api/... -count=1 -timeout=15m -p 1
+    go test ./tests/cm/integration/... -count=1 -timeout=25m -p 1
+    go test ./tests/cm/e2e/... -count=1 -timeout=25m -p 1
+    ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience" >&2
+    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience|cm" >&2
     exit 2
     ;;
 esac

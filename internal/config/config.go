@@ -34,6 +34,13 @@ type Config struct {
 	SmokeURL                 string
 	LogToConsole             bool
 	SkipHealthCheck          bool
+	CmHubPort                int
+	CmUiPort                 int
+	CmBinaryPath             string
+	CmBrowsersJSON           string
+	CmSelenoidBinary         string
+	CmSelenoidUiBinary       string
+	CmUseLocalBinaries       bool
 }
 
 var (
@@ -144,6 +151,13 @@ func configFromProps(envName string, props map[string]string) *Config {
 		SmokeURL:                 firstNonEmpty(props["smokeUrl"], "https://example.com/"),
 		LogToConsole:             parseBool(props["logToConsole"], true),
 		SkipHealthCheck:          parseBool(firstNonEmpty(os.Getenv("SELENOID_TEST_SKIP_HEALTH_CHECK"), props["skipHealthCheck"]), false),
+		CmHubPort:                parseInt(firstNonEmpty(props["cmHubPort"], "4445"), 4445),
+		CmUiPort:                 parseInt(firstNonEmpty(props["cmUiPort"], "8081"), 8081),
+		CmBinaryPath:             firstNonEmpty(props["cmBinaryPath"], "../cm/cm"),
+		CmBrowsersJSON:           firstNonEmpty(props["cmBrowsersJson"], "../dev/browsers.json"),
+		CmSelenoidBinary:         firstNonEmpty(props["cmSelenoidBinary"], "../dev/bin/selenoid"),
+		CmSelenoidUiBinary:       firstNonEmpty(props["cmSelenoidUiBinary"], "../dev/bin/selenoid-ui"),
+		CmUseLocalBinaries:       parseBool(props["cmUseLocalBinaries"], false),
 	}
 }
 
@@ -264,6 +278,13 @@ func applyEnvOverrides(props map[string]string) {
 	set("playwrightEnableVnc", "playwrightEnableVnc")
 	set("playwrightEnableVideo", "playwrightEnableVideo")
 	set("smokeUrl", "smokeUrl")
+	set("cmBinaryPath", "cmBinaryPath")
+	set("cmBrowsersJson", "cmBrowsersJson")
+	set("cmSelenoidBinary", "cmSelenoidBinary")
+	set("cmSelenoidUiBinary", "cmSelenoidUiBinary")
+	set("cmUseLocalBinaries", "cmUseLocalBinaries")
+	set("cmHubPort", "cmHubPort")
+	set("cmUiPort", "cmUiPort")
 	// Explicit SELENOID_TEST_* overrides.
 	set("hubUrl", "SELENOID_TEST_HUB_URL")
 	set("uiUrl", "SELENOID_TEST_UI_URL")
@@ -313,4 +334,16 @@ func firstNonEmpty(vals ...string) string {
 		}
 	}
 	return ""
+}
+
+func parseInt(s string, def int) int {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return def
+	}
+	var n int
+	if _, err := fmt.Sscanf(s, "%d", &n); err != nil || n <= 0 {
+		return def
+	}
+	return n
 }

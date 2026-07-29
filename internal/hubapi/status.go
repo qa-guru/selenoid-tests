@@ -2,6 +2,7 @@ package hubapi
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/qa-guru/selenoid-tests/internal/config"
 	"github.com/qa-guru/selenoid-tests/internal/httpx"
@@ -21,6 +22,16 @@ type Status struct {
 func Fetch(cfg *config.Config) (*Status, error) {
 	client := httpx.New(cfg.APIBase())
 	body, err := client.GetBytes(cfg.HubStatusPath)
+	if err != nil {
+		return nil, err
+	}
+	return Parse(body)
+}
+
+// FetchFrom GET /status from an explicit hub base URL (Java HubStatusApi.fetchFrom).
+func FetchFrom(baseURL string) (*Status, error) {
+	client := httpx.New(strings.TrimRight(baseURL, "/"))
+	body, err := client.GetBytes("/status")
 	if err != nil {
 		return nil, err
 	}

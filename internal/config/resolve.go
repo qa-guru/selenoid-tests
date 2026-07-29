@@ -6,6 +6,29 @@ import (
 	"strings"
 )
 
+// ResolveCmHubURL returns http://127.0.0.1:{cmHubPort}/ (ConfigReader.resolveCmHubUrl).
+func (c *Config) ResolveCmHubURL() string {
+	port := c.CmHubPort
+	if port <= 0 {
+		port = 4445
+	}
+	return fmt.Sprintf("http://127.0.0.1:%d/", port)
+}
+
+// ResolveCmUiURL returns http://127.0.0.1:{cmUiPort}/ (ConfigReader.resolveCmUiUrl).
+func (c *Config) ResolveCmUiURL() string {
+	port := c.CmUiPort
+	if port <= 0 {
+		port = 8081
+	}
+	return fmt.Sprintf("http://127.0.0.1:%d/", port)
+}
+
+// ResolveCmRemoteURL is WebDriver hub URL on CM-managed port (ConfigReader.resolveCmRemoteUrl).
+func (c *Config) ResolveCmRemoteURL() string {
+	return strings.TrimRight(c.ResolveCmHubURL(), "/") + "/wd/hub"
+}
+
 // ResolveHubURL trims hubUrl and ensures a trailing slash (ConfigReader.resolveHubUrl).
 func (c *Config) ResolveHubURL() (string, error) {
 	u := strings.TrimSpace(c.HubURL)
