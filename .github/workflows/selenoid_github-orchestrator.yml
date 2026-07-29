@@ -1,7 +1,7 @@
 # Synced from ethalon: selenoid_github-orchestrator.yml (SSOT generators/ethalon/tests-java/.github/_ethalon/)
 # Runnable filename = ethalon filename. Default: -Denv=selenoid_github_e2e
 # SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
-# Именование: {env_base}-orchestrator.yml — Go unit matrix + Java hub/CM tests + merge Allure + repository_dispatch.
+# Именование: {env_base}-orchestrator.yml — Go unit matrix + Go hub/CM pyramid + merge Allure + repository_dispatch.
 # Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
 # Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (run-go-unit.sh, start-ci-selenoid-stack.sh, run-ci-cm-tests.sh).
 #
@@ -155,190 +155,13 @@ jobs:
         if: always() && env.GO_TEST_EXIT != '0'
         run: exit "${{ env.GO_TEST_EXIT }}"
 
-  java-e2e:
-    name: Java hub tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    env:
-      ALLURE_RESULTS: build/allure-results
-      TEST_CLASS: ${{ github.event.inputs.test_class || '' }}
-      TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
-      GOTOOLCHAIN: auto
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Checkout selenoid
-        if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/checkout@v7
-        with:
-          repository: qa-guru/selenoid
-          ref: ${{ env.SOURCE_REF }}
-          path: repos/selenoid
-
-      - name: Checkout selenoid-ui
-        if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/checkout@v7
-        with:
-          repository: qa-guru/selenoid-ui
-          ref: ${{ env.SOURCE_REF }}
-          path: repos/selenoid-ui
-
-      - name: Setup Go
-        if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: repos/selenoid/go.mod
-          cache-dependency-path: |
-            repos/selenoid/go.sum
-            repos/selenoid-ui/go.sum
-
-      - name: Setup Node 24 (selenoid-ui yarn)
-        if: env.PROD_CLOUD_STAND != 'true'
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: yarn
-          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
-
-      - name: Start Selenoid stack for hub tests
-        if: env.PROD_CLOUD_STAND != 'true'
-        run: |
-          chmod +x scripts/start-ci-selenoid-stack.sh
-          ./scripts/start-ci-selenoid-stack.sh
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: 21
-          cache: gradle
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: wrapper
-
-      - name: Run Java hub tests
-        run: |
-          set +e
-          GRADLE_ARGS=(
-            -Denv="${ENV_PROFILE}"
-            -DskipHealthCheck=true
-          )
-          if [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
-            PYRAMID_STAND=selenoid_qa_guru
-          else
-            PYRAMID_STAND=selenoid_github
-          fi
-          GRADLE_PYRAMID=(
-            -DpyramidStand="${PYRAMID_STAND}"
-            -DskipHealthCheck=true
-          )
-          JAVA_TEST_EXIT=0
-          if [ -n "$TEST_CLASS" ]; then
-            ./gradlew test --tests "$TEST_CLASS" "${GRADLE_ARGS[@]}"
-            JAVA_TEST_EXIT=$?
-          elif [ -n "$TEST_TAGS" ]; then
-            case "$TEST_TAGS" in
-              integration)
-                ./gradlew testIntegration "${GRADLE_PYRAMID[@]}"
-                JAVA_TEST_EXIT=$?
-                ;;
-              api)
-                ./gradlew testApi "${GRADLE_PYRAMID[@]}"
-                JAVA_TEST_EXIT=$?
-                ;;
-              smoke)
-                if [ "$SOURCE_VARIANT" = "webdriver" ]; then
-                  case "$SOURCE_BROWSER" in
-                    firefox)
-                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                        --tests tests.integration.HubFirefoxSessionIntegrationTests
-                      ;;
-                    msedge)
-                      ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                        --tests tests.integration.HubMsedgeSessionIntegrationTests
-                      ;;
-                    chrome)
-                      if [ "$WEBDRIVER_VARIANT" = "min" ]; then
-                        ./gradlew testIntegration "${GRADLE_PYRAMID[@]}" \
-                          --tests tests.integration.HubChromeMinSessionTests
-                      else
-                        ./gradlew testWebdriverE2e "${GRADLE_PYRAMID[@]}"
-                      fi
-                      ;;
-                    *)
-                      ./gradlew testWebdriverE2e "${GRADLE_PYRAMID[@]}"
-                      ;;
-                  esac
-                elif [ "$SOURCE_VARIANT" = "video-recorder" ]; then
-                  ./gradlew testVideoRecorder "${GRADLE_PYRAMID[@]}"
-                elif [ "$SOURCE_REPO" = "qa-guru/selenoid-ui" ]; then
-                  ./gradlew testUiE2e "${GRADLE_PYRAMID[@]}"
-                else
-                  ./gradlew testE2e "${GRADLE_PYRAMID[@]}"
-                fi
-                JAVA_TEST_EXIT=$?
-                ;;
-              playwright)
-                ./gradlew testPlaywright "${GRADLE_PYRAMID[@]}"
-                JAVA_TEST_EXIT=$?
-                ;;
-              cm)
-                echo "CM suite runs in java-cm job (testCmIntegration + testCmApi + testCmE2e)"
-                JAVA_TEST_EXIT=0
-                ;;
-              api,smoke)
-                # Release smoke: pyramid slices exclude @Tag(cm) — raw includeTags=api,smoke pulls CM installer/API on prod.
-                ./gradlew testApi testE2e "${GRADLE_PYRAMID[@]}"
-                JAVA_TEST_EXIT=$?
-                ;;
-              *)
-                ./gradlew test "${GRADLE_ARGS[@]}" \
-                  -DincludeTags="$TEST_TAGS"
-                JAVA_TEST_EXIT=$?
-                ;;
-            esac
-          elif [ "$ENV_PROFILE" = "selenoid_github_integration" ]; then
-            ./gradlew testIntegration "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
-          elif [ "$ENV_PROFILE" = "selenoid_github_api" ]; then
-            ./gradlew testApi "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
-          elif [ "$ENV_PROFILE" = "selenoid_github_e2e" ]; then
-            ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
-          elif [[ "$ENV_PROFILE" == selenoid_qa_guru_* ]]; then
-            # Prod cloud: no local stack — skip resilience (hub kill) and min (local envOverride).
-            ./gradlew testHubProd "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
-          else
-            ./gradlew testHubAll "${GRADLE_PYRAMID[@]}"
-            JAVA_TEST_EXIT=$?
-          fi
-          echo "JAVA_TEST_EXIT=${JAVA_TEST_EXIT}" >> "$GITHUB_ENV"
-          set -e
-
-      - name: Upload Allure results
-        if: always() && hashFiles('build/allure-results/**') != ''
-        uses: actions/upload-artifact@v7
-        with:
-          name: allure-java
-          path: build/allure-results/
-          retention-days: 7
-
-      - name: Fail if Java tests failed
-        if: always() && env.JAVA_TEST_EXIT != '0'
-        run: exit "${{ env.JAVA_TEST_EXIT }}"
-
-  java-cm:
-    name: Java CM integration
+  go-cm:
+    name: Go CM integration
     if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      ALLURE_RESULTS: build/allure-results
+      ALLURE_RESULTS: build/allure-results/go-cm
       GOTOOLCHAIN: auto
     steps:
       - name: Checkout
@@ -381,39 +204,36 @@ jobs:
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
-      - name: Setup Java
-        uses: actions/setup-java@v5
+      - name: Setup Go (tests module)
+        uses: actions/setup-go@v6
         with:
-          distribution: temurin
-          java-version: 21
-          cache: gradle
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: wrapper
-
-      - name: Run CM integration tests
+      - name: Run Go CM pyramid
+        id: go-cm-run
         run: |
           set +e
           chmod +x scripts/run-ci-cm-tests.sh
           ./scripts/run-ci-cm-tests.sh
-          echo "CM_TEST_EXIT=$?" >> "$GITHUB_ENV"
+          CM_TEST_EXIT=$?
+          echo "CM_TEST_EXIT=${CM_TEST_EXIT}" >> "$GITHUB_ENV"
           set -e
+          exit "${CM_TEST_EXIT}"
 
       - name: Upload Allure results
-        if: always() && hashFiles('build/allure-results/**') != ''
+        if: always() && hashFiles('build/allure-results/go-cm/**') != ''
         uses: actions/upload-artifact@v7
         with:
-          name: allure-java-cm
-          path: build/allure-results/
+          name: allure-go-cm
+          path: build/allure-results/go-cm/
           retention-days: 7
 
-      - name: Fail if CM tests failed
-        if: always() && env.CM_TEST_EXIT != '0'
-        run: exit "${{ env.CM_TEST_EXIT }}"
+      - name: Fail if Go CM tests failed
+        if: always() && steps.go-cm-run.outcome == 'failure'
+        run: exit 1
 
-  # P0 Go pyramid (ADR-go-pyramid) — dual-run with java-e2e until cutover.
+  # P5: Go hub pyramid is the CI gate (ADR-go-pyramid).
   go-hub:
     name: Go hub tests
     runs-on: ubuntu-latest
@@ -476,6 +296,8 @@ jobs:
         env:
           SOURCE_REPO: ${{ env.SOURCE_REPO }}
           SOURCE_VARIANT: ${{ env.SOURCE_VARIANT }}
+          SOURCE_BROWSER: ${{ env.SOURCE_BROWSER }}
+          WEBDRIVER_VARIANT: ${{ env.WEBDRIVER_VARIANT }}
         run: |
           set +e
           chmod +x scripts/run-go-pyramid.sh
@@ -484,55 +306,78 @@ jobs:
           else
             export PYRAMID_STAND=selenoid_github
           fi
-          SLICE=""
+          GO_HUB_EXIT=0
+          run_slice() {
+            local slice="$1"
+            echo "Go hub slice=${slice} env_profile=${ENV_PROFILE} test_tags=${TEST_TAGS:-<empty>}"
+            ./scripts/run-go-pyramid.sh "${slice}" || GO_HUB_EXIT=$?
+          }
           if [[ -n "${TEST_TAGS}" ]]; then
             case "${TEST_TAGS}" in
               integration)
-                SLICE=integration
+                run_slice integration
                 ;;
               api)
-                SLICE=api
+                run_slice api
                 ;;
               api,smoke)
-                # deploy-smoke selenoid/selenoid-ui: Go api-only (Java still runs testApi+testE2e).
-                SLICE=api
+                run_slice api
+                if [[ "${SOURCE_REPO}" == "qa-guru/selenoid-ui" ]]; then
+                  run_slice ui
+                else
+                  run_slice webdriver
+                  run_slice ui
+                  run_slice playwright
+                fi
                 ;;
               smoke)
                 if [[ "${SOURCE_VARIANT}" == "webdriver" ]]; then
-                  SLICE=webdriver
+                  case "${SOURCE_BROWSER}" in
+                    firefox)
+                      go test ./tests/integration/wd/... -run TestHubFirefoxSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      ;;
+                    msedge)
+                      go test ./tests/integration/wd/... -run TestHubMsedgeSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      ;;
+                    chrome)
+                      if [[ "${WEBDRIVER_VARIANT}" == "min" ]]; then
+                        go test ./tests/integration/min/... -run TestHubChromeMinSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      else
+                        run_slice webdriver
+                      fi
+                      ;;
+                    *)
+                      run_slice webdriver
+                      ;;
+                  esac
+                elif [[ "${SOURCE_VARIANT}" == "video-recorder" ]]; then
+                  run_slice api
                 elif [[ "${SOURCE_REPO}" == "qa-guru/selenoid-ui" ]]; then
-                  SLICE=ui
+                  run_slice ui
                 else
-                  SLICE=e2e
+                  run_slice e2e
                 fi
                 ;;
               playwright)
-                SLICE=playwright
+                run_slice playwright
                 ;;
               cm)
-                echo "Go hub skips cm tag (java-cm owns CM pyramid)"
-                echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
-                exit 0
+                echo "Go hub skips cm tag (go-cm owns CM pyramid)"
                 ;;
               *)
-                echo "Go hub: unknown TEST_TAGS=${TEST_TAGS}; skipping (Java still runs)"
-                echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
-                exit 0
+                echo "Go hub: unknown TEST_TAGS=${TEST_TAGS}" >&2
+                GO_HUB_EXIT=1
                 ;;
             esac
           elif [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
-            SLICE=hub-prod
+            run_slice hub-prod
           elif [[ "${ENV_PROFILE}" == selenoid_github_api ]]; then
-            SLICE=api
+            run_slice api
           elif [[ "${ENV_PROFILE}" == selenoid_github_integration ]]; then
-            SLICE=integration
+            run_slice integration
           else
-            # push default selenoid_github_e2e: full github pyramid (−cm).
-            SLICE=hub-all
+            run_slice hub-all
           fi
-          echo "Go hub slice=${SLICE} env_profile=${ENV_PROFILE} test_tags=${TEST_TAGS:-<empty>}"
-          ./scripts/run-go-pyramid.sh "${SLICE}"
-          GO_HUB_EXIT=$?
           echo "GO_HUB_EXIT=${GO_HUB_EXIT}" >> "$GITHUB_ENV"
           set -e
           exit "${GO_HUB_EXIT}"
@@ -551,8 +396,8 @@ jobs:
 
   report:
     name: Allure report + TestOps
-    needs: [go-unit, java-e2e, java-cm, go-hub]
-    if: always() && !cancelled() && (needs.java-cm.result == 'success' || needs.java-cm.result == 'skipped' || needs.java-cm.result == 'failure')
+    needs: [go-unit, go-hub, go-cm]
+    if: always() && !cancelled() && (needs.go-cm.result == 'success' || needs.go-cm.result == 'skipped' || needs.go-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -585,32 +430,18 @@ jobs:
           path: build/allure-results
           merge-multiple: true
 
-      - name: Download Java Allure artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: allure-java
-          path: build/allure-results
-          merge-multiple: true
-
-      - name: Download Java CM Allure artifacts
+      - name: Download Go CM Allure artifacts
         uses: actions/download-artifact@v8
         continue-on-error: true
         with:
-          name: allure-java-cm
+          name: allure-go-cm
           path: build/allure-results
           merge-multiple: true
 
-      - name: Setup Java
-        uses: actions/setup-java@v5
+      - name: Setup Node 24 (Allure 3)
+        uses: actions/setup-node@v6
         with:
-          distribution: temurin
-          java-version: 21
-          cache: gradle
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: wrapper
+          node-version: 24
 
       - name: Restore Allure history
         run: |
@@ -654,9 +485,10 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          ./gradlew allureQualityGate
+          chmod +x scripts/allure-report.sh
+          ./scripts/allure-report.sh quality-gate
           echo "QUALITY_GATE_EXIT=$?" >> "$GITHUB_ENV"
-          ./gradlew allureReport
+          ./scripts/allure-report.sh generate
           set -e
 
       - name: Verify Allure awesome section chunks
@@ -730,7 +562,7 @@ jobs:
           gen() {
             bash "${GEN}" build/allure-results pages/readme main "${BUILD}" "$@"
           }
-          gen "" "Selenoid Stack" "Go 1.26 · Java 21 · Allure 3" ""
+          gen "" "Selenoid Stack" "Go 1.26 · Allure 3" ""
           gen selenoid "Selenoid Hub" "Go 1.26 · Docker API 1.45 · Allure 3" selenoid
           gen selenoid-ui "Selenoid UI" "Go · React · Allure 3" selenoid-ui
           gen cm "Configuration Manager" "Go · Allure 3" cm
@@ -839,10 +671,9 @@ jobs:
             fi
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Go hub: push/github → \`hub-all\`; prod profile → \`hub-prod\`; dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice (dual-run with Java)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java hub push/default: \`testHubAll\` (unit→component→integration→api→e2e→webdriver→ui→playwright→resilience→min)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Java CM push: \`testCmIntegration\` + \`testCmApi\` + \`testCmE2e\` (CM :4445/:8081)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice (\`testWebdriverE2e\` chrome warm, \`Hub*IntegrationTests\` firefox/msedge/min); \`smoke\` + \`source_variant=video-recorder\` → \`testVideoRecorder\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Go hub: push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Go CM push: \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice; \`smoke\` + \`source_variant=video-recorder\` → Go \`api\` (video-recorder); \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
@@ -870,7 +701,7 @@ jobs:
         env:
           CALLBACK_TOKEN_PRIMARY: ${{ secrets.SELENOID_SMOKE_CALLBACK_TOKEN }}
           CALLBACK_TOKEN_FALLBACK: ${{ secrets.SELENOID_QA_GURU_DISPATCH_TOKEN || secrets.SELENOID_AUTOTESTS_CLOUD_DISPATCH_TOKEN }}
-          JAVA_E2E_RESULT: ${{ needs.java-e2e.result }}
+          GO_HUB_RESULT: ${{ needs.go-hub.result }}
         run: |
           set -euo pipefail
           CALLBACK_TOKEN="${CALLBACK_TOKEN_PRIMARY:-${CALLBACK_TOKEN_FALLBACK}}"
@@ -888,7 +719,7 @@ jobs:
             report_built=false
           fi
 
-          if [[ "${JAVA_E2E_RESULT}" == "success" && "${QUALITY_GATE_EXIT:-1}" == "0" && "${report_built}" == "true" ]]; then
+          if [[ "${GO_HUB_RESULT}" == "success" && "${QUALITY_GATE_EXIT:-1}" == "0" && "${report_built}" == "true" ]]; then
             conclusion=success
           else
             conclusion=failure
