@@ -18,6 +18,9 @@ type Config struct {
 	APIBaseURL               string
 	HubStatusPath            string
 	RemoteURL                string
+	Browser                  string
+	BrowserVersion           string
+	ChromeVersion            string
 	PlaywrightWsEndpoint     string
 	PlaywrightSessionName    string
 	PlaywrightSessionTimeout string
@@ -78,6 +81,14 @@ func FromMap(overrides map[string]string) *Config {
 	return configFromProps("from-map", props)
 }
 
+// ChromeVersionForSession returns chromeVersion or browserVersion (TestConfig.chromeVersion parity).
+func (c *Config) ChromeVersionForSession() string {
+	if strings.TrimSpace(c.ChromeVersion) != "" {
+		return strings.TrimSpace(c.ChromeVersion)
+	}
+	return strings.TrimSpace(c.BrowserVersion)
+}
+
 func configFromProps(envName string, props map[string]string) *Config {
 	return &Config{
 		Env:                      envName,
@@ -86,6 +97,9 @@ func configFromProps(envName string, props map[string]string) *Config {
 		APIBaseURL:               strings.TrimSpace(props["apiBaseUrl"]),
 		HubStatusPath:            normalizePath(firstNonEmpty(props["hubStatusPath"], "/status")),
 		RemoteURL:                strings.TrimSpace(props["remoteUrl"]),
+		Browser:                  firstNonEmpty(props["browser"], "chrome"),
+		BrowserVersion:           firstNonEmpty(props["browserVersion"], "149.0"),
+		ChromeVersion:            firstNonEmpty(props["chromeVersion"], props["browserVersion"]),
 		PlaywrightWsEndpoint:     strings.TrimSpace(props["playwrightWsEndpoint"]),
 		PlaywrightSessionName:    firstNonEmpty(props["playwrightSessionName"], "java-playwright-tests"),
 		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
@@ -198,6 +212,9 @@ func applyEnvOverrides(props map[string]string) {
 	set("apiBaseUrl", "apiBaseUrl")
 	set("hubStatusPath", "hubStatusPath")
 	set("remoteUrl", "remoteUrl")
+	set("browser", "browser")
+	set("browserVersion", "browserVersion")
+	set("chromeVersion", "chromeVersion")
 	set("logToConsole", "logToConsole")
 	set("playwrightWsEndpoint", "playwrightWsEndpoint")
 	set("playwrightSessionName", "playwrightSessionName")

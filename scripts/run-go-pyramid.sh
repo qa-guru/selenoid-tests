@@ -14,9 +14,9 @@ mkdir -p "${ALLURE_RESULTS}"
 if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
   case "${SLICE}" in
     unit|component) export SELENOID_TEST_ENV=local_unit ;;
-    api)            export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
+    api|hub-all)    export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
     integration)    export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_integration" ;;
-    e2e|webdriver|ui|playwright|hub-prod|hub-all)
+    e2e|webdriver|ui|playwright|hub-prod)
                     export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_e2e" ;;
     min)            export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
     *)              export SELENOID_TEST_ENV="${PYRAMID_STAND:-selenoid_github}_api" ;;
@@ -45,15 +45,16 @@ case "${SLICE}" in
     run_pkgs ./tests/api/...
     ;;
   hub-prod)
-    # Prod-safe subset for P0: api only. Expand in later phases.
+    # Prod-safe: api only (−cm/min/resilience).
     run_pkgs ./tests/api/...
     ;;
   hub-all)
-    run_pkgs ./internal/config/... ./internal/hubapi/... ./tests/api/...
+    # P1: unit + component + api (−cm).
+    run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/... ./tests/component/... ./tests/api/...
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|hub-prod|hub-all (more in P1+)" >&2
+    echo "Known: unit|component|api|hub-prod|hub-all" >&2
     exit 2
     ;;
 esac

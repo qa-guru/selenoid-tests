@@ -481,10 +481,10 @@ jobs:
           else
             export PYRAMID_STAND=selenoid_github
           fi
-          # P0: api vertical only. Expand slices in P1+; keep prod-safe (no cm/min/resilience).
-          SLICE=api
+          # P1: unit + component + api (hub-all). Prod-safe (−cm/min/resilience).
+          SLICE=hub-all
           if [[ -n "${TEST_TAGS}" && "${TEST_TAGS}" != "api" && "${TEST_TAGS}" != "api,smoke" ]]; then
-            echo "Go hub P0 skips non-api dispatch tags=${TEST_TAGS} (Java still owns other slices)"
+            echo "Go hub P1 skips non-api dispatch tags=${TEST_TAGS} (Java still owns other slices)"
             echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
             exit 0
           fi
