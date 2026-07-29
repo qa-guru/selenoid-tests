@@ -417,7 +417,7 @@ jobs:
   go-hub:
     name: Go hub tests
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     env:
       ALLURE_RESULTS: build/allure-results/go-hub
       GOTOOLCHAIN: auto
@@ -473,6 +473,9 @@ jobs:
 
       - name: Run Go hub tests
         id: go-hub-run
+        env:
+          SOURCE_REPO: ${{ env.SOURCE_REPO }}
+          SOURCE_VARIANT: ${{ env.SOURCE_VARIANT }}
         run: |
           set +e
           chmod +x scripts/run-go-pyramid.sh
@@ -481,15 +484,53 @@ jobs:
           else
             export PYRAMID_STAND=selenoid_github
           fi
-          # Default: unit + component + api (hub-all). integration slice on TEST_TAGS=integration.
-          SLICE=hub-all
-          if [[ "${TEST_TAGS}" == "integration" ]]; then
+          SLICE=""
+          if [[ -n "${TEST_TAGS}" ]]; then
+            case "${TEST_TAGS}" in
+              integration)
+                SLICE=integration
+                ;;
+              api)
+                SLICE=api
+                ;;
+              api,smoke)
+                # deploy-smoke selenoid/selenoid-ui: Go api-only (Java still runs testApi+testE2e).
+                SLICE=api
+                ;;
+              smoke)
+                if [[ "${SOURCE_VARIANT}" == "webdriver" ]]; then
+                  SLICE=webdriver
+                elif [[ "${SOURCE_REPO}" == "qa-guru/selenoid-ui" ]]; then
+                  SLICE=ui
+                else
+                  SLICE=e2e
+                fi
+                ;;
+              playwright)
+                SLICE=playwright
+                ;;
+              cm)
+                echo "Go hub skips cm tag (java-cm owns CM pyramid)"
+                echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
+                exit 0
+                ;;
+              *)
+                echo "Go hub: unknown TEST_TAGS=${TEST_TAGS}; skipping (Java still runs)"
+                echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
+                exit 0
+                ;;
+            esac
+          elif [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
+            SLICE=hub-prod
+          elif [[ "${ENV_PROFILE}" == selenoid_github_api ]]; then
+            SLICE=api
+          elif [[ "${ENV_PROFILE}" == selenoid_github_integration ]]; then
             SLICE=integration
-          elif [[ -n "${TEST_TAGS}" && "${TEST_TAGS}" != "api" && "${TEST_TAGS}" != "api,smoke" ]]; then
-            echo "Go hub skips non-api/integration dispatch tags=${TEST_TAGS} (Java still owns other slices)"
-            echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
-            exit 0
+          else
+            # push default selenoid_github_e2e: full github pyramid (−cm).
+            SLICE=hub-all
           fi
+          echo "Go hub slice=${SLICE} env_profile=${ENV_PROFILE} test_tags=${TEST_TAGS:-<empty>}"
           ./scripts/run-go-pyramid.sh "${SLICE}"
           GO_HUB_EXIT=$?
           echo "GO_HUB_EXIT=${GO_HUB_EXIT}" >> "$GITHUB_ENV"
@@ -798,6 +839,7 @@ jobs:
             fi
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Go hub: push/github → \`hub-all\`; prod profile → \`hub-prod\`; dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice (dual-run with Java)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java hub push/default: \`testHubAll\` (unit→component→integration→api→e2e→webdriver→ui→playwright→resilience→min)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Java CM push: \`testCmIntegration\` + \`testCmApi\` + \`testCmE2e\` (CM :4445/:8081)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice (\`testWebdriverE2e\` chrome warm, \`Hub*IntegrationTests\` firefox/msedge/min); \`smoke\` + \`source_variant=video-recorder\` → \`testVideoRecorder\`; \`smoke\` + \`selenoid-ui\` → \`testUiE2e\`" >> "$GITHUB_STEP_SUMMARY"
