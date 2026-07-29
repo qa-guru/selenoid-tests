@@ -120,6 +120,28 @@ func TestHubLogsListJson_ParsesSessionLogNames(t *testing.T) {
 	})
 }
 
+func TestHubVideoListJson_ParsesPaginatedVideoList(t *testing.T) {
+	allurex.Run(t, allurex.Meta{
+		Name:      "parses paginated /video/?json page",
+		Package:   "tests.component.HubVideoListJsonTest",
+		Layer:     "component",
+		Component: "video-recorder",
+		Feature:   "Hub video list fixture",
+		Suite:     "Hub video list fixture",
+		Tags:      []string{"component"},
+	}, func(a *allurex.A) {
+		a.Step("parse fixtures/hub/video-list-page.json", func() {
+			listed, err := hubapi.ParseVideoList(loadFixture(t, "hub/video-list-page.json"))
+			require.NoError(t, err)
+			require.Equal(t, 10, listed.Limit)
+			require.Equal(t, 0, listed.Offset)
+			require.Equal(t, 12, listed.Total)
+			require.Equal(t, 10, len(listed.Videos))
+			require.LessOrEqual(t, len(listed.Videos), listed.Limit)
+		})
+	})
+}
+
 func TestHubWebDriverStatusJson_ParsesReadyPayload(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses ready WebDriver status payload",
