@@ -11,7 +11,12 @@ cd "${ROOT}"
 
 SLICE="${1:-api}"
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
-export ALLURE_RESULTS="${ALLURE_RESULTS:-${ROOT}/build/allure-results/go-hub}"
+# CI job env may set a repo-relative path; go test cwd is the package dir — anchor at ROOT.
+if [[ -z "${ALLURE_RESULTS:-}" ]]; then
+  export ALLURE_RESULTS="${ROOT}/build/allure-results/go-hub"
+elif [[ "${ALLURE_RESULTS}" != /* ]]; then
+  export ALLURE_RESULTS="${ROOT}/${ALLURE_RESULTS#./}"
+fi
 mkdir -p "${ALLURE_RESULTS}"
 
 STAND="${PYRAMID_STAND:-selenoid_github}"

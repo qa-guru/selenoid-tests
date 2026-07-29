@@ -200,13 +200,42 @@ func (a *A) labels() []label {
 }
 
 func resultsDir() string {
-	if d := os.Getenv("ALLURE_RESULTS"); d != "" {
+	d := os.Getenv("ALLURE_RESULTS")
+	if d == "" {
+		d = os.Getenv("ALLURE_RESULTS_DIR")
+	}
+	if d == "" {
+		d = filepath.Join("build", "allure-results", "go-hub")
+	}
+	if filepath.IsAbs(d) {
 		return d
 	}
-	if d := os.Getenv("ALLURE_RESULTS_DIR"); d != "" {
+	if root := moduleRoot(); root != "" {
+		return filepath.Join(root, d)
+	}
+	abs, err := filepath.Abs(d)
+	if err != nil {
 		return d
 	}
-	return filepath.Join("build", "allure-results", "go-hub")
+	return abs
+}
+
+// moduleRoot finds the nearest go.mod (repo root for go test package cwd).
+func moduleRoot() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return ""
+		}
+		dir = parent
+	}
 }
 
 func historyID(fullName, name string) string {
