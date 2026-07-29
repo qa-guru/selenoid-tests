@@ -21,8 +21,11 @@ type Config struct {
 	Browser                  string
 	BrowserVersion           string
 	ChromeVersion            string
+	ChromeMinVersion         string
 	FirefoxVersion           string
+	FirefoxMinVersion        string
 	MsedgeVersion            string
+	MsedgeMinVersion         string
 	PlaywrightWsEndpoint     string
 	PlaywrightSessionName    string
 	PlaywrightSessionTimeout string
@@ -102,6 +105,21 @@ func (c *Config) MsedgeVersionForSession() string {
 	return strings.TrimSpace(c.MsedgeVersion)
 }
 
+// ChromeMinVersionForSession returns chromeMinVersion (TestConfig.chromeMinVersion).
+func (c *Config) ChromeMinVersionForSession() string {
+	return strings.TrimSpace(c.ChromeMinVersion)
+}
+
+// FirefoxMinVersionForSession returns firefoxMinVersion (TestConfig.firefoxMinVersion).
+func (c *Config) FirefoxMinVersionForSession() string {
+	return strings.TrimSpace(c.FirefoxMinVersion)
+}
+
+// MsedgeMinVersionForSession returns msedgeMinVersion (TestConfig.msedgeMinVersion).
+func (c *Config) MsedgeMinVersionForSession() string {
+	return strings.TrimSpace(c.MsedgeMinVersion)
+}
+
 func configFromProps(envName string, props map[string]string) *Config {
 	return &Config{
 		Env:                      envName,
@@ -113,8 +131,11 @@ func configFromProps(envName string, props map[string]string) *Config {
 		Browser:                  firstNonEmpty(props["browser"], "chrome"),
 		BrowserVersion:           firstNonEmpty(props["browserVersion"], "149.0"),
 		ChromeVersion:            firstNonEmpty(props["chromeVersion"], props["browserVersion"]),
+		ChromeMinVersion:         firstNonEmpty(props["chromeMinVersion"], MinVersion("chrome")),
 		FirefoxVersion:           firstNonEmpty(props["firefoxVersion"], "151.0"),
+		FirefoxMinVersion:        firstNonEmpty(props["firefoxMinVersion"], MinVersion("firefox")),
 		MsedgeVersion:            firstNonEmpty(props["msedgeVersion"], "145.0"),
+		MsedgeMinVersion:         firstNonEmpty(props["msedgeMinVersion"], MinVersion("msedge")),
 		PlaywrightWsEndpoint:     strings.TrimSpace(props["playwrightWsEndpoint"]),
 		PlaywrightSessionName:    firstNonEmpty(props["playwrightSessionName"], "java-playwright-tests"),
 		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
@@ -231,8 +252,11 @@ func applyEnvOverrides(props map[string]string) {
 	set("browser", "browser")
 	set("browserVersion", "browserVersion")
 	set("chromeVersion", "chromeVersion")
+	set("chromeMinVersion", "chromeMinVersion")
 	set("firefoxVersion", "firefoxVersion")
+	set("firefoxMinVersion", "firefoxMinVersion")
 	set("msedgeVersion", "msedgeVersion")
+	set("msedgeMinVersion", "msedgeMinVersion")
 	set("logToConsole", "logToConsole")
 	set("playwrightWsEndpoint", "playwrightWsEndpoint")
 	set("playwrightSessionName", "playwrightSessionName")

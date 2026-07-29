@@ -29,7 +29,7 @@ export SELENOID_TEST_SKIP_HEALTH_CHECK="${SELENOID_TEST_SKIP_HEALTH_CHECK:-true}
 run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${SLICE}" == "integration" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "playwright" || "${SLICE}" == "har-prod" ]]; then
+  if [[ "${SLICE}" == "integration" || "${SLICE}" == "min" || "${SLICE}" == "ui" || "${SLICE}" == "e2e" || "${SLICE}" == "webdriver" || "${SLICE}" == "playwright" || "${SLICE}" == "har-prod" ]]; then
     # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -89,9 +89,14 @@ case "${SLICE}" in
     unset PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD
     run_pkgs ./tests/e2e/ui/... ./tests/e2e/webdriver/... ./tests/e2e/har/...
     ;;
+  min)
+    # P4 local-only: offline min catalogs + live min WD/PW sessions (github min stack).
+    export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
+    run_pkgs ./tests/component/min/... ./tests/integration/min/...
+    ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all" >&2
+    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min" >&2
     exit 2
     ;;
 esac
