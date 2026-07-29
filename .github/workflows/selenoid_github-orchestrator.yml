@@ -481,10 +481,12 @@ jobs:
           else
             export PYRAMID_STAND=selenoid_github
           fi
-          # P1: unit + component + api (hub-all). Prod-safe (−cm/min/resilience).
+          # Default: unit + component + api (hub-all). integration slice on TEST_TAGS=integration.
           SLICE=hub-all
-          if [[ -n "${TEST_TAGS}" && "${TEST_TAGS}" != "api" && "${TEST_TAGS}" != "api,smoke" ]]; then
-            echo "Go hub P1 skips non-api dispatch tags=${TEST_TAGS} (Java still owns other slices)"
+          if [[ "${TEST_TAGS}" == "integration" ]]; then
+            SLICE=integration
+          elif [[ -n "${TEST_TAGS}" && "${TEST_TAGS}" != "api" && "${TEST_TAGS}" != "api,smoke" ]]; then
+            echo "Go hub skips non-api/integration dispatch tags=${TEST_TAGS} (Java still owns other slices)"
             echo "GO_HUB_EXIT=0" >> "$GITHUB_ENV"
             exit 0
           fi

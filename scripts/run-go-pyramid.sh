@@ -53,8 +53,8 @@ case "${SLICE}" in
     run_pkgs ./internal/config/... ./internal/helpers/... ./internal/hubapi/... ./tests/component/... ./tests/api/...
     ;;
   integration)
-    # P2 WD warm sessions only (−min/−ui/−pw/−cm).
-    run_pkgs ./tests/integration/wd/...
+    # P2 WD warm sessions + UI status/SSE (−min/−pw/−cm).
+    run_pkgs ./tests/integration/wd/... ./tests/integration/ui/...
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
