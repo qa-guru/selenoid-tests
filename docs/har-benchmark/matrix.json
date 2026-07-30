@@ -145,11 +145,11 @@
     },
     {
       "label": "6-android",
-      "status": "not_claimed",
-      "verdict": "blocker",
-      "investigated": "2026-07-29",
-      "note": "No CDP :7070 on qaguru/android:*; UI omits enableHAR; hub harCaptureEnabled requires devtoolsHostPort. See 7-android-blocker.json",
-      "blockerArtifact": "build/har-compare/7-android-blocker.json"
+      "status": "cancelled",
+      "verdict": "out_of_scope",
+      "decision": "2026-07-30 product — Android HAR not planned",
+      "note": "Appium image; hub HAR is browser CDP only. See 7-android-blocker.json",
+      "blockerArtifact": "docs/har-benchmark/7-android-blocker.json"
     }
   ],
   "coverage": {

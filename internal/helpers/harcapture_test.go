@@ -139,17 +139,17 @@ func moduleRoot(t *testing.T) string {
 	}
 }
 
-func TestHarBenchmarkAndroidNotClaimed(t *testing.T) {
+func TestHarBenchmarkAndroidCancelled(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
-		Name:      "Phase 6 Android HAR remains not_claimed until CDP :7070 exists",
+		Name:      "Phase 6 Android HAR remains cancelled (out of scope)",
 		Package:   "helpers.HarBenchmark",
 		Layer:     "unit",
 		Component: "selenoid",
 		Epic:      "selenoid",
 		Feature:   "HAR",
-		Story:     "Android hub enableHAR is blocked by architecture",
+		Story:     "Android hub enableHAR cancelled — not on roadmap",
 		Suite:     "HAR benchmark SSOT",
-		Tags:      []string{"har-benchmark", "android", "not-claimed"},
+		Tags:      []string{"har-benchmark", "android", "cancelled"},
 	}, func(a *allurex.A) {
 		a.Step("Load docs/har-benchmark/7-android-blocker.json", func() {
 			path := filepath.Join(moduleRoot(t), "docs", "har-benchmark", "7-android-blocker.json")
@@ -161,21 +161,18 @@ func TestHarBenchmarkAndroidNotClaimed(t *testing.T) {
 
 			require.Equal(t, 6, doc.Phase)
 			require.Equal(t, "6-android-hub-enableHAR", doc.Label)
-			require.Equal(t, "not_claimed", doc.Status)
-			require.Equal(t, "blocker", doc.Verdict)
+			require.Equal(t, "cancelled", doc.Status)
+			require.Equal(t, "out_of_scope", doc.Verdict)
 			require.Nil(t, doc.Scorecard)
 			require.Nil(t, doc.HARPath)
 			require.Empty(t, doc.AllowedClaims)
 			require.NotEmpty(t, doc.ForbiddenClaims)
-			require.GreaterOrEqual(t, len(doc.Blockers), 3)
 
 			ids := map[string]bool{}
 			for _, b := range doc.Blockers {
 				ids[b.ID] = true
 			}
-			require.True(t, ids["no-7070"])
-			require.True(t, ids["hub-cdp-gate"])
-			require.True(t, ids["ui-no-cap"])
+			require.True(t, ids["product-cancelled"])
 		})
 
 		a.Step("Load docs/har-benchmark/7-android.NOT_CLAIMED.txt", func() {
@@ -183,9 +180,7 @@ func TestHarBenchmarkAndroidNotClaimed(t *testing.T) {
 			raw, err := os.ReadFile(path)
 			require.NoError(t, err)
 			text := string(raw)
-			require.Contains(t, text, "not claimed")
-			require.Contains(t, text, "7070")
-			require.Contains(t, text, "Appium")
+			require.Contains(t, text, "cancelled")
 		})
 	})
 }

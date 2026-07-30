@@ -1,8 +1,8 @@
 # HAR completeness matrix
 
-**Plan:** [har-completeness-benchmark.plan.md](../../../../../.cursor/plans/har-completeness-benchmark.plan.md) — **done 2026-07-29** (phases 0–7; phase 6 Android not claimed).
+**Plan:** [har-completeness-benchmark.plan.md](../../../../../.cursor/plans/har-completeness-benchmark.plan.md) — **done 2026-07-30** (phases 0–5 + 7 green; phase 6 Android **cancelled**).
 
-**Committed SSOT:** `selenoid-tests/docs/har-benchmark/` (this file synced from last green run).
+**Committed SSOT:** `selenoid-tests/docs/har-benchmark/` (this directory).
 
 Fixture: `http://127.0.0.1:8080` (remote browser: `http://host.docker.internal:8080`)
 
@@ -61,20 +61,19 @@ UI: `harContent` control only when `enableHAR`; HarViewer Response tab shows `co
 - **5:** PW hub HAR meta green on hub ≥ HEAD with PW `:7070` mapping (one writer; no client `recordHar`)
 - **Prod:** hub **v3.0.5** + UI **v3.0.14** on [selenoid.qa.guru](https://selenoid.qa.guru); Step 5b smoke green for WD/PW meta + bodies (`withContentText` **and** `withContentSize` gates on hub ≥ v3.0.5) + UI wire/viewer/size + HarCapture 3b prod — **bodies text+size claimed on prod (best-effort, not ≡ recordHar)**
 - **One writer per session** — observed on all rows
-- **Android:** not claimed (phase 6 verified 2026-07-29 — see below)
+- **Android:** **cancelled** (phase 6 — out of scope, not on roadmap)
 
-## Phase 6 — Android (not claimed)
+## Phase 6 — Android (**cancelled**)
+
+Product decision **2026-07-30:** Android HAR not planned. Hub HAR = browser CDP only; Android = Appium/UiAutomator2.
 
 | Check | Result |
 |-------|--------|
-| CDP `:7070` on `qaguru/android:*` | **no** — `EXPOSE 4444 5900` only; Appium/UiAutomator2 |
-| Hub `harCaptureEnabled` | **blocked** — needs `devtoolsHostPort`; Android has none |
-| UI `enableHAR` cap | **hidden** — `buildAndroidSelenoidOptions` omits HAR; toggle WebDriver-only |
-| Chrome Mobile in image | **deferred** — `browser-image/android/README.md` |
-| Scorecard / `.har` | **not run** — no path to capture |
-| Verdict | **not_claimed** — blocker doc: `7-android-blocker.json` |
+| Needed for benchmark? | **no** — cancelled |
+| CDP `:7070` on `qaguru/android:*` | no (Appium image) |
+| Verdict | **cancelled** — `7-android-blocker.json` |
 
-Roadmap (not this phase): Chrome Mobile + chromedriver + `:7070` proxy in android image, then UI cap + fixture scorecard. MITM sidecar explicitly out of scope per `har.adoc`.
+No roadmap item. Do not claim Android HAR.
 
 ## Allowed claims
 

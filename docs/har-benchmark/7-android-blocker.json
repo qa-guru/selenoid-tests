@@ -1,8 +1,9 @@
 {
   "phase": 6,
   "label": "6-android-hub-enableHAR",
-  "status": "not_claimed",
-  "verdict": "blocker",
+  "status": "cancelled",
+  "verdict": "out_of_scope",
+  "decision": "2026-07-30 — Android HAR not planned; Appium/UiAutomator2 ≠ browser CDP HAR path",
   "investigated": "2026-07-29",
   "plan": "har-completeness-benchmark.plan.md",
   "writer": null,
@@ -10,61 +11,38 @@
   "scorecard": null,
   "blockers": [
     {
+      "id": "product-cancelled",
+      "layer": "product",
+      "summary": "Android HAR explicitly cancelled — not on roadmap",
+      "refs": ["docs/har-benchmark/7-android-blocker.json"]
+    },
+    {
       "id": "no-7070",
       "layer": "browser-image",
-      "summary": "qaguru/android:* exposes Appium :4444 and VNC :5900 only; no CDP devtools-proxy on :7070",
-      "refs": [
-        "browser-image/android/Dockerfile EXPOSE 4444 5900",
-        "browser-image/android/README.md — Chrome Mobile / chromedriver deferred"
-      ]
-    },
-    {
-      "id": "hub-cdp-gate",
-      "layer": "hub",
-      "summary": "harCaptureEnabled requires non-empty devtoolsHostPort (7070); Android sessions never get Devtools mapping",
-      "refs": [
-        "selenoid/har.go harCaptureEnabled",
-        "selenoid/service/docker.go Devtools: 7070 (warm WD/PW only)"
-      ]
-    },
-    {
-      "id": "ui-no-cap",
-      "layer": "selenoid-ui",
-      "summary": "buildAndroidSelenoidOptions omits enableHAR; caps-enable-har hidden on Android panel",
-      "refs": [
-        "selenoid-ui/ui/src/containers/Capabilities/index.tsx buildAndroidSelenoidOptions",
-        "selenoid-ui/ui/src/containers/Capabilities/Capabilities.android.test.tsx"
-      ]
+      "summary": "qaguru/android:* — Appium :4444 + VNC :5900; no CDP :7070",
+      "refs": ["browser-image/android/Dockerfile EXPOSE 4444 5900"]
     },
     {
       "id": "protocol-mismatch",
       "layer": "architecture",
-      "summary": "Android manual sessions use Appium/UiAutomator2 W3C caps, not Chromium WebDriver + se:cdp",
-      "refs": [
-        "selenoid/docs/har.adoc — CDP path for Chromium WebDriver / PW :7070",
-        "selenoid/docs/special-capabilities.adoc enableHAR — Chrome/Edge WebDriver only"
-      ]
+      "summary": "Hub HAR = Chromium CDP only; Android manual sessions = Appium, not Chrome WebDriver",
+      "refs": ["selenoid/docs/har.adoc"]
     }
   ],
   "forbiddenThisPhase": [
-    "dual-writer (enableHAR + client recordHar/HarCapture)",
-    "MITM proxy sidecar without ADR",
-    "docker image push without explicit OK"
+    "dual-writer",
+    "MITM proxy",
+    "Android HAR marketing claims"
   ],
-  "roadmapUnblock": [
-    "Chrome Mobile in emulator + chromedriver + devtools-proxy :7070 in android image",
-    "hub: map 7070 for android when image ships CDP endpoint",
-    "UI: enableHAR toggle on Android panel after image+hub green",
-    "scorecard on shared fixture + HarViewer screenshot"
-  ],
+  "roadmapUnblock": [],
   "allowedClaims": [],
   "forbiddenClaims": [
     "Android HAR via hub enableHAR",
     "Android network archive in HarViewer",
-    "Hub HAR works on all browser images including Android"
+    "Hub HAR on Appium/APK sessions"
   ],
   "relatedArtifacts": {
-    "notClaimedTxt": "7-android.NOT_CLAIMED.txt",
+    "cancelledTxt": "7-android.NOT_CLAIMED.txt",
     "matrix": "MATRIX.md",
     "matrixJsonRow": "matrix.json sources[6-android]"
   }

@@ -50,11 +50,10 @@ Summaries: `summary.json` · `hub-summary.json` · `prod-step5/summary.json` · 
 
 - `build/har-prod-e2e/` — prod UI PNG + named HAR (same run)
 
-## Not claimed (phase 6)
+## Cancelled (phase 6 — Android HAR)
 
-- `7-android.NOT_CLAIMED.txt` — human-readable blocker summary
-- `7-android-blocker.json` — structured phase-6 verdict (no scorecard; CDP path absent)
-- Do not use Android HAR in marketing or landing claims
+- `7-android-blocker.json` — status **cancelled**, not on roadmap
+- Do not claim Android HAR
 
 ## Allowed claims (copy-paste guard)
 

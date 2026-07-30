@@ -2,7 +2,7 @@ HAR в Selenoid — что реально мерили 📊
 
 Привет, комьюнити 👋
 
-Прогнали HAR completeness benchmark на одной fixture (selenoid-ui) и коротком prod-smoke на selenoid.qa.guru — hub v3.0.5, UI v3.0.14. Цифры и артефакты: MATRIX.md в selenoid-tests (har-compare).
+Прогнали HAR completeness benchmark на одной fixture (selenoid-ui) и коротком prod-smoke на selenoid.qa.guru — hub v3.0.5, UI v3.0.14. Цифры и артефакты: selenoid-tests/docs/har-benchmark/MATRIX.md
 
 Что подтвердили (best-effort, один writer на сессию):
 
@@ -23,7 +23,7 @@ UI на prod
 Честно не заявляем
 • hub HAR ≠ Playwright recordHar (status/size/text отличаются)
 • bodies ≠ recordHar parity
-• Android HAR — out of scope
+• Android HAR — cancelled, out of scope
 • dual-writer (hub enableHAR + client recordHar/HarCapture на одной сессии)
 
 Prod
