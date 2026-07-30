@@ -47,10 +47,7 @@ func TestUiManualHarPlaywright_CapabilitiesCreateSessionShowsHarInArchive(t *tes
 				killSessionFromUI(t, page)
 			})
 			a.Step("Wait until hub archives HAR artifact", func() {
-				row, err := hubapi.WaitArchivedSessionHar(cfg, sessionID, 45*time.Second)
-				require.NoError(t, err)
-				require.NotNil(t, row)
-				require.NotEmpty(t, row.HAR)
+				waitHubArchivedHar(t, cfg, sessionID)
 			})
 			a.Step("Open Finished sessions archive", func() {
 				openFinishedSessionsArchive(t, page, baseURL)

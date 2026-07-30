@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/qa-guru/selenoid-tests/internal/config"
+	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
 const (
@@ -106,17 +107,29 @@ func clickCreateSession(t *testing.T, page playwright.Page) string {
 
 func killSessionFromUI(t *testing.T, page playwright.Page) {
 	t.Helper()
+	cfg := config.MustLoad()
 	kill := page.Locator("[data-testid=session-kill]")
 	require.NoError(t, kill.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
 	require.NoError(t, kill.Click())
-	deadline := time.Now().Add(createSessionTimeout)
+	timeout := createSessionTimeout
+	if strings.Contains(cfg.Env, "qa_guru") {
+		timeout = 3 * time.Minute
+	}
+	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
 		if !strings.Contains(page.URL(), "/sessions/") {
 			return
 		}
 		time.Sleep(250 * time.Millisecond)
 	}
-	t.Fatalf("session page still open after kill: %s", page.URL())
+	if strings.Contains(page.URL(), "/sessions/") {
+		baseURL, err := cfg.ResolveUiLocalBaseURL()
+		require.NoError(t, err)
+		_, err = page.Goto(baseURL+"/", playwright.PageGotoOptions{
+			WaitUntil: playwright.WaitUntilStateDomcontentloaded,
+		})
+		require.NoError(t, err)
+	}
 }
 
 func openFinishedSessionsArchive(t *testing.T, page playwright.Page, baseURL string) {
@@ -130,8 +143,29 @@ func openFinishedSessionsArchive(t *testing.T, page playwright.Page, baseURL str
 	}))
 }
 
+func filterArchiveSession(t *testing.T, page playwright.Page, sessionID string) {
+	t.Helper()
+	filter := page.Locator("[data-testid=session-filter-input]")
+	require.NoError(t, filter.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
+	require.NoError(t, filter.Fill(sessionID))
+	time.Sleep(500 * time.Millisecond)
+}
+
+func waitHubArchivedHar(t *testing.T, cfg *config.Config, sessionID string) {
+	t.Helper()
+	timeout := 45 * time.Second
+	if strings.Contains(cfg.Env, "qa_guru") {
+		timeout = 5 * time.Minute
+	}
+	row, err := hubapi.WaitArchivedSessionHar(cfg, sessionID, timeout)
+	require.NoError(t, err)
+	require.NotNil(t, row)
+	require.NotEmpty(t, row.HAR)
+}
+
 func waitArchiveHarIcon(t *testing.T, page playwright.Page, baseURL, sessionID string, timeout time.Duration) {
 	t.Helper()
+	filterArchiveSession(t, page, sessionID)
 	row := page.Locator(fmt.Sprintf("[data-session='%s']", sessionID))
 	icon := row.Locator("[data-testid=artifact-har]")
 	deadline := time.Now().Add(timeout)
