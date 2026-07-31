@@ -86,6 +86,31 @@ func setManualHarSessionName(t *testing.T, page playwright.Page, fieldTestID str
 	require.NoError(t, field.Fill(manualHarSessionName))
 }
 
+// fillHubAuthFromConfig overrides baked UI defaults with credentials from the
+// active test profile (remoteUrl / apiBaseUrl / uiUrl). Prod UI may ship a
+// stale VITE_HUB_AUTH_* pin while nginx htpasswd has rotated.
+func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Config) {
+	t.Helper()
+	user, pass := cfg.ResolveHubBasicAuth()
+	require.NotEmpty(t, user, "hub basic auth user missing from test config")
+	require.NotEmpty(t, pass, "hub basic auth password missing from test config")
+
+	userField := page.Locator("[data-testid=capabilities-caps-auth-user]")
+	passField := page.Locator("[data-testid=capabilities-caps-auth-pass]")
+	accessKey := page.Locator("[data-testid=capabilities-caps-access-key-field]")
+
+	if n, err := userField.Count(); err == nil && n > 0 {
+		require.NoError(t, userField.Fill(user))
+		require.NoError(t, passField.Fill(pass))
+		return
+	}
+	if n, err := accessKey.Count(); err == nil && n > 0 {
+		require.NoError(t, accessKey.Fill(user+":"+pass))
+		return
+	}
+	t.Fatal("no WebDriver auth duo or Playwright accessKey field on Capabilities")
+}
+
 func clickCreateSession(t *testing.T, page playwright.Page) string {
 	t.Helper()
 	create := page.Locator("[data-testid=capabilities-create-session]")

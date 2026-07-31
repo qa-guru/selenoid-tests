@@ -35,6 +35,7 @@ func TestUiSessionKillSmoothArtifacts_WebDriverKillKeepsLayoutAndUpdatesInPlace(
 				openDashboard(t, page, baseURL)
 				openNewSession(t, page, baseURL)
 				selectWebDriverChrome(t, page, cfg)
+				fillHubAuthFromConfig(t, page, cfg)
 				setSegTrue(t, page, "caps-enable-har")
 				setSegTrue(t, page, "caps-enable-video")
 				setSegTrue(t, page, "caps-enable-vnc")

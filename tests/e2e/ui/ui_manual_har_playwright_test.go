@@ -33,6 +33,7 @@ func TestUiManualHarPlaywright_CapabilitiesCreateSessionShowsHarInArchive(t *tes
 				selectPlaywrightChrome(t, page, cfg)
 			})
 			a.Step("Enable enableHar + enableVideo and set session name", func() {
+				fillHubAuthFromConfig(t, page, cfg)
 				setSegTrue(t, page, "caps-playwright-enable-har")
 				setSegTrue(t, page, "caps-playwright-enable-video")
 				setManualHarSessionName(t, page, "caps-playwright-session-name")

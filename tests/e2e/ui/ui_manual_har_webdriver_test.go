@@ -35,6 +35,7 @@ func TestUiManualHarWebDriver_CapabilitiesCreateSessionShowsHarInArchive(t *test
 				selectWebDriverChrome(t, page, cfg)
 			})
 			a.Step("Enable enableHar + enableVideo and set session name", func() {
+				fillHubAuthFromConfig(t, page, cfg)
 				setSegTrue(t, page, "caps-enable-har")
 				setSegTrue(t, page, "caps-enable-video")
 				setManualHarSessionName(t, page, "caps-session-name")
