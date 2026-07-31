@@ -2,9 +2,11 @@ package ui_test
 
 import (
 	"fmt"
+	"math"
 	"net/url"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -214,4 +216,75 @@ func uiHostFromConfig(t *testing.T, cfg *config.Config) string {
 	u, err := url.Parse(raw)
 	require.NoError(t, err)
 	return u.Hostname()
+}
+
+const layoutTolerancePx = 2.0
+
+type layoutRect struct {
+	X      float64
+	Y      float64
+	Width  float64
+	Height float64
+}
+
+func (r layoutRect) String() string {
+	return fmt.Sprintf("x=%.1f y=%.1f w=%.1f h=%.1f", r.X, r.Y, r.Width, r.Height)
+}
+
+func captureLayoutRect(t *testing.T, page playwright.Page, selector string) layoutRect {
+	t.Helper()
+	loc := page.Locator(selector)
+	require.NoError(t, loc.WaitFor(playwright.LocatorWaitForOptions{
+		State: playwright.WaitForSelectorStateVisible,
+	}))
+	box, err := loc.BoundingBox()
+	require.NoError(t, err)
+	require.NotNil(t, box, "%s: element not visible", selector)
+	return layoutRect{X: box.X, Y: box.Y, Width: box.Width, Height: box.Height}
+}
+
+func assertLayoutStable(t *testing.T, label string, before, after layoutRect, tolerance float64) {
+	t.Helper()
+	for _, pair := range []struct {
+		name string
+		a, b float64
+	}{
+		{"x", before.X, after.X},
+		{"y", before.Y, after.Y},
+		{"width", before.Width, after.Width},
+		{"height", before.Height, after.Height},
+	} {
+		delta := math.Abs(pair.a - pair.b)
+		require.LessOrEqual(t, delta, tolerance,
+			"%s %s drift %.1fpx (before %s, after %s)", label, pair.name, delta, before, after)
+	}
+}
+
+type consoleErrorTracker struct {
+	mu     sync.Mutex
+	errors []string
+}
+
+func attachConsoleErrorTracker(page playwright.Page) *consoleErrorTracker {
+	tracker := &consoleErrorTracker{}
+	page.OnConsole(func(msg playwright.ConsoleMessage) {
+		if msg.Type() == "error" {
+			tracker.mu.Lock()
+			tracker.errors = append(tracker.errors, msg.Text())
+			tracker.mu.Unlock()
+		}
+	})
+	page.OnPageError(func(err error) {
+		tracker.mu.Lock()
+		tracker.errors = append(tracker.errors, err.Error())
+		tracker.mu.Unlock()
+	})
+	return tracker
+}
+
+func (c *consoleErrorTracker) assertEmpty(t *testing.T) {
+	t.Helper()
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	require.Empty(t, c.errors, "console errors: %v", c.errors)
 }

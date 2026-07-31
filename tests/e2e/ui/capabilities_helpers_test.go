@@ -105,31 +105,38 @@ func clickCreateSession(t *testing.T, page playwright.Page) string {
 	return ""
 }
 
-func killSessionFromUI(t *testing.T, page playwright.Page) {
+func killSessionFromUI(t *testing.T, page playwright.Page) string {
 	t.Helper()
 	cfg := config.MustLoad()
+	sessionID := sessionIDFromURL(page.URL())
+	require.NotEmpty(t, sessionID, "killSessionFromUI: expected /#/sessions/<id> URL, got %s", page.URL())
+
 	kill := page.Locator("[data-testid=session-kill]")
 	require.NoError(t, kill.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
 	require.NoError(t, kill.Click())
+
 	timeout := createSessionTimeout
 	if strings.Contains(cfg.Env, "qa_guru") {
 		timeout = 3 * time.Minute
 	}
 	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
-		if !strings.Contains(page.URL(), "/sessions/") {
-			return
+		url := page.URL()
+		require.Equal(t, sessionID, sessionIDFromURL(url),
+			"kill must keep URL on /#/sessions/%s, got %s", sessionID, url)
+
+		count, err := kill.Count()
+		if err == nil && count == 0 {
+			return sessionID
+		}
+		finished, err := page.Locator("text=FINISHED").Count()
+		if err == nil && finished > 0 {
+			return sessionID
 		}
 		time.Sleep(250 * time.Millisecond)
 	}
-	if strings.Contains(page.URL(), "/sessions/") {
-		baseURL, err := cfg.ResolveUiLocalBaseURL()
-		require.NoError(t, err)
-		_, err = page.Goto(baseURL+"/", playwright.PageGotoOptions{
-			WaitUntil: playwright.WaitUntilStateDomcontentloaded,
-		})
-		require.NoError(t, err)
-	}
+	t.Fatalf("session kill did not finish within %s, url=%s", timeout, page.URL())
+	return sessionID
 }
 
 func openFinishedSessionsArchive(t *testing.T, page playwright.Page, baseURL string) {
