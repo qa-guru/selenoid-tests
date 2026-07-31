@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa-guru.github.io/selenoid-tests/perf-benchmark/schema.json",
+  "title": "Selenoid perf-benchmark runs",
+  "type": "object",
+  "required": ["version", "runs"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema version of this document"
+    },
+    "har_completeness_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Link to HAR completeness MATRIX (not perf metrics)"
+    },
+    "runs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/run" }
+    }
+  },
+  "$defs": {
+    "host": {
+      "type": "object",
+      "required": ["cpu", "cores", "ram_gb", "os"],
+      "additionalProperties": false,
+      "properties": {
+        "cpu": { "type": "string" },
+        "cores": { "type": "integer", "minimum": 1 },
+        "ram_gb": { "type": "number", "minimum": 1 },
+        "os": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+    "versions": {
+      "type": "object",
+      "required": ["hub"],
+      "additionalProperties": false,
+      "properties": {
+        "hub": { "type": "string" },
+        "ui": { "type": "string" },
+        "cm": { "type": "string" },
+        "browser_image": { "type": "string" }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": ["video", "log", "har"],
+      "additionalProperties": false,
+      "properties": {
+        "video": { "type": "boolean" },
+        "log": { "type": "boolean" },
+        "har": {
+          "type": "string",
+          "enum": ["off", "meta", "bodies"]
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "measured_at",
+        "language",
+        "protocol",
+        "image_flavor",
+        "pool",
+        "suite_size",
+        "tests_count",
+        "parallel",
+        "browser",
+        "artifacts",
+        "versions",
+        "host",
+        "wall_time_s",
+        "session_create_p50_ms",
+        "session_create_p95_ms",
+        "cpu_avg_pct",
+        "cpu_peak_pct",
+        "ram_avg_mb",
+        "ram_peak_mb",
+        "video_kb",
+        "log_kb",
+        "har_kb",
+        "artifacts_total_kb",
+        "passed",
+        "failed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "enum": ["ok", "pending", "failed"] },
+        "measured_at": { "type": ["string", "null"], "format": "date-time" },
+        "language": {
+          "type": "string",
+          "enum": ["java", "go", "python", "js", "kotlin"]
+        },
+        "protocol": { "type": "string", "enum": ["webdriver", "playwright"] },
+        "image_flavor": { "type": "string", "enum": ["warm", "min"] },
+        "pool": { "type": "string", "enum": ["cold", "warm-pool"] },
+        "suite_size": { "type": "string", "enum": ["1", "few", "many"] },
+        "tests_count": { "type": "integer", "minimum": 1 },
+        "parallel": { "type": "integer", "minimum": 1 },
+        "browser": { "type": "string", "minLength": 1 },
+        "artifacts": { "$ref": "#/$defs/artifacts" },
+        "versions": { "$ref": "#/$defs/versions" },
+        "host": { "$ref": "#/$defs/host" },
+        "wall_time_s": { "type": ["number", "null"], "minimum": 0 },
+        "session_create_p50_ms": { "type": ["number", "null"], "minimum": 0 },
+        "session_create_p95_ms": { "type": ["number", "null"], "minimum": 0 },
+        "cpu_avg_pct": { "type": ["number", "null"], "minimum": 0 },
+        "cpu_peak_pct": { "type": ["number", "null"], "minimum": 0 },
+        "ram_avg_mb": { "type": ["number", "null"], "minimum": 0 },
+        "ram_peak_mb": { "type": ["number", "null"], "minimum": 0 },
+        "video_kb": { "type": ["number", "null"], "minimum": 0 },
+        "log_kb": { "type": ["number", "null"], "minimum": 0 },
+        "har_kb": { "type": ["number", "null"], "minimum": 0 },
+        "artifacts_total_kb": { "type": ["number", "null"], "minimum": 0 },
+        "passed": { "type": ["integer", "null"], "minimum": 0 },
+        "failed": { "type": ["integer", "null"], "minimum": 0 },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}
