@@ -463,9 +463,59 @@ jobs:
           path: build/allure-results/go-hub/
           retention-days: 7
 
+  # Deploy/release smoke waits on this callback — do not block on report job (Pages/preview ~20m+).
+  deploy-smoke-callback:
+    name: Deploy smoke callback
+    needs: go-hub
+    if: >-
+      always() &&
+      !cancelled() &&
+      env.TRIGGER_RUN_ID != '' &&
+      env.SOURCE_REPO != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Notify deploy-smoke trigger (early)
+        env:
+          CALLBACK_TOKEN_PRIMARY: ${{ secrets.SELENOID_SMOKE_CALLBACK_TOKEN }}
+          CALLBACK_TOKEN_FALLBACK: ${{ secrets.SELENOID_QA_GURU_DISPATCH_TOKEN || secrets.SELENOID_AUTOTESTS_CLOUD_DISPATCH_TOKEN }}
+          GO_HUB_RESULT: ${{ needs.go-hub.result }}
+        run: |
+          set -euo pipefail
+          CALLBACK_TOKEN="${CALLBACK_TOKEN_PRIMARY:-${CALLBACK_TOKEN_FALLBACK}}"
+          if [[ -z "${CALLBACK_TOKEN}" ]]; then
+            echo "::warning::SELENOID_SMOKE_CALLBACK_TOKEN is not set; skipping smoke-complete callback."
+            exit 0
+          fi
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [[ "${GO_HUB_RESULT}" == "success" ]]; then
+            conclusion=success
+          else
+            conclusion=failure
+          fi
+          PAYLOAD="$(jq -n \
+            --arg trigger_run_id "${TRIGGER_RUN_ID}" \
+            --arg tests_run_id "${{ github.run_id }}" \
+            --arg conclusion "${conclusion}" \
+            --arg run_url "${RUN_URL}" \
+            '{
+              trigger_run_id: $trigger_run_id,
+              tests_run_id: $tests_run_id,
+              conclusion: $conclusion,
+              run_url: $run_url,
+              report_built: false,
+              quality_gate: "skipped",
+              stats: {passed: 0, failed: 0, broken: 0, skipped: 0}
+            }')"
+          curl -fsSL -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${CALLBACK_TOKEN}" \
+            "https://api.github.com/repos/${SOURCE_REPO}/dispatches" \
+            -d "$(jq -n --argjson client_payload "${PAYLOAD}" '{event_type: "smoke-complete", client_payload: $client_payload}')"
+
   report:
     name: Allure report + TestOps
-    needs: [go-unit, go-hub, go-cm]
+    needs: [go-unit, go-hub, go-cm, deploy-smoke-callback]
     if: always() && !cancelled() && (needs.go-cm.result == 'success' || needs.go-cm.result == 'skipped' || needs.go-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -745,7 +795,8 @@ jobs:
         if: >-
           always() &&
           env.TRIGGER_RUN_ID != '' &&
-          env.SOURCE_REPO != ''
+          env.SOURCE_REPO != '' &&
+          needs.deploy-smoke-callback.result == 'skipped'
         continue-on-error: true
         env:
           CALLBACK_TOKEN_PRIMARY: ${{ secrets.SELENOID_SMOKE_CALLBACK_TOKEN }}
