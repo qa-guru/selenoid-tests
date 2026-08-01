@@ -1,6 +1,8 @@
 package ui_test
 
 import (
+	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -13,6 +15,11 @@ import (
 )
 
 func TestUiManualHarPlaywright_CapabilitiesCreateSessionShowsHarInArchive(t *testing.T) {
+	// Release/deploy smoke (TEST_TAGS contains smoke) is load-sensitive for
+	// Playwright+HAR Create Session on shared prod; keep coverage in hub-prod / full ui.
+	if tags := os.Getenv("TEST_TAGS"); strings.Contains(tags, "smoke") {
+		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
+	}
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
 		Name:      "Manual Playwright Capabilities enableHar → Finished sessions HAR icon + HarViewer",
@@ -23,7 +30,7 @@ func TestUiManualHarPlaywright_CapabilitiesCreateSessionShowsHarInArchive(t *tes
 		Feature:   "Capabilities manual session",
 		Story:     "Manual Playwright session with hub HAR",
 		Suite:     "UI manual HAR",
-		Tags:      []string{"ui-manual-har", "playwright", "smoke", "positive"},
+		Tags:      []string{"ui-manual-har", "playwright", "positive"},
 	}, func(a *allurex.A) {
 		var sessionID string
 		runWithBrowser(t, func(page playwright.Page, baseURL string) {

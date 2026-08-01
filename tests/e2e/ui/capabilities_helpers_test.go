@@ -109,14 +109,26 @@ func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Confi
 	userField := page.Locator("[data-testid=capabilities-caps-auth-user]")
 	passField := page.Locator("[data-testid=capabilities-caps-auth-pass]")
 	accessKey := page.Locator("[data-testid=capabilities-caps-access-key-field]")
+	pwPanel := page.Locator("[data-testid=capabilities-playwright-panel]")
 
+	// Playwright panel uses accessKey only — prefer it when visible so we do not
+	// fill a stale/hidden WebDriver auth duo left in the DOM.
+	if n, err := pwPanel.Count(); err == nil && n > 0 {
+		if vis, err := pwPanel.IsVisible(); err == nil && vis {
+			require.NoError(t, accessKey.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
+			fillReactInput(t, accessKey, user+":"+pass)
+			return
+		}
+	}
+	if n, err := accessKey.Count(); err == nil && n > 0 {
+		if vis, err := accessKey.IsVisible(); err == nil && vis {
+			fillReactInput(t, accessKey, user+":"+pass)
+			return
+		}
+	}
 	if n, err := userField.Count(); err == nil && n > 0 {
 		fillReactInput(t, userField, user)
 		fillReactInput(t, passField, pass)
-		return
-	}
-	if n, err := accessKey.Count(); err == nil && n > 0 {
-		fillReactInput(t, accessKey, user+":"+pass)
 		return
 	}
 	t.Fatal("no WebDriver auth duo or Playwright accessKey field on Capabilities")
@@ -153,13 +165,18 @@ func killSessionFromUI(t *testing.T, page playwright.Page) string {
 	require.NotEmpty(t, sessionID, "killSessionFromUI: expected /#/sessions/<id> URL, got %s", page.URL())
 
 	kill := page.Locator("[data-testid=session-kill]")
-	require.NoError(t, kill.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
+	// Prod Playwright Create Session can take >30s before the live panel mounts.
+	killWait := createSessionTimeout
+	if strings.Contains(cfg.Env, "qa_guru") {
+		killWait = 3 * time.Minute
+	}
+	require.NoError(t, kill.WaitFor(playwright.LocatorWaitForOptions{
+		State:   playwright.WaitForSelectorStateVisible,
+		Timeout: playwright.Float(float64(killWait.Milliseconds())),
+	}))
 	require.NoError(t, kill.Click())
 
-	timeout := createSessionTimeout
-	if strings.Contains(cfg.Env, "qa_guru") {
-		timeout = 3 * time.Minute
-	}
+	timeout := killWait
 	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
 		url := page.URL()
