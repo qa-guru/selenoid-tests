@@ -1,12 +1,12 @@
 # Synced from ethalon: selenoid_github-orchestrator.yml (SSOT generators/ethalon/tests-java/.github/_ethalon/)
 # Runnable filename = ethalon filename. Default: -Denv=selenoid_github_e2e
 # SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
-# Именование: {env_base}-orchestrator.yml — Go unit matrix + merge Allure + repository_dispatch.
+# Именование: {env_base}-orchestrator.yml — Go unit + Go hub/cm pyramid + merge Allure + repository_dispatch.
 # Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
-# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (run-go-unit.sh).
+# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (run-go-unit.sh, run-go-pyramid.sh).
 #
 # workflow name: = GitHub repo slug + " Tests" (канон test-layers). Reference consumer: selenoid-tests.
-# Default: -Denv=selenoid_github_e2e. GRADLE_ARGS: env, skipHealthCheck, tags only — не дублировать profile keys.
+# Default: env_profile=selenoid_github_e2e. Prod deploy smoke: selenoid_qa_guru_* → go-hub hub-prod.
 
 name: selenoid-tests Tests
 
@@ -18,10 +18,10 @@ on:
         required: false
         default: selenoid_github_e2e
       test_class:
-        description: "Reserved (optional); no Java pyramid job in this workflow"
+        description: "Reserved (optional)"
         required: false
       test_tags:
-        description: "Reserved (optional); deploy-smoke tag slices removed with Java jobs"
+        description: "Go pyramid slice for deploy-smoke (integration|api|smoke|playwright|api,smoke|cm)"
         required: false
       source_ref:
         description: "Git ref for Go service repos (default main)"
@@ -156,10 +156,250 @@ jobs:
         if: always() && env.GO_TEST_EXIT != '0'
         run: exit "${{ env.GO_TEST_EXIT }}"
 
+  go-cm:
+    name: Go CM integration
+    if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ALLURE_RESULTS: build/allure-results/go-cm
+      GOTOOLCHAIN: auto
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Checkout cm
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/cm
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/cm
+
+      - name: Checkout selenoid
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid
+
+      - name: Checkout selenoid-ui
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid-ui
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid-ui
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: repos/cm/go.mod
+          cache-dependency-path: |
+            repos/cm/go.sum
+            repos/selenoid/go.sum
+            repos/selenoid-ui/go.sum
+
+      - name: Setup Node 24 (selenoid-ui yarn)
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Setup Go (tests module)
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Run Go CM pyramid
+        id: go-cm-run
+        run: |
+          set +e
+          chmod +x scripts/run-ci-cm-tests.sh
+          ./scripts/run-ci-cm-tests.sh
+          CM_TEST_EXIT=$?
+          echo "CM_TEST_EXIT=${CM_TEST_EXIT}" >> "$GITHUB_ENV"
+          set -e
+          exit "${CM_TEST_EXIT}"
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/go-cm/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-go-cm
+          path: build/allure-results/go-cm/
+          retention-days: 7
+
+      - name: Fail if Go CM tests failed
+        if: always() && steps.go-cm-run.outcome == 'failure'
+        run: exit 1
+
+  # P5: Go hub pyramid is the CI gate (ADR-go-pyramid).
+  go-hub:
+    name: Go hub tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      ALLURE_RESULTS: build/allure-results/go-hub
+      GOTOOLCHAIN: auto
+      TEST_TAGS: ${{ github.event.client_payload.test_tags || github.event.inputs.test_tags || '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Checkout selenoid
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid
+
+      - name: Checkout selenoid-ui
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: qa-guru/selenoid-ui
+          ref: ${{ env.SOURCE_REF }}
+          path: repos/selenoid-ui
+
+      - name: Setup Go (stack build)
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: repos/selenoid/go.mod
+          cache-dependency-path: |
+            repos/selenoid/go.sum
+            repos/selenoid-ui/go.sum
+
+      - name: Setup Node 24 (selenoid-ui yarn)
+        if: env.PROD_CLOUD_STAND != 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+          cache: yarn
+          cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
+
+      - name: Start Selenoid stack for Go hub tests
+        if: env.PROD_CLOUD_STAND != 'true'
+        run: |
+          chmod +x scripts/start-ci-selenoid-stack.sh
+          ./scripts/start-ci-selenoid-stack.sh
+
+      - name: Setup Go (tests module)
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Run Go hub tests
+        id: go-hub-run
+        env:
+          SOURCE_REPO: ${{ env.SOURCE_REPO }}
+          SOURCE_VARIANT: ${{ env.SOURCE_VARIANT }}
+          SOURCE_BROWSER: ${{ env.SOURCE_BROWSER }}
+          WEBDRIVER_VARIANT: ${{ env.WEBDRIVER_VARIANT }}
+        run: |
+          set +e
+          chmod +x scripts/run-go-pyramid.sh
+          if [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
+            export PYRAMID_STAND=selenoid_qa_guru
+          else
+            export PYRAMID_STAND=selenoid_github
+          fi
+          GO_HUB_EXIT=0
+          run_slice() {
+            local slice="$1"
+            echo "Go hub slice=${slice} env_profile=${ENV_PROFILE} test_tags=${TEST_TAGS:-<empty>}"
+            ./scripts/run-go-pyramid.sh "${slice}" || GO_HUB_EXIT=$?
+          }
+          if [[ -n "${TEST_TAGS}" ]]; then
+            case "${TEST_TAGS}" in
+              integration)
+                run_slice integration
+                ;;
+              api)
+                run_slice api
+                ;;
+              api,smoke)
+                run_slice api
+                if [[ "${SOURCE_REPO}" == "qa-guru/selenoid-ui" ]]; then
+                  run_slice ui
+                else
+                  run_slice webdriver
+                  run_slice ui
+                  run_slice playwright
+                fi
+                ;;
+              smoke)
+                if [[ "${SOURCE_VARIANT}" == "webdriver" ]]; then
+                  case "${SOURCE_BROWSER}" in
+                    firefox)
+                      go test ./tests/integration/wd/... -run TestHubFirefoxSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      ;;
+                    msedge)
+                      go test ./tests/integration/wd/... -run TestHubMsedgeSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      ;;
+                    chrome)
+                      if [[ "${WEBDRIVER_VARIANT}" == "min" ]]; then
+                        go test ./tests/integration/min/... -run TestHubChromeMinSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                      else
+                        run_slice webdriver
+                      fi
+                      ;;
+                    *)
+                      run_slice webdriver
+                      ;;
+                  esac
+                elif [[ "${SOURCE_VARIANT}" == "video-recorder" ]]; then
+                  run_slice api
+                elif [[ "${SOURCE_REPO}" == "qa-guru/selenoid-ui" ]]; then
+                  run_slice ui
+                else
+                  run_slice e2e
+                fi
+                ;;
+              playwright)
+                run_slice playwright
+                ;;
+              cm)
+                echo "Go hub skips cm tag (go-cm owns CM pyramid)"
+                ;;
+              *)
+                echo "Go hub: unknown TEST_TAGS=${TEST_TAGS}" >&2
+                GO_HUB_EXIT=1
+                ;;
+            esac
+          elif [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
+            run_slice hub-prod
+          elif [[ "${ENV_PROFILE}" == selenoid_github_api ]]; then
+            run_slice api
+          elif [[ "${ENV_PROFILE}" == selenoid_github_integration ]]; then
+            run_slice integration
+          else
+            run_slice hub-all
+          fi
+          echo "GO_HUB_EXIT=${GO_HUB_EXIT}" >> "$GITHUB_ENV"
+          set -e
+          exit "${GO_HUB_EXIT}"
+
+      - name: Upload Allure results
+        if: always() && hashFiles('build/allure-results/go-hub/**') != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-go-hub
+          path: build/allure-results/go-hub/
+          retention-days: 7
+
+      - name: Fail if Go hub tests failed
+        if: always() && steps.go-hub-run.outcome == 'failure'
+        run: exit 1
+
+
   report:
     name: Allure report + TestOps
-    needs: [go-unit]
-    if: always() && !cancelled()
+    needs: [go-unit, go-hub, go-cm]
+    if: always() && !cancelled() && (needs.go-cm.result == 'success' || needs.go-cm.result == 'skipped' || needs.go-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -189,6 +429,14 @@ jobs:
         continue-on-error: true
         with:
           name: allure-ui-react-testing-library
+          path: build/allure-results
+          merge-multiple: true
+
+      - name: Download Go CM Allure artifacts
+        uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          name: allure-go-cm
           path: build/allure-results
           merge-multiple: true
 
@@ -405,7 +653,9 @@ jobs:
             fi
           fi
           echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch: deploy-smoke via \`repository_dispatch\`; Java pyramid jobs removed (Go-only CI)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Go hub: push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Go CM push: \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice; \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"
@@ -433,7 +683,7 @@ jobs:
         env:
           CALLBACK_TOKEN_PRIMARY: ${{ secrets.SELENOID_SMOKE_CALLBACK_TOKEN }}
           CALLBACK_TOKEN_FALLBACK: ${{ secrets.SELENOID_QA_GURU_DISPATCH_TOKEN || secrets.SELENOID_AUTOTESTS_CLOUD_DISPATCH_TOKEN }}
-          GO_UNIT_RESULT: ${{ needs.go-unit.result }}
+          GO_HUB_RESULT: ${{ needs.go-hub.result }}
         run: |
           set -euo pipefail
           CALLBACK_TOKEN="${CALLBACK_TOKEN_PRIMARY:-${CALLBACK_TOKEN_FALLBACK}}"
@@ -451,7 +701,7 @@ jobs:
             report_built=false
           fi
 
-          if [[ "${GO_UNIT_RESULT}" == "success" && "${QUALITY_GATE_EXIT:-1}" == "0" && "${report_built}" == "true" ]]; then
+          if [[ "${GO_HUB_RESULT}" == "success" && "${QUALITY_GATE_EXIT:-1}" == "0" && "${report_built}" == "true" ]]; then
             conclusion=success
           else
             conclusion=failure
