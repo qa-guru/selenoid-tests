@@ -33,11 +33,12 @@ try {
       localStorage.setItem("theme", selectedTheme);
     }, theme);
 
-    await page.goto(baseUrl, { waitUntil: "networkidle", timeout: 90_000 });
+    await page.goto(baseUrl, { waitUntil: "load", timeout: 60_000 });
 
     const layout = page.locator('[data-testid="base-layout"]');
     await layout.waitFor({ timeout: 30_000 });
-    await page.waitForTimeout(2_000);
+    // Pyramid reshape debounce (SETTLE_MS) — brief settle before screenshot.
+    await page.waitForTimeout(1_500);
 
     const output = join(outputDir, file);
     await layout.screenshot({ path: output, type: "png" });
