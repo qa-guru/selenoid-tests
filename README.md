@@ -1,21 +1,10 @@
 # selenoid-tests
 
-<!-- stack-branches-note:start -->
-## Стабильные билды — две ветки
+<p align="center">
+  <img src="docs/logo.svg" alt="Selenoid Stack logo" width="120">
+</p>
 
-Стабильные версии стека зафиксированы в **двух долгоживущих ветках** (а не в `main`). Имя ветки кодирует согласованный toolchain всего стека, включая React из paired `selenoid-ui`:
-
-| Ветка | Стабильный билд | Docker API | Engine | Go | React | UI |
-|-------|-----------------|------------|--------|-----|-------|-----|
-| [`selenoid2-1.45-engine26.1-go1.26-react16`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.45-engine26.1-go1.26-react16) | **v2.2.1** — прежний prod ([selenoid.qa.guru](https://selenoid.qa.guru)) | 1.45 | 26.1.x | 1.26.5 | 16 | CRA (react-scripts 3.x) |
-| [`selenoid2-1.55-engine29.6-go1.26-react18`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.55-engine29.6-go1.26-react18) | **v2.3.0** — актуальный, до нового UI (Selenoid 3) | 1.55 | 29.6+ | 1.26.5 | 18 | Vite 6 |
-
-**Зачем две ветки:** каждая держит воспроизводимый набор версий (Docker API / Engine / Go / React). `main` — активная разработка. Точные версии — в `STACK-PIN.md`.
-
-_Вы на ветке [`selenoid2-1.55-engine29.6-go1.26-react18`](https://github.com/qa-guru/selenoid-tests/tree/selenoid2-1.55-engine29.6-go1.26-react18)._
-<!-- stack-branches-note:end -->
-
-
+Go e2e/integration orchestrator for the Selenoid stack — merged Allure pyramid across hub, UI, cm and browser nodes (Go unit + Go hub/cm slices). Prod smoke target: [selenoid.qa.guru](https://selenoid.qa.guru) (Selenoid 3).
 
 [![Selenoid Stack](https://qa-guru.github.io/selenoid-tests/readme/badge.svg)](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/)
 
@@ -32,13 +21,13 @@ Live SVG metrics + Allure 3 dashboard (pyramid tile **testingPyramid**), updated
     <source media="(prefers-color-scheme: dark)" srcset="https://qa-guru.github.io/selenoid-tests/readme/dashboard-preview-dark.png">
     <img
       src="https://qa-guru.github.io/selenoid-tests/readme/dashboard-preview.png"
-      alt="Allure 3 dashboard — pyramid, stability, success distribution"
+      alt="Allure 3 dashboard — pyramid, status dynamics, success distribution"
       width="800"
     />
   </picture>
 </a>
 
-Dashboard PNG updates after each orchestrator run on `main`.
+Dashboard PNG updates after each orchestrator run on `main` (Playwright screenshot of Allure 3 dashboard).
 
 | Link | Description |
 |------|-------------|
@@ -48,6 +37,20 @@ Dashboard PNG updates after each orchestrator run on `main`.
 | [CI workflow](https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml) | `workflow_dispatch` max run: `env_profile=selenoid_github_e2e` |
 
 Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,playwright-image,video-recorder}.svg` — for hub repo READMEs.
+
+<!-- stack-branches-note:start -->
+> ## Стабильные билды
+>
+> **Prod:** [selenoid.qa.guru](https://selenoid.qa.guru) — **Selenoid 3** (hub/cm/UI v3.x на `main`). Go pyramid на `main` — gates `hub-prod` / `hub-all`; pin-ветки 2.x — frozen rollback.
+>
+> | Ветка | Semver | Назначение |
+> |-------|--------|------------|
+> | **`main`** | **v3.0.0+** | Активная prod-линия + CI orchestrator (Go) |
+> | `selenoid2-1.55-…-react18` | v2.3.0 | frozen maintenance pin |
+> | `selenoid2-1.45-…-react16` | v2.2.1 | frozen rollback reference |
+>
+> Точные версии pin-веток — `STACK-PIN.md` на соответствующей ветке. Monorepo SSOT: [`projects/selenoid-home/README.md`](https://github.com/qa-guru/zero-design-system/blob/master/projects/selenoid-home/README.md).
+<!-- stack-branches-note:end -->
 
 
 Центральный репозиторий автотестов Selenoid-стека: [qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests).
@@ -69,7 +72,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 | **selenoid-tests** (этот) | [github.com/qa-guru/selenoid-tests](https://github.com/qa-guru/selenoid-tests) | E2e/integration ethalon |
 | Docker Hub | [hub.docker.com/u/qaguru](https://hub.docker.com/u/qaguru) | Образы `qaguru/*` |
 
-**Stack binary cut:** hub / UI / cm → **v2.2.1** — **Selenoid 2** (maintenance @ [selenoid.qa.guru](https://selenoid.qa.guru)). **Selenoid 3** → [selenoid.qa.guru](https://selenoid.qa.guru) (planning). Browser-image — image tags, не git semver.
+**Stack:** prod [selenoid.qa.guru](https://selenoid.qa.guru) — **Selenoid 3** (hub/cm/UI v3.x on `main`). Pin-ветки 2.x — frozen rollback in git only. Browser-image — image tags, не git semver.
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
@@ -206,7 +209,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ### Component × Layer × CI (push `main`)
 
 Пирамида: `unit → component → integration → api → e2e → manual`. **Go hub** — пакеты ниже; **Go unit** — отдельно в `go-unit`.  
-**Матрица (stack v2.3.0):** hub/ui/cm/browser-image покрыты Go pyramid + product Go unit. `warm-pool` — OUT.
+**Матрица (Selenoid 3 / `main`):** hub/ui/cm/browser-image покрыты Go pyramid + product Go unit. `warm-pool` — OUT.
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
