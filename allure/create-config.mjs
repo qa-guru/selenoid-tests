@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+
 import { buildAwesomeCharts } from "./awesome-charts.mjs";
 import { categoryRules } from "./categories.mjs";
 import {
@@ -7,6 +9,11 @@ import {
 import { buildDashboardLayout } from "./dashboard-layout.mjs";
 import { qualityGateRules } from "./quality-gate.mjs";
 
+const ALLURE_LOGO = fileURLToPath(new URL("./allure3-logo.svg", import.meta.url));
+const DASHBOARD_THEME_PLUGIN = fileURLToPath(
+  new URL("./plugins/dashboard-theme.mjs", import.meta.url),
+);
+
 /**
  * Build Allure 3 config from ethalon modules.
  *
@@ -14,11 +21,14 @@ import { qualityGateRules } from "./quality-gate.mjs";
  * @param {string} profile.slug - repo slug → `{slug} Tests`
  * @param {string[]} [profile.epicCharts] - optional per-epic statusDynamics tiles
  * @param {object} [profile.variables] - Allure variables override
+ * @param {object} [profile.publish] - CI publish plugins (notifications)
+ * @param {object} [profile.publish.notifications] - `@allure-notifications/plugin` options
  */
 export function createAllureConfig({
   slug,
   epicCharts = [],
   variables,
+  publish,
 } = {}) {
   if (!slug || typeof slug !== "string") {
     throw new Error("createAllureConfig: profile.slug is required");
@@ -57,6 +67,20 @@ export function createAllureConfig({
           fileName: `${slug}.csv`,
         },
       },
+      dashboardTheme: {
+        import: DASHBOARD_THEME_PLUGIN,
+        options: {
+          assetsDir: "../.github/assets",
+        },
+      },
+      ...(publish?.notifications
+        ? {
+            notifications: {
+              import: "@allure-notifications/plugin",
+              options: publish.notifications,
+            },
+          }
+        : {}),
     },
   };
 }
