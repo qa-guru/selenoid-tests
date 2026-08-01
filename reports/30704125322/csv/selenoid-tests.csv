@@ -1,0 +1,2 @@
+Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
+"tests.integration.HubMsedgeSessionIntegrationTests.Remote Edge WebDriver session starts browser node and completes","Remote Edge WebDriver session starts browser node and completes","failed","1ms","Remote Edge WebDriver session starts browser node and completes failed",,,,"WebDriver hub session (msedge)",,"webdriver-image","WebDriver session","WebDriver session"
