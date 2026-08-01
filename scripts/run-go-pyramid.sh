@@ -47,7 +47,7 @@ run_pkgs() {
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
   if [[ "${active_slice}" == "integration" || "${active_slice}" == "min" || "${active_slice}" == "resilience" || "${active_slice}" == "ui" || "${active_slice}" == "e2e" || "${active_slice}" == "webdriver" || "${active_slice}" == "playwright" || "${active_slice}" == "har-prod" || "${active_slice}" == "cm" ]]; then
-    # Hub session tests share capacity counters (Java @ResourceLock hubSessions).
+    # Hub session tests share Selenoid capacity — keep -p 1 (was Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
   echo "go pyramid slice=${active_slice} env=${SELENOID_TEST_ENV:-} allure=${ALLURE_RESULTS}"

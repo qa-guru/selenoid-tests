@@ -312,21 +312,31 @@ jobs:
           chmod +x scripts/run-go-pyramid.sh
           if [[ -n "${TEST_TAGS}" ]]; then
             echo "mode=dispatch" >> "$GITHUB_OUTPUT"
-          elif [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
-            echo "mode=hub-prod" >> "$GITHUB_OUTPUT"
-          elif [[ "${ENV_PROFILE}" == "selenoid_github_api" ]]; then
-            echo "mode=api" >> "$GITHUB_OUTPUT"
-          elif [[ "${ENV_PROFILE}" == "selenoid_github_integration" ]]; then
-            echo "mode=integration" >> "$GITHUB_OUTPUT"
           else
-            echo "mode=hub-all" >> "$GITHUB_OUTPUT"
+            case "${ENV_PROFILE}" in
+              selenoid_qa_guru_*)
+                echo "mode=hub-prod" >> "$GITHUB_OUTPUT"
+                ;;
+              selenoid_github_api)
+                echo "mode=api" >> "$GITHUB_OUTPUT"
+                ;;
+              selenoid_github_integration)
+                echo "mode=integration" >> "$GITHUB_OUTPUT"
+                ;;
+              *)
+                echo "mode=hub-all" >> "$GITHUB_OUTPUT"
+                ;;
+            esac
           fi
-          if [[ "${ENV_PROFILE}" == selenoid_qa_guru_* ]]; then
-            echo "PYRAMID_STAND=selenoid_qa_guru" >> "$GITHUB_ENV"
-          else
-            echo "PYRAMID_STAND=selenoid_github" >> "$GITHUB_ENV"
-          fi
-          echo "Pyramid mode: $(grep '^mode=' "$GITHUB_OUTPUT" | cut -d= -f2-)"
+          case "${ENV_PROFILE}" in
+            selenoid_qa_guru_*)
+              echo "PYRAMID_STAND=selenoid_qa_guru" >> "$GITHUB_ENV"
+              ;;
+            *)
+              echo "PYRAMID_STAND=selenoid_github" >> "$GITHUB_ENV"
+              ;;
+          esac
+          echo "Pyramid mode: $(grep '^mode=' "$GITHUB_OUTPUT" | cut -d= -f2-) stand=${PYRAMID_STAND:-unset} env_profile=${ENV_PROFILE}"
 
       - name: selenoid-unit-go-test
         if: steps.pyramid-plan.outputs.mode == 'hub-all' || steps.pyramid-plan.outputs.mode == 'hub-prod'
