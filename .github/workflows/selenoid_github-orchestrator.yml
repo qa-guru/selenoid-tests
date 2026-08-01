@@ -70,7 +70,7 @@ env:
 jobs:
   go-unit:
     if: github.event.client_payload.skip_go_unit != true
-    name: Go unit — ${{ matrix.repo }}
+    name: ${{ matrix.repo }}-unit-go
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -156,7 +156,7 @@ jobs:
         run: exit "${{ env.GO_TEST_EXIT }}"
 
   go-cm:
-    name: Go CM integration
+    name: cm-integration-go
     if: ${{ !startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -235,7 +235,7 @@ jobs:
 
   # P5: Go hub pyramid is the CI gate (ADR-go-pyramid).
   go-hub:
-    name: Go hub tests
+    name: selenoid-pyramid-go
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
@@ -651,9 +651,9 @@ jobs:
               echo "- WebDriver variant: \`${WEBDRIVER_VARIANT}\`" >> "$GITHUB_STEP_SUMMARY"
             fi
           fi
-          echo "- Go unit: selenoid, selenoid-ui, cm (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Go hub: push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Go CM push: \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Unit: selenoid-unit-go, selenoid-ui-unit-go, cm-unit-go (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pyramid: selenoid-pyramid-go — push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
+          echo "- CM push: cm-integration-go — \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice; \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
