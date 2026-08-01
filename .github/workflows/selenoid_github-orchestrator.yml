@@ -515,9 +515,10 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          ./gradlew allureQualityGate
+          chmod +x scripts/allure-report.sh
+          ./scripts/allure-report.sh quality-gate
           echo "QUALITY_GATE_EXIT=$?" >> "$GITHUB_ENV"
-          ./gradlew allureReport
+          ./scripts/allure-report.sh generate
           set -e
 
       - name: Verify Allure awesome section chunks
