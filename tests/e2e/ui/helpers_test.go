@@ -31,6 +31,15 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+// skipHeavyHarOnGithubCI excludes HAR archive UI tests from selenoid_github hub-all —
+// local CI stack archive timing is flaky; coverage lives in hub-prod / har-prod.
+func skipHeavyHarOnGithubCI(t *testing.T, cfg *config.Config) {
+	t.Helper()
+	if cfg != nil && strings.HasPrefix(cfg.Env, "selenoid_github") {
+		t.Skip("HAR archive UI tests run on hub-prod / har-prod (selenoid_qa_guru_e2e)")
+	}
+}
+
 func runWithBrowser(t *testing.T, fn func(page playwright.Page, baseURL string)) {
 	t.Helper()
 	cfg := config.MustLoad()

@@ -19,6 +19,7 @@ func TestUiManualHarWebDriver_CapabilitiesCreateSessionShowsHarInArchive(t *test
 		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
 	}
 	cfg := config.MustLoad()
+	skipHeavyHarOnGithubCI(t, cfg)
 	targetURL := strings.TrimRight(cfg.SmokeURL, "/") + "/"
 	allurex.Run(t, allurex.Meta{
 		Name:      "Manual WebDriver Capabilities enableHar → Finished sessions HAR icon + HarViewer",

@@ -21,6 +21,7 @@ func TestUiManualHarPlaywright_CapabilitiesCreateSessionShowsHarInArchive(t *tes
 		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
 	}
 	cfg := config.MustLoad()
+	skipHeavyHarOnGithubCI(t, cfg)
 	allurex.Run(t, allurex.Meta{
 		Name:      "Manual Playwright Capabilities enableHar → Finished sessions HAR icon + HarViewer",
 		Package:   "tests.UiManualHarTests",

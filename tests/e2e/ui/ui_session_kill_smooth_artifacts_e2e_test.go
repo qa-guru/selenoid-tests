@@ -20,6 +20,7 @@ func TestUiSessionKillSmoothArtifacts_WebDriverKillKeepsLayoutAndUpdatesInPlace(
 		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
 	}
 	cfg := config.MustLoad()
+	skipHeavyHarOnGithubCI(t, cfg)
 	targetURL := strings.TrimRight(cfg.SmokeURL, "/") + "/"
 	allurex.Run(t, allurex.Meta{
 		Name:      "Kill session in-place: URL stable, VNC→video + HAR swap without layout jump",
