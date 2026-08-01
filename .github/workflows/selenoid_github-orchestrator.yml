@@ -1,9 +1,8 @@
-# Synced from ethalon: selenoid_github-orchestrator.yml (SSOT generators/ethalon/tests-java/.github/_ethalon/)
-# Runnable filename = ethalon filename. Default: -Denv=selenoid_github_e2e
-# SSOT: GitHub Actions workflow — env_base selenoid_github, suffix -orchestrator (multi-source CI).
-# Именование: {env_base}-orchestrator.yml — Go unit + Go hub/cm pyramid + merge Allure + repository_dispatch.
-# Копировать в consumer: .github/workflows/ — skill sync-github-workflows-ethalon.
-# Consumer reference: qa-guru-home/selenoid-home/selenoid-tests (run-go-unit.sh, run-go-pyramid.sh).
+# SSOT: generators/ethalon/selenoid-stack/selenoid_github-orchestrator.yml
+# Runnable filename = ethalon filename. Default env: selenoid_github_e2e
+# GitHub Actions — env_base selenoid_github, suffix -orchestrator (Go unit + hub/cm + Allure + dispatch).
+# Sync: ./projects/selenoid-home/scripts/sync-selenoid-stack-workflows.sh
+# Consumer: qa-guru/selenoid-tests (run-go-unit.sh, run-go-pyramid.sh).
 #
 # workflow name: = GitHub repo slug + " Tests" (канон test-layers). Reference consumer: selenoid-tests.
 # Default: env_profile=selenoid_github_e2e. Prod deploy smoke: selenoid_qa_guru_* → go-hub hub-prod.
@@ -198,7 +197,7 @@ jobs:
             repos/selenoid/go.sum
             repos/selenoid-ui/go.sum
 
-      - name: Setup Node 24 (selenoid-ui yarn)
+      - name: Setup Node 26 (selenoid-ui yarn)
         uses: actions/setup-node@v6
         with:
           node-version: 26
@@ -272,7 +271,7 @@ jobs:
             repos/selenoid/go.sum
             repos/selenoid-ui/go.sum
 
-      - name: Setup Node 24 (selenoid-ui yarn)
+      - name: Setup Node 26 (selenoid-ui yarn)
         if: env.PROD_CLOUD_STAND != 'true'
         uses: actions/setup-node@v6
         with:
