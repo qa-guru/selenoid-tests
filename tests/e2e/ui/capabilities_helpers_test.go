@@ -83,12 +83,23 @@ func setManualHarSessionName(t *testing.T, page playwright.Page, fieldTestID str
 	t.Helper()
 	field := page.Locator(fmt.Sprintf("[data-testid=%s]", fieldTestID))
 	require.NoError(t, field.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
-	require.NoError(t, field.Fill(manualHarSessionName))
+	fillReactInput(t, field, manualHarSessionName)
 }
 
 // fillHubAuthFromConfig overrides baked UI defaults with credentials from the
 // active test profile (remoteUrl / apiBaseUrl / uiUrl). Prod UI may ship a
 // stale VITE_HUB_AUTH_* pin while nginx htpasswd has rotated.
+// fillReactInput clears then types so React controlled fields pick up onChange
+// (playwright-go Fill alone is occasionally a no-op on Vite/React builds).
+func fillReactInput(t *testing.T, loc playwright.Locator, value string) {
+	t.Helper()
+	require.NoError(t, loc.Click())
+	require.NoError(t, loc.Fill(""))
+	require.NoError(t, loc.Type(value, playwright.LocatorTypeOptions{
+		Delay: playwright.Float(5),
+	}))
+}
+
 func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Config) {
 	t.Helper()
 	user, pass := cfg.ResolveHubBasicAuth()
@@ -100,12 +111,12 @@ func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Confi
 	accessKey := page.Locator("[data-testid=capabilities-caps-access-key-field]")
 
 	if n, err := userField.Count(); err == nil && n > 0 {
-		require.NoError(t, userField.Fill(user))
-		require.NoError(t, passField.Fill(pass))
+		fillReactInput(t, userField, user)
+		fillReactInput(t, passField, pass)
 		return
 	}
 	if n, err := accessKey.Count(); err == nil && n > 0 {
-		require.NoError(t, accessKey.Fill(user+":"+pass))
+		fillReactInput(t, accessKey, user+":"+pass)
 		return
 	}
 	t.Fatal("no WebDriver auth duo or Playwright accessKey field on Capabilities")
@@ -126,7 +137,12 @@ func clickCreateSession(t *testing.T, page playwright.Page) string {
 		}
 		time.Sleep(250 * time.Millisecond)
 	}
-	t.Fatalf("session page did not open within %s, url=%s", createSessionTimeout, page.URL())
+	cls, _ := create.GetAttribute("class")
+	body, _ := page.Locator("[data-testid=capabilities-setup]").InnerText()
+	if len(body) > 600 {
+		body = body[:600]
+	}
+	t.Fatalf("session page did not open within %s, url=%s btn=%s setup=%q", createSessionTimeout, page.URL(), cls, body)
 	return ""
 }
 
