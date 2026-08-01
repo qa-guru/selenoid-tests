@@ -45,7 +45,8 @@ on:
     types: [deploy-smoke]
 
 concurrency:
-  group: selenoid_github-orchestrator-${{ github.ref }}-${{ github.event_name }}
+  group: >-
+    ${{ startsWith(github.event.client_payload.env_profile || github.event.inputs.env_profile || 'selenoid_github_e2e', 'selenoid_qa_guru') && 'prod-smoke-gate' || format('selenoid_github-orchestrator-{0}-{1}', github.ref, github.event_name) }}
   cancel-in-progress: false
 
 permissions:
