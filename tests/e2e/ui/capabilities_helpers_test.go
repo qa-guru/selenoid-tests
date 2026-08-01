@@ -105,8 +105,10 @@ func fillReactInput(t *testing.T, loc playwright.Locator, value string) {
 func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Config) {
 	t.Helper()
 	user, pass := cfg.ResolveHubBasicAuth()
-	require.NotEmpty(t, user, "hub basic auth user missing from test config")
-	require.NotEmpty(t, pass, "hub basic auth password missing from test config")
+	if user == "" || pass == "" {
+		// selenoid_github_e2e CI stack has no hub basic auth — UI defaults are enough.
+		return
+	}
 
 	userField := page.Locator("[data-testid=capabilities-caps-auth-user]")
 	passField := page.Locator("[data-testid=capabilities-caps-auth-pass]")

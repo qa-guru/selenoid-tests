@@ -1,4 +1,4 @@
-/* Injected into Allure 3 dashboard/awesome (prepare-allure-pages-colors.sh).
+/* Injected into Allure 3 dashboard/awesome (dashboardTheme Allure 3 plugin).
  * Palette A / Allure3 F5 — SSOT with design-system tokens.css --layer-* and
  * allure/pyramid-layer-colors.mjs. Allure paints all active bands with
  * one --color-intent-primary-bg; JS resolves --layer-* to hex (SVG fill
@@ -110,3 +110,15 @@ html[data-shell-layout="narrow"] [class*="styles_widget__"] {
 .zds-widget-dot--gray { background: color-mix(in srgb, #aaaaaa 62%, var(--zds-bar-bg)); }
 .zds-widget-dot--green { background: color-mix(in srgb, #6bbf59 62%, var(--zds-bar-bg)); }
 .zds-widget-dot--blue { background: color-mix(in srgb, #4b9bff 62%, var(--zds-bar-bg)); }
+
+/* Durations X-axis workaround until allure3#805 lands in our pin (3.13.x).
+ * Rotated nivo ticks need overflow + a little bottom room; pyramid untouched. */
+[data-zds-durations-axis="1"] svg {
+  overflow: visible;
+}
+
+[data-zds-durations-axis="1"] [class*="styles_body"],
+[data-zds-durations-axis="1"] [class*="styles_content"] {
+  overflow: visible;
+  padding-bottom: 16px;
+}
