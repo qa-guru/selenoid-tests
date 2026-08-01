@@ -1,6 +1,7 @@
 package ui_test
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -14,6 +15,10 @@ import (
 )
 
 func TestUiSessionKillSmoothArtifacts_WebDriverKillKeepsLayoutAndUpdatesInPlace(t *testing.T) {
+	// Heavy VNC+video+HAR Create Session is too slow/flaky for the release smoke gate.
+	if tags := os.Getenv("TEST_TAGS"); strings.Contains(tags, "smoke") {
+		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
+	}
 	cfg := config.MustLoad()
 	targetURL := strings.TrimRight(cfg.SmokeURL, "/") + "/"
 	allurex.Run(t, allurex.Meta{

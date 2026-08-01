@@ -1,6 +1,7 @@
 package ui_test
 
 import (
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -14,6 +15,9 @@ import (
 )
 
 func TestUiManualHarWebDriver_CapabilitiesCreateSessionShowsHarInArchive(t *testing.T) {
+	if tags := os.Getenv("TEST_TAGS"); strings.Contains(tags, "smoke") {
+		t.Skip("excluded from TEST_TAGS=smoke gate; run via hub-prod / ui without smoke tags")
+	}
 	cfg := config.MustLoad()
 	targetURL := strings.TrimRight(cfg.SmokeURL, "/") + "/"
 	allurex.Run(t, allurex.Meta{

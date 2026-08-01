@@ -16,6 +16,8 @@ import (
 const (
 	manualHarSessionName = "ui-manual-har-e2e"
 	createSessionTimeout = 120 * time.Second
+	// Prod Create Session with VNC+video(+HAR) often exceeds 2m (sidecar + browser boot).
+	createSessionTimeoutProd = 5 * time.Minute
 )
 
 func openNewSession(t *testing.T, page playwright.Page, baseURL string) {
@@ -134,15 +136,24 @@ func fillHubAuthFromConfig(t *testing.T, page playwright.Page, cfg *config.Confi
 	t.Fatal("no WebDriver auth duo or Playwright accessKey field on Capabilities")
 }
 
+func createSessionWait(cfg *config.Config) time.Duration {
+	if cfg != nil && strings.Contains(cfg.Env, "qa_guru") {
+		return createSessionTimeoutProd
+	}
+	return createSessionTimeout
+}
+
 func clickCreateSession(t *testing.T, page playwright.Page) string {
 	t.Helper()
+	cfg := config.MustLoad()
+	timeout := createSessionWait(cfg)
 	create := page.Locator("[data-testid=capabilities-create-session]")
 	require.NoError(t, create.WaitFor(playwright.LocatorWaitForOptions{State: playwright.WaitForSelectorStateVisible}))
 	enabled, err := create.IsEnabled()
 	require.NoError(t, err)
 	require.True(t, enabled, "Create Session button is disabled — select a browser first")
 	require.NoError(t, create.Click())
-	deadline := time.Now().Add(createSessionTimeout)
+	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
 		if id := sessionIDFromURL(page.URL()); id != "" {
 			return id
@@ -154,7 +165,7 @@ func clickCreateSession(t *testing.T, page playwright.Page) string {
 	if len(body) > 600 {
 		body = body[:600]
 	}
-	t.Fatalf("session page did not open within %s, url=%s btn=%s setup=%q", createSessionTimeout, page.URL(), cls, body)
+	t.Fatalf("session page did not open within %s, url=%s btn=%s setup=%q", timeout, page.URL(), cls, body)
 	return ""
 }
 
