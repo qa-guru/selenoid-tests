@@ -1,4 +1,4 @@
-package component_test
+package fixture_test
 
 import (
 	"testing"
@@ -12,12 +12,12 @@ import (
 func TestSseStateJson_ParsesHubState(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses SSE payload with hub state",
-		Package:   "tests.component.SseStateJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.SseStateJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "SSE state fixture",
 		Suite:     "SSE state fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/sse/state.json", func() {
 			ev, err := uiapi.ParseSseEvent(loadFixture(t, "sse/state.json"))
@@ -30,12 +30,12 @@ func TestSseStateJson_ParsesHubState(t *testing.T) {
 func TestSseErrorsJson_ParsesErrorsList(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses SSE payload with errors list",
-		Package:   "tests.component.SseErrorsJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.SseErrorsJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "SSE errors fixture",
 		Suite:     "SSE errors fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/sse/errors.json", func() {
 			ev, err := uiapi.ParseSseEvent(loadFixture(t, "sse/errors.json"))

@@ -13,12 +13,12 @@ import (
 func TestPlaywrightMinCatalogJson_ParsesPlaywrightVersion(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses playwrightVersion from min catalog version block",
-		Package:   "tests.component.PlaywrightMinCatalogJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.PlaywrightMinCatalogJsonTest",
+		Layer:     "unit",
 		Component: "playwright-image",
 		Epic:      "playwright-image",
 		Suite:     "Playwright min browser catalog fixture",
-		Tags:      []string{"component", "min"},
+		Tags:      []string{"unit", "min"},
 	}, func(a *allurex.A) {
 		a.Step("parse min catalog version block", func() {
 			cat, err := playwrightapi.ParseCatalog(loadFixture(t, "playwright/browser-catalog.json"))
@@ -34,12 +34,12 @@ func TestPlaywrightMinCatalogJson_ParsesPlaywrightVersion(t *testing.T) {
 func TestPlaywrightMinCatalogJson_ParsesMinImageTag(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses min image tag in catalog entry",
-		Package:   "tests.component.PlaywrightMinCatalogJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.PlaywrightMinCatalogJsonTest",
+		Layer:     "unit",
 		Component: "playwright-image",
 		Epic:      "playwright-image",
 		Suite:     "Playwright min browser catalog fixture",
-		Tags:      []string{"component", "min"},
+		Tags:      []string{"unit", "min"},
 	}, func(a *allurex.A) {
 		a.Step("verify min protocol and image tag", func() {
 			cat, err := playwrightapi.ParseCatalog(loadFixture(t, "playwright/browser-catalog.json"))

@@ -57,7 +57,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — **Go autotests** (hub pyramid + product unit из исходных репо).
 
-**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix).
+**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
 
 **Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
 
@@ -107,7 +107,7 @@ SELENOID_TEST_ENV=selenoid_github_cm_integration ./scripts/run-go-pyramid.sh cm
 ```bash
 # Offline
 SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
-SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh component
+SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
 
 # CI push gate (github stack, −cm; +min/resilience)
 PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh hub-all
@@ -176,7 +176,7 @@ PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh playwright
 
 | Package | Layer | Tag |
 |---------|-------|-----|
-| `tests/component/min` | component | min |
+| `tests/unit/fixture/min` | unit | min |
 | `tests/integration/min` | integration | min |
 
 ## CI
@@ -191,9 +191,9 @@ Workflow: `.github/workflows/selenoid_github-orchestrator.yml` (`name: selenoid-
 | `report` | Merge `build/allure-results/**` → Allure 3 → gh-pages → TestOps 5271 |
 
 ```bash
-# Go unit+component (offline, −cm)
+# Go unit+unit JSON parsers (offline, −cm)
 SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
-SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh component
+SELENOID_TEST_ENV=local_unit ./scripts/run-go-pyramid.sh unit
 # Go api (prod cloud)
 SELENOID_TEST_ENV=selenoid_qa_guru_api ./scripts/run-go-pyramid.sh api
 # Go prod gate (hub-prod semantics + har-prod)
@@ -213,22 +213,22 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
-| **selenoid** | Go | Go | Go | Go | Go (wd/pw) | — | `go-unit` + `go-hub` |
-| **selenoid-ui** | Go | Go | Go | Go | Go | —⁶ | `go-unit` + `go-hub` |
-| **cm** | Go | Go | Go | Go | Go | — | `go-unit` + `go-cm` |
-| **playwright-image** | — | Go | Go | Go | Go | — | `go-hub` |
-| **webdriver-image** | Go | Go | Go | Go | Go | — | `go-hub` |
+| **selenoid** | Go | — | Go | Go | Go (wd/pw) | — | `go-unit` + `go-hub` |
+| **selenoid-ui** | Go | RTL | Go | Go | Go | —⁶ | `go-unit` + `go-hub` |
+| **cm** | Go | — | Go | Go | Go | — | `go-unit` + `go-cm` |
+| **playwright-image** | Go¹ | — | Go | Go | Go | — | `go-hub` |
+| **webdriver-image** | Go | — | Go | Go | Go | — | `go-hub` |
 | **video-recorder** | — | Go | — | Go | — | — | `go-hub` (api slice / dispatch) |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
-¹ **selenoid e2e:** отдельного `@Component("selenoid")` e2e-пакета нет; сквозной hub-path покрыт `tests/e2e/webdriver` и `tests/e2e/playwright` в `hub-all`.  
-² **dev component:** отдельного test-class нет; `browsers.json` SSOT проверяется косвенно component JSON fixtures (`*CatalogJsonTest`, `BrowsersConfigJsonTest`, …).  
+¹ **selenoid e2e:** отдельного `@Component("selenoid")` e2e-пакета нет; сквозной hub-path покрыт `tests/e2e/webdriver` и `tests/e2e/playwright` в `hub-all`. JSON fixture parsers — **`@Layer("unit")`**, `tests/unit/fixture/`, не component.  
+² **dev unit (JSON fixtures):** `browsers.json` SSOT — `tests/unit/fixture/*CatalogJsonTest`, `BrowsersConfigJsonTest`.  
 ³ **dev integration:** `start-ci-selenoid-stack.sh` — оркестрация CI, не test-class.  
 ⁴ **cloud api:** post-deploy `selenoid_qa_guru_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
-⁷ **webdriver-image unit:** Go — `internal/config` (`ConfigReaderWebdriver`, session body); product Go unit в `browser-image/webdriver/` нет.
+⁷ **playwright-image / webdriver-image unit:** catalog JSON + session body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`).
 
 ### Manual (runbook)
 
@@ -274,8 +274,8 @@ EOF
 
 | Package / slice | Layer | Notes |
 |-----------------|-------|-------|
-| `internal/config`, `internal/helpers`, `internal/hubapi` | unit | offline |
-| `tests/component`, `tests/component/min` | component | JSON fixtures |
+| `internal/config`, `internal/helpers`, `internal/hubapi` | unit | offline pure logic |
+| `tests/unit/fixture`, `tests/unit/fixture/min` | unit | JSON fixture parsers (`@Tag("min")` on min catalog) |
 | `tests/integration/wd`, `tests/integration/ui`, `tests/integration/pw`, `tests/integration/min`, `tests/integration/resilience` | integration | hub stack |
 | `tests/api` | api | hub + UI + video-recorder |
 | `tests/e2e/ui`, `tests/e2e/webdriver`, `tests/e2e/playwright`, `tests/e2e/har` | e2e | browser / HAR |

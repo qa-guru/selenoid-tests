@@ -1,4 +1,4 @@
-package component_test
+package fixture_test
 
 import (
 	"os"

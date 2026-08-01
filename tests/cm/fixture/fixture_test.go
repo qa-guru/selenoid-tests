@@ -51,22 +51,22 @@ func moduleRoot(t *testing.T) string {
 	}
 }
 
-func componentMeta(name, pkg, suite string) allurex.Meta {
+func unitMeta(name, pkg, suite string) allurex.Meta {
 	return allurex.Meta{
 		Name:      name,
 		Package:   pkg,
-		Layer:     "component",
+		Layer:     "unit",
 		Component: "cm",
 		Epic:      "cm",
 		Suite:     suite,
-		Tags:      []string{"component", "cm"},
+		Tags:      []string{"unit", "cm"},
 	}
 }
 
 func TestCmBrowsersConfigJson_ParsesDefaultChromeVersion(t *testing.T) {
-	allurex.Run(t, componentMeta(
+	allurex.Run(t, unitMeta(
 		"parses cm browsers.json default chrome version",
-		"tests.component.CmBrowsersConfigJsonTest",
+		"tests.unit.fixture.CmBrowsersConfigJsonTest",
 		"CM browsers.json fixture",
 	), func(a *allurex.A) {
 		a.Step("parse ci-browsers.json", func() {
@@ -90,9 +90,9 @@ func TestCmBrowsersConfigJson_ParsesDefaultChromeVersion(t *testing.T) {
 }
 
 func TestCmBrowsersConfigJson_ParsesChromeMinImage(t *testing.T) {
-	allurex.Run(t, componentMeta(
+	allurex.Run(t, unitMeta(
 		"parses cm browsers.json chrome-min image tag",
-		"tests.component.CmBrowsersConfigJsonTest",
+		"tests.unit.fixture.CmBrowsersConfigJsonTest",
 		"CM browsers.json fixture",
 	), func(a *allurex.A) {
 		a.Step("verify chrome-min image tag", func() {
@@ -112,9 +112,9 @@ func TestCmBrowsersConfigJson_ParsesChromeMinImage(t *testing.T) {
 }
 
 func TestCmHelpOutput_ListsCoreSubcommands(t *testing.T) {
-	allurex.Run(t, componentMeta(
+	allurex.Run(t, unitMeta(
 		"lists selenoid and selenoid-ui subcommands in help",
-		"tests.component.CmHelpOutputTest",
+		"tests.unit.fixture.CmHelpOutputTest",
 		"CM help output fixture",
 	), func(a *allurex.A) {
 		a.Step("parse help fixture", func() {
@@ -127,9 +127,9 @@ func TestCmHelpOutput_ListsCoreSubcommands(t *testing.T) {
 }
 
 func TestCmStatusOutput_DetectsRunningContainer(t *testing.T) {
-	allurex.Run(t, componentMeta(
+	allurex.Run(t, unitMeta(
 		"detects running container in cm status output",
-		"tests.component.CmStatusOutputTest",
+		"tests.unit.fixture.CmStatusOutputTest",
 		"CM status output fixture",
 	), func(a *allurex.A) {
 		a.Step("parse status fixture", func() {
@@ -141,9 +141,9 @@ func TestCmStatusOutput_DetectsRunningContainer(t *testing.T) {
 }
 
 func TestCmVersionOutput_ParsesGitRevision(t *testing.T) {
-	allurex.Run(t, componentMeta(
+	allurex.Run(t, unitMeta(
 		"parses git revision from cm version output",
-		"tests.component.CmVersionOutputTest",
+		"tests.unit.fixture.CmVersionOutputTest",
 		"CM version output fixture",
 	), func(a *allurex.A) {
 		a.Step("parse version fixture", func() {

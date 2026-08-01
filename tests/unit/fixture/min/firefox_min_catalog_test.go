@@ -15,12 +15,12 @@ func TestFirefoxMinCatalogJson_ParsesVersionBlockPortAndPath(t *testing.T) {
 	minVersion := config.MinVersion("firefox")
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses firefox-min catalog version block port and path",
-		Package:   "tests.component.FirefoxMinCatalogJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.FirefoxMinCatalogJsonTest",
+		Layer:     "unit",
 		Component: "webdriver-image",
 		Epic:      "webdriver-image",
 		Suite:     "Firefox min browser catalog fixture",
-		Tags:      []string{"component", "min"},
+		Tags:      []string{"unit", "min"},
 	}, func(a *allurex.A) {
 		a.Step("load catalog version block", func() {
 			block := config.VersionBlock("firefox", minVersion)
@@ -34,12 +34,12 @@ func TestFirefoxMinCatalogJson_ParsesMinImageTag(t *testing.T) {
 	minVersion := config.MinVersion("firefox")
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses min image tag in firefox catalog entry",
-		Package:   "tests.component.FirefoxMinCatalogJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.FirefoxMinCatalogJsonTest",
+		Layer:     "unit",
 		Component: "webdriver-image",
 		Epic:      "webdriver-image",
 		Suite:     "Firefox min browser catalog fixture",
-		Tags:      []string{"component", "min"},
+		Tags:      []string{"unit", "min"},
 	}, func(a *allurex.A) {
 		a.Step("verify min image tag", func() {
 			block := config.VersionBlock("firefox", minVersion)

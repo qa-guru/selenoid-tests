@@ -1,4 +1,4 @@
-package component_test
+package fixture_test
 
 import (
 	"testing"
@@ -12,12 +12,12 @@ import (
 func TestUiStatusJson_ParsesProxiedWrapper(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses proxied UI status wrapper",
-		Package:   "tests.component.UiStatusJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.UiStatusJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "UI status fixture",
 		Suite:     "UI status fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/ui/status.json", func() {
 			resp, err := uiapi.ParseStatusResponse(loadFixture(t, "ui/status.json"))
@@ -31,12 +31,12 @@ func TestUiStatusJson_ParsesProxiedWrapper(t *testing.T) {
 func TestUiPingJson_ParsesUptimeAndVersion(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses uptime and version fields",
-		Package:   "tests.component.UiPingJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.UiPingJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "UI ping fixture",
 		Suite:     "UI ping fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/ui/ping.json", func() {
 			ping, err := uiapi.ParsePing(loadFixture(t, "ui/ping.json"))
@@ -50,12 +50,12 @@ func TestUiPingJson_ParsesUptimeAndVersion(t *testing.T) {
 func TestUiErrorJson_ParsesErrorList(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses error list payload",
-		Package:   "tests.component.UiErrorJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.UiErrorJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "UI error fixture",
 		Suite:     "UI error fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/ui/error.json", func() {
 			errResp, err := uiapi.ParseError(loadFixture(t, "ui/error.json"))
@@ -69,12 +69,12 @@ func TestUiErrorJson_ParsesErrorList(t *testing.T) {
 func TestBrowsersConfigJson_ParsesCatalogMap(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses browsers catalog map",
-		Package:   "tests.component.BrowsersConfigJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.BrowsersConfigJsonTest",
+		Layer:     "unit",
 		Component: "selenoid-ui",
 		Feature:   "Browsers config fixture",
 		Suite:     "Browsers config fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/ui/browsers-config.json", func() {
 			cfg, err := uiapi.ParseBrowsersConfig(loadFixture(t, "ui/browsers-config.json"))

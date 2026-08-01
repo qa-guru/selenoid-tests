@@ -1,4 +1,4 @@
-package component_test
+package fixture_test
 
 import (
 	"strings"
@@ -13,12 +13,12 @@ import (
 func TestHubStatusJson_ParsesIdleCounters(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses idle hub status counters",
-		Package:   "tests.component.HubStatusJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubStatusJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Hub status fixture",
 		Suite:     "Hub status fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/status-idle.json", func() {
 			st, err := hubapi.Parse(loadFixture(t, "hub/status-idle.json"))
@@ -33,12 +33,12 @@ func TestHubStatusJson_ParsesIdleCounters(t *testing.T) {
 func TestHubStatusParser_FlatAndUIWrapped(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses flat hub /status JSON",
-		Package:   "tests.component.HubStatusParserTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubStatusParserTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Hub status parser",
 		Suite:     "Hub status parser",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse flat hub status", func() {
 			st, err := hubapi.Parse(loadFixture(t, "hub/status-idle.json"))
@@ -58,12 +58,12 @@ func TestHubStatusParser_FlatAndUIWrapped(t *testing.T) {
 func TestHubStatusBrowsersJson_ParsesBrowsersMap(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses browsers map with version entries",
-		Package:   "tests.component.HubStatusBrowsersJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubStatusBrowsersJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Hub status browsers fixture",
 		Suite:     "Hub status browsers fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/status-with-browsers.json", func() {
 			st, err := hubapi.Parse(loadFixture(t, "hub/status-with-browsers.json"))
@@ -78,12 +78,12 @@ func TestHubStatusBrowsersJson_ParsesBrowsersMap(t *testing.T) {
 func TestHubStatusForwardCompatJson_IgnoresUnknownFields(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "ignores unknown JSON fields",
-		Package:   "tests.component.HubStatusForwardCompatJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubStatusForwardCompatJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Hub status forward compatibility",
 		Suite:     "Hub status forward compatibility",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/status-unknown-field.json", func() {
 			st, err := hubapi.Parse(loadFixture(t, "hub/status-unknown-field.json"))
@@ -96,13 +96,13 @@ func TestHubStatusForwardCompatJson_IgnoresUnknownFields(t *testing.T) {
 func TestHubLogsListJson_ParsesSessionLogNames(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses hub logs JSON array with session file names",
-		Package:   "tests.component.HubLogsListJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubLogsListJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Epic:      "selenoid",
 		Feature:   "Hub logs list fixture",
 		Suite:     "Hub logs list fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/logs-list.json", func() {
 			files, err := hubapi.ParseLogsList(loadFixture(t, "hub/logs-list.json"))
@@ -123,12 +123,12 @@ func TestHubLogsListJson_ParsesSessionLogNames(t *testing.T) {
 func TestHubVideoListJson_ParsesPaginatedVideoList(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses paginated /video/?json page",
-		Package:   "tests.component.HubVideoListJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubVideoListJsonTest",
+		Layer:     "unit",
 		Component: "video-recorder",
 		Feature:   "Hub video list fixture",
 		Suite:     "Hub video list fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/video-list-page.json", func() {
 			listed, err := hubapi.ParseVideoList(loadFixture(t, "hub/video-list-page.json"))
@@ -145,12 +145,12 @@ func TestHubVideoListJson_ParsesPaginatedVideoList(t *testing.T) {
 func TestHubWebDriverStatusJson_ParsesReadyPayload(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses ready WebDriver status payload",
-		Package:   "tests.component.HubWebDriverStatusJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.HubWebDriverStatusJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Hub WebDriver status fixture",
 		Suite:     "Hub WebDriver status fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/wd-status-ready.json", func() {
 			st, err := hubapi.ParseWebDriverStatus(loadFixture(t, "hub/wd-status-ready.json"))
@@ -164,12 +164,12 @@ func TestHubWebDriverStatusJson_ParsesReadyPayload(t *testing.T) {
 func TestSessionCreateJson_ExtractsSessionID(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "extracts sessionId from create session response",
-		Package:   "tests.component.SessionCreateJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.SessionCreateJsonTest",
+		Layer:     "unit",
 		Component: "selenoid",
 		Feature:   "Session create fixture",
 		Suite:     "Session create fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/hub/session-create.json", func() {
 			id, err := hubapi.ParseSessionID(loadFixture(t, "hub/session-create.json"))

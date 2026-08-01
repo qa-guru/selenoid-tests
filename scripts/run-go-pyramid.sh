@@ -2,7 +2,7 @@
 # Run Go pyramid slices (ADR-go-pyramid).
 #
 # Composite gates (−cm; prod also −min/−resilience):
-#   hub-prod  = unit → component → integration → api → ui → webdriver → playwright → har-prod
+#   hub-prod  = unit → integration → api → ui → webdriver → playwright → har-prod
 #   hub-all   = hub-prod layers on selenoid_github + min + resilience (−cm; cm = slice only)
 set -euo pipefail
 
@@ -24,18 +24,18 @@ STAND="${PYRAMID_STAND:-selenoid_github}"
 # Profile: SELENOID_TEST_ENV or env=… Default per single slice only.
 if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
   case "${SLICE}" in
-    unit|component) export SELENOID_TEST_ENV=local_unit ;;
-    api)            export SELENOID_TEST_ENV="${STAND}_api" ;;
-    integration)    export SELENOID_TEST_ENV="${STAND}_integration" ;;
+    unit)             export SELENOID_TEST_ENV=local_unit ;;
+    api)              export SELENOID_TEST_ENV="${STAND}_api" ;;
+    integration)      export SELENOID_TEST_ENV="${STAND}_integration" ;;
     e2e|webdriver|ui|playwright)
-                    export SELENOID_TEST_ENV="${STAND}_e2e" ;;
-    har-prod)       export SELENOID_TEST_ENV=selenoid_qa_guru_e2e ;;
-    min)            export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
-    cm)             export SELENOID_TEST_ENV=selenoid_github_cm_integration ;;
-    resilience)     export SELENOID_TEST_ENV="${STAND}_e2e" ;;
-    hub-prod)       STAND="${PYRAMID_STAND:-selenoid_qa_guru}" ;;
-    hub-all)        STAND="${PYRAMID_STAND:-selenoid_github}" ;;
-    *)              export SELENOID_TEST_ENV="${STAND}_api" ;;
+                      export SELENOID_TEST_ENV="${STAND}_e2e" ;;
+    har-prod)         export SELENOID_TEST_ENV=selenoid_qa_guru_e2e ;;
+    min)              export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
+    cm)               export SELENOID_TEST_ENV=selenoid_github_cm_integration ;;
+    resilience)       export SELENOID_TEST_ENV="${STAND}_e2e" ;;
+    hub-prod)         STAND="${PYRAMID_STAND:-selenoid_qa_guru}" ;;
+    hub-all)          STAND="${PYRAMID_STAND:-selenoid_github}" ;;
+    *)                export SELENOID_TEST_ENV="${STAND}_api" ;;
   esac
 fi
 
@@ -69,11 +69,9 @@ run_with_env() {
 }
 
 run_unit_pkgs() {
-  run_pkgs unit ./internal/config/... ./internal/helpers/... ./internal/hubapi/...
-}
-
-run_component_pkgs() {
-  run_pkgs component ./tests/component/...
+  run_pkgs unit \
+    ./internal/config/... ./internal/helpers/... ./internal/hubapi/... \
+    ./tests/unit/fixture/...
 }
 
 run_api_pkgs() {
@@ -106,7 +104,7 @@ run_har_prod_pkgs() {
 
 run_min_pkgs() {
   export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
-  run_pkgs min ./tests/component/min/... ./tests/integration/min/...
+  run_pkgs min ./tests/unit/fixture/min/... ./tests/integration/min/...
 }
 
 run_resilience_pkgs() {
@@ -119,7 +117,6 @@ run_hub_prod() {
   local stand="${PYRAMID_STAND:-selenoid_qa_guru}"
   echo "go pyramid composite=hub-prod stand=${stand} (−cm/−min/−resilience + har-prod)"
   run_with_env unit local_unit run_unit_pkgs
-  run_with_env component local_unit run_component_pkgs
   run_with_env integration "${stand}_integration" run_integration_pkgs
   run_with_env api "${stand}_api" run_api_pkgs
   run_with_env ui "${stand}_e2e" run_ui_pkgs
@@ -133,7 +130,6 @@ run_hub_all() {
   local stand="${PYRAMID_STAND:-selenoid_github}"
   echo "go pyramid composite=hub-all stand=${stand} (−cm; +min/−resilience on github)"
   run_with_env unit local_unit run_unit_pkgs
-  run_with_env component local_unit run_component_pkgs
   run_with_env integration "${stand}_integration" run_integration_pkgs
   run_with_env api "${stand}_api" run_api_pkgs
   run_with_env ui "${stand}_e2e" run_ui_pkgs
@@ -147,10 +143,6 @@ case "${SLICE}" in
   unit)
     run_unit_pkgs
     ;;
-  component)
-    run_component_pkgs
-    ;;
-
   api)
     run_api_pkgs
     ;;
@@ -193,14 +185,14 @@ case "${SLICE}" in
     echo "go pyramid slice=${SLICE} env=${SELENOID_TEST_ENV:-} allure=${ALLURE_RESULTS}"
     go test ./internal/config/ -run 'TestConfigReader_ResolveCm' -count=1 -timeout=15m
     go test ./internal/cm/... -count=1 -timeout=15m
-    go test ./tests/cm/component/... -count=1 -timeout=15m
+    go test ./tests/cm/fixture/... -count=1 -timeout=15m
     go test ./tests/cm/api/... -count=1 -timeout=15m -p 1
     go test ./tests/cm/integration/... -count=1 -timeout=25m -p 1
     go test ./tests/cm/e2e/... -count=1 -timeout=25m -p 1
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|component|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience|cm" >&2
+    echo "Known: unit|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience|cm" >&2
     exit 2
     ;;
 esac

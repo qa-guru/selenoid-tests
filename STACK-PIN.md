@@ -12,7 +12,7 @@
 | Go (примечание) | Root module `github.com/qa-guru/selenoid-tests`; ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md) |
 | Prod | [selenoid.qa.guru](https://selenoid.qa.guru) — smoke gates `hub-prod` / deploy-smoke |
 | Git anchor | `main` |
-| Matrix | Go pyramid: `unit` + `component` + `integration` + `api` + `e2e` + `cm` slices |
+| Matrix | Go pyramid: `unit` + `integration` + `api` + `e2e` + `cm` slices |
 | CI gate | `go-hub` + `go-cm` + `go-unit` matrix → Allure 3 gh-pages + TestOps 5271 |
 
 ## Selenoid 2 maintenance pin (не путать)

@@ -1,4 +1,4 @@
-package component_test
+package fixture_test
 
 import (
 	"strings"
@@ -13,13 +13,13 @@ import (
 func TestPlaywrightWsPathJson_DefaultAndProtocol(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses playwright browser catalog default version",
-		Package:   "tests.component.PlaywrightWsPathJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.PlaywrightWsPathJsonTest",
+		Layer:     "unit",
 		Component: "playwright-image",
 		Epic:      "playwright-image",
 		Feature:   "Playwright WS path fixture",
 		Suite:     "Playwright WS path fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		cat, err := playwrightapi.ParseCatalog(loadFixture(t, "playwright/browser-catalog.json"))
 		require.NoError(t, err)
@@ -38,13 +38,13 @@ func TestPlaywrightWsPathJson_DefaultAndProtocol(t *testing.T) {
 func TestPlaywrightBrowserCapsJson_VersionAndFamily(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "parses playwrightVersion from catalog version block",
-		Package:   "tests.component.PlaywrightBrowserCapsJsonTest",
-		Layer:     "component",
+		Package:   "tests.unit.fixture.PlaywrightBrowserCapsJsonTest",
+		Layer:     "unit",
 		Component: "playwright-image",
 		Epic:      "playwright-image",
 		Feature:   "Playwright browser caps fixture",
 		Suite:     "Playwright browser caps fixture",
-		Tags:      []string{"component"},
+		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		cat, err := playwrightapi.ParseCatalog(loadFixture(t, "playwright/browser-catalog.json"))
 		require.NoError(t, err)
