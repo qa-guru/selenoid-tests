@@ -470,10 +470,13 @@ jobs:
     if: >-
       always() &&
       !cancelled() &&
-      env.TRIGGER_RUN_ID != '' &&
-      env.SOURCE_REPO != ''
+      github.event.client_payload.trigger_run_id != '' &&
+      github.event.client_payload.source_repo != ''
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      TRIGGER_RUN_ID: ${{ github.event.client_payload.trigger_run_id }}
+      SOURCE_REPO: ${{ github.event.client_payload.source_repo }}
     steps:
       - name: Notify deploy-smoke trigger (early)
         env:
