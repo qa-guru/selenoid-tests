@@ -30,7 +30,7 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Offline coverage (internal + component)
+      - name: Offline coverage (internal + unit/fixture)
         run: bash scripts/ci-sonar-coverage.sh
 
       - name: SonarQube Scan
