@@ -13,7 +13,7 @@ Prod gate: `hub-prod` on `selenoid_qa_guru_*` (unit→integration→api→e2e→
 ## Decision
 
 1. **Root Go module** `github.com/qa-guru/selenoid-tests` — `go.mod` at repo root; packages `internal/…`, `tests/…`.
-2. **Java removed (P5)** — hub pyramid gate is Go only; product Go unit via `scripts/run-go-unit.sh` unchanged.
+2. **Java removed (P5)** — hub pyramid gate is Go only; product Go unit via `scripts/run-go-unit.sh` (`go test -json` → `cmd/gotest2allure`, no JUnit/npm).
 3. **Config SSOT** — `src/test/resources/config/*.properties` (`SELENOID_TEST_ENV` / `env`, same keys as former Owner `TestConfig`).
 4. **HTTP** — stdlib `net/http` (+ thin helpers). No RestAssured/resty for hub/UI JSON.
 5. **Browser** — `playwright-go` for UI e2e and Playwright WS slices (P3). WebDriver sessions stay raw WD HTTP (as today).

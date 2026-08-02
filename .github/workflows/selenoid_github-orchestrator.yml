@@ -125,24 +125,8 @@ jobs:
         working-directory: repos/selenoid-ui/ui
         run: yarn build
 
-      - name: Setup Node 26 (Allure JUnit conversion)
-        uses: actions/setup-node@v6
-        with:
-          node-version: 26
-
-      - name: selenoid-ui-backend-unit-go-test
-        if: matrix.repo == 'selenoid-ui'
-        id: go-tests
-        run: |
-          set +e
-          chmod +x scripts/run-go-unit.sh
-          ./scripts/run-go-unit.sh "${{ matrix.repo }}" "${{ matrix.epic }}"
-          echo "GO_TEST_EXIT=$?" >> "$GITHUB_ENV"
-          set -e
-
       - name: ${{ matrix.repo }}-unit-go-test
-        if: matrix.repo != 'selenoid-ui'
-        id: go-tests-other
+        id: go-tests
         run: |
           set +e
           chmod +x scripts/run-go-unit.sh

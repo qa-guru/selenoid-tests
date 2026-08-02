@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
-# Run Go unit tests for one service repo and export Allure results (Variant A: gotestsum + JUnit reader).
+# Run Go unit tests for one service repo and export Allure results via native
+# `go test -json` → cmd/gotest2allure (no Node/JUnit bridge).
 set -euo pipefail
 
 REPO="${1:?repo name: selenoid|selenoid-ui|cm}"
 EPIC="${2:?epic label, e.g. selenoid}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPOS_DIR="${ROOT}/repos"
-JUNIT_DIR="${ROOT}/build/junit"
+JSON_DIR="${ROOT}/build/gotest-json"
 ALLURE_DIR="${ROOT}/build/allure-results/go-${REPO}"
 
-mkdir -p "${JUNIT_DIR}" "${ALLURE_DIR}"
-JUNIT_FILE="${JUNIT_DIR}/go-${REPO}.xml"
+mkdir -p "${JSON_DIR}" "${ALLURE_DIR}"
+JSON_FILE="${JSON_DIR}/go-${REPO}.jsonl"
 
 export GO111MODULE=on
 export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 export PATH="${PATH}:$(go env GOPATH)/bin"
-
-if ! command -v gotestsum >/dev/null 2>&1; then
-  go install gotest.tools/gotestsum@v1.12.3
-fi
 
 cd "${REPOS_DIR}/${REPO}"
 
 set +e
 case "${REPO}" in
   selenoid)
-    gotestsum --junitfile "${JUNIT_FILE}" -- \
-      -tags 's3 metadata' -race -coverprofile=coverage.txt -covermode=atomic \
-        -coverpkg github.com/qa-guru/selenoid,github.com/qa-guru/selenoid/session,github.com/qa-guru/selenoid/config,github.com/qa-guru/selenoid/protect,github.com/qa-guru/selenoid/service,github.com/qa-guru/selenoid/upload,github.com/qa-guru/selenoid/info,github.com/qa-guru/selenoid/jsonerror \
-        ./...
+    go test -json -tags 's3 metadata' -race -coverprofile=coverage.txt -covermode=atomic \
+      -coverpkg github.com/qa-guru/selenoid,github.com/qa-guru/selenoid/session,github.com/qa-guru/selenoid/config,github.com/qa-guru/selenoid/protect,github.com/qa-guru/selenoid/service,github.com/qa-guru/selenoid/upload,github.com/qa-guru/selenoid/info,github.com/qa-guru/selenoid/jsonerror \
+      ./... >"${JSON_FILE}"
     ;;
   selenoid-ui)
     test -f ui/build/index.html || {
@@ -40,14 +36,12 @@ case "${REPO}" in
     fi
     go install github.com/rakyll/statik@latest
     go generate github.com/qa-guru/selenoid-ui
-    gotestsum --junitfile "${JUNIT_FILE}" -- \
-      -race -coverprofile=coverage.txt -covermode=atomic ./...
+    go test -json -race -coverprofile=coverage.txt -covermode=atomic ./... >"${JSON_FILE}"
     ;;
   cm)
-    gotestsum --junitfile "${JUNIT_FILE}" -- \
-      -race -coverprofile=coverage.txt -covermode=atomic \
-        -coverpkg github.com/qa-guru/cm/...,github.com/qa-guru/cm/cmd \
-        ./...
+    go test -json -race -coverprofile=coverage.txt -covermode=atomic \
+      -coverpkg github.com/qa-guru/cm/...,github.com/qa-guru/cm/cmd \
+      ./... >"${JSON_FILE}"
     ;;
   *)
     echo "Unknown repo: ${REPO}" >&2
@@ -57,17 +51,17 @@ esac
 TEST_EXIT=$?
 set -e
 
-if [ ! -f "${JUNIT_FILE}" ]; then
-  echo "JUnit file not found: ${JUNIT_FILE}" >&2
+if [[ ! -s "${JSON_FILE}" ]]; then
+  echo "go test -json output missing/empty: ${JSON_FILE}" >&2
   exit "${TEST_EXIT:-1}"
 fi
 
 cd "${ROOT}"
-npm install --no-save @allurereport/reader@3.14.0 @allurereport/reader-api@3.14.0
-node scripts/junit-to-allure.mjs \
-  --input "${JUNIT_FILE}" \
+go run ./cmd/gotest2allure \
+  --input "${JSON_FILE}" \
   --output "${ALLURE_DIR}" \
   --epic "${EPIC}" \
+  --component "${EPIC}" \
   --layer unit
 
 exit "${TEST_EXIT}"
