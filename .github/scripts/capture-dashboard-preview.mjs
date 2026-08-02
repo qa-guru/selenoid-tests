@@ -36,12 +36,14 @@ try {
     await page.goto(baseUrl, { waitUntil: "load", timeout: 60_000 });
 
     const layout = page.locator('[data-testid="base-layout"]');
-    await layout.waitFor({ timeout: 30_000 });
+    const layoutCount = await layout.count();
+    const target = layoutCount > 0 ? layout : page.locator("#app");
+    await target.first().waitFor({ timeout: 30_000 });
     // Pyramid reshape debounce (SETTLE_MS) — brief settle before screenshot.
     await page.waitForTimeout(1_500);
 
     const output = join(outputDir, file);
-    await layout.screenshot({ path: output, type: "png" });
+    await target.first().screenshot({ path: output, type: "png" });
     console.log(`Saved ${theme} dashboard preview to ${output}`);
 
     await page.close();

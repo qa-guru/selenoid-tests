@@ -689,6 +689,17 @@ jobs:
           fi
           touch pages/.nojekyll
 
+      - name: Deploy Allure report to GitHub Pages
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/**/awesome/index.html') != ''
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: pages
+          enable_jekyll: false
+          # Keep prior reports/<run-id>/ trees — per-run URLs must stay stable.
+          keep_files: true
+
       - name: Setup Node for dashboard preview capture
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
         uses: actions/setup-node@v6
@@ -698,6 +709,7 @@ jobs:
       - name: Capture dashboard preview for README
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
         continue-on-error: true
+        timeout-minutes: 5
         run: |
           npm install --no-save playwright@1.50.1
           npx playwright install chromium --with-deps
@@ -709,20 +721,9 @@ jobs:
           done
           PREVIEW_URL="http://127.0.0.1:8765/reports/latest/dashboard/" \
             PREVIEW_OUTPUT_DIR="pages/readme" \
-            node .github/scripts/capture-dashboard-preview.mjs
-          bash .github/scripts/generate-component-dashboard-previews.sh build/allure-results pages/readme
+            timeout 120 node .github/scripts/capture-dashboard-preview.mjs || true
+          bash .github/scripts/generate-component-dashboard-previews.sh build/allure-results pages/readme || true
           kill "${SERVE_PID}" || true
-
-      - name: Deploy Allure report to GitHub Pages
-        if: always() && hashFiles('pages/reports/**/awesome/index.html') != ''
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: pages
-          enable_jekyll: false
-          # Keep prior reports/<run-id>/ trees — per-run URLs must stay stable.
-          keep_files: true
 
       - name: Upload results to Allure TestOps
         if: always() && steps.setup-allurectl.outcome == 'success' && hashFiles('build/allure-results/**') != ''
