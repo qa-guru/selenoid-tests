@@ -260,10 +260,10 @@
           <tr><th>Source repo</th><th>Tags</th><th>When</th></tr>
         </thead>
         <tbody>
-          <tr><td><a href="https://github.com/qa-guru/selenoid">selenoid</a> · <a href="https://github.com/qa-guru/selenoid-ui">selenoid-ui</a></td><td><code>api,smoke</code></td><td>After release / prod UI pin wait</td></tr>
-          <tr><td><a href="https://github.com/qa-guru/cm">cm</a></td><td><code>api</code></td><td>After CM deploy</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/selenoid.qa.guru">selenoid.qa.guru</a></td><td><code>api,smoke</code></td><td><strong>Owner</strong> — post-deploy prod gate (sole dispatch)</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/selenoid">selenoid</a> · <a href="https://github.com/qa-guru/selenoid-ui">selenoid-ui</a></td><td>—</td><td>Release: <code>wait_only</code> pin gate (no second smoke)</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/cm">cm</a></td><td><code>api</code></td><td>After CM release (own slice)</td></tr>
           <tr><td><a href="https://github.com/qa-guru/browser-image">browser-image</a></td><td><code>playwright</code> · <code>smoke</code> (wd / video-recorder)</td><td>After image publish</td></tr>
-          <tr><td><a href="https://github.com/qa-guru/selenoid.qa.guru">selenoid.qa.guru</a></td><td><code>api</code> (default)</td><td>Post-deploy prod gate</td></tr>
         </tbody>
       </table>
     </section>
