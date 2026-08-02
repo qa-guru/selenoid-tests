@@ -1,7 +1,7 @@
 # SSOT: generators/ethalon/selenoid-stack/selenoid_github-orchestrator.yml
 # Runnable filename = ethalon filename. Default env: selenoid_github_e2e
 # GitHub Actions — env_base selenoid_github, suffix -orchestrator (Go unit + hub/cm + Allure + dispatch).
-# Sync: ./projects/selenoid-home/scripts/sync-selenoid-stack-workflows.sh
+# Sync: ./scripts/selenoid/sync-selenoid-stack-workflows.sh
 # Consumer: qa-guru/selenoid-tests (run-go-unit.sh, run-go-pyramid.sh).
 #
 # workflow name: = GitHub repo slug + " Tests" (канон test-layers). Reference consumer: selenoid-tests.
@@ -521,7 +521,7 @@ jobs:
     needs: [go-unit, go-hub, go-cm, deploy-smoke-callback]
     if: always() && !cancelled() && (needs.go-cm.result == 'success' || needs.go-cm.result == 'skipped' || needs.go-cm.result == 'failure')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     env:
       ALLURE_RESULTS: build/allure-results
     steps:
@@ -676,7 +676,7 @@ jobs:
       - name: Prepare GitHub Pages
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
         run: |
-          mkdir -p pages/reports/${REPORT_ID}
+          mkdir -p pages/reports/${REPORT_ID} pages/readme
           cp -r build/reports/allure-report/allureReport/. "pages/reports/${REPORT_ID}/"
           rm -rf pages/reports/latest
           cp -r "pages/reports/${REPORT_ID}" pages/reports/latest
@@ -686,6 +686,10 @@ jobs:
             cp build/reports/allure-report/allureReport/history.jsonl pages/history.jsonl
           fi
           echo "${REPORT_ID}" > pages/latest-run-id.txt
+          cp pages-templates/index.html pages/index.html
+          if [ -f docs/logo.svg ]; then
+            cp docs/logo.svg pages/readme/logo.svg
+          fi
           touch pages/.nojekyll
 
       - name: Setup Node for dashboard preview capture

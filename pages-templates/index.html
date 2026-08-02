@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Selenoid stack test orchestrator — coverage matrix, CI jobs, live Allure 3 dashboard." />
+  <title>selenoid-tests — Selenoid Stack autotests</title>
+  <link rel="icon" type="image/svg+xml" href="readme/logo.svg" />
+  <style>
+    :root {
+      color-scheme: dark light;
+      --bg: #1a1917;
+      --surface: #242320;
+      --border: #3a3834;
+      --text: #e8e6e1;
+      --muted: #9b968d;
+      --accent: #7cb342;
+      --link: #8bc34a;
+      --yes: #7cb342;
+      --dash: #5a5752;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f4f0;
+        --surface: #fff;
+        --border: #d8d4cb;
+        --text: #2c2a26;
+        --muted: #6b665c;
+        --accent: #558b2f;
+        --link: #33691e;
+        --yes: #558b2f;
+        --dash: #c4bfb4;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 15px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a { color: var(--link); }
+    a:hover { text-decoration: none; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    header { text-align: center; margin-bottom: 2rem; }
+    header img { width: 96px; height: auto; }
+    header h1 { font-size: 1.65rem; margin: 0.75rem 0 0.35rem; font-weight: 650; }
+    header p { margin: 0; color: var(--muted); max-width: 42rem; margin-inline: auto; }
+    .badges {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
+      margin: 1.25rem 0 0;
+    }
+    .badges img { height: 28px; width: auto; }
+    section { margin-top: 2.25rem; }
+    h2 {
+      font-size: 1.15rem; font-weight: 650; margin: 0 0 0.75rem;
+      padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 0.95rem; margin: 1.25rem 0 0.5rem; color: var(--muted); font-weight: 600; }
+    p.lead { margin: 0 0 1rem; color: var(--muted); }
+    table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td { padding: 0.55rem 0.65rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    th { background: color-mix(in srgb, var(--surface) 85%, var(--accent)); font-weight: 600; white-space: nowrap; }
+    td.yes { color: var(--yes); font-weight: 600; text-align: center; }
+    td.no { color: var(--dash); text-align: center; }
+    td code { font-size: 0.82em; }
+    .links-grid {
+      display: grid; gap: 0.65rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    .link-card {
+      display: block; padding: 0.75rem 0.9rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: inherit;
+    }
+    .link-card:hover { border-color: var(--accent); }
+    .link-card strong { display: block; margin-bottom: 0.2rem; }
+    .link-card span { font-size: 0.82rem; color: var(--muted); }
+    .dashboard-frame {
+      width: 100%; min-height: 720px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--surface);
+    }
+    .dashboard-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.75rem 0 1rem; }
+    .dashboard-actions a {
+      display: inline-block; padding: 0.45rem 0.85rem; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--surface); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500;
+    }
+    .dashboard-actions a.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.82rem; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="readme/logo.svg" alt="Selenoid Stack" width="96" height="96" />
+      <h1>selenoid-tests</h1>
+      <p>
+        Go orchestrator for the Selenoid stack — merged Allure 3 pyramid across
+        <strong>selenoid</strong>, <strong>selenoid-ui</strong>, <strong>cm</strong> and browser nodes.
+        Prod smoke: <a href="https://selenoid.qa.guru/">selenoid.qa.guru</a> (Selenoid&nbsp;3).
+      </p>
+      <div class="badges">
+        <a href="reports/latest/dashboard/"><img src="readme/badge.svg" alt="Stack badge" /></a>
+        <a href="reports/latest/dashboard/"><img src="readme/stats.svg" alt="Stack stats" /></a>
+      </div>
+    </header>
+
+    <section id="links">
+      <h2>Quick links</h2>
+      <div class="links-grid">
+        <a class="link-card" href="https://github.com/qa-guru/selenoid-tests">
+          <strong>GitHub repo</strong>
+          <span>qa-guru/selenoid-tests — source &amp; runbooks</span>
+        </a>
+        <a class="link-card" href="reports/latest/dashboard/">
+          <strong>Allure dashboard</strong>
+          <span>Pyramid · status dynamics · success distribution</span>
+        </a>
+        <a class="link-card" href="reports/latest/awesome/">
+          <strong>Allure awesome</strong>
+          <span>Epic drill-down per @Component</span>
+        </a>
+        <a class="link-card" href="https://allure.qa.guru/project/5271">
+          <strong>TestOps #5271</strong>
+          <span>Cloud launches &amp; history</span>
+        </a>
+        <a class="link-card" href="https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml">
+          <strong>CI orchestrator</strong>
+          <span>selenoid_github-orchestrator.yml</span>
+        </a>
+        <a class="link-card" href="https://github.com/qa-guru/selenoid-tests/actions/workflows/sonar.yml">
+          <strong>Sonar workflow</strong>
+          <span>Quality gate on push / dispatch</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="ci-jobs">
+      <h2>CI jobs</h2>
+      <p class="lead">Workflow <code>selenoid-tests Tests</code> — push <code>main</code>, <code>workflow_dispatch</code>, <code>repository_dispatch deploy-smoke</code>.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Что делает</th>
+            <th>Gate / trigger</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>go-unit</code></td>
+            <td>Checkout <code>selenoid</code>, <code>selenoid-ui</code>, <code>cm</code> → product Go unit (+ RTL для UI) → Allure</td>
+            <td>Matrix ×3; skip при <code>skip_go_unit</code> (deploy-smoke)</td>
+          </tr>
+          <tr>
+            <td><code>go-hub</code></td>
+            <td>Hub pyramid: <code>run-go-pyramid.sh</code> — integration, api, e2e, webdriver, playwright, min, resilience, har-prod</td>
+            <td>Push → <code>hub-all</code>; prod profile → <code>hub-prod</code>; dispatch → slice по <code>test_tags</code></td>
+          </tr>
+          <tr>
+            <td><code>go-cm</code></td>
+            <td>CM install stack (:4445/:8081) → CM pyramid slice</td>
+            <td>Push (non-prod); skipped для <code>selenoid_qa_guru_*</code></td>
+          </tr>
+          <tr>
+            <td><code>deploy-smoke-callback</code></td>
+            <td>Callback в triggering repo после prod smoke</td>
+            <td><code>repository_dispatch</code> + prod profile</td>
+          </tr>
+          <tr>
+            <td><code>report</code></td>
+            <td>Merge Allure → quality gate → gh-pages → TestOps upload → Telegram</td>
+            <td>После go-unit / go-hub / go-cm</td>
+          </tr>
+          <tr>
+            <td><code>sonar</code></td>
+            <td>SonarCloud analysis (отдельный workflow)</td>
+            <td><a href="https://github.com/qa-guru/selenoid-tests/actions/workflows/sonar.yml">sonar.yml</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="slices">
+      <h2>Go pyramid slices</h2>
+      <p class="lead">Локально: <code>./scripts/run-go-pyramid.sh &lt;slice&gt;</code> · stand: <code>PYRAMID_STAND=selenoid_github|selenoid_qa_guru</code>.</p>
+      <table>
+        <thead>
+          <tr><th>Slice</th><th>Layer</th><th>Scope</th><th>CI</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>unit</code></td><td>unit</td><td><code>internal/*</code>, JSON fixture parsers, product unit via <code>run-go-unit.sh</code></td><td><code>go-unit</code></td></tr>
+          <tr><td><code>integration</code></td><td>integration</td><td>wd · ui · pw · min · resilience packages on hub stack</td><td><code>go-hub</code> (hub-all)</td></tr>
+          <tr><td><code>api</code></td><td>api</td><td>Hub + UI + video-recorder HTTP/API smoke</td><td><code>go-hub</code> · deploy-smoke default tag</td></tr>
+          <tr><td><code>ui</code></td><td>e2e</td><td>Selenoid UI routes, VNC viewer, capabilities flow</td><td><code>go-hub</code> · prod <code>selenoid_qa_guru_e2e</code></td></tr>
+          <tr><td><code>webdriver</code> / <code>playwright</code></td><td>e2e</td><td>Browser nodes — WebDriver &amp; Playwright sessions</td><td><code>go-hub</code> · browser-image dispatch</td></tr>
+          <tr><td><code>min</code></td><td>unit + integration</td><td>Minimal chromium image (VNC/video off)</td><td><code>go-hub</code> (hub-all)</td></tr>
+          <tr><td><code>har-prod</code></td><td>e2e</td><td>HAR capture on prod hub</td><td><code>go-hub</code> (hub-prod)</td></tr>
+          <tr><td><code>cm</code></td><td>cm pyramid</td><td>Configuration Manager install + api/e2e</td><td><code>go-cm</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="matrix">
+      <h2>Component × layer (push <code>main</code>)</h2>
+      <p class="lead">Пирамида: unit → component → integration → api → e2e → manual. ✓ = покрыто в CI или product unit.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>unit</th>
+            <th>component</th>
+            <th>integration</th>
+            <th>api</th>
+            <th>e2e</th>
+            <th>CI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>selenoid</strong></td>
+            <td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+            <td><code>go-unit</code> + <code>go-hub</code></td>
+          </tr>
+          <tr>
+            <td><strong>selenoid-ui</strong></td>
+            <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+            <td><code>go-unit</code> + <code>go-hub</code></td>
+          </tr>
+          <tr>
+            <td><strong>cm</strong></td>
+            <td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+            <td><code>go-unit</code> + <code>go-cm</code></td>
+          </tr>
+          <tr>
+            <td><strong>playwright-image</strong></td>
+            <td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+            <td><code>go-hub</code></td>
+          </tr>
+          <tr>
+            <td><strong>webdriver-image</strong></td>
+            <td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+            <td><code>go-hub</code></td>
+          </tr>
+          <tr>
+            <td><strong>video-recorder</strong></td>
+            <td class="no">—</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+            <td><code>go-hub</code> (api / dispatch)</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Deploy smoke (<code>repository_dispatch</code>)</h3>
+      <table>
+        <thead>
+          <tr><th>Source repo</th><th>Tags</th><th>When</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="https://github.com/qa-guru/selenoid">selenoid</a> · <a href="https://github.com/qa-guru/selenoid-ui">selenoid-ui</a></td><td><code>api,smoke</code></td><td>After release / prod UI pin wait</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/cm">cm</a></td><td><code>api</code></td><td>After CM deploy</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/browser-image">browser-image</a></td><td><code>playwright</code> · <code>smoke</code> (wd / video-recorder)</td><td>After image publish</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/selenoid.qa.guru">selenoid.qa.guru</a></td><td><code>api</code> (default)</td><td>Post-deploy prod gate</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="dashboard">
+      <h2>Live dashboard</h2>
+      <p class="lead">Обновляется после каждого orchestrator run на <code>main</code>. Per-run URLs: <code>reports/&lt;run-id&gt;/</code>.</p>
+      <div class="dashboard-actions">
+        <a class="primary" href="reports/latest/dashboard/">Open dashboard</a>
+        <a href="reports/latest/awesome/">Awesome report</a>
+        <a href="https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml">Latest CI runs</a>
+      </div>
+      <iframe
+        class="dashboard-frame"
+        title="Allure 3 dashboard — selenoid-tests"
+        src="reports/latest/dashboard/"
+        loading="lazy"
+      ></iframe>
+    </section>
+
+    <footer>
+      <a href="https://github.com/qa-guru/selenoid-tests">qa-guru/selenoid-tests</a>
+      · SSOT orchestrator for the Selenoid stack ·
+      <a href="https://qa.guru/">qa.guru</a>
+    </footer>
+  </div>
+</body>
+</html>
