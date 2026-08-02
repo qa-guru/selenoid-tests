@@ -70,7 +70,7 @@ export function createAllureConfig({
       dashboardTheme: {
         import: DASHBOARD_THEME_PLUGIN,
         options: {
-          assetsDir: "../.github/assets",
+          assetsDir: ".github/assets",
         },
       },
       ...(publish?.notifications
