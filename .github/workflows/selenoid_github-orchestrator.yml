@@ -701,13 +701,13 @@ jobs:
           keep_files: true
 
       - name: Setup Node for dashboard preview capture
-        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
+        if: false # disabled: Playwright README PNGs blocked gh-pages deploy; re-enable when capture is fast/reliable
         uses: actions/setup-node@v6
         with:
           node-version: 26
 
       - name: Capture dashboard preview for README
-        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/reports/latest/dashboard/index.html') != ''
+        if: false # disabled — see Setup Node step above
         continue-on-error: true
         timeout-minutes: 5
         run: |
