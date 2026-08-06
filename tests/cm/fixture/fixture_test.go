@@ -111,6 +111,34 @@ func TestCmBrowsersConfigJson_ParsesChromeMinImage(t *testing.T) {
 	})
 }
 
+func TestCmBrowsersConfigJson_AndroidCatalogCanon(t *testing.T) {
+	allurex.Run(t, unitMeta(
+		"parses android catalog floor 5.1 default 16.0 qaguru 10-16",
+		"tests.unit.fixture.CmBrowsersConfigJsonTest",
+		"CM browsers.json fixture",
+	), func(a *allurex.A) {
+		a.Step("verify android SSOT shape", func() {
+			var root map[string]any
+			require.NoError(t, json.Unmarshal([]byte(loadProjectFixture(t, "fixtures/ci-browsers.json")), &root))
+			android, ok := root["android"].(map[string]any)
+			require.True(t, ok)
+			require.Equal(t, "16.0", android["default"])
+			versions, ok := android["versions"].(map[string]any)
+			require.True(t, ok)
+			require.NotContains(t, versions, "4.4")
+			require.Contains(t, versions, "5.1")
+			require.Equal(t, "selenoid/android:5.1", versions["5.1"].(map[string]any)["image"])
+			for _, ver := range []string{"10.0", "11.0", "12.0", "13.0", "14.0", "15.0", "16.0"} {
+				block := versions[ver].(map[string]any)
+				major := ver[:strings.Index(ver, ".")]
+				require.Equal(t, "qaguru/android:"+major, block["image"])
+				require.Equal(t, "6g", block["mem"])
+				require.Equal(t, "4.0", block["cpu"])
+			}
+		})
+	})
+}
+
 func TestCmHelpOutput_ListsCoreSubcommands(t *testing.T) {
 	allurex.Run(t, unitMeta(
 		"lists selenoid and selenoid-ui subcommands in help",
