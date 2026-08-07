@@ -1,9 +1,12 @@
 {
   "private": true,
   "name": "selenoid-tests-allure",
-  "description": "Allure 3 CLI + notifications plugin for selenoid-tests",
+  "description": "Allure 3 CLI + allure-notifications send for selenoid-tests CI",
+  "engines": {
+    "node": ">=26"
+  },
   "dependencies": {
-    "@allure-notifications/plugin": "6.0.12",
-    "allure": "3.13.0"
+    "allure": "3.14.3",
+    "allure-notifications": "6.0.12"
   }
 }

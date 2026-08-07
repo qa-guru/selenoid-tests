@@ -604,13 +604,13 @@ jobs:
           test "$missing" -eq 0
 
 
-      - name: Install Allure publish deps
+      - name: Install Allure notifications CLI
         if: always() && steps.allure-report.outcome == 'success'
         uses: actions/setup-node@v6
         with:
           node-version: 26
 
-      - name: Publish Allure (theme + Telegram plugin)
+      - name: Send Allure Telegram notification
         if: always() && steps.allure-report.outcome == 'success'
         continue-on-error: true
         env:
@@ -623,19 +623,27 @@ jobs:
           BUILD_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           TESTOPS_LAUNCH_URL: ${{ env.TESTOPS_LAUNCH_URL }}
           NOTIFICATION_PROJECT: Selenoid Stack #${{ github.run_number }}
-          ALLURE_PUBLISH_SLUG: selenoid-tests
         run: |
           AWESOME="build/reports/allure-report/allureReport/awesome"
           if [ ! -f "$AWESOME/summary.json" ]; then
-            echo "No Allure summary — skip publish"
+            echo "No Allure summary — skip notify"
             exit 0
           fi
           if [ "${NOTIFICATION_MODE}" = "live" ] && { [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; }; then
-            echo "TELEGRAM_* missing — skip live publish"
+            echo "TELEGRAM_* missing — skip live notify"
             exit 0
           fi
           npm install --no-save
-          node scripts/allure-publish.mjs
+          node scripts/render-notifications-config.mjs
+          if [ "${NOTIFICATION_MODE}" = "live" ]; then
+            MODE_FLAG="--live"
+          else
+            MODE_FLAG="--dry-run"
+          fi
+          npx --no-install allure-notifications send \
+            --config notifications/config.runtime.json \
+            "${MODE_FLAG}" \
+            --out collage.png
 
       - name: Generate README dashboard assets
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/allure-results/**') != ''
