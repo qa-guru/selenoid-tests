@@ -505,6 +505,8 @@ jobs:
     timeout-minutes: 45
     env:
       ALLURE_RESULTS: build/allure-results
+      QUALITY_GATE_EXIT: "0"
+      TESTOPS_LAUNCH_URL: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -574,7 +576,18 @@ jobs:
           }
           EOF
 
+      - name: Setup Node for Allure
+        if: hashFiles('build/allure-results/**') != ''
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+
+      - name: Install pinned Allure CLI
+        if: hashFiles('build/allure-results/**') != ''
+        run: npm install --no-save
+
       - name: Validate allurerc.mjs
+        if: hashFiles('build/allure-results/**') != ''
         run: node scripts/validate-allurerc.mjs allurerc.mjs
 
       - name: Allure 3 quality gate + report
@@ -583,11 +596,14 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          chmod +x scripts/allure-report.sh
-          ./scripts/allure-report.sh quality-gate
-          echo "QUALITY_GATE_EXIT=$?" >> "$GITHUB_ENV"
-          ./scripts/allure-report.sh generate
+          npx --no-install allure quality-gate build/allure-results \
+            --config allurerc.mjs
+          GATE_EXIT=$?
+          echo "QUALITY_GATE_EXIT=${GATE_EXIT}" >> "$GITHUB_ENV"
           set -e
+          npx --no-install allure generate build/allure-results \
+            --output build/reports/allure-report/allureReport \
+            --config allurerc.mjs
 
       - name: Verify Allure awesome section chunks
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/index.html') != ''
@@ -603,47 +619,25 @@ jobs:
           done
           test "$missing" -eq 0
 
-
-      - name: Install Allure notifications CLI
-        if: always() && steps.allure-report.outcome == 'success'
-        uses: actions/setup-node@v6
-        with:
-          node-version: 26
-
       - name: Send Allure Telegram notification
         if: always() && steps.allure-report.outcome == 'success'
         continue-on-error: true
+        uses: qa-guru/allure-notifications@v6
+        with:
+          config: notifications/config.json
+          allure-folder: build/reports/allure-report/allureReport/awesome
+          allure-results-folder: build/allure-results
+          project: "Selenoid Stack #${{ github.run_number }}"
+          report-url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/awesome/index.html
+          dashboard-url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/dashboard/index.html
+          testops-url: ${{ env.TESTOPS_LAUNCH_URL }}
+          build-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          mode: ${{ github.event_name == 'pull_request' && 'dry-run' || 'live' }}
+          out: collage.png
         env:
-          NOTIFICATION_MODE: ${{ github.event_name == 'pull_request' && 'dry-run' || 'live' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN || secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '-1004381150566' }}
           TELEGRAM_TOPIC_ID: ${{ secrets.TELEGRAM_SELENOID_TOPIC_ID || vars.TELEGRAM_SELENOID_TOPIC_ID || secrets.TELEGRAM_TOPIC_ID || vars.TELEGRAM_TOPIC_ID }}
-          ALLURE_REPORT_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/awesome/index.html
-          ALLURE_DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/latest/dashboard/index.html
-          BUILD_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          TESTOPS_LAUNCH_URL: ${{ env.TESTOPS_LAUNCH_URL }}
-          NOTIFICATION_PROJECT: Selenoid Stack #${{ github.run_number }}
-        run: |
-          AWESOME="build/reports/allure-report/allureReport/awesome"
-          if [ ! -f "$AWESOME/summary.json" ]; then
-            echo "No Allure summary — skip notify"
-            exit 0
-          fi
-          if [ "${NOTIFICATION_MODE}" = "live" ] && { [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; }; then
-            echo "TELEGRAM_* missing — skip live notify"
-            exit 0
-          fi
-          npm install --no-save
-          node scripts/render-notifications-config.mjs
-          if [ "${NOTIFICATION_MODE}" = "live" ]; then
-            MODE_FLAG="--live"
-          else
-            MODE_FLAG="--dry-run"
-          fi
-          npx --no-install allure-notifications send \
-            --config notifications/config.runtime.json \
-            "${MODE_FLAG}" \
-            --out collage.png
 
       - name: Generate README dashboard assets
         if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/allure-results/**') != ''

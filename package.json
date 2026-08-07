@@ -1,12 +1,11 @@
 {
   "private": true,
   "name": "selenoid-tests-allure",
-  "description": "Allure 3 CLI + allure-notifications send for selenoid-tests CI",
+  "description": "Pinned Allure 3 CLI for selenoid-tests CI; notifications use the GitHub Action",
   "engines": {
     "node": ">=26"
   },
   "dependencies": {
-    "allure": "3.14.3",
-    "allure-notifications": "6.0.12"
+    "allure": "3.14.3"
   }
 }

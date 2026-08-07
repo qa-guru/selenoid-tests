@@ -4,8 +4,8 @@
     "environment": "CI",
     "comment": "",
     "language": "ru",
-    "allureFolder": "./build/reports/allure-report/allureReport/awesome",
-    "allureResultsFolder": "./build/allure-results",
+    "allureFolder": "../build/reports/allure-report/allureReport/awesome",
+    "allureResultsFolder": "../build/allure-results",
     "enableChart": true,
     "chart": {
       "mode": "collage",
