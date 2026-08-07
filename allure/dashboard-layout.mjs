@@ -13,7 +13,7 @@ export function componentLabelFilter(component) {
 }
 
 /**
- * Compact 2×2 dashboard for README PNG (status + pyramid + dynamics + treemap).
+ * Compact 2×2 dashboard for README PNG — same locked quad as main layout.
  * Per-widget filter — no sibling components (webdriver vs playwright).
  */
 export function buildComponentReadmeDashboardLayout(component) {
@@ -26,20 +26,21 @@ export function buildComponentReadmeDashboardLayout(component) {
       filter,
     },
     {
+      type: "durationDynamics",
+      title: TITLES.durationDynamics,
+      limit: 20,
+      filter,
+    },
+    {
       type: "testingPyramid",
       title: TITLES.testingPyramid,
       layers: [...PYRAMID_LAYERS],
       filter,
     },
     {
-      type: "statusDynamics",
-      title: TITLES.statusDynamics,
-      limit: 20,
-      filter,
-    },
-    {
-      type: "successRateDistribution",
-      title: TITLES.successRateDistribution,
+      type: "durations",
+      title: TITLES.durationsByLayer,
+      groupBy: "layer",
       filter,
     },
   ];
@@ -47,7 +48,9 @@ export function buildComponentReadmeDashboardLayout(component) {
 
 /**
  * Dashboard plugin layout.
- * Invariant: index 0 = currentStatus, index 1 = testingPyramid.
+ * Locked 2×2 (indices 0–3):
+ *   [0] currentStatus     [1] durationDynamics
+ *   [2] testingPyramid    [3] durations (groupBy: layer)
  */
 export function buildDashboardLayout({ epicCharts = [] } = {}) {
   const epicStatusDynamics = epicCharts.map((epic) => ({
@@ -64,9 +67,19 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
       title: TITLES.currentStatus,
     },
     {
+      type: "durationDynamics",
+      title: TITLES.durationDynamics,
+      limit: 20,
+    },
+    {
       type: "testingPyramid",
       title: TITLES.testingPyramid,
       layers: [...PYRAMID_LAYERS],
+    },
+    {
+      type: "durations",
+      title: TITLES.durationsByLayer,
+      groupBy: "layer",
     },
     {
       type: "statusDynamics",
@@ -97,11 +110,6 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
     {
       type: "testBaseGrowthDynamics",
       title: TITLES.testBaseGrowthDynamics,
-      limit: 20,
-    },
-    {
-      type: "durationDynamics",
-      title: TITLES.durationDynamics,
       limit: 20,
     },
     {
@@ -141,11 +149,6 @@ export function buildDashboardLayout({ epicCharts = [] } = {}) {
       type: "durations",
       title: TITLES.durations,
       groupBy: "none",
-    },
-    {
-      type: "durations",
-      title: TITLES.durationsByLayer,
-      groupBy: "layer",
     },
     {
       type: "statusAgePyramid",
