@@ -620,7 +620,7 @@ jobs:
           test "$missing" -eq 0
 
       - name: Send Allure Telegram notification
-        if: always() && steps.allure-report.outcome == 'success'
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('build/reports/allure-report/allureReport/awesome/summary.json') != ''
         continue-on-error: true
         uses: qa-guru/allure-notifications@v6
         with:
