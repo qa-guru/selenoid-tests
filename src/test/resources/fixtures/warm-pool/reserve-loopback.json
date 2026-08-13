@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "slot": {
+    "id": "pool-chrome-1",
+    "protocol": "webdriver",
+    "browser": "chrome",
+    "sessionId": "pool-chrome-1",
+    "warmUrl": "http://127.0.0.1:18081",
+    "webdriverUrl": "http://127.0.0.1:14441/",
+    "webdriverUrlLoopback": "http://127.0.0.1:14441/",
+    "playwrightWsUrl": null,
+    "reservedBy": "hub-1"
+  }
+}

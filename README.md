@@ -59,7 +59,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 **Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
 
-**Scope:** `selenoid-warm-pool/` — out of scope (deferred), не в матрице и не в CI.
+**Scope:** live `selenoid-warm-pool/` pyramid — out of scope. Hub-attach contract fixture: `tests/unit/fixture/warm_attach_contract_test.go`. Product unit: `qa-guru/selenoid` `warm/` + `service`.
 
 ## Экосистема qa-guru Selenoid
 
