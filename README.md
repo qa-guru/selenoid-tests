@@ -57,9 +57,9 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — **Go autotests** (hub pyramid + product unit из исходных репо).
 
-**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
+**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm|warm-pool`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
 
-**Scope:** live `selenoid-warm-pool/` pyramid — out of scope. Hub-attach contract fixture: `tests/unit/fixture/warm_attach_contract_test.go`. Product unit: `qa-guru/selenoid` `warm/` + `service`.
+**Warm-pool:** live orchestrator + hub-attach — slice `warm-pool` (`tests/e2e/warmpool`, local stand `:9090`). **Не** в `hub-prod` / `hub-all` (CI/prod без loopback attach). Unit: `internal/warmpool` + fixture contract.
 
 ## Экосистема qa-guru Selenoid
 
@@ -202,6 +202,8 @@ PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh hub-prod
 PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh hub-all
 # Go HAR prod smoke
 SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
+# Warm-pool live stand :9090 (hub-attach skips unless slots + -warm-pool-url)
+./scripts/run-go-pyramid.sh warm-pool
 ```
 
 `workflow_dispatch`: `test_tags=integration|api|smoke|playwright` → Go slice; `env_profile=selenoid_qa_guru_*` → `hub-prod`.
@@ -209,7 +211,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ### Component × Layer × CI (push `main`)
 
 Пирамида: `unit → component → integration → api → e2e → manual`. **Go hub** — пакеты ниже; **Go unit** — отдельно в `go-unit`.  
-**Матрица (Selenoid 3 / `main`):** hub/ui/cm/browser-image покрыты Go pyramid + product Go unit. `warm-pool` — OUT.
+**Матрица (Selenoid 3 / `main`):** hub/ui/cm/browser-image покрыты Go pyramid + product Go unit. `warm-pool` — local slice, не CI push.
 
 | Component | unit | component | integration | api | e2e | manual | CI push |
 |-----------|:----:|:---------:|:-----------:|:---:|:---:|:------:|---------|
@@ -219,6 +221,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | **playwright-image** | Go¹ | — | Go | Go | Go | — | `go-hub` |
 | **webdriver-image** | Go | — | Go | Go | Go | — | `go-hub` |
 | **video-recorder** | — | Go | — | Go | — | — | `go-hub` (api slice / dispatch) |
+| **warm-pool** | Go⁸ | — | — | Go⁸ | Go⁸ | — | — (slice `warm-pool`, skip if stand down) |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |
 
@@ -228,7 +231,8 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ⁴ **cloud api:** post-deploy `selenoid_qa_guru_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
-⁷ **playwright-image / webdriver-image unit:** catalog JSON + session body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`).
+⁷ **playwright-image / webdriver-image unit:** catalog JSON + session body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`).  
+⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live GET/reserve/release (api) and hub-attach (e2e) in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Hub-attach skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.
 
 ### Manual (runbook)
 

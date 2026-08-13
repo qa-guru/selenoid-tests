@@ -39,7 +39,10 @@ selenoid-tests/
 - Vitest/RTL in `selenoid-ui/ui` (stays).
 - typescript-go for UI unit (separate track).
 - Moving product hub/ui/cm `*_test.go` into this repo.
-- Live warm-pool / hub-attach sessions in the pyramid (product unit in `qa-guru/selenoid`; orchestrator unit in `qa-guru/selenoid-warm-pool`).
+
+## Warm-pool (local slice)
+
+Live orchestrator + hub-attach: `./scripts/run-go-pyramid.sh warm-pool` (`tests/e2e/warmpool`). Not in `hub-prod` / `hub-all`. Hub-attach skips unless hub `warmTotal>0` and a loopback ChromeDriver answers.
 
 ## Phases
 

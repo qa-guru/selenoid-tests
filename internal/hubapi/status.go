@@ -10,12 +10,14 @@ import (
 
 // Status is hub capacity JSON (flat /status or UI .state).
 type Status struct {
-	Total    int            `json:"total"`
-	Used     int            `json:"used"`
-	Queued   int            `json:"queued"`
-	Pending  int            `json:"pending"`
-	Browsers map[string]any `json:"browsers"`
-	State    *Status        `json:"state"`
+	Total     int            `json:"total"`
+	Used      int            `json:"used"`
+	Queued    int            `json:"queued"`
+	Pending   int            `json:"pending"`
+	WarmReady int            `json:"warmReady"`
+	WarmTotal int            `json:"warmTotal"`
+	Browsers  map[string]any `json:"browsers"`
+	State     *Status        `json:"state"`
 }
 
 // Fetch GET hub status using config hubStatusPath (prod: /hub/status).

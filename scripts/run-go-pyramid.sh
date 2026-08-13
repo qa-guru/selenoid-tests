@@ -29,6 +29,7 @@ if [[ -z "${SELENOID_TEST_ENV:-}" && -z "${env:-}" ]]; then
     integration)      export SELENOID_TEST_ENV="${STAND}_integration" ;;
     e2e|webdriver|ui|playwright)
                       export SELENOID_TEST_ENV="${STAND}_e2e" ;;
+    warm-pool)        export SELENOID_TEST_ENV=local_e2e ;;
     har-prod)         export SELENOID_TEST_ENV=selenoid_qa_guru_e2e ;;
     min)              export SELENOID_TEST_ENV=selenoid_github_min_integration ;;
     cm)               export SELENOID_TEST_ENV=selenoid_github_cm_integration ;;
@@ -46,7 +47,7 @@ run_pkgs() {
   shift
   local pkgs=("$@")
   local test_flags=(-count=1 -timeout=15m)
-  if [[ "${active_slice}" == "integration" || "${active_slice}" == "min" || "${active_slice}" == "resilience" || "${active_slice}" == "ui" || "${active_slice}" == "e2e" || "${active_slice}" == "webdriver" || "${active_slice}" == "playwright" || "${active_slice}" == "har-prod" || "${active_slice}" == "cm" ]]; then
+  if [[ "${active_slice}" == "integration" || "${active_slice}" == "min" || "${active_slice}" == "resilience" || "${active_slice}" == "ui" || "${active_slice}" == "e2e" || "${active_slice}" == "webdriver" || "${active_slice}" == "playwright" || "${active_slice}" == "har-prod" || "${active_slice}" == "cm" || "${active_slice}" == "warm-pool" ]]; then
     # Hub session tests share Selenoid capacity — keep -p 1 (was Java @ResourceLock hubSessions).
     test_flags+=(-p 1)
   fi
@@ -71,6 +72,7 @@ run_with_env() {
 run_unit_pkgs() {
   run_pkgs unit \
     ./internal/config/... ./internal/helpers/... ./internal/hubapi/... \
+    ./internal/warmpool/... \
     ./tests/unit/fixture/...
 }
 
@@ -105,6 +107,10 @@ run_har_prod_pkgs() {
 run_min_pkgs() {
   export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
   run_pkgs min ./tests/unit/fixture/min/... ./tests/integration/min/...
+}
+
+run_warm_pool_pkgs() {
+  run_pkgs warm-pool ./internal/warmpool/... ./tests/e2e/warmpool/...
 }
 
 run_resilience_pkgs() {
@@ -177,6 +183,9 @@ case "${SLICE}" in
   min)
     run_min_pkgs
     ;;
+  warm-pool)
+    run_warm_pool_pkgs
+    ;;
   resilience)
     run_resilience_pkgs
     ;;
@@ -192,7 +201,7 @@ case "${SLICE}" in
     ;;
   *)
     echo "Unknown slice: ${SLICE}" >&2
-    echo "Known: unit|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience|cm" >&2
+    echo "Known: unit|api|integration|ui|webdriver|playwright|e2e|har-prod|hub-prod|hub-all|min|resilience|cm|warm-pool" >&2
     exit 2
     ;;
 esac
