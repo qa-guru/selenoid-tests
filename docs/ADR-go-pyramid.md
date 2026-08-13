@@ -18,7 +18,7 @@ Prod gate: `hub-prod` on `selenoid_qa_guru_*` (unit→integration→api→e2e→
 4. **HTTP** — stdlib `net/http` (+ thin helpers). No RestAssured/resty for hub/UI JSON.
 5. **Browser** — `playwright-go` for UI e2e and Playwright WS slices (P3). WebDriver sessions stay raw WD HTTP (as today).
 6. **Allure** — native `*-result.json` writer (`internal/allurex`) with labels `layer`, `component`, `epic`, `feature`, `story`, `tag`; `framework=go`, `language=go`. Merge into existing `report` job / TestOps **5271** / gh-pages.
-7. **Slices** — `scripts/run-go-pyramid.sh`: `unit` (`internal/*` + `tests/unit/fixture/`), `api`, `integration`, `e2e`, `webdriver`, `ui`, `playwright`, `min`, `resilience`, `cm`, `hub-prod`, `hub-all`. **`@Layer("component")`** — только RTL (Vitest); Go JSON parsers = **unit**.
+7. **Slices** — `scripts/run-go-pyramid.sh`: `unit` (`internal/*` + `tests/unit/fixture/`), `api` (hub/UI + `tests/api/warmpool`, skip if `:9090` down), `integration`, `e2e`, `webdriver`, `ui`, `playwright`, `min`, `resilience`, `cm`, `warm-pool`, `hub-prod`, `hub-all`. **`@Layer("component")`** — только RTL (Vitest); Go JSON parsers = **unit**.
 8. **CI gate (P5)** — jobs `go-hub` + `go-cm` (+ `go-unit` from product repos). No Java dual-run. CM stays off prod tag lists (`hub-prod` / `selenoid_qa_guru_*`).
 
 ## Layout
@@ -28,7 +28,7 @@ selenoid-tests/
   go.mod
   internal/config|httpx|hubapi|uiapi|allurex|health/
   tests/unit/fixture/
-  tests/{api,integration,e2e,webdriver,ui,playwright,cm}/...
+  tests/{api,api/warmpool,integration,e2e,e2e/warmpool,webdriver,ui,playwright,cm}/...
   scripts/run-go-pyramid.sh
   src/test/resources/config/*.properties
   src/test/resources/fixtures/
@@ -42,7 +42,7 @@ selenoid-tests/
 
 ## Warm-pool (local slice)
 
-Live orchestrator + hub-attach: `./scripts/run-go-pyramid.sh warm-pool` (`tests/e2e/warmpool`). Not in `hub-prod` / `hub-all`. Hub-attach skips unless hub `warmTotal>0` and a loopback ChromeDriver answers.
+Live orchestrator: `./scripts/run-go-pyramid.sh warm-pool` — `internal/warmpool` (unit) + `tests/api/warmpool` (HTTP API) + `tests/e2e/warmpool` (hub-attach). API tests also run under slice `api` (`./tests/api/...`) and skip if `:9090` is down. Not a CI gate: `hub-prod` / `hub-all` on github/prod have no loopback attach (skip). Hub-attach skips unless hub `warmTotal>0` and a loopback ChromeDriver answers.
 
 ## Phases
 

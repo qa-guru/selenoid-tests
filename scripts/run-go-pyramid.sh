@@ -110,7 +110,7 @@ run_min_pkgs() {
 }
 
 run_warm_pool_pkgs() {
-  run_pkgs warm-pool ./internal/warmpool/... ./tests/e2e/warmpool/...
+  run_pkgs warm-pool ./internal/warmpool/... ./tests/api/warmpool/... ./tests/e2e/warmpool/...
 }
 
 run_resilience_pkgs() {

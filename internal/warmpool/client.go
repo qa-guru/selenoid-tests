@@ -118,10 +118,37 @@ func (c *Client) Reserve(protocol, browser, owner string, loopback bool) (slot S
 	return out.Slot, resp.StatusCode, nil
 }
 
-// Release POST /pool/release.
+// Release POST /pool/release (expects 200).
 func (c *Client) Release(slotID string) error {
 	_, err := c.http.PostJSON("/pool/release", map[string]string{"slotId": slotID}, http.StatusOK)
 	return err
+}
+
+// Post JSON to path and return status+body (no expected-status check).
+func (c *Client) Post(path string, payload any) (status int, body []byte, err error) {
+	resp, err := c.http.PostJSON(path, payload, 0)
+	if err != nil {
+		return 0, nil, err
+	}
+	return resp.StatusCode, resp.Body, nil
+}
+
+// GetStatus GETs path and returns status+body.
+func (c *Client) GetStatus(path string) (status int, body []byte, err error) {
+	resp, err := c.http.Do(http.MethodGet, path, nil, nil)
+	if err != nil {
+		return 0, nil, err
+	}
+	return resp.StatusCode, resp.Body, nil
+}
+
+// ParseError reads {"error":"..."} from an orchestrator error body.
+func ParseError(body []byte) string {
+	var e struct {
+		Error string `json:"error"`
+	}
+	_ = json.Unmarshal(body, &e)
+	return e.Error
 }
 
 // DialURL is the host-reachable WebDriver URL (loopback field wins).

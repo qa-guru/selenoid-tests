@@ -72,6 +72,39 @@ func TestClientReserve409(t *testing.T) {
 	}
 }
 
+func TestParseError(t *testing.T) {
+	if ParseError([]byte(`{"error":"slotId is required"}`)) != "slotId is required" {
+		t.Fatal("ParseError")
+	}
+}
+
+func TestClientPostAndGetStatus(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet && r.URL.Path == "/pool/reserve" {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		if r.URL.Path == "/pool/release" {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusBadRequest)
+			_, _ = w.Write([]byte(`{"error":"slotId is required"}`))
+			return
+		}
+		http.NotFound(w, r)
+	}))
+	t.Cleanup(srv.Close)
+
+	c := New(srv.URL)
+	status, body, err := c.Post("/pool/release", map[string]any{})
+	if err != nil || status != 400 || ParseError(body) != "slotId is required" {
+		t.Fatalf("post: %d %s %v", status, body, err)
+	}
+	status, _, err = c.GetStatus("/pool/reserve")
+	if err != nil || status != http.StatusMethodNotAllowed {
+		t.Fatalf("get reserve: %d %v", status, err)
+	}
+}
+
 func TestSlotIsLoopback(t *testing.T) {
 	loop := Slot{WebdriverURL: "http://127.0.0.1:14441/"}
 	if !loop.IsLoopback() {
