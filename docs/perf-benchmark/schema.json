@@ -100,7 +100,7 @@
         },
         "protocol": { "type": "string", "enum": ["webdriver", "playwright"] },
         "image_flavor": { "type": "string", "enum": ["warm", "min"] },
-        "pool": { "type": "string", "enum": ["cold", "warm-pool"] },
+        "pool": { "type": "string", "enum": ["cold", "warm-pool", "hot-pool"] },
         "suite_size": { "type": "string", "enum": ["1", "few", "many"] },
         "tests_count": { "type": "integer", "minimum": 1 },
         "parallel": { "type": "integer", "minimum": 1 },
@@ -121,7 +121,8 @@
         "artifacts_total_kb": { "type": ["number", "null"], "minimum": 0 },
         "passed": { "type": ["integer", "null"], "minimum": 0 },
         "failed": { "type": ["integer", "null"], "minimum": 0 },
-        "note": { "type": "string" }
+        "note": { "type": "string" },
+        "jenkins_url": { "type": "string", "format": "uri" }
       }
     }
   }

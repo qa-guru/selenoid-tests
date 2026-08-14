@@ -3,6 +3,190 @@
   "har_completeness_url": "https://github.com/qa-guru/selenoid-tests/blob/main/docs/har-benchmark/MATRIX.md",
   "runs": [
     {
+      "language": "java",
+      "protocol": "webdriver",
+      "suite_size": "1",
+      "tests_count": 1,
+      "parallel": 1,
+      "browser": "chrome/149.0",
+      "versions": {
+        "hub": "3.0.9",
+        "ui": "3.0.30",
+        "cm": "3.0.2",
+        "browser_image": "149"
+      },
+      "host": {
+        "cpu": "box1-selenoid java-jdk21-jenkins-warm-agent-1",
+        "cores": 8,
+        "ram_gb": 32,
+        "os": "Debian 12",
+        "note": "Jenkins exclusive agent; wall_time_s = job duration when measured"
+      },
+      "session_create_p50_ms": null,
+      "session_create_p95_ms": null,
+      "cpu_avg_pct": null,
+      "cpu_peak_pct": null,
+      "ram_avg_mb": null,
+      "ram_peak_mb": null,
+      "video_kb": 0,
+      "log_kb": 0,
+      "har_kb": 0,
+      "artifacts_total_kb": 0,
+      "passed": null,
+      "failed": null,
+      "id": "jenkins-java-wd-cold-1-p1-headless-none",
+      "status": "pending",
+      "measured_at": null,
+      "image_flavor": "warm",
+      "pool": "cold",
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "wall_time_s": null,
+      "note": "headless; enableHar forces cold docker; no Allure attaches",
+      "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool/"
+    },
+    {
+      "language": "java",
+      "protocol": "webdriver",
+      "suite_size": "1",
+      "tests_count": 1,
+      "parallel": 1,
+      "browser": "chrome/149.0",
+      "versions": {
+        "hub": "3.0.9",
+        "ui": "3.0.30",
+        "cm": "3.0.2",
+        "browser_image": "149"
+      },
+      "host": {
+        "cpu": "box1-selenoid java-jdk21-jenkins-warm-agent-1",
+        "cores": 8,
+        "ram_gb": 32,
+        "os": "Debian 12",
+        "note": "Jenkins exclusive agent; wall_time_s = job duration when measured"
+      },
+      "session_create_p50_ms": null,
+      "session_create_p95_ms": null,
+      "cpu_avg_pct": null,
+      "cpu_peak_pct": null,
+      "ram_avg_mb": null,
+      "ram_peak_mb": null,
+      "video_kb": null,
+      "log_kb": null,
+      "har_kb": null,
+      "artifacts_total_kb": null,
+      "passed": null,
+      "failed": null,
+      "id": "jenkins-java-wd-cold-1-p1-full-attachments",
+      "status": "pending",
+      "measured_at": null,
+      "image_flavor": "warm",
+      "pool": "cold",
+      "artifacts": {
+        "video": true,
+        "log": true,
+        "har": "bodies"
+      },
+      "wall_time_s": null,
+      "note": "video+VNC+HAR+screenshot+page source+console \u2192 cold docker",
+      "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool-full-attachments/"
+    },
+    {
+      "language": "java",
+      "protocol": "webdriver",
+      "suite_size": "1",
+      "tests_count": 1,
+      "parallel": 1,
+      "browser": "chrome/149.0",
+      "versions": {
+        "hub": "3.0.9",
+        "ui": "3.0.30",
+        "cm": "3.0.2",
+        "browser_image": "149"
+      },
+      "host": {
+        "cpu": "box1-selenoid java-jdk21-jenkins-warm-agent-1",
+        "cores": 8,
+        "ram_gb": 32,
+        "os": "Debian 12",
+        "note": "Jenkins exclusive agent; wall_time_s = job duration when measured"
+      },
+      "session_create_p50_ms": null,
+      "session_create_p95_ms": null,
+      "cpu_avg_pct": null,
+      "cpu_peak_pct": null,
+      "ram_avg_mb": null,
+      "ram_peak_mb": null,
+      "video_kb": 0,
+      "log_kb": 0,
+      "har_kb": 0,
+      "artifacts_total_kb": 0,
+      "passed": 1,
+      "failed": 0,
+      "id": "jenkins-java-wd-warm-1-p1-none",
+      "status": "ok",
+      "measured_at": "2026-08-14T09:15:58Z",
+      "image_flavor": "warm",
+      "pool": "warm-pool",
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "wall_time_s": 4.216,
+      "note": "hub-attach job #14 SUCCESS; Gradle ~3s; no Allure",
+      "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/"
+    },
+    {
+      "language": "java",
+      "protocol": "webdriver",
+      "suite_size": "1",
+      "tests_count": 1,
+      "parallel": 1,
+      "browser": "chrome/149.0-min",
+      "versions": {
+        "hub": "3.0.9",
+        "ui": "3.0.30",
+        "cm": "3.0.2",
+        "browser_image": "149-min"
+      },
+      "host": {
+        "cpu": "box1-selenoid java-jdk21-jenkins-warm-agent-1",
+        "cores": 8,
+        "ram_gb": 32,
+        "os": "Debian 12",
+        "note": "Jenkins exclusive agent; wall_time_s = job duration when measured"
+      },
+      "session_create_p50_ms": null,
+      "session_create_p95_ms": null,
+      "cpu_avg_pct": null,
+      "cpu_peak_pct": null,
+      "ram_avg_mb": null,
+      "ram_peak_mb": null,
+      "video_kb": 0,
+      "log_kb": 0,
+      "har_kb": 0,
+      "artifacts_total_kb": 0,
+      "passed": null,
+      "failed": null,
+      "id": "jenkins-java-wd-hot-1-p1-none",
+      "status": "pending",
+      "measured_at": null,
+      "image_flavor": "min",
+      "pool": "hot-pool",
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "wall_time_s": null,
+      "note": "stub job, disabled; phase 03 reuse-session",
+      "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-hot-pool/"
+    },
+    {
       "id": "catalog-go-pw-warm-few-p5-none",
       "status": "pending",
       "measured_at": null,
@@ -14,14 +198,23 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "playwright-chromium/1.61.1",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "1.61.1" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
         "ram_gb": 32,
         "os": "Debian 12",
-        "note": "placeholder — fill after first measured run"
+        "note": "placeholder \u2014 fill after first measured run"
       },
       "wall_time_s": null,
       "session_create_p50_ms": null,
@@ -36,7 +229,7 @@
       "artifacts_total_kb": 0,
       "passed": null,
       "failed": null,
-      "note": "scale×parallel cell: few ×5, artifacts off"
+      "note": "scale\u00d7parallel cell: few \u00d75, artifacts off"
     },
     {
       "id": "scale-go-pw-warm-1-p1-none",
@@ -50,8 +243,17 @@
       "tests_count": 1,
       "parallel": 1,
       "browser": "playwright-chromium/1.61.1",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "1.61.1" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -84,8 +286,17 @@
       "tests_count": 100,
       "parallel": 25,
       "browser": "playwright-chromium/1.61.1",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "1.61.1" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -118,8 +329,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "chrome/149.0",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -152,8 +372,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "chrome/149.0-min",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149-min" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149-min"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -186,8 +415,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "playwright-chromium/1.61.1-min",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "1.61.1-min" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1-min"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -220,8 +458,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "playwright-chromium/1.61.1",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "1.61.1" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -241,7 +488,7 @@
       "artifacts_total_kb": 0,
       "passed": null,
       "failed": null,
-      "note": "warm-pool delta vs cold few×5"
+      "note": "warm-pool delta vs cold few\u00d75"
     },
     {
       "id": "art-go-wd-warm-1-p1-none",
@@ -255,8 +502,17 @@
       "tests_count": 1,
       "parallel": 1,
       "browser": "chrome/149.0",
-      "artifacts": { "video": false, "log": false, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -289,8 +545,17 @@
       "tests_count": 1,
       "parallel": 1,
       "browser": "chrome/149.0",
-      "artifacts": { "video": false, "log": false, "har": "meta" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "meta"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -323,8 +588,17 @@
       "tests_count": 1,
       "parallel": 1,
       "browser": "chrome/149.0",
-      "artifacts": { "video": false, "log": false, "har": "bodies" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149" },
+      "artifacts": {
+        "video": false,
+        "log": false,
+        "har": "bodies"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -357,8 +631,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "chrome/149.0",
-      "artifacts": { "video": true, "log": true, "har": "off" },
-      "versions": { "hub": "3.0.5", "ui": "3.0.14", "cm": "3.0.1", "browser_image": "149" },
+      "artifacts": {
+        "video": true,
+        "log": true,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.5",
+        "ui": "3.0.14",
+        "cm": "3.0.1",
+        "browser_image": "149"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,
@@ -391,8 +674,17 @@
       "tests_count": 10,
       "parallel": 5,
       "browser": "playwright-chromium/1.61.1",
-      "artifacts": { "video": true, "log": true, "har": "off" },
-      "versions": { "hub": "3.0.2", "ui": "3.0.8", "cm": "3.0.1", "browser_image": "1.61.1" },
+      "artifacts": {
+        "video": true,
+        "log": true,
+        "har": "off"
+      },
+      "versions": {
+        "hub": "3.0.2",
+        "ui": "3.0.8",
+        "cm": "3.0.1",
+        "browser_image": "1.61.1"
+      },
       "host": {
         "cpu": "TBD reference host",
         "cores": 8,

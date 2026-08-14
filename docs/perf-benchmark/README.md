@@ -11,7 +11,7 @@ HAR **completeness** (field coverage) stays in [`../har-benchmark/`](../har-benc
 
 ## Dimensions
 
-`language` · `protocol` · `image_flavor` (warm|min) · `pool` (cold|warm-pool) · `suite_size` (1|few|many → 1/10/100) · `parallel` · `artifacts` (video/log/har off|meta|bodies) · `versions.hub|ui|cm`
+`language` · `protocol` · `image_flavor` (warm|min) · `pool` (cold|warm-pool|hot-pool) · `suite_size` (1|few|many → 1/10/100) · `parallel` · `artifacts` (video/log/har off|meta|bodies) · `versions.hub|ui|cm`
 
 ## Required metrics
 
@@ -20,7 +20,18 @@ HAR **completeness** (field coverage) stays in [`../har-benchmark/`](../har-benc
 - Artifact weights in **KB**: `video_kb`, `log_kb`, `har_kb`, `artifacts_total_kb` (0 when off)
 - `host` profile on every run (CPU/RAM otherwise incomparable)
 
-## Status
+## Jenkins login-test
+
+Four Java Selenide login jobs (same test as [warm-pool](https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/)) live in `runs.json` with `jenkins_url`. UI tab `#/benchmarks` section **0. Jenkins login-test**.
+
+| id | pool | Jenkins |
+|----|------|---------|
+| `jenkins-java-wd-cold-1-p1-headless-none` | cold | [cold-pool](https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool/) |
+| `jenkins-java-wd-cold-1-p1-full-attachments` | cold | [cold-pool-full-attachments](https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool-full-attachments/) |
+| `jenkins-java-wd-warm-1-p1-none` | warm-pool | [warm-pool](https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/) |
+| `jenkins-java-wd-hot-1-p1-none` | hot-pool | [hot-pool](https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-hot-pool/) (stub) |
+
+Optional field `jenkins_url`. Pool enum includes `hot-pool`.
 
 Rows ship as `status: "pending"` with `null` metrics until a reference host is measured. Sync a copy into selenoid-ui:
 
