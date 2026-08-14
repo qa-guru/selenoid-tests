@@ -32,11 +32,11 @@
       "log_kb": 0,
       "har_kb": 0,
       "artifacts_total_kb": 0,
-      "passed": null,
-      "failed": null,
+      "passed": 1,
+      "failed": 0,
       "id": "jenkins-java-wd-cold-1-p1-headless-none",
-      "status": "pending",
-      "measured_at": null,
+      "status": "ok",
+      "measured_at": "2026-08-14T16:16:43Z",
       "image_flavor": "warm",
       "pool": "cold",
       "artifacts": {
@@ -44,8 +44,8 @@
         "log": false,
         "har": "off"
       },
-      "wall_time_s": null,
-      "note": "headless; enableHar forces cold docker; no Allure attaches",
+      "wall_time_s": 9.414,
+      "note": "headless; enableHar forces cold docker; no Allure; job #8 SUCCESS; Gradle 3s",
       "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool/"
     },
     {
@@ -78,11 +78,11 @@
       "log_kb": null,
       "har_kb": null,
       "artifacts_total_kb": null,
-      "passed": null,
-      "failed": null,
+      "passed": 1,
+      "failed": 0,
       "id": "jenkins-java-wd-cold-1-p1-full-attachments",
-      "status": "pending",
-      "measured_at": null,
+      "status": "ok",
+      "measured_at": "2026-08-14T16:16:43Z",
       "image_flavor": "warm",
       "pool": "cold",
       "artifacts": {
@@ -90,8 +90,8 @@
         "log": true,
         "har": "bodies"
       },
-      "wall_time_s": null,
-      "note": "video+VNC+HAR+screenshot+page source+console \u2192 cold docker",
+      "wall_time_s": 18.897,
+      "note": "video+VNC+HAR+screenshot+page source+console \u2192 cold docker; job #8 SUCCESS; Gradle 7s",
       "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool-full-attachments/"
     },
     {
@@ -128,7 +128,7 @@
       "failed": 0,
       "id": "jenkins-java-wd-warm-1-p1-none",
       "status": "ok",
-      "measured_at": "2026-08-14T09:15:58Z",
+      "measured_at": "2026-08-14T16:16:43Z",
       "image_flavor": "warm",
       "pool": "warm-pool",
       "artifacts": {
@@ -136,8 +136,8 @@
         "log": false,
         "har": "off"
       },
-      "wall_time_s": 4.216,
-      "note": "hub-attach job #14 SUCCESS; Gradle ~3s; no Allure",
+      "wall_time_s": 4.773,
+      "note": "hub-attach job #17 SUCCESS; Gradle 4s; no Allure",
       "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/"
     },
     {
