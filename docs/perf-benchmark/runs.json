@@ -170,11 +170,11 @@
             "log_kb": null,
             "har_kb": null,
             "artifacts_total_kb": null,
-            "passed": null,
-            "failed": null,
+            "passed": 1,
+            "failed": 0,
             "id": "jenkins-java-wd-warm-1-p1-full-attachments",
-            "status": "pending",
-            "measured_at": null,
+            "status": "ok",
+            "measured_at": "2026-08-15T16:08:00Z",
             "image_flavor": "warm",
             "pool": "warm-pool",
             "artifacts": {
@@ -182,8 +182,8 @@
                 "log": true,
                 "har": "off"
             },
-            "wall_time_s": null,
-            "note": "pending: Allure screenshot/page source/console; video/VNC/HAR force cold",
+            "wall_time_s": 18.568,
+            "note": "hub-attach + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool-full-attachments/"
         },
         {
@@ -270,12 +270,12 @@
             "image_flavor": "min",
             "pool": "hot-pool",
             "artifacts": {
-                "video": false,
-                "log": false,
-                "har": "off"
+                "video": true,
+                "log": true,
+                "har": "bodies"
             },
             "wall_time_s": null,
-            "note": "stub job, disabled; phase 03 reuse-session + Allure attaches",
+            "note": "stub job, disabled; hot full-attachments; phase 03",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-hot-pool-full-attachments/"
         },
         {
@@ -446,11 +446,11 @@
             "log_kb": null,
             "har_kb": null,
             "artifacts_total_kb": null,
-            "passed": null,
-            "failed": null,
+            "passed": 1,
+            "failed": 0,
             "id": "jenkins-python-wd-warm-1-p1-full-attachments",
-            "status": "pending",
-            "measured_at": null,
+            "status": "ok",
+            "measured_at": "2026-08-15T16:08:00Z",
             "image_flavor": "warm",
             "pool": "warm-pool",
             "artifacts": {
@@ -458,8 +458,8 @@
                 "log": true,
                 "har": "off"
             },
-            "wall_time_s": null,
-            "note": "pending: Allure screenshot/page source/console; video/VNC/HAR force cold",
+            "wall_time_s": 30.813,
+            "note": "hub-attach + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-python-warm-pool-full-attachments/"
         },
         {
@@ -546,12 +546,12 @@
             "image_flavor": "min",
             "pool": "hot-pool",
             "artifacts": {
-                "video": false,
-                "log": false,
-                "har": "off"
+                "video": true,
+                "log": true,
+                "har": "bodies"
             },
             "wall_time_s": null,
-            "note": "stub job, disabled; phase 03 reuse-session + Allure attaches",
+            "note": "stub job, disabled; hot full-attachments; phase 03",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-python-hot-pool-full-attachments/"
         },
         {
@@ -730,12 +730,12 @@
             "image_flavor": "warm",
             "pool": "warm-pool",
             "artifacts": {
-                "video": false,
+                "video": true,
                 "log": true,
-                "har": "off"
+                "har": "bodies"
             },
             "wall_time_s": null,
-            "note": "pending: Allure screenshot/page source/console; video/VNC/HAR force cold",
+            "note": "stub: Playwright WS has no hub-attach; use js-cold-pool-full-attachments",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-js-warm-pool-full-attachments/"
         },
         {
@@ -822,12 +822,12 @@
             "image_flavor": "min",
             "pool": "hot-pool",
             "artifacts": {
-                "video": false,
-                "log": false,
-                "har": "off"
+                "video": true,
+                "log": true,
+                "har": "bodies"
             },
             "wall_time_s": null,
-            "note": "stub job, disabled; phase 03 reuse-session + Allure attaches",
+            "note": "stub job, disabled; hot full-attachments; phase 03",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-js-hot-pool-full-attachments/"
         },
         {
