@@ -12,7 +12,6 @@ import {
 import { buildDashboardLayout } from "./dashboard-layout.mjs";
 import { qualityGateRules } from "./quality-gate.mjs";
 
-const ALLURE_LOGO = fileURLToPath(new URL("./allure3-logo.svg", import.meta.url));
 const DASHBOARD_THEME_PLUGIN = fileURLToPath(
   new URL("./plugins/dashboard-theme.mjs", import.meta.url),
 );
@@ -66,7 +65,6 @@ export function createAllureConfig({
     plugins: {
       awesome: {
         options: {
-          logo: ALLURE_LOGO,
           reportLanguage: REPORT_LANGUAGE,
           groupBy: ["parentSuite", "suite", "subSuite"],
           charts: buildAwesomeCharts(),
