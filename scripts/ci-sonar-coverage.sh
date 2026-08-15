@@ -9,6 +9,7 @@ export SELENOID_TEST_ENV=local_unit
 
 go test -coverprofile=coverage.txt -covermode=atomic \
   ./internal/... \
+  ./cmd/... \
   ./tests/unit/fixture/...
 
 test -s coverage.txt
