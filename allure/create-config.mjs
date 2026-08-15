@@ -1,9 +1,12 @@
 import { fileURLToPath } from "node:url";
 
+import { withKit, theme, renderers } from "@qa-guru/allure-report-kit";
+
 import { buildAwesomeCharts } from "./awesome-charts.mjs";
 import { categoryRules } from "./categories.mjs";
 import {
   HISTORY_DEFAULTS,
+  QUALITY_GATE_SOURCE,
   REPORT_LANGUAGE,
 } from "./constants.mjs";
 import { buildDashboardLayout } from "./dashboard-layout.mjs";
@@ -16,6 +19,8 @@ const DASHBOARD_THEME_PLUGIN = fileURLToPath(
 
 /**
  * Build Allure 3 config from ethalon modules.
+ *
+ * HTML theme and chart renderers — @qa-guru/allure-report-kit (soft-fork).
  *
  * @param {object} profile
  * @param {string} profile.slug - repo slug → `{slug} Tests`
@@ -34,7 +39,17 @@ export function createAllureConfig({
     throw new Error("createAllureConfig: profile.slug is required");
   }
 
-  return {
+  return withKit({
+    softFork: true,
+    renderer: renderers.stock(),
+    theme: {
+      ...theme.qaGuru(),
+      header: {
+        enabled: true,
+        source: "design-system",
+        productName: `${slug} Tests`,
+      },
+    },
     name: `${slug} Tests`,
     ...HISTORY_DEFAULTS,
     variables: variables ?? {
@@ -43,6 +58,7 @@ export function createAllureConfig({
     },
     qualityGate: {
       rules: qualityGateRules.map((rule) => ({ ...rule })),
+      source: { ...QUALITY_GATE_SOURCE },
     },
     categories: {
       rules: categoryRules.map((rule) => structuredClone(rule)),
@@ -50,6 +66,7 @@ export function createAllureConfig({
     plugins: {
       awesome: {
         options: {
+          logo: ALLURE_LOGO,
           reportLanguage: REPORT_LANGUAGE,
           groupBy: ["parentSuite", "suite", "subSuite"],
           charts: buildAwesomeCharts(),
@@ -82,5 +99,5 @@ export function createAllureConfig({
           }
         : {}),
     },
-  };
+  });
 }

@@ -2,10 +2,8 @@
 /**
  * Validate Allure ethalon / consumer allurerc.mjs:
  * - import succeeds
- * - locked 2×2 at indices 0–3 (awesome + dashboard):
- *     [0] currentStatus  [1] durationDynamics
- *     [2] testingPyramid [3] durations (groupBy: layer)
- * - testingPyramid.layers === PYRAMID_LAYERS (no visual)
+ * - lead preset at indices 0–5 (awesome + dashboard) — kit SSOT: @qa-guru/allure-report-kit/presets/overview-preset; ethalon allure/overview-preset.mjs = re-export (titles/pyramidLayers)
+ * - [0–1] quality gates, [2–5] overview charts
  *
  * Usage:
  *   node scripts/validate-allurerc.mjs [path/to/allurerc.mjs]
@@ -16,68 +14,60 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { presets } from "@qa-guru/allure-report-kit";
+import { OVERVIEW_PRESET as KIT_OVERVIEW_PRESET } from "@qa-guru/allure-report-kit/presets/overview-preset";
 
-const FALLBACK_LAYERS = [
-  "unit",
-  "component",
-  "integration",
-  "api",
-  "e2e",
-  "manual",
-];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function fail(message) {
   console.error(`validate-allurerc: FAIL — ${message}`);
   process.exit(1);
 }
 
-async function loadPyramidLayers(configDir) {
+async function loadOverviewPreset(configDir) {
   const candidates = [
-    path.join(configDir, "allure", "constants.mjs"),
-    path.resolve(__dirname, "../_ethalon/allure/constants.mjs"),
-    path.resolve(__dirname, "../allure/constants.mjs"),
+    path.join(configDir, "allure", "overview-preset.mjs"),
+    path.resolve(__dirname, "../_ethalon/allure/overview-preset.mjs"),
+    path.resolve(__dirname, "../allure/overview-preset.mjs"),
   ];
   for (const file of candidates) {
     if (!fs.existsSync(file)) continue;
     try {
       const mod = await import(pathToFileURL(file).href);
-      if (Array.isArray(mod.PYRAMID_LAYERS) && mod.PYRAMID_LAYERS.length) {
-        return mod.PYRAMID_LAYERS;
+      if (mod.OVERVIEW_PRESET && Array.isArray(mod.OVERVIEW_PRESET.tiles)) {
+        return mod.OVERVIEW_PRESET;
       }
     } catch {
       /* try next */
     }
   }
-  return FALLBACK_LAYERS;
+  fail("allure/overview-preset.mjs with OVERVIEW_PRESET export not found");
 }
 
-function assertLockedQuad(charts, label, layers) {
-  if (!Array.isArray(charts) || charts.length < 4) {
-    fail(`${label}: expected array with at least 4 tiles (locked 2×2)`);
+function assertPresetDerivedFromKit(preset) {
+  for (const field of ["qualityGates", "tiles", "renderers"]) {
+    if (JSON.stringify(preset[field]) !== JSON.stringify(KIT_OVERVIEW_PRESET[field])) {
+      fail(
+        `OVERVIEW_PRESET.${field} must match kit SSOT (@qa-guru/allure-report-kit/presets/overview-preset) — override titles/pyramidLayers only`,
+      );
+    }
   }
-  if (charts[0]?.type !== "currentStatus") {
-    fail(`${label}[0]: expected type currentStatus, got ${charts[0]?.type}`);
+}
+
+function assertLeadLayout(tiles, label, preset) {
+  const gateCount = preset.qualityGates?.length ?? 0;
+  const minLen = gateCount + preset.tiles.length;
+  if (!Array.isArray(tiles) || tiles.length < minLen) {
+    fail(`${label}: expected array with at least ${minLen} lead tiles`);
   }
-  if (charts[1]?.type !== "durationDynamics") {
-    fail(`${label}[1]: expected type durationDynamics, got ${charts[1]?.type}`);
+  const leadIds = tiles.slice(0, gateCount).map((tile) => tile?.id);
+  if (new Set(leadIds).size !== leadIds.length) {
+    fail(`${label}: duplicate quality-gate panel ids: ${leadIds.join(", ")}`);
   }
-  if (charts[2]?.type !== "testingPyramid") {
-    fail(`${label}[2]: expected type testingPyramid, got ${charts[2]?.type}`);
-  }
-  if (charts[3]?.type !== "durations" || charts[3]?.groupBy !== "layer") {
+  if (!presets.matchesLeadLayout?.(tiles, preset)) {
     fail(
-      `${label}[3]: expected type durations with groupBy "layer", got type=${charts[3]?.type} groupBy=${charts[3]?.groupBy}`,
+      `${label}: lead section does not match OVERVIEW_PRESET from overview-preset.mjs`,
     );
-  }
-  const actual = charts[2].layers ?? [];
-  if (JSON.stringify(actual) !== JSON.stringify(layers)) {
-    fail(
-      `${label}[2].layers: expected ${JSON.stringify(layers)}, got ${JSON.stringify(actual)}`,
-    );
-  }
-  if (actual.includes("visual")) {
-    fail(`${label}[2].layers: must not include visual`);
   }
 }
 
@@ -102,12 +92,13 @@ async function main() {
       : path.join(packageRoot, "_ethalon", "allurerc.mjs");
 
   const config = await loadConfig(configPath);
-  const layers = await loadPyramidLayers(path.dirname(configPath));
+  const preset = await loadOverviewPreset(path.dirname(configPath));
+  assertPresetDerivedFromKit(preset);
   const charts = config.plugins?.awesome?.options?.charts;
   const layout = config.plugins?.dashboard?.options?.layout;
 
-  assertLockedQuad(charts, "plugins.awesome.options.charts", layers);
-  assertLockedQuad(layout, "plugins.dashboard.options.layout", layers);
+  assertLeadLayout(charts, "plugins.awesome.options.charts", preset);
+  assertLeadLayout(layout, "plugins.dashboard.options.layout", preset);
 
   if (!config.name || typeof config.name !== "string") {
     fail("name: required string");
@@ -134,13 +125,15 @@ async function main() {
     }
   }
 
+  const layers = preset.pyramidLayers ?? [];
+  const chartOffset = preset.qualityGates?.length ?? 0;
   console.log(`validate-allurerc: OK — ${configPath}`);
   console.log(`  name=${config.name}`);
   console.log(`  awesome.charts=${charts.length}, dashboard.layout=${layout.length}`);
   console.log(
-    `  locked 2×2: currentStatus | durationDynamics / testingPyramid | durations(layer)`,
+    `  lead: allureQualityGate | sonarQualityGate / currentStatus | durationDynamics / testingPyramid | durations(layer)`,
   );
-  console.log(`  pyramid@2 layers=[${layers.join(", ")}]`);
+  console.log(`  pyramid@${chartOffset + 2} layers=[${layers.join(", ")}]`);
 }
 
 main().catch((err) => {

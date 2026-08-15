@@ -25,6 +25,16 @@ export const HISTORY_DEFAULTS = {
   knownIssuesPath: "./known.json",
 };
 
+/** Popover paths — local copy for the standalone GitHub clone. */
+export {
+  ALLURE_QUALITY_GATE_SOURCE as QUALITY_GATE_SOURCE,
+  ALLURE_QUALITY_GATE_LABELS as QUALITY_GATE_LABELS,
+  SONAR_QUALITY_GATE_SOURCE,
+  SONAR_QUALITY_GATE_LABELS,
+  SONAR_QUALITY_GATE_FIXTURE,
+  SONAR_QUALITY_GATE_PROFILE_CONDITIONS,
+} from "./quality-gate-source.mjs";
+
 /** Default chart/layout titles shared by awesome + dashboard. */
 export const TITLES = {
   currentStatus: "Текущий статус по сервисам",
@@ -44,4 +54,7 @@ export const TITLES = {
   durationsByLayer: "Длительности по layer",
   durationDynamics: "Динамика длительности",
   statusAgePyramid: "Пирамида возраста статусов",
+  qualityGate: "Allure Quality Gate",
+  sonarQualityGate: "Sonar Quality Gate",
+  testsTable: "Таблица тестов",
 };

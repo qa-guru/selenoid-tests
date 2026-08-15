@@ -1,3 +1,5 @@
+import { withKit, theme, renderers } from "@qa-guru/allure-report-kit";
+
 import { REPORT_LANGUAGE, HISTORY_DEFAULTS } from "./constants.mjs";
 import { buildComponentReadmeDashboardLayout } from "./dashboard-layout.mjs";
 
@@ -20,7 +22,17 @@ export function createComponentDashboardConfig({
     );
   }
 
-  return {
+  return withKit({
+    softFork: true,
+    renderer: renderers.stock(),
+    theme: {
+      ...theme.qaGuru(),
+      header: {
+        enabled: true,
+        source: "design-system",
+        productName: `${slug} — ${component}`,
+      },
+    },
     name: `${slug} — ${component}`,
     ...HISTORY_DEFAULTS,
     plugins: {
@@ -32,5 +44,5 @@ export function createComponentDashboardConfig({
         },
       },
     },
-  };
+  });
 }
