@@ -281,6 +281,13 @@ jobs:
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
+      # browser-image dispatch: SOURCE_VERSION + SOURCE_VARIANT → pull published tag (not prod pin).
+      - name: Pull published browser-image
+        if: env.PROD_CLOUD_STAND != 'true' && env.SOURCE_VERSION != '' && env.SOURCE_VARIANT != ''
+        run: |
+          chmod +x scripts/pull-published-browser-image.sh
+          ./scripts/pull-published-browser-image.sh
+
       - name: Start Selenoid stack for Go hub tests
         if: env.PROD_CLOUD_STAND != 'true'
         run: |
@@ -398,10 +405,18 @@ jobs:
               if [[ "${SOURCE_VARIANT}" == "webdriver" ]]; then
                 case "${SOURCE_BROWSER}" in
                   firefox)
-                    go test ./tests/integration/wd/... -run TestHubFirefoxSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    if [[ "${WEBDRIVER_VARIANT}" == "min" ]]; then
+                      go test ./tests/integration/min/... -run TestHubFirefoxMinSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    else
+                      go test ./tests/integration/wd/... -run TestHubFirefoxSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    fi
                     ;;
                   msedge)
-                    go test ./tests/integration/wd/... -run TestHubMsedgeSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    if [[ "${WEBDRIVER_VARIANT}" == "min" ]]; then
+                      go test ./tests/integration/min/... -run TestHubMsedgeMinSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    else
+                      go test ./tests/integration/wd/... -run TestHubMsedgeSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                    fi
                     ;;
                   chrome)
                     if [[ "${WEBDRIVER_VARIANT}" == "min" ]]; then
@@ -766,7 +781,10 @@ jobs:
           echo "- Unit: selenoid-unit-go-test, selenoid-ui-unit-go-test, cm-unit-go-test (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
           echo "- Pyramid: selenoid-pyramid-go-test — push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
           echo "- CM push: cm-integration-go-test — \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice; \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice (\`min\` chrome/firefox/msedge → \`TestHub*MinSession\`; warm firefox/msedge → \`TestHub*Session\`); \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${PUBLISHED_BROWSER_IMAGE:-}" ]; then
+            echo "- Published image: \`${PUBLISHED_BROWSER_IMAGE}\`" >> "$GITHUB_STEP_SUMMARY"
+          fi
           echo "- [GitHub Actions run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> "$GITHUB_STEP_SUMMARY"
           if [ -f build/reports/allure-report/allureReport/awesome/index.html ]; then
             echo "- [Allure 3 report](${REPORT_URL})" >> "$GITHUB_STEP_SUMMARY"

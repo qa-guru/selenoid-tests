@@ -9,6 +9,7 @@ LOG_DIR="${ROOT}/build/ci-logs"
 BROWSERS="${ROOT}/fixtures/ci-browsers.json"
 HUB_URL="${HUB_URL:-http://127.0.0.1:4444/}"
 UI_URL="${UI_URL:-http://127.0.0.1:8080/}"
+VIDEO_RECORDER_IMAGE="${VIDEO_RECORDER_IMAGE:-qaguru/video-recorder:latest}"
 
 # Do NOT pin DOCKER_API_VERSION: the CI runner's Docker daemon maxes at API 1.48,
 # while the v2.3.0 hub canon is 1.55. moby client + docker CLI auto-negotiate the
@@ -114,8 +115,8 @@ pull_browser_images() {
     .["playwright-firefox"].versions["1.61.1"].image // empty,
     .["playwright-webkit"].versions["1.61.1"].image // empty
   ' "$BROWSERS" | sort -u)
-  echo "    docker pull qaguru/video-recorder:latest"
-  docker pull qaguru/video-recorder:latest
+  echo "    docker pull ${VIDEO_RECORDER_IMAGE}"
+  docker pull "${VIDEO_RECORDER_IMAGE}"
 }
 
 start_stack() {
@@ -123,7 +124,7 @@ start_stack() {
   nohup "${BIN}/selenoid" \
     -conf "$BROWSERS" \
     -limit 3 \
-    -video-recorder-image qaguru/video-recorder:latest \
+    -video-recorder-image "${VIDEO_RECORDER_IMAGE}" \
     >"${LOG_DIR}/selenoid.log" 2>&1 &
   echo $! >"${LOG_DIR}/selenoid.pid"
 

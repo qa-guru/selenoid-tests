@@ -261,8 +261,21 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → browser slice (`source_variant=webdriver`, `source_browser`, `webdriver_variant`) |
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-video-recorder.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testVideoRecorder` (`source_variant=video-recorder`) |
 
-Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`), `source_browser` (`chrome` \| `firefox` \| `msedge`), `webdriver_variant` (`warm` \| `min`).  
-WebDriver dispatch: chrome warm → Go `webdriver`; chrome min → Go `integration/min`; firefox/msedge → Go `tests/integration/wd` browser slice.
+Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`), `source_browser` (`chrome` \| `firefox` \| `msedge`), `webdriver_variant` (`warm` \| `min`).
+
+`TEST_TAGS=smoke` + `source_variant=webdriver` (факт orchestrator):
+
+| `webdriver_variant` | `source_browser` | Go |
+|---------------------|------------------|----|
+| `min` | chrome | `go test ./tests/integration/min/... -run TestHubChromeMinSession` |
+| `min` | firefox | `go test ./tests/integration/min/... -run TestHubFirefoxMinSession` |
+| `min` | msedge | `go test ./tests/integration/min/... -run TestHubMsedgeMinSession` |
+| warm / empty | chrome | Go slice `webdriver` |
+| warm / empty | firefox | `go test ./tests/integration/wd/... -run TestHubFirefoxSession` |
+| warm / empty | msedge | `go test ./tests/integration/wd/... -run TestHubMsedgeSession` |
+
+Если заданы `source_version` + `source_variant`, CI делает `docker pull` опубликованного tag (`qaguru/webdriver-{browser}:{major}[-min]` · `qaguru/playwright-{browser}:{version}[-min]` · `qaguru/video-recorder:{version}`) и гоняет slice против него, не против prod pin.
+
 TestOps launch name: `Deploy smoke — {source_repo} {source_version} #{run}`.
 
 Ручная проверка:
