@@ -31,12 +31,16 @@ for comp in "${components[@]}"; do
       --config .github/scripts/allurerc-component-dashboard.mjs \
       --output "${work}"
 
-  if [ ! -f "${work}/dashboard/index.html" ]; then
+  dash="${work}/dashboard"
+  if [ ! -f "${dash}/index.html" ]; then
+    dash="${work}"
+  fi
+  if [ ! -f "${dash}/index.html" ]; then
     echo "generate-component-dashboard-previews: no dashboard in ${work}" >&2
     exit 1
   fi
 
-  npx --yes serve "${work}/dashboard" -l "${SERVE_PORT}" >/tmp/serve-readme-${comp}.log 2>&1 &
+  npx --yes serve "${dash}" -l "${SERVE_PORT}" >/tmp/serve-readme-${comp}.log 2>&1 &
   serve_pid=$!
   cleanup() {
     kill "${serve_pid}" 2>/dev/null || true

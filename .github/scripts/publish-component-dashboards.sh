@@ -36,6 +36,22 @@ allure_generate() {
   fi
 }
 
+# Allure 3 with only the dashboard plugin writes index.html at --output root.
+# With awesome+dashboard it nests under --output/dashboard/.
+dashboard_src() {
+  local work="$1"
+  if [ -f "${work}/dashboard/index.html" ]; then
+    printf '%s\n' "${work}/dashboard"
+    return 0
+  fi
+  if [ -f "${work}/index.html" ]; then
+    printf '%s\n' "${work}"
+    return 0
+  fi
+  return 1
+}
+
+published=()
 for comp in "${components[@]}"; do
   work="build/component-dashboard/${comp}"
   rm -rf "${work}"
@@ -44,12 +60,19 @@ for comp in "${components[@]}"; do
     allure_generate "${RESULTS_DIR}" \
       --config .github/scripts/allurerc-component-dashboard.mjs \
       --output "${work}"
-  if [ ! -f "${work}/dashboard/index.html" ]; then
-    echo "publish-component-dashboards: no dashboard in ${work}" >&2
-    exit 1
+  src="$(dashboard_src "${work}" || true)"
+  if [ -z "${src}" ]; then
+    echo "publish-component-dashboards: skip ${comp} (no index.html under ${work})" >&2
+    continue
   fi
   mkdir -p "${DEST_DIR}/dashboards/${comp}"
-  cp -r "${work}/dashboard/." "${DEST_DIR}/dashboards/${comp}/"
+  cp -R "${src}/." "${DEST_DIR}/dashboards/${comp}/"
+  published+=("${comp}")
 done
 
-echo "publish-component-dashboards: done → ${DEST_DIR}/dashboards/{${components[*]}}"
+if [ "${#published[@]}" -eq 0 ]; then
+  echo "publish-component-dashboards: no component dashboards produced" >&2
+  exit 1
+fi
+
+echo "publish-component-dashboards: done → ${DEST_DIR}/dashboards/{${published[*]}}"
