@@ -249,13 +249,13 @@
           </tr>
           <tr>
             <td><strong>video-recorder</strong></td>
-            <td class="no">—</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+            <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
             <td><code>go-hub</code> (api / dispatch)</td>
           </tr>
           <tr>
             <td><strong>android</strong></td>
             <td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
-            <td><code>go-hub</code> (skip if no android)</td>
+            <td><code>go-hub</code> unit+status skip; <code>smoke-cold.sh</code> host-only</td>
           </tr>
           <tr>
             <td><strong>ios</strong></td>
@@ -273,7 +273,7 @@
           <tr><td><a href="https://github.com/qa-guru/selenoid.qa.guru">selenoid.qa.guru</a></td><td><code>api,smoke</code></td><td><strong>Owner</strong> — post-deploy prod gate (sole dispatch)</td></tr>
           <tr><td><a href="https://github.com/qa-guru/selenoid">selenoid</a> · <a href="https://github.com/qa-guru/selenoid-ui">selenoid-ui</a></td><td>—</td><td>Release: <code>wait_only</code> pin gate (no second smoke)</td></tr>
           <tr><td><a href="https://github.com/qa-guru/cm">cm</a></td><td><code>api</code></td><td>After CM release (own slice)</td></tr>
-          <tr><td><a href="https://github.com/qa-guru/browser-image">browser-image</a></td><td><code>playwright</code> · <code>smoke</code> (wd / video-recorder)</td><td>After image publish</td></tr>
+          <tr><td><a href="https://github.com/qa-guru/browser-image">browser-image</a></td><td><code>playwright</code> · <code>min</code> (PW *-min) · <code>smoke</code> (wd / video-recorder)</td><td>After image publish</td></tr>
         </tbody>
       </table>
     </section>
