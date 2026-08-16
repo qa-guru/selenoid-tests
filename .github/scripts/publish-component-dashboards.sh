@@ -54,10 +54,16 @@ dashboard_src() {
 published=()
 for comp in "${components[@]}"; do
   work="build/component-dashboard/${comp}"
-  rm -rf "${work}"
+  filtered="build/component-results/${comp}"
+  rm -rf "${work}" "${filtered}"
+  if ! node .github/scripts/filter-allure-results-by-component.mjs \
+    "${RESULTS_DIR}" "${filtered}" "${comp}"; then
+    echo "publish-component-dashboards: skip ${comp} (no results)" >&2
+    continue
+  fi
   echo "publish-component-dashboards: generate ${comp}"
   ALLURE_COMPONENT_DASHBOARD="${comp}" \
-    allure_generate "${RESULTS_DIR}" \
+    allure_generate "${filtered}" \
       --config .github/scripts/allurerc-component-dashboard.mjs \
       --output "${work}"
   src="$(dashboard_src "${work}" || true)"

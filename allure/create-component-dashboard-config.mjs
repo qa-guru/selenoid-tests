@@ -1,11 +1,11 @@
 import { withKit, theme, renderers } from "@qa-guru/allure-report-kit";
 
-import { REPORT_LANGUAGE, HISTORY_DEFAULTS } from "./constants.mjs";
+import { REPORT_LANGUAGE } from "./constants.mjs";
 import { buildComponentReadmeDashboardLayout } from "./dashboard-layout.mjs";
 
 /**
- * Minimal Allure config: dashboard plugin only, filtered by `component` label.
- * README PNG crops and live GH Pages `reports/latest/dashboards/<component>/`.
+ * Minimal Allure config: dashboard plugin only.
+ * Results are sliced by `component` before generate (see filter-allure-results-by-component.mjs).
  *
  * Env: ALLURE_COMPONENT_DASHBOARD (required) — e.g. playwright-image
  */
@@ -34,7 +34,6 @@ export function createComponentDashboardConfig({
       },
     },
     name: `${slug} — ${component}`,
-    ...HISTORY_DEFAULTS,
     plugins: {
       dashboard: {
         options: {

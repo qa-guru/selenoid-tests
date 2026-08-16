@@ -23,11 +23,16 @@ components=(playwright-image webdriver-image video-recorder)
 
 for comp in "${components[@]}"; do
   work="build/readme-dashboard/${comp}"
-  rm -rf "${work}"
+  filtered="build/component-results/${comp}"
+  rm -rf "${work}" "${filtered}"
+
+  echo "generate-component-dashboard-previews: filter ${comp}"
+  node .github/scripts/filter-allure-results-by-component.mjs \
+    "${RESULTS_DIR}" "${filtered}" "${comp}"
 
   echo "generate-component-dashboard-previews: allure generate → ${work} (${comp})"
   ALLURE_COMPONENT_DASHBOARD="${comp}" \
-    npx --yes "allure@${ALLURE_VERSION}" generate "${RESULTS_DIR}" \
+    npx --yes "allure@${ALLURE_VERSION}" generate "${filtered}" \
       --config .github/scripts/allurerc-component-dashboard.mjs \
       --output "${work}"
 
