@@ -5,7 +5,7 @@ import { buildComponentReadmeDashboardLayout } from "./dashboard-layout.mjs";
 
 /**
  * Minimal Allure config: dashboard plugin only, filtered by `component` label.
- * Used for README PNG crops (playwright-image / webdriver-image).
+ * README PNG crops and live GH Pages `reports/latest/dashboards/<component>/`.
  *
  * Env: ALLURE_COMPONENT_DASHBOARD (required) — e.g. playwright-image
  */

@@ -661,6 +661,9 @@ jobs:
         run: |
           mkdir -p pages/reports/${REPORT_ID} pages/readme
           cp -r build/reports/allure-report/allureReport/. "pages/reports/${REPORT_ID}/"
+          bash .github/scripts/publish-component-dashboards.sh \
+            build/allure-results \
+            "pages/reports/${REPORT_ID}"
           rm -rf pages/reports/latest
           cp -r "pages/reports/${REPORT_ID}" pages/reports/latest
           if [ -f history.jsonl ]; then
