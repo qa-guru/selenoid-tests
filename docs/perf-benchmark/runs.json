@@ -137,7 +137,7 @@
                 "har": "off"
             },
             "wall_time_s": 4.773,
-            "note": "hub-attach job #17 SUCCESS; Gradle 4s; no Allure",
+            "note": "container-reuse job #17 SUCCESS; Gradle 4s; no Allure",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/"
         },
         {
@@ -183,7 +183,7 @@
                 "har": "off"
             },
             "wall_time_s": 18.568,
-            "note": "hub-attach + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
+            "note": "container-reuse + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool-full-attachments/"
         },
         {
@@ -413,7 +413,7 @@
                 "har": "off"
             },
             "wall_time_s": 3.541,
-            "note": "hub-attach job #2 SUCCESS; no Allure",
+            "note": "container-reuse job #2 SUCCESS; no Allure",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-python-warm-pool/"
         },
         {
@@ -459,7 +459,7 @@
                 "har": "off"
             },
             "wall_time_s": 30.813,
-            "note": "hub-attach + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
+            "note": "container-reuse + Allure screenshot/page source/console; no video/VNC/HAR; job #2 SUCCESS",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-python-warm-pool-full-attachments/"
         },
         {
@@ -689,7 +689,7 @@
                 "har": "off"
             },
             "wall_time_s": null,
-            "note": "stub: Playwright WS has no Chrome WD hub-attach; use js-cold-pool",
+            "note": "stub: Playwright WS has no Chrome WD container-reuse; use js-cold-pool",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-js-warm-pool/"
         },
         {
@@ -735,7 +735,7 @@
                 "har": "bodies"
             },
             "wall_time_s": null,
-            "note": "stub: Playwright WS has no hub-attach; use js-cold-pool-full-attachments",
+            "note": "stub: Playwright WS has no container-reuse; use js-cold-pool-full-attachments",
             "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-js-warm-pool-full-attachments/"
         },
         {

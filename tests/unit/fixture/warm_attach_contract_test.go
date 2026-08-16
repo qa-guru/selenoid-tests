@@ -10,15 +10,15 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/allurex"
 )
 
-// Hub-attach contract: orchestrator reserve (loopback) JSON the hub Client decodes.
+// Container-reuse contract: orchestrator reserve (loopback) JSON the hub Client decodes.
 func TestWarmPoolReserveLoopbackContract(t *testing.T) {
 	allurex.Run(t, allurex.Meta{
 		Name:      "warm-pool reserve loopback JSON exposes hub-dialable webdriverUrl",
-		Package:   "tests.unit.fixture.WarmAttachContractTest",
+		Package:   "tests.unit.fixture.ContainerReuseContractTest",
 		Layer:     "unit",
 		Component: "selenoid",
-		Feature:   "Warm-pool hub-attach contract",
-		Suite:     "Warm-pool hub-attach contract",
+		Feature:   "Warm-pool container-reuse contract",
+		Suite:     "Warm-pool container-reuse contract",
 		Tags:      []string{"unit"},
 	}, func(a *allurex.A) {
 		a.Step("parse fixtures/warm-pool/reserve-loopback.json", func() {

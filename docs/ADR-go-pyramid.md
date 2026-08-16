@@ -42,7 +42,7 @@ selenoid-tests/
 
 ## Warm-pool (local slice)
 
-Live orchestrator: `./scripts/run-go-pyramid.sh warm-pool` — `internal/warmpool` (unit) + `tests/api/warmpool` (HTTP API) + `tests/e2e/warmpool` (hub-attach). API tests also run under slice `api` (`./tests/api/...`) and skip if `:9090` is down. Not a CI gate: `hub-prod` / `hub-all` on github/prod have no loopback attach (skip). Hub-attach skips unless hub `warmTotal>0` and a loopback ChromeDriver answers.
+Live orchestrator: `./scripts/run-go-pyramid.sh warm-pool` — `internal/warmpool` (unit) + `tests/api/warmpool` (HTTP API) + `tests/e2e/warmpool` (container-reuse). API tests also run under slice `api` (`./tests/api/...`) and skip if `:9090` is down. Not a CI gate: `hub-prod` / `hub-all` on github/prod have no loopback attach (skip). Container-reuse skips unless hub `warmTotal>0` and a loopback ChromeDriver answers.
 
 ## Phases
 

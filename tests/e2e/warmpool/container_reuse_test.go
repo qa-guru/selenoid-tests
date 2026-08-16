@@ -11,7 +11,7 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestHubAttach_ReservesAndReleasesChromeSlot(t *testing.T) {
+func TestContainerReuse_ReservesAndReleasesChromeSlot(t *testing.T) {
 	cli := liveClient(t)
 	if hubWarmTotal(t) == 0 {
 		t.Skip("hub /status warmTotal=0 — start hub with SELENOID_WARM_POOL_URL=http://127.0.0.1:9090 (dev/scripts/start-selenoid.sh)")
@@ -22,14 +22,14 @@ func TestHubAttach_ReservesAndReleasesChromeSlot(t *testing.T) {
 
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "Hub Chrome session attaches a warm-pool slot and releases it",
-		Package:   "tests.e2e.warmpool.HubAttachTests",
+		Name:      "Hub Chrome session reuses a warm-pool container and releases it",
+		Package:   "tests.e2e.warmpool.ContainerReuseTests",
 		Layer:     "e2e",
 		Component: "selenoid",
 		Epic:      "selenoid",
-		Feature:   "Warm-pool hub-attach",
-		Story:     "Attach and release",
-		Suite:     "Warm-pool hub-attach",
+		Feature:   "Warm-pool container-reuse",
+		Story:     "Reserve and release",
+		Suite:     "Warm-pool container-reuse",
 		Tags:      []string{"e2e", "positive", "warm-pool"},
 	}, func(a *allurex.A) {
 		var sessionID string

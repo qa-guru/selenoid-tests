@@ -59,7 +59,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 **Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm|warm-pool`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
 
-**Warm-pool:** live orchestrator — slice `warm-pool` (unit `internal/warmpool` + API `tests/api/warmpool` + hub-attach `tests/e2e/warmpool`, local stand `:9090`). API-слой также в `./scripts/run-go-pyramid.sh api` (`./tests/api/...`), skip если стенд мёртв. **Не** отдельный CI gate: `hub-prod` / `hub-all` на github/prod без loopback attach (skip).
+**Warm-pool:** live orchestrator — slice `warm-pool` (unit `internal/warmpool` + API `tests/api/warmpool` + container-reuse `tests/e2e/warmpool`, local stand `:9090`). API-слой также в `./scripts/run-go-pyramid.sh api` (`./tests/api/...`), skip если стенд мёртв. **Не** отдельный CI gate: `hub-prod` / `hub-all` на github/prod без loopback attach (skip).
 
 ## Экосистема qa-guru Selenoid
 
@@ -203,7 +203,7 @@ PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh hub-prod
 PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh hub-all
 # Go HAR prod smoke
 SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
-# Warm-pool live stand :9090 (hub-attach skips unless slots + -warm-pool-url)
+# Warm-pool live stand :9090 (container-reuse skips unless slots + -warm-pool-url)
 ./scripts/run-go-pyramid.sh warm-pool
 ```
 
@@ -235,7 +235,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
 ⁷ **playwright-image / webdriver-image unit:** catalog JSON + session body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`).  
-⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); hub-attach in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Live tests skip if `:9090` down. Hub-attach skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.
+⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); container-reuse in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Live tests skip if `:9090` down. Container-reuse skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.
 
 ### Manual (runbook)
 
@@ -286,7 +286,7 @@ EOF
 | `tests/integration/wd`, `tests/integration/ui`, `tests/integration/pw`, `tests/integration/min`, `tests/integration/resilience` | integration | hub stack |
 | `tests/api` | api | hub + UI + video-recorder |
 | `tests/api/warmpool` | api | orchestrator `:9090` (skip if stand down) |
-| `tests/e2e/warmpool` | e2e | hub-attach (skip unless `warmTotal>0`) |
+| `tests/e2e/warmpool` | e2e | container-reuse (skip unless `warmTotal>0`) |
 | `tests/e2e/ui`, `tests/e2e/webdriver`, `tests/e2e/playwright`, `tests/e2e/har` | e2e | browser / HAR |
 | `tests/cm/...` | cm pyramid | `:4445/:8081`; CI `go-cm` |
 | `scripts/run-go-unit.sh` | product unit | selenoid / selenoid-ui / cm repos |
