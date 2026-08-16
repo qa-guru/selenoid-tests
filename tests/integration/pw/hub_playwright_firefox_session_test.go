@@ -20,6 +20,7 @@ func TestHubPlaywrightFirefoxSession_RemoteSessionConnects(t *testing.T) {
 		Feature:   "Playwright Firefox WS session",
 		Story:     "Playwright Firefox WS session",
 		Suite:     "Playwright Firefox hub WS session",
+		Browser:   allurex.BrowserFirefox,
 		Tags:      []string{"integration", "playwright"},
 	}, func(a *allurex.A) {
 		var endpoint string

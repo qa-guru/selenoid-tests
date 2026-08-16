@@ -18,6 +18,7 @@ func TestHubMsedgeMinSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session (min)",
 		Story:     "WebDriver session (min)",
 		Suite:     "WebDriver hub session (msedge-min)",
+		Browser:   allurex.BrowserMsedge,
 		Tags:      []string{"integration", "min", "positive"},
 	}, func(a *allurex.A) {
 		skipUnlessWDMinReady(t, cfg, "msedge", cfg.MsedgeMinVersionForSession())

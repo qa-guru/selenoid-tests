@@ -24,6 +24,7 @@ func TestHubPlaywrightNavigate_ExampleDomain(t *testing.T) {
 		Feature:   "Playwright WS session",
 		Story:     "Playwright WS session",
 		Suite:     "Playwright navigate integration",
+		Browser:   allurex.BrowserChromium,
 		Tags:      []string{"integration", "positive"},
 	}, func(a *allurex.A) {
 		var usedBefore int

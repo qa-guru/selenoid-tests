@@ -18,6 +18,7 @@ func TestHubPlaywrightMinSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "Playwright WS session (min)",
 		Story:     "Playwright WS session (min)",
 		Suite:     "Playwright hub WS session (min)",
+		Browser:   allurex.BrowserChromium,
 		Tags:      []string{"integration", "min", "positive"},
 	}, func(a *allurex.A) {
 		runPlaywrightSessionLifecycle(

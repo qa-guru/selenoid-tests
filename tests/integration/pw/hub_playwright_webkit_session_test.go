@@ -20,6 +20,7 @@ func TestHubPlaywrightWebkitSession_RemoteSessionConnects(t *testing.T) {
 		Feature:   "Playwright WebKit WS session",
 		Story:     "Playwright WebKit WS session",
 		Suite:     "Playwright WebKit hub WS session",
+		Browser:   allurex.BrowserWebkit,
 		Tags:      []string{"integration", "playwright"},
 	}, func(a *allurex.A) {
 		var endpoint string

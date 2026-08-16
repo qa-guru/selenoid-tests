@@ -18,6 +18,7 @@ func TestHubFirefoxMinSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session (min)",
 		Story:     "WebDriver session (min)",
 		Suite:     "WebDriver hub session (firefox-min)",
+		Browser:   allurex.BrowserFirefox,
 		Tags:      []string{"integration", "min", "positive"},
 	}, func(a *allurex.A) {
 		skipUnlessWDMinReady(t, cfg, "firefox", cfg.FirefoxMinVersionForSession())

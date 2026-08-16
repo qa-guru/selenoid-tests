@@ -21,6 +21,7 @@ func TestHubPlaywrightSession_RemotePlaywrightSessionOpensExampleDomain(t *testi
 		Feature:   "Playwright WS session",
 		Story:     "Playwright WS session",
 		Suite:     "Playwright WS session",
+		Browser:   allurex.BrowserChromium,
 		Tags:      []string{"playwright", "smoke", "positive"},
 	}, func(a *allurex.A) {
 		runRemotePlaywrightSmoke(t, a, cfg, func(page playwright.Page) {

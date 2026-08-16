@@ -18,6 +18,7 @@ func TestHubFirefoxSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "WebDriver session",
 		Suite:     "WebDriver hub session (firefox)",
+		Browser:   allurex.BrowserFirefox,
 		Tags:      []string{"integration", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSessionLifecycle(

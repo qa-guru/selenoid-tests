@@ -9,5 +9,7 @@ export default createAllureConfig({
     "playwright-image",
     "webdriver-image",
     "video-recorder",
+    "android",
+    "ios",
   ],
 });

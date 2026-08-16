@@ -20,6 +20,7 @@ func TestHubSessionId_RemoteSessionAssignsSessionId(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "Hub session id",
 		Suite:     "Hub session id",
+		Browser:   cfg.Browser,
 		Tags:      []string{"smoke", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSmokeSession(t, a, cfg, func(sessionID string) {

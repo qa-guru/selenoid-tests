@@ -72,7 +72,7 @@ run_with_env() {
 run_unit_pkgs() {
   run_pkgs unit \
     ./internal/config/... ./internal/helpers/... ./internal/hubapi/... \
-    ./internal/warmpool/... \
+    ./internal/allurex/... ./internal/warmpool/... \
     ./tests/unit/fixture/...
 }
 

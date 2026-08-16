@@ -21,6 +21,7 @@ func TestHubStatusSession_StatusBrowsersReflectActiveSession(t *testing.T) {
 		Feature:   "Hub status with session",
 		Story:     "Hub status with session",
 		Suite:     "Hub status browsers with active session",
+		Browser:   allurex.BrowserChrome,
 		Tags:      []string{"integration", "positive"},
 	}, func(a *allurex.A) {
 		var sessionID string

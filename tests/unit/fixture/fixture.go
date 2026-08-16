@@ -7,6 +7,16 @@ import (
 )
 
 // loadFixture reads src/test/resources/fixtures/<rel> (Java classpath parity).
+func loadProjectFixture(t *testing.T, rel string) []byte {
+	t.Helper()
+	path := filepath.Join(moduleRoot(t), filepath.FromSlash(rel))
+	body, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("fixture %s: %v", rel, err)
+	}
+	return body
+}
+
 func loadFixture(t *testing.T, rel string) []byte {
 	t.Helper()
 	path := filepath.Join(moduleRoot(t), "src", "test", "resources", "fixtures", filepath.FromSlash(rel))

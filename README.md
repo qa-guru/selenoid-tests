@@ -32,7 +32,7 @@ Dashboard PNG updates after each orchestrator run on `main` (Playwright screensh
 | Link | Description |
 |------|-------------|
 | [Dashboard](https://qa-guru.github.io/selenoid-tests/reports/latest/dashboard/) | Pyramid: Go unit ×3 + Go hub + Go CM |
-| [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image, video-recorder |
+| [Awesome](https://qa-guru.github.io/selenoid-tests/reports/latest/awesome/) | Epic drill-down: selenoid, selenoid-ui, cm, webdriver-image, playwright-image, video-recorder, android, ios |
 | [TestOps project](https://allure.autotests.cloud/project/5271) | Cloud launches |
 | [CI workflow](https://github.com/qa-guru/selenoid-tests/actions/workflows/selenoid_github-orchestrator.yml) | `workflow_dispatch` max run: `env_profile=selenoid_github_e2e` |
 
@@ -76,7 +76,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 - Allure TestOps: проект `selenoid-tests`, **ALLURE_PROJECT_ID=5271**
 - Test layers: `@Layer` keys → TestOps mapping (`e2e` → E2E Tests) — RAG `test-layers`, sync: `qa-guru-tms-automator/scripts/sync_testops_layer_mappings.py`
-- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`, `video-recorder`); sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
+- Component filter: `@Component` label → TestOps custom field **Component** (`cm`, `selenoid`, `selenoid-ui`, `playwright-image`, `webdriver-image`, `video-recorder`, `android`, `ios`); browser flavor is Allure `tag`/`parameter` `browser=` (`chrome` \| `firefox` \| `msedge` \| `chromium` \| `webkit` \| `android` \| `ios`), not a separate Component. Sync: `qa-guru-tms-automator/scripts/sync_testops_component_mappings.py`
 - Allure 3 GitHub Pages: `https://qa-guru.github.io/selenoid-tests/reports/<run-id>/` (per-run URLs retained on gh-pages — CI `keep_files: true`)
 - Dashboard: `.../reports/<run-id>/dashboard/index.html`
 
@@ -222,6 +222,8 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | **playwright-image** | Go¹ | — | Go | Go | Go | — | `go-hub` |
 | **webdriver-image** | Go | — | Go | Go | Go | — | `go-hub` |
 | **video-recorder** | — | Go | — | Go | — | — | `go-hub` (api slice / dispatch) |
+| **android** | Go | — | — | Go (skip if hub has no android) | — | — | `go-hub` |
+| **ios** | Go (stub) | — | — | Go (stub) | — | — | not claimed |
 | **warm-pool** | Go⁸ | — | — | Go⁸ | Go⁸ | — | — (slice `warm-pool`, skip if stand down) |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
 | **selenoid-qa-guru** | — | — | — | —⁴ | —⁵ | ✓ | deploy-smoke dispatch |

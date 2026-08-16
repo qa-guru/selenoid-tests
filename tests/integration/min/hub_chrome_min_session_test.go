@@ -18,6 +18,7 @@ func TestHubChromeMinSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session (min)",
 		Story:     "WebDriver session (min)",
 		Suite:     "WebDriver hub session (chrome-min)",
+		Browser:   allurex.BrowserChrome,
 		Tags:      []string{"integration", "min", "positive"},
 	}, func(a *allurex.A) {
 		skipUnlessWDMinReady(t, cfg, "chrome", cfg.ChromeMinVersionForSession())

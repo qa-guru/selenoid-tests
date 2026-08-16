@@ -21,6 +21,7 @@ func TestHubSessionHeading_RemoteSessionRendersHeading(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "Hub session heading",
 		Suite:     "Hub session heading",
+		Browser:   cfg.Browser,
 		Tags:      []string{"smoke", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSmokeSession(t, a, cfg, func(sessionID string) {

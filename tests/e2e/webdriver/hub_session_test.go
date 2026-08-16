@@ -21,6 +21,7 @@ func TestHubSession_RemoteSessionOpensExampleDomain(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "WebDriver session",
 		Suite:     "WebDriver session",
+		Browser:   allurex.BrowserChrome,
 		Tags:      []string{"smoke", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSmokeSession(t, a, cfg, func(sessionID string) {

@@ -18,6 +18,7 @@ func TestHubMsedgeSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "WebDriver session",
 		Suite:     "WebDriver hub session (msedge)",
+		Browser:   allurex.BrowserMsedge,
 		Tags:      []string{"integration", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSessionLifecycle(

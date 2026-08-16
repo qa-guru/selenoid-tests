@@ -10,23 +10,43 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 )
 
+// Browser flavors for Meta.Browser (Allure tag + parameter). Epic stays on the image family.
+const (
+	BrowserChrome   = "chrome"
+	BrowserFirefox  = "firefox"
+	BrowserMsedge   = "msedge"
+	BrowserChromium = "chromium"
+	BrowserWebkit   = "webkit"
+	BrowserAndroid  = "android"
+	BrowserIOS      = "ios"
+)
+
+// Parameter is an Allure test parameter (shown on the result card).
+type Parameter struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
 // Meta maps Java @Layer / @Component / Epic-Feature-Story / @Tag.
 type Meta struct {
-	Name      string
-	FullName  string
-	Layer     string
-	Component string
-	Epic      string
-	Feature   string
-	Story     string
-	Tags      []string
-	Suite     string
-	Package   string
+	Name       string
+	FullName   string
+	Layer      string
+	Component  string
+	Epic       string
+	Feature    string
+	Story      string
+	Tags       []string
+	Suite      string
+	Package    string
+	Browser    string
+	Parameters []Parameter
 }
 
 // A is a per-test Allure context (steps + result file).
@@ -56,20 +76,20 @@ type label struct {
 }
 
 type result struct {
-	UUID     string  `json:"uuid"`
-	HistoryID string `json:"historyId"`
-	Name     string  `json:"name"`
-	FullName string  `json:"fullName"`
-	Status   string  `json:"status"`
-	Stage    string  `json:"stage"`
-	Start    int64   `json:"start"`
-	Stop     int64   `json:"stop"`
-	Steps    []step  `json:"steps"`
-	Labels   []label `json:"labels"`
-	Attachments []any `json:"attachments"`
-	Parameters  []any `json:"parameters"`
-	Links       []any `json:"links"`
-	StatusDetails any `json:"statusDetails,omitempty"`
+	UUID          string  `json:"uuid"`
+	HistoryID     string  `json:"historyId"`
+	Name          string  `json:"name"`
+	FullName      string  `json:"fullName"`
+	Status        string  `json:"status"`
+	Stage         string  `json:"stage"`
+	Start         int64   `json:"start"`
+	Stop          int64   `json:"stop"`
+	Steps         []step  `json:"steps"`
+	Labels        []label `json:"labels"`
+	Attachments   []any   `json:"attachments"`
+	Parameters    []any   `json:"parameters"`
+	Links         []any   `json:"links"`
+	StatusDetails any     `json:"statusDetails,omitempty"`
 }
 
 // Run executes fn and writes an Allure result under ALLURE_RESULTS (or build/allure-results/go-hub).
@@ -137,18 +157,18 @@ func (a *A) finish() {
 	id := newUUID()
 	fullName := a.meta.FullName
 	payload := result{
-		UUID:      id,
-		HistoryID: historyID(fullName, a.meta.Name),
-		Name:      a.meta.Name,
-		FullName:  fullName,
-		Status:    status,
-		Stage:     "finished",
-		Start:     a.start.UnixMilli(),
-		Stop:      time.Now().UnixMilli(),
-		Steps:     a.steps,
-		Labels:    a.labels(),
+		UUID:        id,
+		HistoryID:   historyID(fullName, a.meta.Name),
+		Name:        a.meta.Name,
+		FullName:    fullName,
+		Status:      status,
+		Stage:       "finished",
+		Start:       a.start.UnixMilli(),
+		Stop:        time.Now().UnixMilli(),
+		Steps:       a.steps,
+		Labels:      a.labels(),
 		Attachments: []any{},
-		Parameters:  []any{},
+		Parameters:  a.parameters(),
 		Links:       []any{},
 	}
 	if status == "failed" {
@@ -193,10 +213,34 @@ func (a *A) labels() []label {
 	if a.meta.Story != "" {
 		labels = append(labels, label{Name: "story", Value: a.meta.Story})
 	}
-	for _, tag := range a.meta.Tags {
+	seen := map[string]struct{}{}
+	addTag := func(tag string) {
+		tag = strings.TrimSpace(tag)
+		if tag == "" {
+			return
+		}
+		if _, ok := seen[tag]; ok {
+			return
+		}
+		seen[tag] = struct{}{}
 		labels = append(labels, label{Name: "tag", Value: tag})
 	}
+	addTag(a.meta.Browser)
+	for _, tag := range a.meta.Tags {
+		addTag(tag)
+	}
 	return labels
+}
+
+func (a *A) parameters() []any {
+	out := make([]any, 0, 1+len(a.meta.Parameters))
+	if b := strings.TrimSpace(a.meta.Browser); b != "" {
+		out = append(out, Parameter{Name: "browser", Value: b})
+	}
+	for _, p := range a.meta.Parameters {
+		out = append(out, p)
+	}
+	return out
 }
 
 func resultsDir() string {

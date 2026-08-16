@@ -18,6 +18,7 @@ func TestHubChromeWarmSession_RemoteSessionStartsAndCompletes(t *testing.T) {
 		Feature:   "WebDriver session",
 		Story:     "WebDriver session",
 		Suite:     "WebDriver hub session (chrome warm)",
+		Browser:   allurex.BrowserChrome,
 		Tags:      []string{"integration", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSessionLifecycle(
