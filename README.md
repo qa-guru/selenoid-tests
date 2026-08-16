@@ -165,11 +165,11 @@ docker pull qaguru/playwright-chromium:1.61.1   # или ./scripts/pull-browser-
 PYRAMID_STAND=selenoid_github ./scripts/run-go-pyramid.sh playwright
 ```
 
-В CI `scripts/start-ci-selenoid-stack.sh` тянет образы из `fixtures/ci-browsers.json` (chrome + firefox + msedge warm + playwright-chromium).
+В CI `scripts/start-ci-selenoid-stack.sh` тянет WD chrome/firefox/msedge (warm+min) и **каждый** `playwright-*` family из `fixtures/ci-browsers.json` (chromium ±min, firefox, webkit, chrome, msedge). Android в catalog есть, в CI **не** pull.
 
 ### Playwright-chromium-min (`1.61.1-min`)
 
-Образ в `fixtures/ci-browsers.json`; endpoint — `selenoid_github_min_integration.properties` (VNC/video off). Входит в `hub-all` (`min` slice).
+Образ в `fixtures/ci-browsers.json`; endpoint — `selenoid_github_min_integration.properties` (VNC/video off). Входит в `hub-all` (`min` slice). Publish tag `*-min` / dispatch `variant=min` → `TEST_TAGS=min` → unit min catalog + `TestHubPlaywrightMinSession` (не e2e chromium).
 
 ```bash
 ./scripts/run-go-pyramid.sh min
@@ -207,7 +207,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ./scripts/run-go-pyramid.sh warm-pool
 ```
 
-`workflow_dispatch`: `test_tags=integration|api|smoke|playwright` → Go slice; `env_profile=selenoid_qa_guru_*` → `hub-prod`.
+`workflow_dispatch`: `test_tags=integration|api|smoke|playwright|min` → Go slice; `env_profile=selenoid_qa_guru_*` → `hub-prod`.
 
 ### Component × Layer × CI (push `main`)
 
@@ -221,8 +221,8 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | **cm** | Go | — | Go | Go | Go | — | `go-unit` + `go-cm` |
 | **playwright-image** | Go¹ | — | Go | Go | Go | — | `go-hub` |
 | **webdriver-image** | Go | — | Go | Go | Go | — | `go-hub` |
-| **video-recorder** | — | Go | — | Go | — | — | `go-hub` (api slice / dispatch) |
-| **android** | Go | — | — | Go (skip if hub has no android) | — | — | `go-hub` |
+| **video-recorder** | Go | — | — | Go | — | — | `go-hub` (api slice / dispatch) |
+| **android** | Go | — | — | Go (status; skip if hub has no android) | — | — | `go-hub` unit+status skip; live = `smoke-cold.sh` host-only⁹ |
 | **ios** | Go (stub) | — | — | Go (stub) | — | — | not claimed |
 | **warm-pool** | Go⁸ | — | — | Go⁸ | Go⁸ | — | — (slice `warm-pool`, skip if stand down) |
 | **dev** | — | —² | —³ | — | — | ✓ | — |
@@ -234,8 +234,9 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ⁴ **cloud api:** post-deploy `selenoid_qa_guru_api` через `trigger-deploy-smoke` / `repository_dispatch` — не локальный класс в этой матрице.  
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
-⁷ **playwright-image / webdriver-image unit:** catalog JSON + session body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`).  
-⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); container-reuse in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Live tests skip if `:9090` down. Container-reuse skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.
+⁷ **playwright-image / webdriver-image / video-recorder unit:** catalog JSON + session/video body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`). ADR: JSON parsers = unit, not component.  
+⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); container-reuse in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Live tests skip if `:9090` down. Container-reuse skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.  
+⁹ **android CI:** `go-hub` runs catalog unit + `GET /status` (skip if hub has no android family). Live Appium session = `browser-image/android/scripts/smoke-cold.sh` on Linux+KVM host only — **not** a GitHub workflow.
 
 ### Manual (runbook)
 
@@ -257,9 +258,9 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 | [qa-guru/selenoid](https://github.com/qa-guru/selenoid) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
 | [qa-guru/selenoid-ui](https://github.com/qa-guru/selenoid-ui) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api,smoke` |
 | [qa-guru/cm](https://github.com/qa-guru/cm) | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `api` |
-| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `playwright` (`source_variant=playwright`) |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `playwright` (`source_variant=playwright`); tag `*-min` / dispatch `variant=min` → `min` |
 | [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-webdriver.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → browser slice (`source_variant=webdriver`, `source_browser`, `webdriver_variant`) |
-| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-video-recorder.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → `testVideoRecorder` (`source_variant=video-recorder`) |
+| [qa-guru/browser-image](https://github.com/qa-guru/browser-image) `publish-video-recorder.yml` | `SELENOID_TESTS_DISPATCH_TOKEN` | `deploy-smoke` | `smoke` → Go `api` (`TestHubVideo_*` / `TestUiVideo*`, `source_variant=video-recorder`) |
 
 Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опционально `source_variant` (`playwright` \| `webdriver` \| `video-recorder`), `source_browser` (`chrome` \| `firefox` \| `msedge`), `webdriver_variant` (`warm` \| `min`).
 
@@ -273,6 +274,15 @@ Payload: `source_repo`, `source_ref`, `source_version`, `test_tags`, опцио�
 | warm / empty | chrome | Go slice `webdriver` |
 | warm / empty | firefox | `go test ./tests/integration/wd/... -run TestHubFirefoxSession` |
 | warm / empty | msedge | `go test ./tests/integration/wd/... -run TestHubMsedgeSession` |
+
+`TEST_TAGS=min` + `source_variant=playwright` (факт orchestrator; `publish.yml` `*-min`):
+
+| Go |
+|----|
+| `go test ./tests/unit/fixture/min/...` + `go test ./tests/integration/min/... -run TestHubPlaywrightMinSession` |
+| **не** slice `playwright` (e2e chromium warm) |
+
+Playwright chrome / msedge: claimed — `TestHubPlaywrightChromeSession` / `TestHubPlaywrightMsedgeSession` + CI pull every `playwright-*` family from `ci-browsers.json`.
 
 Если заданы `source_version` + `source_variant`, CI делает `docker pull` опубликованного tag (`qaguru/webdriver-{browser}:{major}[-min]` · `qaguru/playwright-{browser}:{version}[-min]` · `qaguru/video-recorder:{version}`) и гоняет slice против него, не против prod pin.
 

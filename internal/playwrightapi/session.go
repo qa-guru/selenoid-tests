@@ -9,6 +9,7 @@ import (
 )
 
 // Connect opens a remote Playwright browser via hub WS (default chromium endpoint from config).
+// firefox/webkit use their engine; chrome/msedge/chromium share Chromium.Connect.
 func Connect(pw *playwright.Playwright, cfg *config.Config, wsEndpoint string) (playwright.Browser, error) {
 	if strings.TrimSpace(wsEndpoint) == "" {
 		var err error

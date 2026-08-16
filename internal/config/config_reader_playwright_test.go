@@ -91,6 +91,17 @@ func TestConfigReaderPlaywright_ResolveForBrowserSwapsFamily(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, "wss://hub/playwright/playwright-webkit/1.61.1?accessKey=u:p&name=go", endpoint)
 		})
+		a.Step("resolve chrome and msedge families", func() {
+			cfg := config.FromMap(map[string]string{
+				"playwrightWsEndpoint": "ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1",
+			})
+			chrome, err := cfg.ResolvePlaywrightWsEndpointForBrowser("playwright-chrome")
+			require.NoError(t, err)
+			require.Contains(t, chrome, "/playwright/playwright-chrome/1.61.1")
+			msedge, err := cfg.ResolvePlaywrightWsEndpointForBrowser("playwright-msedge")
+			require.NoError(t, err)
+			require.Contains(t, msedge, "/playwright/playwright-msedge/1.61.1")
+		})
 	})
 }
 

@@ -94,7 +94,7 @@ pull_browser_images() {
     echo "==> SKIP_BROWSER_PULL=1 — skipping docker pull"
     return 0
   fi
-  echo "==> Pulling CI smoke images (chrome 149 + firefox/msedge min + playwright) from ${BROWSERS}"
+  echo "==> Pulling CI smoke images (WD chrome/firefox/msedge warm+min + every playwright-* family) from ${BROWSERS}"
   if [[ ! -f "$BROWSERS" ]]; then
     echo "Missing browsers.json: ${BROWSERS}" >&2
     exit 1
@@ -110,10 +110,9 @@ pull_browser_images() {
     .firefox.versions[(.firefox.default + "-min")].image // empty,
     .msedge.versions[.msedge.default].image // empty,
     .msedge.versions[(.msedge.default + "-min")].image // empty,
-    .["playwright-chromium"].versions["1.61.1"].image // empty,
-    .["playwright-chromium"].versions["1.61.1-min"].image // empty,
-    .["playwright-firefox"].versions["1.61.1"].image // empty,
-    .["playwright-webkit"].versions["1.61.1"].image // empty
+    (to_entries[] | select(.key | startswith("playwright-")) | .value |
+      (.versions[.default].image // empty),
+      (.versions[(.default + "-min")].image // empty))
   ' "$BROWSERS" | sort -u)
   echo "    docker pull ${VIDEO_RECORDER_IMAGE}"
   docker pull "${VIDEO_RECORDER_IMAGE}"

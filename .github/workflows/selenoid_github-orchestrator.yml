@@ -20,7 +20,7 @@ on:
         description: "Reserved (optional)"
         required: false
       test_tags:
-        description: "Go pyramid slice for deploy-smoke (integration|api|smoke|playwright|api,smoke|cm)"
+        description: "Go pyramid slice for deploy-smoke (integration|api|smoke|playwright|min|api,smoke|cm)"
         required: false
       source_ref:
         description: "Git ref for Go service repos (default main)"
@@ -437,6 +437,16 @@ jobs:
                 run_slice e2e
               fi
               ;;
+            min)
+              if [[ "${SOURCE_VARIANT}" == "playwright" ]]; then
+                export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="${PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD:-1}"
+                export SELENOID_TEST_ENV=selenoid_github_min_integration
+                go test ./tests/unit/fixture/min/... -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+                go test ./tests/integration/min/... -run TestHubPlaywrightMinSession -count=1 -timeout=15m -p 1 || GO_HUB_EXIT=$?
+              else
+                run_slice min
+              fi
+              ;;
             playwright)
               run_slice playwright
               ;;
@@ -779,9 +789,9 @@ jobs:
             fi
           fi
           echo "- Unit: selenoid-unit-go-test, selenoid-ui-unit-go-test, cm-unit-go-test (ref \`${SOURCE_REF}\`)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Pyramid: selenoid-pyramid-go-test — push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pyramid: selenoid-pyramid-go-test — push/github → \`hub-all\`; prod profile → \`hub-prod\` (−cm/−min/−resilience); dispatch \`test_tags=integration|api|smoke|playwright|min|api,smoke\` → Go slice" >> "$GITHUB_STEP_SUMMARY"
           echo "- CM push: cm-integration-go-test — \`run-go-pyramid.sh cm\` (CM :4445/:8081; skipped on prod profiles)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice (\`min\` chrome/firefox/msedge → \`TestHub*MinSession\`; warm firefox/msedge → \`TestHub*Session\`); \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Dispatch slice: \`test_tags=integration|api|smoke|playwright|min\` → one layer; \`smoke\` + \`source_variant=webdriver\` → browser slice (\`min\` chrome/firefox/msedge → \`TestHub*MinSession\`; warm firefox/msedge → \`TestHub*Session\`); \`min\` + \`source_variant=playwright\` → unit min catalog + \`TestHubPlaywrightMinSession\` (not e2e chromium); \`smoke\` + \`source_variant=video-recorder\` → Go \`api\`; \`smoke\` + \`selenoid-ui\` → Go \`ui\`" >> "$GITHUB_STEP_SUMMARY"
           if [ -n "${PUBLISHED_BROWSER_IMAGE:-}" ]; then
             echo "- Published image: \`${PUBLISHED_BROWSER_IMAGE}\`" >> "$GITHUB_STEP_SUMMARY"
           fi
