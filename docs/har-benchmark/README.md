@@ -23,10 +23,11 @@ Committed marketing / verdict docs live here. Large run artifacts (`.har`, prod 
 
 ## Regenerate `build/har-compare/`
 
+Hub enableHAR meta/bodies + HarCapture bodies are Go `har-prod` (writes `prod-step5/*.har`). UI harContent toggle + HarViewer bodies: `tests/e2e/ui/ui_har_content_test.go` (hub-prod / ui slice).
+
 ```bash
-python scripts/smoke-prod-har-content.py
-python scripts/smoke-prod-har-ui.py
-go test ./tests/e2e/har/... -count=1
+PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh har-prod
+# optional UI: PYRAMID_STAND=selenoid_qa_guru ./scripts/run-go-pyramid.sh ui
 ```
 
 Sync if matrix changed:

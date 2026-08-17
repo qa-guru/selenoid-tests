@@ -124,7 +124,7 @@ func assertValidHubHar(t *testing.T, body []byte, label, targetHost string) {
 	require.Greater(t, stats.HTTPEntries, 0, "HarStats.httpEntries must be > 0")
 }
 
-func playwrightWsWithEnableHAR(cfg *config.Config) (string, error) {
+func playwrightWsWithEnableHAR(cfg *config.Config, harContent string) (string, error) {
 	base, err := cfg.ResolvePlaywrightWsEndpoint()
 	if err != nil {
 		return "", err
@@ -133,7 +133,40 @@ func playwrightWsWithEnableHAR(cfg *config.Config) (string, error) {
 	if strings.Contains(base, "?") {
 		sep = "&"
 	}
-	return base + sep + "enableHAR=true&enableVideo=false&name=hub-har-pw-prod-e2e", nil
+	q := "enableHAR=true&enableVideo=false&name=hub-har-pw-prod-e2e"
+	if harContent != "" {
+		q += "&harContent=" + url.QueryEscape(harContent)
+	}
+	return base + sep + q, nil
+}
+
+func hubHarOptions(name, harContent string) map[string]any {
+	opts := map[string]any{
+		"enableVNC":      false,
+		"enableVideo":    false,
+		"enableHAR":      true,
+		"enableLog":      false,
+		"sessionTimeout": "2m",
+		"name":           name,
+	}
+	if harContent != "" {
+		opts["harContent"] = harContent
+	}
+	return opts
+}
+
+func assertHarContentMode(t *testing.T, body []byte, label string, bodies bool) {
+	t.Helper()
+	stats := helpers.HarStatsFromBytes(label, body)
+	require.GreaterOrEqual(t, stats.HTTPEntries, 1, "%s: expected ≥1 http entry", label)
+	if bodies {
+		require.GreaterOrEqual(t, stats.WithContentText, bodiesMinContent,
+			"%s: harContent=bodies expected withContentText>=%d, got %d", label, bodiesMinContent, stats.WithContentText)
+		require.GreaterOrEqual(t, stats.WithContentSize, 1,
+			"%s: harContent=bodies expected withContentSize>=1, got %d", label, stats.WithContentSize)
+		return
+	}
+	require.Equal(t, 0, stats.WithContentText, "%s: default/meta enableHAR must omit content.text", label)
 }
 
 func writeHarArtifact(t *testing.T, dir, name string, body []byte) string {
@@ -153,14 +186,7 @@ func TestHubHarProd_WebDriverEnableHarProducesValidArtifact(t *testing.T) {
 		var sessionID string
 		a.Step("Create WebDriver session with enableHAR", func() {
 			var err error
-			sessionID, err = hubapi.CreateSessionWithSelenoidOptions(cfg, "chrome", cfg.ChromeVersionForSession(), map[string]any{
-				"enableVNC":      false,
-				"enableVideo":    false,
-				"enableHAR":      true,
-				"enableLog":      false,
-				"sessionTimeout": "2m",
-				"name":           "hub-har-wd-prod-e2e",
-			})
+			sessionID, err = hubapi.CreateSessionWithSelenoidOptions(cfg, "chrome", cfg.ChromeVersionForSession(), hubHarOptions("hub-har-wd-prod-e2e", ""))
 			require.NoError(t, err)
 		})
 
@@ -184,7 +210,9 @@ func TestHubHarProd_WebDriverEnableHarProducesValidArtifact(t *testing.T) {
 
 		a.Step("Assert HAR 1.2 + entries + target host", func() {
 			writeHarArtifact(t, harProdOutDir, "wd-"+sessionID+".har", body)
+			writeHarArtifact(t, harProdStep5Dir, "wd-chrome-enableHAR-meta-prod.har", body)
 			assertValidHubHar(t, body, "wd-hub-enableHAR", targetHost)
+			assertHarContentMode(t, body, "wd-hub-enableHAR-meta", false)
 		})
 	})
 }
@@ -200,7 +228,7 @@ func TestHubHarProd_PlaywrightEnableHarProducesValidArtifact(t *testing.T) {
 			before, err := hubapi.CollectSessionIDs(cfg)
 			require.NoError(t, err)
 
-			ws, err := playwrightWsWithEnableHAR(cfg)
+			ws, err := playwrightWsWithEnableHAR(cfg, "")
 			require.NoError(t, err)
 
 			pw, err := playwright.Run()
@@ -247,7 +275,109 @@ func TestHubHarProd_PlaywrightEnableHarProducesValidArtifact(t *testing.T) {
 
 		a.Step("Assert HAR 1.2 + entries + target host", func() {
 			writeHarArtifact(t, harProdOutDir, "pw-"+sessionID+".har", body)
+			writeHarArtifact(t, harProdStep5Dir, "pw-chromium-enableHAR-meta-prod.har", body)
 			assertValidHubHar(t, body, "pw-hub-enableHAR", targetHost)
+			assertHarContentMode(t, body, "pw-hub-enableHAR-meta", false)
+		})
+	})
+}
+
+func TestHubHarProd_WebDriverHarContentBodiesHasText(t *testing.T) {
+	cfg := config.MustLoad()
+	targetURL := stripTrailingSlash(cfg.SmokeURL)
+	targetHost := hostOf(targetURL)
+
+	allurex.Run(t, hubHarMeta("WebDriver enableHAR harContent=bodies → content.text + size", "hub-har-bodies"), func(a *allurex.A) {
+		var sessionID string
+		a.Step("Create WebDriver session with harContent=bodies", func() {
+			var err error
+			sessionID, err = hubapi.CreateSessionWithSelenoidOptions(cfg, "chrome", cfg.ChromeVersionForSession(), hubHarOptions("hub-har-wd-bodies-prod", "bodies"))
+			require.NoError(t, err)
+		})
+		a.Step("Navigate to "+targetURL, func() {
+			require.NoError(t, hubapi.NavigateSession(cfg, sessionID, targetURL))
+			time.Sleep(2 * time.Second)
+		})
+		a.Step("Delete WebDriver session", func() {
+			require.NoError(t, hubapi.DeleteSession(cfg, sessionID))
+		})
+		var body []byte
+		a.Step("Wait and download /har for "+sessionID, func() {
+			file, err := hubapi.WaitForSessionHar(cfg, sessionID, 30*time.Second)
+			require.NoError(t, err)
+			require.NotEmpty(t, file, "expected hub HAR for WD session %s", sessionID)
+			body, err = hubapi.DownloadHar(cfg, file)
+			require.NoError(t, err)
+		})
+		a.Step("Assert bodies HAR has content.text and content.size", func() {
+			writeHarArtifact(t, harProdOutDir, "wd-bodies-"+sessionID+".har", body)
+			writeHarArtifact(t, harProdStep5Dir, "wd-chrome-enableHAR-bodies-prod.har", body)
+			assertValidHubHar(t, body, "wd-hub-enableHAR-bodies", targetHost)
+			assertHarContentMode(t, body, "wd-hub-enableHAR-bodies", true)
+		})
+	})
+}
+
+func TestHubHarProd_PlaywrightHarContentBodiesHasText(t *testing.T) {
+	cfg := config.MustLoad()
+	targetURL := stripTrailingSlash(cfg.SmokeURL)
+	targetHost := hostOf(targetURL)
+
+	allurex.Run(t, hubHarMeta("Playwright enableHAR harContent=bodies → content.text + size", "hub-har-bodies"), func(a *allurex.A) {
+		var sessionID string
+		a.Step("Connect Playwright with harContent=bodies and navigate", func() {
+			before, err := hubapi.CollectSessionIDs(cfg)
+			require.NoError(t, err)
+
+			ws, err := playwrightWsWithEnableHAR(cfg, "bodies")
+			require.NoError(t, err)
+
+			pw, err := playwright.Run()
+			require.NoError(t, err)
+			defer func() { require.NoError(t, pw.Stop()) }()
+
+			browser, err := playwrightapi.Connect(pw, cfg, ws)
+			require.NoError(t, err)
+
+			id, err := hubapi.WaitNewSessionID(cfg, before, 30*time.Second)
+			require.NoError(t, err)
+			require.NotEmpty(t, id)
+			sessionID = id
+
+			ctx, err := browser.NewContext(playwright.BrowserNewContextOptions{
+				ServiceWorkers: playwright.ServiceWorkerPolicyBlock,
+			})
+			require.NoError(t, err)
+			page, err := ctx.NewPage()
+			require.NoError(t, err)
+
+			time.Sleep(750 * time.Millisecond)
+			_, err = page.Goto(targetURL)
+			require.NoError(t, err)
+			require.NoError(t, page.WaitForLoadState(playwright.PageWaitForLoadStateOptions{
+				State: playwright.LoadStateLoad,
+			}))
+			time.Sleep(1500 * time.Millisecond)
+
+			_ = ctx.Close()
+			_ = playwrightapi.Close(browser)
+		})
+
+		require.NotEmpty(t, sessionID, "Playwright hub session id not observed in /status")
+
+		var body []byte
+		a.Step("Wait and download /har for "+sessionID, func() {
+			file, err := hubapi.WaitForSessionHar(cfg, sessionID, 30*time.Second)
+			require.NoError(t, err)
+			require.NotEmpty(t, file, "expected hub HAR for PW session %s", sessionID)
+			body, err = hubapi.DownloadHar(cfg, file)
+			require.NoError(t, err)
+		})
+		a.Step("Assert bodies HAR has content.text and content.size", func() {
+			writeHarArtifact(t, harProdOutDir, "pw-bodies-"+sessionID+".har", body)
+			writeHarArtifact(t, harProdStep5Dir, "pw-chromium-enableHAR-bodies-prod.har", body)
+			assertValidHubHar(t, body, "pw-hub-enableHAR-bodies", targetHost)
+			assertHarContentMode(t, body, "pw-hub-enableHAR-bodies", true)
 		})
 	})
 }
