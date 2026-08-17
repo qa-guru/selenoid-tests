@@ -17,7 +17,7 @@ func TestContainerReuse_ReservesAndReleasesChromeSlot(t *testing.T) {
 		t.Skip("hub /status warmTotal=0 — start hub with SELENOID_WARM_POOL_URL=http://127.0.0.1:9090 (dev/scripts/start-selenoid.sh)")
 	}
 	if !hasDialableLoopback(t, cli) {
-		t.Skip("no dialable loopback ChromeDriver — docker compose -f docker-compose.local.yml up -d in selenoid-warm-pool")
+		t.Skip("no dialable loopback ChromeDriver — docker compose -f docker-compose.local.yml up -d in selenoid-pool")
 	}
 
 	cfg := config.MustLoad()

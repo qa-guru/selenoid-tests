@@ -1,4 +1,4 @@
-// Package warmpool is the HTTP client for selenoid-warm-pool orchestrator (port 9090).
+// Package warmpool is the HTTP client for selenoid-pool orchestrator (port 9090).
 package warmpool
 
 import (

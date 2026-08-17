@@ -235,7 +235,7 @@ SELENOID_TEST_ENV=selenoid_qa_guru_e2e ./scripts/run-go-pyramid.sh har-prod
 ⁵ **cloud e2e:** профиль `selenoid_qa_guru_e2e` — manual / расширенный deploy-smoke.  
 ⁶ **selenoid-ui manual:** video playback — runbook (ниже); VNC viewer — Go `tests/e2e/ui` (prod profile `selenoid_qa_guru_e2e`).  
 ⁷ **playwright-image / webdriver-image / video-recorder unit:** catalog JSON + session/video body — `tests/unit/fixture/` + `internal/config` (`@Layer("unit")`). ADR: JSON parsers = unit, not component.  
-⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); container-reuse in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-warm-pool`. Live tests skip if `:9090` down. Container-reuse skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.  
+⁸ **warm-pool:** `internal/warmpool` + fixture contract (unit); live orchestrator HTTP in `tests/api/warmpool` (health/slots/reserve/release/preopen/video + 4xx/405); container-reuse in `tests/e2e/warmpool`. Stand `python scripts/stands/ensure.py selenoid-pool`. Live tests skip if `:9090` down. Container-reuse skips unless hub has `warmTotal>0` and ChromeDriver on loopback is dialable.  
 ⁹ **android CI:** `go-hub` runs catalog unit + `GET /status` (skip if hub has no android family). Live Appium session = `browser-image/android/scripts/smoke-cold.sh` on Linux+KVM host only — **not** a GitHub workflow.
 
 ### Manual (runbook)
