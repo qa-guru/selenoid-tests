@@ -1,0 +1,1 @@
+{"id":"3b65b365776a30ceafef690d4c8a09a8","fullName":"config.ConfigReader.resolveApiBaseUrl falls back to hubUrl","name":"ConfigReader.resolveApiBaseUrl falls back to hubUrl","status":"passed","testResultsByEnv":{"default":"cdf9ab12c839add94bbe3fd76fd86dc3"}}
