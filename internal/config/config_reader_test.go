@@ -57,12 +57,12 @@ func TestConfigReader_ResolveAPIBaseURLPrefersExplicitKey(t *testing.T) {
 	allurex.Run(t, unitMeta("selenoid", "ConfigReader.resolveApiBaseUrl prefers apiBaseUrl"), func(a *allurex.A) {
 		a.Step("resolve", func() {
 			cfg := config.FromMap(map[string]string{
-				"apiBaseUrl": "http://api.example.com",
-				"hubUrl":     "http://hub.example.com/",
+				"apiBaseUrl": "https://autotests.ai/stack/backend-java-spring",
+				"hubUrl":     "https://selenoid.qa.guru/",
 			})
 			got, err := cfg.ResolveAPIBaseURL()
 			require.NoError(t, err)
-			require.Equal(t, "http://api.example.com/", got)
+			require.Equal(t, "https://autotests.ai/stack/backend-java-spring/", got)
 		})
 	})
 }

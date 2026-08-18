@@ -61,7 +61,7 @@ From MATRIX.md § Allowed claims — use verbatim boundaries:
 
 - PW→Selenoid client `recordHar` ≈ local PW (100% URL cov on fixture)
 - HarCapture meta: URL cov 100%; `content.text=0` on fixture
-- HarCapture bodies: fixture ≥1 text (27/27); prod example.com 1/1 text+size; **not** ≡ recordHar
+- HarCapture bodies: fixture ≥1 text (27/27); prod default stack 1/1 text+size; **not** ≡ recordHar
 - Hub meta: URL cov ≥80%; `withContentText==0`
 - Hub bodies (≥ v3.0.5): fixture WD 28/28, PW 25/25 text+size; prod smoke green; **not** ≡ recordHar
 - One writer per session

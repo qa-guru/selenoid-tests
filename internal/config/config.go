@@ -43,6 +43,14 @@ type Config struct {
 	CmUseLocalBinaries       bool
 }
 
+// Default stack on autotests.ai (java-spring + typescript-react).
+const (
+	DefaultSmokeURL             = "https://autotests.ai/stack/backend-java-spring/frontend-typescript-react/login"
+	DefaultSmokeTitle           = "Multistack"
+	DefaultSmokeHeadingSelector = "[data-testid='login-form-title']"
+	DefaultSmokeHeading         = "Login Form"
+)
+
 var (
 	loadOnce sync.Once
 	loaded   *Config
@@ -148,7 +156,7 @@ func configFromProps(envName string, props map[string]string) *Config {
 		PlaywrightSessionTimeout: firstNonEmpty(props["playwrightSessionTimeout"], "5m"),
 		PlaywrightEnableVNC:      parseBool(props["playwrightEnableVnc"], false),
 		PlaywrightEnableVideo:    parseBool(props["playwrightEnableVideo"], false),
-		SmokeURL:                 firstNonEmpty(props["smokeUrl"], "https://example.com/"),
+		SmokeURL:                 firstNonEmpty(props["smokeUrl"], DefaultSmokeURL),
 		LogToConsole:             parseBool(props["logToConsole"], true),
 		SkipHealthCheck:          parseBool(firstNonEmpty(os.Getenv("SELENOID_TEST_SKIP_HEALTH_CHECK"), props["skipHealthCheck"]), false),
 		CmHubPort:                parseInt(firstNonEmpty(props["cmHubPort"], "4445"), 4445),

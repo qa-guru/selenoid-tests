@@ -113,7 +113,7 @@ func TestUiHarViewer_HubBodiesShowsResponseText(t *testing.T) {
 				require.NoError(t, err)
 				lower := strings.ToLower(body)
 				require.NotContains(t, body, "Body not captured")
-				hasBody := strings.Contains(body, "Example Domain") || strings.Contains(lower, "<!doctype html>")
+				hasBody := strings.Contains(body, config.DefaultSmokeHeading) || strings.Contains(body, config.DefaultSmokeTitle) || strings.Contains(lower, "<!doctype html>")
 				require.True(t, hasBody, "expected captured HTML in HarViewer Response tab, got %q", trimForErr(body))
 				sizeCell, err := page.Locator("[data-testid=session-har-row-0] td").Nth(4).InnerText()
 				require.NoError(t, err)

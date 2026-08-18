@@ -17,7 +17,7 @@ func TestHarCapture_ToHarBuildsEntriesFromPerformanceLogs(t *testing.T) {
 		a.Step("toHar", func() {
 			har := helpers.ToHar(fixtureEntries(), helpers.HarMeta, nil)
 			require.Contains(t, har, "1.2")
-			require.Contains(t, har, "example.com")
+			require.Contains(t, har, "autotests.ai")
 			require.Contains(t, har, "200")
 			require.Contains(t, har, "1280")
 			require.True(t, helpers.SupportsBrowser("chrome"))
@@ -103,7 +103,7 @@ func harMeta(name string) allurex.Meta {
 
 func fixtureEntries() []string {
 	return []string{
-		`{"message":{"method":"Network.requestWillBeSent","params":{"requestId":"r1","timestamp":1.0,"wallTime":1700000000.0,"request":{"url":"https://example.com/","method":"GET","headers":{"Accept":"*/*"}}}}}`,
+		`{"message":{"method":"Network.requestWillBeSent","params":{"requestId":"r1","timestamp":1.0,"wallTime":1700000000.0,"request":{"url":"https://autotests.ai/stack/backend-java-spring/frontend-typescript-react/login","method":"GET","headers":{"Accept":"*/*"}}}}}`,
 		`{"message":{"method":"Network.responseReceived","params":{"requestId":"r1","response":{"status":200,"statusText":"OK","mimeType":"text/html","headers":{"content-type":"text/html"},"protocol":"http/1.1","encodedDataLength":42}}}}`,
 		`{"message":{"method":"Network.loadingFinished","params":{"requestId":"r1","timestamp":1.05,"encodedDataLength":1280}}}`,
 	}

@@ -10,10 +10,10 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestHubSessionTitle_RemoteSessionHasExampleDomainTitle(t *testing.T) {
+func TestHubSessionTitle_RemoteSessionHasDefaultStackTitle(t *testing.T) {
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "Remote session page has Example Domain title",
+		Name:      "Remote session page has default stack title",
 		Package:   "tests.HubSessionTitleTests",
 		Layer:     "e2e",
 		Component: "webdriver-image",
@@ -28,7 +28,7 @@ func TestHubSessionTitle_RemoteSessionHasExampleDomainTitle(t *testing.T) {
 			a.Step("Verify document title", func() {
 				title, err := hubapi.GetSessionTitle(cfg, sessionID)
 				require.NoError(t, err)
-				require.Equal(t, "Example Domain", title)
+				require.Equal(t, config.DefaultSmokeTitle, title)
 			})
 		})
 	})

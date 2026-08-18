@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/qa-guru/selenoid-tests/internal/allurex"
+	"github.com/qa-guru/selenoid-tests/internal/config"
 	"github.com/qa-guru/selenoid-tests/internal/warmpool"
 )
 
@@ -29,14 +30,14 @@ func TestWarmPoolPreopen_ValidationAndWarmAPI(t *testing.T) {
 			requireAPIError(t, status, http.StatusBadRequest, body, "slotId and url are required")
 		})
 		a.Step("missing slotId → 400", func() {
-			status, body, err := cli.Post("/pool/preopen", map[string]any{"url": "https://example.com"})
+			status, body, err := cli.Post("/pool/preopen", map[string]any{"url": config.DefaultSmokeURL})
 			require.NoError(t, err)
 			requireAPIError(t, status, http.StatusBadRequest, body, "slotId and url are required")
 		})
 		a.Step("unknown slot → 404", func() {
 			status, body, err := cli.Post("/pool/preopen", map[string]any{
 				"slotId": "no-such-slot",
-				"url":    "https://example.com",
+				"url":    config.DefaultSmokeURL,
 			})
 			require.NoError(t, err)
 			requireAPIError(t, status, http.StatusNotFound, body, "slot not found")
@@ -45,7 +46,7 @@ func TestWarmPoolPreopen_ValidationAndWarmAPI(t *testing.T) {
 			id := anySlotID(t, cli)
 			status, body, err := cli.Post("/pool/preopen", map[string]any{
 				"slotId": id,
-				"url":    "https://example.com/login",
+				"url":    config.DefaultSmokeURL,
 			})
 			require.NoError(t, err)
 			requireWarmProxy(t, status, body)

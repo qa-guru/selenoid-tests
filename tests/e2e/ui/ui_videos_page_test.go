@@ -35,12 +35,12 @@ func TestUiVideosPage_ArchiveLoadsFinishedSessionsShell(t *testing.T) {
 				require.NoError(t, page.Locator("[data-testid='archive-panel']").WaitFor(playwright.LocatorWaitForOptions{
 					State: playwright.WaitForSelectorStateVisible,
 				}))
-				count, err := page.Locator("[data-testid='archive-table']").Count()
+				listCount, err := page.Locator("[data-testid='archive-list']").Count()
 				require.NoError(t, err)
-				require.GreaterOrEqual(t, count, 1)
-				headCount, err := page.Locator("[data-testid='archive-head']").Count()
+				require.GreaterOrEqual(t, listCount, 1)
+				sortCount, err := page.Locator("[data-testid='archive-sort']").Count()
 				require.NoError(t, err)
-				require.GreaterOrEqual(t, headCount, 1)
+				require.GreaterOrEqual(t, sortCount, 1)
 			})
 			a.Step("Verify empty state, rows, or pager", func() {
 				pager := page.Locator("[data-testid='archive-pager']")
@@ -49,22 +49,14 @@ func TestUiVideosPage_ArchiveLoadsFinishedSessionsShell(t *testing.T) {
 						return
 					}
 				}
-				empty := page.Locator(".archive-panel .no-any")
-				if count, err := empty.Count(); err == nil && count > 0 {
-					return
-				}
-				if visible, _ := empty.IsVisible(); visible {
-					return
-				}
 				rows, err := page.Locator("[data-testid='session-card']").Count()
 				require.NoError(t, err)
 				if rows > 0 {
 					return
 				}
-				// Empty archive on prod: table shell stays in DOM.
-				tableCount, err := page.Locator("[data-testid='archive-table']").Count()
+				listCount, err := page.Locator("[data-testid='archive-list']").Count()
 				require.NoError(t, err)
-				require.GreaterOrEqual(t, tableCount, 1)
+				require.GreaterOrEqual(t, listCount, 1)
 			})
 		})
 	})

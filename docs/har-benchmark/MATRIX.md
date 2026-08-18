@@ -39,7 +39,7 @@ Re-run: **2026-07-29** · local hub **HEAD** (fresh binary on `:4447` for this r
 
 **Infra note:** registry hub `:4444` (Jul 27 process) does not emit PW hub-HAR; green run used freshly built hub on `:4447`. Restart `:4444` after `./scripts/build-selenoid.sh` to align registry stand with test defaults.
 
-## Prod Step 5b smoke (example.com, short)
+## Prod Step 5b smoke (default stack login, short)
 
 | Source | Writer | har HTTP | http | withContentText | withContentSize | gate |
 |--------|--------|---------:|-----:|----------------:|----------------:|------|
@@ -55,7 +55,7 @@ UI: `harContent` control only when `enableHAR`; HarViewer Response tab shows `co
 
 - **A (client):** PW-native ≈ PW→Selenoid (`recordHar`); 100% URL coverage on fixture
 - **A′ (client bodies):** Selenide HarCapture `HarContentMode.BODIES` on same fixture (separate session, no hub `enableHAR`) — URL cov ≥ meta (this run 100%); best-effort gate `withContentText >= 1` (this run: 27). **Not** ≡ `recordHar`
-- **A′ prod (client bodies):** HarCapture `HarContentMode.BODIES` on prod [selenoid.qa.guru](https://selenoid.qa.guru) warm WD Chrome — short example.com smoke: `withContentText >= 1` and `withContentSize >= 1` best-effort (this run 1/1). **Not** ≡ `recordHar`; one writer (no hub `enableHAR`)
+- **A′ prod (client bodies):** HarCapture `HarContentMode.BODIES` on prod [selenoid.qa.guru](https://selenoid.qa.guru) warm WD Chrome — short default-stack smoke: `withContentText >= 1` and `withContentSize >= 1` best-effort (this run 1/1). **Not** ≡ `recordHar`; one writer (no hub `enableHAR`)
 - **B (hub meta):** hub `enableHAR` default (`harContent=meta` / omit) — URL cov 100%; gate `withContentText==0`; partial `status` / no `content.size` (known hub CDP gap vs `recordHar`)
 - **B′ (hub bodies):** hub `enableHAR` + `harContent=bodies` on hub **≥ v3.0.5** — URL cov unchanged; fixture gates `withContentText >= 1` **and** `withContentSize >= 1` (this run: WD 28/28, PW 25/25). **Not** ≡ `recordHar`
 - **5:** PW hub HAR meta green on hub ≥ HEAD with PW `:7070` mapping (one writer; no client `recordHar`)
@@ -80,10 +80,10 @@ No roadmap item. Do not claim Android HAR.
 - Playwright→Selenoid client `recordHar` ≈ native Playwright local (100% URL coverage on fixture)
 - Selenide HarCapture **meta default** on Selenoid covers baseline URLs (100%); `content.text=0` on this fixture
 - Selenide HarCapture **bodies** on Selenoid (local fixture): `withContentText >= 1` best-effort (this run 27/27); URL cov not weaker than meta; one writer (no hub `enableHAR` on that session)
-- Selenide HarCapture **bodies** on prod [selenoid.qa.guru](https://selenoid.qa.guru) (warm WD Chrome, example.com smoke): `withContentText >= 1` best-effort (this run 1/1); `withContentSize >= 1` best-effort; one writer; **not** ≡ `recordHar`
+- Selenide HarCapture **bodies** on prod [selenoid.qa.guru](https://selenoid.qa.guru) (warm WD Chrome, default-stack smoke): `withContentText >= 1` best-effort (this run 1/1); `withContentSize >= 1` best-effort; one writer; **not** ≡ `recordHar`
 - Hub `enableHAR` default meta (WD warm Chrome + PW Chromium-family `:7070`): URL coverage ≥80% of PW baseline; `withContentText==0`
 - Hub `enableHAR` + `harContent=bodies` on **local hub ≥ v3.0.5**: `withContentText >= 1` **and** `withContentSize >= 1` on fixture for part or all of http entries (best-effort; this run WD 28/28, PW 25/25); URL cov gate unchanged
-- Hub `enableHAR` + `harContent=bodies` on prod [selenoid.qa.guru](https://selenoid.qa.guru) (hub ≥ **v3.0.5**, UI ≥ **v3.0.14**, images with `:7070`): WD warm Chrome + PW Chromium-family — `withContentText >= 1` **and** `withContentSize >= 1` on short example.com smoke (best-effort); meta omit still `withContentText==0`
+- Hub `enableHAR` + `harContent=bodies` on prod [selenoid.qa.guru](https://selenoid.qa.guru) (hub ≥ **v3.0.5**, UI ≥ **v3.0.14**, images with `:7070`): WD warm Chrome + PW Chromium-family — `withContentText >= 1` **and** `withContentSize >= 1` on short default-stack smoke (best-effort); meta omit still `withContentText==0`
 - One writer per session
 - Prod [selenoid.qa.guru](https://selenoid.qa.guru) hub HAR for warm WD Chrome **and** Playwright Chromium-family — meta/URL path **and** opt-in bodies text+size (as above)
 
@@ -103,7 +103,7 @@ No roadmap item. Do not claim Android HAR.
 - hub **bodies** on ≥ v3.0.5 sets `content.size` from decoded body length when `getResponseBody` succeeds; still not ≡ `recordHar`
 - client HarCapture meta: `content.text=0` on fixture; bodies opt-in separate session
 - do not combine hub `enableHAR` with client `recordHar` / `HarCapture` on one session
-- prod smoke uses short example.com; local fixture uses selenoid-ui — counts differ; gates only
+- prod smoke uses short default-stack login; local fixture uses selenoid-ui — counts differ; gates only
 
 ## Artifacts
 

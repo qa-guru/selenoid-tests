@@ -63,6 +63,9 @@ func runRemotePlaywrightSmoke(
 	a.Step("Navigate to smoke URL", func() {
 		_, err := page.Goto(cfg.SmokeURL)
 		require.NoError(t, err)
+		require.NoError(t, page.Locator(config.DefaultSmokeHeadingSelector).WaitFor(playwright.LocatorWaitForOptions{
+			State: playwright.WaitForSelectorStateVisible,
+		}))
 	})
 
 	fn(page)

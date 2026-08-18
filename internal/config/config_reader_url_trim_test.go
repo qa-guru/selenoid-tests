@@ -35,12 +35,12 @@ func TestConfigReaderURLTrim_ResolveAPIBaseURLTrimsWhitespace(t *testing.T) {
 	allurex.Run(t, unitMeta("selenoid", "ConfigReader.resolveApiBaseUrl trims whitespace"), func(a *allurex.A) {
 		a.Step("resolve", func() {
 			cfg := config.FromMap(map[string]string{
-				"apiBaseUrl": "  http://api.example.com  ",
+				"apiBaseUrl": "  https://autotests.ai/stack/backend-java-spring  ",
 				"hubUrl":     "http://hub/",
 			})
 			got, err := cfg.ResolveAPIBaseURL()
 			require.NoError(t, err)
-			require.Equal(t, "http://api.example.com/", got)
+			require.Equal(t, "https://autotests.ai/stack/backend-java-spring/", got)
 		})
 	})
 }

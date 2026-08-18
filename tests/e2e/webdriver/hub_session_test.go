@@ -2,6 +2,7 @@ package wd_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 
@@ -10,10 +11,10 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestHubSession_RemoteSessionOpensExampleDomain(t *testing.T) {
+func TestHubSession_RemoteSessionOpensDefaultStack(t *testing.T) {
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "Remote Chrome session opens example.com",
+		Name:      "Remote Chrome session opens default stack login",
 		Package:   "tests.HubSessionTests",
 		Layer:     "e2e",
 		Component: "webdriver-image",
@@ -31,12 +32,12 @@ func TestHubSession_RemoteSessionOpensExampleDomain(t *testing.T) {
 			a.Step("Verify page title", func() {
 				title, err := hubapi.GetSessionTitle(cfg, sessionID)
 				require.NoError(t, err)
-				require.Equal(t, "Example Domain", title)
+				require.Equal(t, config.DefaultSmokeTitle, title)
 			})
-			a.Step("Verify heading text", func() {
-				text, err := hubapi.GetElementTextBySelector(cfg, sessionID, "h1")
+			a.Step("Verify login form", func() {
+				text, err := hubapi.WaitElementTextBySelector(cfg, sessionID, config.DefaultSmokeHeadingSelector, 15*time.Second)
 				require.NoError(t, err)
-				require.Equal(t, "Example Domain", text)
+				require.Equal(t, config.DefaultSmokeHeading, text)
 			})
 		})
 	})

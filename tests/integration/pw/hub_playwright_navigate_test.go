@@ -13,10 +13,10 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/playwrightapi"
 )
 
-func TestHubPlaywrightNavigate_ExampleDomain(t *testing.T) {
+func TestHubPlaywrightNavigate_DefaultStack(t *testing.T) {
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "Playwright session navigates to example.com",
+		Name:      "Playwright session navigates to default stack login",
 		Package:   "tests.integration.HubPlaywrightNavigateTests",
 		Layer:     "integration",
 		Component: "playwright-image",
@@ -47,17 +47,20 @@ func TestHubPlaywrightNavigate_ExampleDomain(t *testing.T) {
 			require.NoError(t, err)
 		})
 
-		a.Step("Navigate to example.com", func() {
+		a.Step("Navigate to default stack login", func() {
 			page, err := browser.NewPage()
 			require.NoError(t, err)
 			defer func() {
 				require.NoError(t, page.Close())
 			}()
-			_, err = page.Goto("https://example.com/")
+			_, err = page.Goto(cfg.SmokeURL)
 			require.NoError(t, err)
+			require.NoError(t, page.Locator(config.DefaultSmokeHeadingSelector).WaitFor(playwright.LocatorWaitForOptions{
+				State: playwright.WaitForSelectorStateVisible,
+			}))
 			title, err := page.Title()
 			require.NoError(t, err)
-			require.Equal(t, "Example Domain", title)
+			require.Equal(t, config.DefaultSmokeTitle, title)
 		})
 
 		a.Step("Close remote session", func() {

@@ -2,6 +2,7 @@ package wd_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 
@@ -10,10 +11,10 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestHubSessionHeading_RemoteSessionRendersHeading(t *testing.T) {
+func TestHubSessionHeading_RemoteSessionRendersLoginForm(t *testing.T) {
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "Remote session renders Example Domain heading",
+		Name:      "Remote session renders default stack login form",
 		Package:   "tests.HubSessionHeadingTests",
 		Layer:     "e2e",
 		Component: "webdriver-image",
@@ -25,10 +26,10 @@ func TestHubSessionHeading_RemoteSessionRendersHeading(t *testing.T) {
 		Tags:      []string{"smoke", "positive"},
 	}, func(a *allurex.A) {
 		runRemoteSmokeSession(t, a, cfg, func(sessionID string) {
-			a.Step("Verify heading", func() {
-				text, err := hubapi.GetElementTextBySelector(cfg, sessionID, "h1")
+			a.Step("Verify login form", func() {
+				text, err := hubapi.WaitElementTextBySelector(cfg, sessionID, config.DefaultSmokeHeadingSelector, 15*time.Second)
 				require.NoError(t, err)
-				require.Equal(t, "Example Domain", text)
+				require.Equal(t, config.DefaultSmokeHeading, text)
 			})
 		})
 	})

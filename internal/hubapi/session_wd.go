@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/qa-guru/selenoid-tests/internal/config"
 )
@@ -90,6 +91,24 @@ func GetElementTextBySelector(cfg *config.Config, sessionID, cssSelector string)
 		return "", err
 	}
 	return GetElementText(cfg, sessionID, elementID)
+}
+
+// WaitElementTextBySelector retries FindElement until timeout (SPA hydrate).
+func WaitElementTextBySelector(cfg *config.Config, sessionID, cssSelector string, timeout time.Duration) (string, error) {
+	deadline := time.Now().Add(timeout)
+	var lastErr error
+	for time.Now().Before(deadline) {
+		text, err := GetElementTextBySelector(cfg, sessionID, cssSelector)
+		if err == nil {
+			return text, nil
+		}
+		lastErr = err
+		time.Sleep(250 * time.Millisecond)
+	}
+	if lastErr == nil {
+		lastErr = fmt.Errorf("element %s not found", cssSelector)
+	}
+	return "", lastErr
 }
 
 func parseElementID(body []byte) (string, error) {

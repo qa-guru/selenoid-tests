@@ -9,7 +9,7 @@ HAR в Selenoid — что реально мерили 📊
 A · Client autotest
 • Playwright recordHar локально ≈ Playwright→Selenoid remote — 100% URL coverage на fixture (26 entries, 25 URLs)
 • Selenide HarCapture (meta) — те же URL, без content.text на fixture
-• Selenide HarCapture bodies (отдельная сессия, без hub enableHAR) — 27/27 withContentText на fixture; на prod example.com — 1/1 text+size
+• Selenide HarCapture bodies (отдельная сессия, без hub enableHAR) — 27/27 withContentText на fixture; на prod default stack — 1/1 text+size
 
 B · Hub enableHAR (UI + /har/<id>.har)
 • meta (harContent по умолчанию) — URL coverage 100% на fixture; content.text=0 (ожидаемо)

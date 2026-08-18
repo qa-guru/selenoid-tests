@@ -12,7 +12,7 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestCmInstallerSession_RemoteSessionOpensExampleDomain(t *testing.T) {
+func TestCmInstallerSession_RemoteSessionOpensDefaultStack(t *testing.T) {
 	cfg := config.MustLoad()
 	installer, err := cm.WithTempConfigDir(cfg)
 	require.NoError(t, err)
@@ -32,7 +32,7 @@ func TestCmInstallerSession_RemoteSessionOpensExampleDomain(t *testing.T) {
 	skipUnlessCmSessionReady(t, cfg)
 
 	allurex.Run(t, allurex.Meta{
-		Name:      "Remote Chrome session opens example.com",
+		Name:      "Remote Chrome session opens default stack login",
 		Package:   "tests.CmInstallerSessionTests",
 		Layer:     "e2e",
 		Component: "cm",
@@ -63,12 +63,12 @@ func TestCmInstallerSession_RemoteSessionOpensExampleDomain(t *testing.T) {
 		a.Step("Verify page title", func() {
 			title, err := hubapi.GetSessionTitle(cfg, sessionID)
 			require.NoError(t, err)
-			require.Equal(t, "Example Domain", title)
-		})
-		a.Step("Verify heading text", func() {
-			text, err := hubapi.GetElementTextBySelector(cfg, sessionID, "h1")
-			require.NoError(t, err)
-			require.Equal(t, "Example Domain", text)
+			require.Equal(t, config.DefaultSmokeTitle, title)
+			})
+			a.Step("Verify login form", func() {
+				text, err := hubapi.WaitElementTextBySelector(cfg, sessionID, config.DefaultSmokeHeadingSelector, 15*time.Second)
+				require.NoError(t, err)
+				require.Equal(t, config.DefaultSmokeHeading, text)
 		})
 	})
 }
