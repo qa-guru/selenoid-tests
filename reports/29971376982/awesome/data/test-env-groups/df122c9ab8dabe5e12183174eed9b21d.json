@@ -1,1 +1,0 @@
-{"id":"df122c9ab8dabe5e12183174eed9b21d","fullName":"tests.api.UiVideoApiTests.uiVideoListJsonReturnsPaginatedPage","name":"GET /video/?json via UI proxy returns paginated page (default limit 10)","status":"broken","testResultsByEnv":{"default":"01cf5f955ef2ba6e8ac47ec6c7dc2931"}}

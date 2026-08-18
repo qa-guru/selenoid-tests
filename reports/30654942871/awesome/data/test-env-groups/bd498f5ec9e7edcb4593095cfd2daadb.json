@@ -1,1 +1,0 @@
-{"id":"bd498f5ec9e7edcb4593095cfd2daadb","fullName":"ui:src/lib/headerJsEarlyLoad.test.ts#header.js early load (no #app-header yet) exports remountHeader without throwing when mount is missing","name":"exports remountHeader without throwing when mount is missing","status":"passed","testResultsByEnv":{"default":"0f4700db22e5384e99e7dba0b8add1d4"}}

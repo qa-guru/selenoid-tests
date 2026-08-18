@@ -1,1 +1,0 @@
-{"id":"1cddf675ef8453a6b3f58875d9102ed0","fullName":"tests.api.HubLogsSessionApiTests.GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","name":"GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","status":"passed","testResultsByEnv":{"default":"c21546cc923ca4eed130e6933d7f16d9"}}

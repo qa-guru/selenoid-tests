@@ -1,1 +1,0 @@
-{"id":"641d500f704cc538ecf1d83a42432ba8","fullName":"tests.api.UiLogsWsApiTests.uiLogsPathRequiresWebSocketUpgrade","name":"GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","status":"passed","testResultsByEnv":{"default":"c8374546d3df32e57b6970db60fd6ab8"}}

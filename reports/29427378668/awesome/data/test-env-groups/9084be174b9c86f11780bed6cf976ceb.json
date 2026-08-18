@@ -1,1 +1,0 @@
-{"id":"9084be174b9c86f11780bed6cf976ceb","fullName":"tests.api.WebDriverSessionApiTests.createAndDeleteSession","name":"POST /wd/hub/session creates chrome session via webdriver-image node","status":"passed","testResultsByEnv":{"default":"f93b5d6106ee53b5f95c111132b2a87b"}}

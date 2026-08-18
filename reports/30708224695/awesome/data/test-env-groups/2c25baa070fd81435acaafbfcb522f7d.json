@@ -1,1 +1,0 @@
-{"id":"2c25baa070fd81435acaafbfcb522f7d","fullName":"tests.api.HubVideoApiTests.GET /video/?json&offset=10 returns second page metadata","name":"GET /video/?json&offset=10 returns second page metadata","status":"passed","testResultsByEnv":{"default":"490760ae1cb0d06cdb5000d21e43b6f9"}}

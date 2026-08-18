@@ -1,1 +1,0 @@
-{"id":"83087b7e0fda129ef6c52e1119f9b620","fullName":"tests.api.HubVideoApiTests.videoListJsonReturnsArray","name":"GET /video/?json returns file name list","status":"passed","testResultsByEnv":{"default":"fbd76f7cd566ba6384f9cd77ba7f87a5"}}

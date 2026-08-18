@@ -1,1 +1,0 @@
-{"id":"577368ce7a7d394b03ad14a7b5e24dac","fullName":"tests.api.HubSessionApiTests.createAndDeleteSession","name":"POST /wd/hub/session creates and DELETE removes session","status":"passed","testResultsByEnv":{"default":"d207827bc5d9e2f6f3d9612ba2a807aa"}}

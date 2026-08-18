@@ -1,1 +1,0 @@
-{"id":"8da83b751a4390588a9cf872d76412c9","fullName":"ui:src/config/hubAuth.test.ts#hubAuth reads three independent env vars when AUTH_* are set","name":"reads three independent env vars when AUTH_* are set","status":"passed","testResultsByEnv":{"default":"cf5f01ad86ebb96fd8cb34da1ed3d81f"}}

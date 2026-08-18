@@ -1,1 +1,0 @@
-{"id":"8787961b9eecf26894c663cdd9f398a6","fullName":"tests.api.HubClipboardApiTests.clipboardUnknownSessionReturnsNotFound","name":"GET /clipboard/{sessionId} for unknown session returns 404 JSON","status":"passed","testResultsByEnv":{"default":"8c36e2068c28b92aa4825c3f3451ed9b"}}

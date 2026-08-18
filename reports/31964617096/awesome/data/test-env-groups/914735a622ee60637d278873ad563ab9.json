@@ -1,1 +1,0 @@
-{"id":"914735a622ee60637d278873ad563ab9","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic falls back to window/current/size when rect fails with unsupported status","name":"falls back to window/current/size when rect fails with unsupported status","status":"passed","testResultsByEnv":{"default":"be7a8cd5cd60a34ea4c1646ffef3ba2a"}}

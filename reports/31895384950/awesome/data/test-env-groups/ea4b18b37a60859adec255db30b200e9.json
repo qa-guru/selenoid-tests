@@ -1,1 +1,0 @@
-{"id":"ea4b18b37a60859adec255db30b200e9","fullName":"ui:src/components/SelenoidAppHeader/SelenoidAppHeader.test.tsx#SelenoidAppHeader presses the toggle via replaceState without leaving the route","name":"presses the toggle via replaceState without leaving the route","status":"passed","testResultsByEnv":{"default":"5a249fa32f583a4d23294f6270068695"}}

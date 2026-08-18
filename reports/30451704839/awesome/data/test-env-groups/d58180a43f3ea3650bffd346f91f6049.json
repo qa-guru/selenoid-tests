@@ -1,1 +1,0 @@
-{"id":"d58180a43f3ea3650bffd346f91f6049","fullName":"ui:src/config/hubAuth.test.ts#hubAuth returns empty strings when env is unset","name":"returns empty strings when env is unset","status":"passed","testResultsByEnv":{"default":"28873a6e40e9da17640dd8e4764b13b7"}}

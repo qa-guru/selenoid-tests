@@ -1,1 +1,0 @@
-{"id":"b6abda8cd3630f713c5f91a7058efe7b","fullName":"ui:src/util/waitForLiveSession.test.ts#waitForLiveSession resolves true when the session is already in the initial snapshot","name":"resolves true when the session is already in the initial snapshot","status":"passed","testResultsByEnv":{"default":"ec2d4ff0fa0a1dbc93c09d6f6c71e927"}}

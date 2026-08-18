@@ -1,1 +1,0 @@
-{"id":"b9ba8f1d4879eb7f39cf41d03845b714","fullName":"tests.api.UiPingVersionTests.pingVersionIsNonEmptyString","name":"GET /ping version contains git revision marker","status":"failed","testResultsByEnv":{"default":"2453a9c516a14239e591f6e68a8216ac"}}

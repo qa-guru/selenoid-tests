@@ -1,1 +1,0 @@
-{"id":"215a07bdcdcaee1dc45c467484dfb484","fullName":"ui:src/pwa/registerServiceWorker.test.ts#registerServiceWorker registers /sw.js immediately via DS primitive in production","name":"registers /sw.js immediately via DS primitive in production","status":"passed","testResultsByEnv":{"default":"68c5472e5fbb5116dc029e1fab18a456"}}

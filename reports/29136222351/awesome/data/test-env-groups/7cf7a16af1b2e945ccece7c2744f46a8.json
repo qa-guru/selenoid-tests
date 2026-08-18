@@ -1,1 +1,0 @@
-{"id":"7cf7a16af1b2e945ccece7c2744f46a8","fullName":"config.ConfigReaderTest.resolveHubStatusPathNormalizesPath","name":"resolveHubStatusPath normalizes path without leading slash","status":"passed","testResultsByEnv":{"default":"fb60e3c0886f1fb7ce6eb21d32017d0f"}}

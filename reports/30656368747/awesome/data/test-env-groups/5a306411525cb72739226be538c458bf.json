@@ -1,1 +1,0 @@
-{"id":"5a306411525cb72739226be538c458bf","fullName":"tests.api.UiPingVersionTests.GET /ping version contains git revision marker","name":"GET /ping version contains git revision marker","status":"passed","testResultsByEnv":{"default":"83bd78f01d97b06c81a56d7a96bfd72b"}}

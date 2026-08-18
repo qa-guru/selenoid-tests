@@ -1,1 +1,0 @@
-{"id":"4855c92e989681ac7a40f0cffc23238b","fullName":"tests.integration.UiSseWithSessionTests.SSE payload remains parseable while hub session is active","name":"SSE payload remains parseable while hub session is active","status":"passed","testResultsByEnv":{"default":"ee62be01cd4e366fd5fc7c42e18b309f"}}

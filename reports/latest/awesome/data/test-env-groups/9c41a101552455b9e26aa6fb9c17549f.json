@@ -1,1 +1,0 @@
-{"id":"9c41a101552455b9e26aa6fb9c17549f","fullName":"config.ConfigReaderWebdriverTest.resolveUiBrowserUrlFailsWhenUiUrlEmptyWithRemoteUrl","name":"resolveUiBrowserUrl fails fast when uiUrl is empty with remoteUrl set","status":"passed","testResultsByEnv":{"default":"4b68ee3cd7c5e4c0df7dfed306ce4442"}}

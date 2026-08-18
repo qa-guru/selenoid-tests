@@ -1,1 +1,0 @@
-{"id":"4c8dd2212bfdfd18794805c19410ebb7","fullName":"ui:src/pwa/registerServiceWorker.test.ts#registerServiceWorker registers /sw.js on load when supported in production","name":"registers /sw.js on load when supported in production","status":"passed","testResultsByEnv":{"default":"c6293c6a85b33f596a0f6558e6694a4b"}}

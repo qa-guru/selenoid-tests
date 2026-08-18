@@ -1,1 +1,0 @@
-{"id":"a8b7470dec99e7cbdfe5aa76c8ac93e6","fullName":"config.ConfigReaderWebdriverTest.resolveUiBrowserUrlUsesUiUrlWhenRemoteUrlBlank","name":"resolveUiBrowserUrl strips trailing slash when remoteUrl is blank","status":"passed","testResultsByEnv":{"default":"b9bd695e9c1f2b2d0c6481be4b9f9b29"}}

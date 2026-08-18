@@ -1,1 +1,0 @@
-{"id":"63bf939291e4063e7b5c34457ff63864","fullName":"tests.api.PlaywrightEndpointTests.playwrightPathRequiresWebSocketUpgrade","name":"GET playwright path without upgrade returns 400","status":"passed","testResultsByEnv":{"default":"725a482edcc8c4a152c053d4d9823cdc"}}

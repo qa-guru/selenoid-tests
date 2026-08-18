@@ -1,1 +1,0 @@
-{"id":"f28110f3f47de199cced1c7880a0552d","fullName":"tests.api.HubWelcomeApiTests.welcomeReturnsSelenoidBanner","name":"GET / returns Selenoid welcome text","status":"passed","testResultsByEnv":{"default":"5a6fce3587c68736881836f7cc0b3e8e"}}

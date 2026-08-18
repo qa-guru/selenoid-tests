@@ -1,1 +1,0 @@
-{"id":"f9b81bb754fada8b1e71ca7c8d47adc1","fullName":"tests.integration.CmCliVersionTests.cmHelpListsSubcommands","name":"cm --help exits zero and lists subcommands","status":"passed","testResultsByEnv":{"default":"965ff26ac52af83b7c149fc50e3f63f2"}}

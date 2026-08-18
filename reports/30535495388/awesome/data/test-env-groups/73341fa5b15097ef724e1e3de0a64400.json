@@ -1,1 +1,0 @@
-{"id":"73341fa5b15097ef724e1e3de0a64400","fullName":"tests.api.UiVideoApiTests.GET /video/{missing}.mp4 via UI proxy returns 404","name":"GET /video/{missing}.mp4 via UI proxy returns 404","status":"passed","testResultsByEnv":{"default":"56e4e037bba04c6803c98dd4f1fcbe24"}}

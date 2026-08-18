@@ -1,1 +1,0 @@
-{"id":"21d866a0fc91aeec1bce3f94bcf7da5d","fullName":"config.ConfigReaderWebdriverTest.resolveUiBrowserUrlStripsEmbeddedBasicAuth","name":"resolveUiBrowserUrl strips userinfo so fetch() can create sessions","status":"passed","testResultsByEnv":{"default":"97bb35edacc93a0c0b7239a85ef9ebad"}}

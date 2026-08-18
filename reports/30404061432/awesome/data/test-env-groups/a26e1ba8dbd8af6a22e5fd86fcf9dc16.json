@@ -1,1 +1,0 @@
-{"id":"a26e1ba8dbd8af6a22e5fd86fcf9dc16","fullName":"tests.api.HubVideoSessionApiTests.sessionVideoListedAfterClose","name":"Session with enableVideo=true produces downloadable MP4 after delete","status":"passed","testResultsByEnv":{"default":"d14f8082da58f9389775d7b17f58da8a"}}

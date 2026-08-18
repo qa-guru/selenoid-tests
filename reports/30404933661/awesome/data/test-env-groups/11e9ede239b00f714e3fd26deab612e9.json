@@ -1,1 +1,0 @@
-{"id":"11e9ede239b00f714e3fd26deab612e9","fullName":"ui:src/components/SessionArchive/api.test.js#SessionArchive api fetchSessionById returns null when no exact id","name":"fetchSessionById returns null when no exact id","status":"passed","testResultsByEnv":{"default":"0bf2a5fb0fb7e6d0793de1474a836d61"}}
