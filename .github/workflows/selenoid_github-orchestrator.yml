@@ -1,4 +1,4 @@
-# SSOT: generators/ethalon/selenoid-stack/selenoid_github-orchestrator.yml
+# SSOT: projects/selenoid-home/ethalon/selenoid_github-orchestrator.yml
 # Runnable filename = ethalon filename. Default env: selenoid_github_e2e
 # GitHub Actions — env_base selenoid_github, suffix -orchestrator (Go unit + hub/cm + Allure + dispatch).
 # Sync: ./scripts/selenoid/sync-selenoid-stack-workflows.sh
@@ -53,6 +53,8 @@ concurrency:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 env:
   ALLURE_ENDPOINT: ${{ vars.ALLURE_ENDPOINT || 'https://allure.qa.guru' }}
@@ -528,6 +530,8 @@ jobs:
     if: always() && !cancelled() && (needs.go-cm.result == 'success' || needs.go-cm.result == 'skipped' || needs.go-cm.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    outputs:
+      pages_ready: ${{ steps.pages-artifact.outcome }}
     env:
       ALLURE_RESULTS: build/allure-results
       QUALITY_GATE_EXIT: "0"
@@ -711,8 +715,14 @@ jobs:
           publish_branch: gh-pages
           publish_dir: pages
           enable_jekyll: false
-          # Keep prior reports/<run-id>/ trees — per-run URLs must stay stable.
-          keep_files: true
+          # Latest + this run only. keep_files grew gh-pages past the 1GB Pages artifact cap.
+
+      - name: Upload GitHub Pages artifact
+        id: pages-artifact
+        if: always() && steps.allure-report.outcome == 'success' && hashFiles('pages/index.html') != ''
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: pages
 
       - name: Setup Node for dashboard preview capture
         if: false # disabled: Playwright README PNGs blocked gh-pages deploy; re-enable when capture is fast/reliable
@@ -913,3 +923,19 @@ jobs:
       - name: Fail if report was not generated
         if: always() && steps.allure-report.outcome != 'success'
         run: exit 1
+
+  github-pages:
+    name: GitHub Pages
+    needs: report
+    if: always() && needs.report.result == 'success' && needs.report.outputs.pages_ready == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
