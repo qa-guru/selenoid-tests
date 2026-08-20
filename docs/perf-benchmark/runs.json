@@ -25,9 +25,9 @@
             "session_create_p50_ms": null,
             "session_create_p95_ms": null,
             "cpu_avg_pct": null,
-            "cpu_peak_pct": null,
+            "cpu_peak_pct": 111,
             "ram_avg_mb": null,
-            "ram_peak_mb": null,
+            "ram_peak_mb": 315,
             "video_kb": 0,
             "log_kb": 0,
             "har_kb": 0,
@@ -36,7 +36,7 @@
             "failed": 0,
             "id": "jenkins-java-wd-cold-1-p1-headless-none",
             "status": "ok",
-            "measured_at": "2026-08-14T16:16:43Z",
+            "measured_at": "2026-08-20T23:22:20Z",
             "image_flavor": "warm",
             "pool": "cold",
             "artifacts": {
@@ -44,9 +44,9 @@
                 "log": false,
                 "har": "off"
             },
-            "wall_time_s": 3.578,
-            "note": "headless; enableHar forces cold docker; no Allure; job #8 SUCCESS; Gradle 3s",
-            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool/"
+            "wall_time_s": 3.279,
+            "note": "job #29 SUCCESS UserIdCause; one-shot docker stats peak; no Allure; Checkout NOT_EXECUTED; Test 2.935s",
+            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool/29/"
         },
         {
             "language": "java",
@@ -71,18 +71,18 @@
             "session_create_p50_ms": null,
             "session_create_p95_ms": null,
             "cpu_avg_pct": null,
-            "cpu_peak_pct": null,
+            "cpu_peak_pct": 105,
             "ram_avg_mb": null,
-            "ram_peak_mb": null,
-            "video_kb": null,
-            "log_kb": null,
-            "har_kb": null,
-            "artifacts_total_kb": null,
+            "ram_peak_mb": 352,
+            "video_kb": 44,
+            "log_kb": 73,
+            "har_kb": 48,
+            "artifacts_total_kb": 165,
             "passed": 1,
             "failed": 0,
             "id": "jenkins-java-wd-cold-1-p1-full-attachments",
             "status": "ok",
-            "measured_at": "2026-08-20T23:13:22Z",
+            "measured_at": "2026-08-20T23:22:40Z",
             "image_flavor": "warm",
             "pool": "cold",
             "artifacts": {
@@ -90,9 +90,9 @@
                 "log": true,
                 "har": "bodies"
             },
-            "wall_time_s": 6.797,
-            "note": "job #33 SUCCESS UserIdCause; heavy video+VNC+HAR+screenshot+page source+console → cold docker; 6 attachments; no allure generate on wall (wfapi: Checkout NOT_EXECUTED + Test 6.302s, no Post); not #32 22.9s with Post 8.2s; not #8 6.311; vs cold none #8 3.578",
-            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool-full-attachments/33/"
+            "wall_time_s": 6.747,
+            "note": "job #35 SUCCESS UserIdCause; heavy video 44KB + har 48KB + lite-like 73KB; one-shot docker stats peak; no generate; Test 6.377s",
+            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-cold-pool-full-attachments/35/"
         },
         {
             "language": "java",
@@ -117,9 +117,9 @@
             "session_create_p50_ms": null,
             "session_create_p95_ms": null,
             "cpu_avg_pct": null,
-            "cpu_peak_pct": null,
+            "cpu_peak_pct": 152,
             "ram_avg_mb": null,
-            "ram_peak_mb": null,
+            "ram_peak_mb": 315,
             "video_kb": 0,
             "log_kb": 0,
             "har_kb": 0,
@@ -128,7 +128,7 @@
             "failed": 0,
             "id": "jenkins-java-wd-warm-1-p1-none",
             "status": "ok",
-            "measured_at": "2026-08-14T16:16:43Z",
+            "measured_at": "2026-08-20T23:21:40Z",
             "image_flavor": "warm",
             "pool": "warm-pool",
             "artifacts": {
@@ -136,9 +136,9 @@
                 "log": false,
                 "har": "off"
             },
-            "wall_time_s": 2.934,
-            "note": "container-reuse job #14 SUCCESS; Gradle ~3s; no Allure",
-            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/21/"
+            "wall_time_s": 3.915,
+            "note": "job #40 SUCCESS UserIdCause; one-shot docker stats peak on box1 (agent+browsers); no Allure; Checkout NOT_EXECUTED; Test 3.559s",
+            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool/40/"
         },
         {
             "language": "java",
@@ -163,18 +163,18 @@
             "session_create_p50_ms": null,
             "session_create_p95_ms": null,
             "cpu_avg_pct": null,
-            "cpu_peak_pct": null,
+            "cpu_peak_pct": 143,
             "ram_avg_mb": null,
-            "ram_peak_mb": null,
+            "ram_peak_mb": 315,
             "video_kb": 0,
-            "log_kb": 0,
+            "log_kb": 73,
             "har_kb": 0,
-            "artifacts_total_kb": 0,
+            "artifacts_total_kb": 73,
             "passed": 1,
             "failed": 0,
             "id": "jenkins-java-wd-warm-1-p1-full-attachments",
             "status": "ok",
-            "measured_at": "2026-08-20T19:29:40Z",
+            "measured_at": "2026-08-20T23:22:00Z",
             "image_flavor": "warm",
             "pool": "warm-pool",
             "artifacts": {
@@ -182,9 +182,9 @@
                 "log": true,
                 "har": "off"
             },
-            "wall_time_s": 4.69,
-            "note": "job #32 SUCCESS UserIdCause; Allure lite screenshot/page source/console in results; 3 attachments; no allure generate on wall (wfapi: Checkout 0.064s + Test 4.300s, no Post); not #2 18.568s; not #14 none 4.216s; not video/VNC/HAR",
-            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool-full-attachments/32/"
+            "wall_time_s": 4.702,
+            "note": "job #33 SUCCESS UserIdCause; lite screenshot/source/console 73KB; no video/HAR; one-shot docker stats peak; Test 4.323s; not generate",
+            "jenkins_url": "https://jenkins.qa.guru/job/autotests-ai-multistack-tests-pipeline-java-warm-pool-full-attachments/33/"
         },
         {
             "language": "java",
