@@ -30,6 +30,8 @@ Video file: `/opt/selenoid/video/7dd226c825dfeb96393549fe772c95a9.mp4` → `du -
 4. Lite pack (screenshot+source+console) ≈ 52+21+2 = **75 KB** — matches earlier warm-lite pin ~73 KB.
 5. Do **not** leave this runner in Jenkins XML; re-run only when re-pinning.
 
+Machine-readable: [`isolation-warm.json`](isolation-warm.json) → Selenoid UI **Benchmarks §0b**.
+
 ## Δ tax summary (vs allure3-empty)
 
 ```

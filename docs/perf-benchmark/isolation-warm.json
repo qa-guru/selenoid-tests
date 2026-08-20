@@ -1,0 +1,78 @@
+{
+  "measured_at": "2026-08-20T23:47:00Z",
+  "host": "box1 java-jdk21-jenkins-warm-agent-1 · warm-pool login-test",
+  "method": "one-shot gradlew; one -D attach flip per run; not a Jenkins job",
+  "video_id": "7dd226c825dfeb96393549fe772c95a9",
+  "rows": [
+    {
+      "variant": "none",
+      "label": "none (allureReportMode=none)",
+      "wall_ms": 2558,
+      "delta_vs_none_ms": 0,
+      "delta_vs_allure3_empty_ms": null,
+      "att_count": 0,
+      "weight_kb": 0,
+      "weight_note": ""
+    },
+    {
+      "variant": "allure3-empty",
+      "label": "allure3-empty (no attaches)",
+      "wall_ms": 3745,
+      "delta_vs_none_ms": 1187,
+      "delta_vs_allure3_empty_ms": 0,
+      "att_count": 0,
+      "weight_kb": 0,
+      "weight_note": ""
+    },
+    {
+      "variant": "screenshot",
+      "label": "screenshot only",
+      "wall_ms": 3978,
+      "delta_vs_none_ms": 1420,
+      "delta_vs_allure3_empty_ms": 233,
+      "att_count": 1,
+      "weight_kb": 52,
+      "weight_note": "PNG"
+    },
+    {
+      "variant": "pagesource",
+      "label": "pagesource only",
+      "wall_ms": 3830,
+      "delta_vs_none_ms": 1272,
+      "delta_vs_allure3_empty_ms": 85,
+      "att_count": 1,
+      "weight_kb": 21,
+      "weight_note": "HTML"
+    },
+    {
+      "variant": "console",
+      "label": "console only",
+      "wall_ms": 3858,
+      "delta_vs_none_ms": 1300,
+      "delta_vs_allure3_empty_ms": 113,
+      "att_count": 1,
+      "weight_kb": 2,
+      "weight_note": "text"
+    },
+    {
+      "variant": "video",
+      "label": "video only",
+      "wall_ms": 4973,
+      "delta_vs_none_ms": 2415,
+      "delta_vs_allure3_empty_ms": 1228,
+      "att_count": 1,
+      "weight_kb": 44,
+      "weight_note": "mp4 on hub"
+    },
+    {
+      "variant": "har",
+      "label": "har only",
+      "wall_ms": 3951,
+      "delta_vs_none_ms": 1393,
+      "delta_vs_allure3_empty_ms": 206,
+      "att_count": 2,
+      "weight_kb": 49,
+      "weight_note": ".har only; viewer HTML excluded"
+    }
+  ]
+}
