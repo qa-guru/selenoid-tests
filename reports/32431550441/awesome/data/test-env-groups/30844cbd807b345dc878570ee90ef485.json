@@ -1,0 +1,1 @@
+{"id":"30844cbd807b345dc878570ee90ef485","fullName":"ui:src/components/Session/Session.test.tsx#Session detail page omits No HAR when a finished session has video but no HAR file","name":"omits No HAR when a finished session has video but no HAR file","status":"passed","testResultsByEnv":{"default":"7dcf8b7d78c03593c6f28bb18a068da6"}}
