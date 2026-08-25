@@ -1,1 +1,0 @@
-{"id":"c79cb5bbd6bbd79ccfa756fba4945555","fullName":"tests.api.CmHubStatusApiTests.GET /status on CM hub port returns statistics JSON","name":"GET /status on CM hub port returns statistics JSON","status":"passed","testResultsByEnv":{"default":"bf60271bd4f1d365b366b79aa87475db"}}
