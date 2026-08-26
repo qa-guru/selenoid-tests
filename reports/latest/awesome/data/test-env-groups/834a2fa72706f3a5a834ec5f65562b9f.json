@@ -1,0 +1,1 @@
+{"id":"834a2fa72706f3a5a834ec5f65562b9f","fullName":"ui:src/lib/mockSessions.test.ts#mockLivePreview overlay on a hub session stays stub when that session has VNC off","name":"stays stub when that session has VNC off","status":"passed","testResultsByEnv":{"default":"be9c4ed06174d2437acd25e5f6b9eb4d"}}
