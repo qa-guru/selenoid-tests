@@ -1,0 +1,1 @@
+{"id":"6db0a3dd4872f7465b45fc78bd2c570a","fullName":"ui:src/components/Session/SessionInfo.test.tsx#SessionInfo stop of a created mock session skips the hub and returns to the list","name":"stop of a created mock session skips the hub and returns to the list","status":"passed","testResultsByEnv":{"default":"28e0dd33301c0647f548b2b6d7a955a4"}}
