@@ -1,1 +1,0 @@
-{"id":"51d418741188cc0e1364e861c8a55b23","fullName":"ui:src/pwa/registerServiceWorker.test.ts#registerServiceWorker skips registration in Vite dev (no sw.js emitted)","name":"skips registration in Vite dev (no sw.js emitted)","status":"passed","testResultsByEnv":{"default":"009b2f4c7c9b438a3a0fe4481a20e97b"}}
