@@ -53,6 +53,39 @@ playwright_go_modver() {
   pick_from_versions "${min}" "${versions}"
 }
 
+# v0.6000.0 (PW 1.60) declares module github.com/playwright-community/playwright-go, so
+# `go get mxschmitt@v0.6000.0` fails. Copy it locally and rewrite imports to the path
+# selenoid-tests already uses. 1.61+ tags declare mxschmitt again and go get works.
+rewrite_community_to_mxschmitt() {
+  local ver="$1"
+  local community="github.com/playwright-community/playwright-go"
+  local dest="${ROOT}/.ci-pin/playwright-go"
+  echo "pin-playwright-go: ${MODULE}@${ver} path mismatch; rewriting ${community}@${ver} → ${dest}"
+  local dir
+  dir="$(go mod download -json "${community}@${ver}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["Dir"])')"
+  rm -rf "${dest}"
+  mkdir -p "${ROOT}/.ci-pin"
+  cp -a "${dir}" "${dest}"
+  chmod -R u+w "${dest}"
+  local sed_inplace=(sed -i)
+  if ! sed --version >/dev/null 2>&1; then
+    sed_inplace=(sed -i '')
+  fi
+  find "${dest}" \( -name '*.go' -o -name 'go.mod' \) -exec "${sed_inplace[@]}" \
+    's|github.com/playwright-community/playwright-go|github.com/mxschmitt/playwright-go|g' {} +
+  go mod edit -replace "${MODULE}=./.ci-pin/playwright-go"
+}
+
+pin_module() {
+  local ver="$1"
+  if go get "${MODULE}@${ver}"; then
+    go mod tidy
+    return 0
+  fi
+  rewrite_community_to_mxschmitt "${ver}"
+  go mod tidy
+}
+
 self_test() {
   local fixture="v0.5200.0 v0.5700.0 v0.5700.1 v0.6000.0 v0.6100.0 v0.6201.0 v0.6201.1"
   local got
@@ -101,6 +134,5 @@ fi
 
 echo "pin-playwright-go: Playwright ${SOURCE_VERSION} → ${MODULE}@${mod_ver}"
 cd "${ROOT}"
-go get "${MODULE}@${mod_ver}"
-go mod tidy
+pin_module "${mod_ver}"
 echo "pin-playwright-go: $(go list -m "${MODULE}")"
