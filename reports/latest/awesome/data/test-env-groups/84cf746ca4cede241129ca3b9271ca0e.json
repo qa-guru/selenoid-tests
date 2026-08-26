@@ -1,0 +1,1 @@
+{"id":"84cf746ca4cede241129ca3b9271ca0e","fullName":"tests.api.HubPingTests.GET /ping returns uptime and version","name":"GET /ping returns uptime and version","status":"passed","testResultsByEnv":{"default":"4d3af95d5bd1970e56a2c11d5961f09a"}}
