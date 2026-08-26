@@ -1,0 +1,1 @@
+{"id":"ec762b8d83973bd2087782285e6a057b","fullName":"ui:src/util/hubOrigin.test.ts#hubOrigin prefers public UI origin when backend origin is docker selenoid host","name":"prefers public UI origin when backend origin is docker selenoid host","status":"passed","testResultsByEnv":{"default":"788c4343a13b670a81e4eb3959abdf10"}}

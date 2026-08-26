@@ -1,0 +1,1 @@
+{"id":"6c98feaa6485c86d41a84c322aee6141","fullName":"ui:src/lib/headerMockToggle.test.ts#syncHeaderMockToggle toggles ?mock=1 via replaceState on click, without reload","name":"toggles ?mock=1 via replaceState on click, without reload","status":"passed","testResultsByEnv":{"default":"b60f5b0fc0ed86e8095011b65872a56c"}}
