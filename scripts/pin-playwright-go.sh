@@ -73,7 +73,31 @@ rewrite_community_to_mxschmitt() {
   fi
   find "${dest}" \( -name '*.go' -o -name 'go.mod' \) -exec "${sed_inplace[@]}" \
     's|github.com/playwright-community/playwright-go|github.com/mxschmitt/playwright-go|g' {} +
+  overlay_npm_driver_installer "${dest}"
   go mod edit -replace "${MODULE}=./.ci-pin/playwright-go"
+}
+
+# v0.6000.0 still fetches playwright-1.60.0-linux.zip from retired azureedge CDNs (404).
+# Overlay the v0.6100.0 npm/nodejs installer and retarget playwright-core to this tag's CLI version.
+overlay_npm_driver_installer() {
+  local dest="$1"
+  local pw_ver
+  pw_ver="$(grep -Eo 'playwrightCliVersion = "[0-9]+\.[0-9]+\.[0-9]+"' "${dest}/run.go" | head -1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
+  if [[ -z "${pw_ver}" ]]; then
+    echo "pin-playwright-go: could not read playwrightCliVersion from ${dest}/run.go" >&2
+    return 1
+  fi
+  echo "pin-playwright-go: overlay npm driver installer, playwright-core@${pw_ver}"
+  curl -fsSL "https://raw.githubusercontent.com/playwright-community/playwright-go/v0.6100.0/run.go" -o "${dest}/run.go"
+  if sed --version >/dev/null 2>&1; then
+    sed -i "s/playwrightCliVersion = \"1.61.1\"/playwrightCliVersion = \"${pw_ver}\"/" "${dest}/run.go"
+  else
+    sed -i '' "s/playwrightCliVersion = \"1.61.1\"/playwrightCliVersion = \"${pw_ver}\"/" "${dest}/run.go"
+  fi
+  if ! grep -q "playwrightCliVersion = \"${pw_ver}\"" "${dest}/run.go"; then
+    echo "pin-playwright-go: failed to retarget npm installer to ${pw_ver}" >&2
+    return 1
+  fi
 }
 
 pin_module() {
