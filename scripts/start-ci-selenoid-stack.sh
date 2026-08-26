@@ -104,8 +104,8 @@ pull_browser_images() {
     echo "    docker pull ${img}"
     docker pull "$img"
   done < <(jq -r '
-    .chrome.versions["152.0"].image // empty,
-    .chrome.versions["152.0-min"].image // empty,
+    .chrome.versions[.chrome.default].image // empty,
+    .chrome.versions[(.chrome.default + "-min")].image // empty,
     .firefox.versions[.firefox.default].image // empty,
     .firefox.versions[(.firefox.default + "-min")].image // empty,
     .msedge.versions[.msedge.default].image // empty,

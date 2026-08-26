@@ -50,16 +50,16 @@ build_selenoid_ui_frontend() {
 }
 
 pull_browser_images() {
-  echo "==> Pulling CI smoke images (chrome 152 + playwright-chromium) from ${BROWSERS}"
+  echo "==> Pulling CI smoke images (chrome default + playwright-chromium default) from ${BROWSERS}"
   while IFS= read -r img; do
     [[ -n "$img" ]] || continue
     echo "    docker pull ${img}"
     docker pull "$img"
   done < <(jq -r '
-    .chrome.versions["152.0"].image // empty,
-    .chrome.versions["152.0-min"].image // empty,
-    .["playwright-chromium"].versions["1.62.1"].image // empty,
-    .["playwright-chromium"].versions["1.62.1-min"].image // empty
+    .chrome.versions[.chrome.default].image // empty,
+    .chrome.versions[(.chrome.default + "-min")].image // empty,
+    .["playwright-chromium"].versions[.["playwright-chromium"].default].image // empty,
+    .["playwright-chromium"].versions[(.["playwright-chromium"].default + "-min")].image // empty
   ' "$BROWSERS" | sort -u)
 }
 
