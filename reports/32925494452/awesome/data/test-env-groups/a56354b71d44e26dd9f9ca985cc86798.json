@@ -1,1 +1,0 @@
-{"id":"a56354b71d44e26dd9f9ca985cc86798","fullName":"ui:src/components/VncCard/VncScreen.test.tsx#VncScreen mock preview opens RFB for a hub session while mock is off, then swaps to mock on rerender","name":"opens RFB for a hub session while mock is off, then swaps to mock on rerender","status":"passed","testResultsByEnv":{"default":"213496c5528f9b3ab54c598a53bcb5a3"}}
