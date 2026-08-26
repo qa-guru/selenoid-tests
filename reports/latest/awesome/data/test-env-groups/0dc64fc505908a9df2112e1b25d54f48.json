@@ -1,0 +1,1 @@
+{"id":"0dc64fc505908a9df2112e1b25d54f48","fullName":"tests.api.CmUiStatusApiTests.GET /status on CM UI port returns proxied hub counters","name":"GET /status on CM UI port returns proxied hub counters","status":"passed","testResultsByEnv":{"default":"0e06879adf76b4151c70236e11e7941c"}}
