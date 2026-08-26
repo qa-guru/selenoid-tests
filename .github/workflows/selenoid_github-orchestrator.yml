@@ -290,7 +290,7 @@ jobs:
           chmod +x scripts/pull-published-browser-image.sh
           ./scripts/pull-published-browser-image.sh
 
-      # go.mod pins playwright-go v0.6100.0 (PW 1.61). A 1.61 client gets 428 from 1.60 launchServer.
+      # go.mod pins playwright-go v0.6201.1 (PW 1.62). Dispatch overlay via pin-playwright-go.sh when SOURCE_VARIANT=playwright.
       - name: Pin playwright-go to SOURCE_VERSION
         if: env.PROD_CLOUD_STAND != 'true' && env.SOURCE_VARIANT == 'playwright' && env.SOURCE_VERSION != ''
         run: |
