@@ -290,6 +290,13 @@ jobs:
           chmod +x scripts/pull-published-browser-image.sh
           ./scripts/pull-published-browser-image.sh
 
+      # go.mod pins playwright-go v0.6100.0 (PW 1.61). A 1.61 client gets 428 from 1.60 launchServer.
+      - name: Pin playwright-go to SOURCE_VERSION
+        if: env.PROD_CLOUD_STAND != 'true' && env.SOURCE_VARIANT == 'playwright' && env.SOURCE_VERSION != ''
+        run: |
+          chmod +x scripts/pin-playwright-go.sh
+          ./scripts/pin-playwright-go.sh
+
       - name: Start Selenoid stack for Go hub tests
         if: env.PROD_CLOUD_STAND != 'true'
         run: |
