@@ -1,0 +1,1 @@
+{"id":"36497927900cc30f3d841562f7526b53","fullName":"ui:src/lib/mockSessions.test.ts#mockLivePreview overlay on a hub session uses the hub session caps when mock is on (VNC → active desktop)","name":"uses the hub session caps when mock is on (VNC → active desktop)","status":"passed","testResultsByEnv":{"default":"f17beecb25dfca9f91e2f0c814a84578"}}

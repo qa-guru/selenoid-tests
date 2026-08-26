@@ -1,0 +1,1 @@
+{"id":"fd8fff9c3ca2495a447c1ddcb5c509cf","fullName":"ui:src/util/hubOrigin.test.ts#hubOrigin prefers public UI origin when backend origin is internal localhost","name":"prefers public UI origin when backend origin is internal localhost","status":"passed","testResultsByEnv":{"default":"21f44af84e3a01cdb1db8b6bb2aa21a7"}}
