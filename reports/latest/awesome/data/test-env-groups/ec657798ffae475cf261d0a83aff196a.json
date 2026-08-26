@@ -1,0 +1,1 @@
+{"id":"ec657798ffae475cf261d0a83aff196a","fullName":"ui:src/containers/Capabilities/Capabilities.mock.test.tsx#Capabilities Create Session in mock mode spawns a Playwright mock session without opening a WebSocket","name":"spawns a Playwright mock session without opening a WebSocket","status":"passed","testResultsByEnv":{"default":"faae0c5b09b5916b9e3536dae71a366f"}}
