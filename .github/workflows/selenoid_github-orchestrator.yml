@@ -684,8 +684,8 @@ jobs:
           gen() {
             bash "${GEN}" build/allure-results pages/readme main "${BUILD}" "$@"
           }
-          gen "" "Selenoid Stack" "Go 1.26 · Allure 3" ""
-          gen selenoid "Selenoid Hub" "Go 1.26 · Docker API 1.45 · Allure 3" selenoid
+          gen "" "Selenoid Stack" "Go 1.27 · Allure 3" ""
+          gen selenoid "Selenoid Hub" "Go 1.27 · Docker API 1.45 · Allure 3" selenoid
           gen selenoid-ui "Selenoid UI" "Go · React · Allure 3" selenoid-ui
           gen cm "Configuration Manager" "Go · Allure 3" cm
           gen webdriver-image "WebDriver Nodes" "Docker · Allure 3" webdriver-image

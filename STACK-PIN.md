@@ -8,7 +8,7 @@
 |------|----------|
 | Линия | Selenoid 3 |
 | Stack semver | hub/cm/UI **v3.0.0+** (prod pin — deploy-чат) |
-| Go | 1.26.5+ |
+| Go | 1.27+ |
 | Go (примечание) | Root module `github.com/qa-guru/selenoid-tests`; ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md) |
 | Prod | [selenoid.qa.guru](https://selenoid.qa.guru) — smoke gates `hub-prod` / deploy-smoke |
 | Git anchor | `main` |
