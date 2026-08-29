@@ -1,1 +1,0 @@
-{"id":"72a692ab70e12b063368cbabe46cbfa1","fullName":"ui:src/util/capabilitiesMobileEmulation.test.ts#Playwright newContext mobile catalog builds viewport + UA + DPR; omits isMobile on Firefox and desktop UA","name":"builds viewport + UA + DPR; omits isMobile on Firefox and desktop UA","status":"passed","testResultsByEnv":{"default":"994c3e9448fe4e5d89102ad5e459a7ba"}}
