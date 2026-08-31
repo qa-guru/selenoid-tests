@@ -1,0 +1,1 @@
+{"id":"6d48fa5171befb4482d26ff5fa7d3c77","fullName":"config.ConfigReaderCmTest.resolveCmHubUrl uses cmHubPort with trailing slash","name":"resolveCmHubUrl uses cmHubPort with trailing slash","status":"passed","testResultsByEnv":{"default":"ef0aaeab67b808d514c180f51c4809c3"}}
