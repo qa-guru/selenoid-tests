@@ -1,11 +1,7 @@
 /**
- * Palette A (cool → warm) for Allure testing pyramid.
- * SSOT hex values — keep in sync with design-system tokens.css --layer-*
- * and .github/assets/dashboard-overrides.{css,js}.
- *
- * Allure 3.13 TestingPyramidWidget paints every non-empty layer with
- * var(--color-intent-primary-bg) — one color for all active bands.
- * dashboard-overrides.js remaps SVG fills to var(--layer-<name>).
+ * Palette A (cool → warm) for Allure testing pyramid (config/tests helpers).
+ * Runtime HTML theme: @qa-guru/allure-report-kit → @qa-guru/allure-notifications-pyramid.
+ * Keep hex in sync with @qa-guru/allure-notifications-pyramid + pyramid-layers.json.
  */
 
 /** Config / @Layer order (base → tip). */
@@ -14,6 +10,7 @@ export const PYRAMID_LAYERS = [
   "component",
   "integration",
   "api",
+  "ui",
   "e2e",
   "manual",
 ];
@@ -27,6 +24,7 @@ export const PYRAMID_COLORS_DARK = {
   component: "#ffa833",
   integration: "#a65ac4",
   api: "#ffd833",
+  ui: "#f472b6",
   e2e: "#ff574f",
   manual: "#61b6fb",
   other: "#5d6876",
@@ -38,6 +36,7 @@ export const PYRAMID_COLORS_LIGHT = {
   component: "#ff8200",
   integration: "#7e22ce",
   api: "#e8bd00",
+  ui: "#db2777",
   e2e: "#dc2626",
   manual: "#459bde",
   other: "#64748b",
