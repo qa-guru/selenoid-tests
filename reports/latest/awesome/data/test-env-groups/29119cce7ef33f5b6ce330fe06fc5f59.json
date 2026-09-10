@@ -1,0 +1,1 @@
+{"id":"29119cce7ef33f5b6ce330fe06fc5f59","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic pickDefaultWebdriverBrowser returns the first webdriver row when chrome is absent","name":"pickDefaultWebdriverBrowser returns the first webdriver row when chrome is absent","status":"passed","testResultsByEnv":{"default":"d05fae9d998159f6c7db14b473c1e743"}}
