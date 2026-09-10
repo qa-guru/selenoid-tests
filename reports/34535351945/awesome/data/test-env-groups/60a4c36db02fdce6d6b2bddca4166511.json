@@ -1,1 +1,0 @@
-{"id":"60a4c36db02fdce6d6b2bddca4166511","fullName":"ui:src/util/waitForLiveSession.test.ts#waitForLiveSession resolves false immediately when the session id is empty","name":"resolves false immediately when the session id is empty","status":"passed","testResultsByEnv":{"default":"91e61d716066d8773e796ad1fc4f1b44"}}
