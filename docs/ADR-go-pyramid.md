@@ -59,3 +59,4 @@ Live orchestrator: `./scripts/run-go-pyramid.sh warm-pool` — `internal/warmpoo
 
 - Properties path stays under `src/test/resources/config` (same keys; Go loader in `internal/config`).
 - Quality gate: api/integration/e2e need ≥1 Allure step (`allure-reporting-requirements`).
+- Session Stop/Delete/min create and New Session Create Session are **behavior contracts**, not line-count theater — [`TEST-CONTRACT.md`](TEST-CONTRACT.md).

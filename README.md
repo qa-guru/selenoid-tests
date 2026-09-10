@@ -57,7 +57,7 @@ Per-component badges: `readme/badge-{selenoid,selenoid-ui,cm,webdriver-image,pla
 
 Покрывает **selenoid**, **selenoid-ui**, **cm**, **browser-image** (`playwright/` + `webdriver/`) — **Go autotests** (hub pyramid + product unit из исходных репо).
 
-**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm|warm-pool`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
+**Автотесты = Go:** root module `github.com/qa-guru/selenoid-tests` — ADR [`docs/ADR-go-pyramid.md`](docs/ADR-go-pyramid.md). Stop/Delete + New Session contract: [`docs/TEST-CONTRACT.md`](docs/TEST-CONTRACT.md). Gates: `hub-prod` (−cm/min/resilience + `har-prod`), `hub-all` (github full −cm). Slices: `unit|api|integration|ui|webdriver|playwright|e2e|har-prod|min|resilience|cm|warm-pool`. CI gate: `go-hub` + `go-cm` (+ `go-unit` matrix). **`@Layer("unit")`:** `internal/*` + `tests/unit/fixture/` (JSON parsers). **`@Layer("component")`:** только RTL (`selenoid-ui/ui`).
 
 **Warm-pool:** live orchestrator — slice `warm-pool` (unit `internal/warmpool` + API `tests/api/warmpool` + container-reuse `tests/e2e/warmpool`, local stand `:9090`). API-слой также в `./scripts/run-go-pyramid.sh api` (`./tests/api/...`), skip если стенд мёртв. **Не** отдельный CI gate: `hub-prod` / `hub-all` на github/prod без loopback attach (skip).
 

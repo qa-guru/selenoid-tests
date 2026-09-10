@@ -31,7 +31,7 @@ func TestUiSessionKillSmoothArtifacts_WebDriverKillKeepsLayoutAndUpdatesInPlace(
 		Feature:   "Session kill",
 		Story:     "Smooth artifact transition after kill",
 		Suite:     "UI session kill smooth",
-		Tags:      []string{"ui-session-kill", "webdriver", "smoke", "positive"},
+		Tags:      []string{"ui-session-kill", "webdriver", "positive"},
 	}, func(a *allurex.A) {
 		var sessionID string
 		runWithBrowser(t, func(page playwright.Page, baseURL string) {
@@ -73,6 +73,7 @@ func TestUiSessionKillSmoothArtifacts_WebDriverKillKeepsLayoutAndUpdatesInPlace(
 				require.Equal(t, sessionID, killedID)
 				require.Equal(t, urlBefore, page.URL())
 				require.Equal(t, sessionID, sessionIDFromURL(page.URL()))
+				console.assertNoStopTeardownErrors(t)
 			})
 
 			a.Step("Layout slots stable within 2px; single HarViewer; log panel unchanged", func() {

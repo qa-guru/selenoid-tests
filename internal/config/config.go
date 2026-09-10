@@ -135,6 +135,14 @@ func (c *Config) MsedgeMinVersionForSession() string {
 	return strings.TrimSpace(c.MsedgeMinVersion)
 }
 
+// AdvertisedCatalogMustStart is true when the profile points at a hub that is
+// supposed to have the configured browser images. Create failure is a product
+// bug there — never skip-to-green.
+func (c *Config) AdvertisedCatalogMustStart() bool {
+	env := strings.ToLower(c.Env)
+	return strings.Contains(env, "qa_guru") || strings.Contains(env, "github")
+}
+
 func configFromProps(envName string, props map[string]string) *Config {
 	return &Config{
 		Env:                      envName,

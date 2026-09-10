@@ -4,9 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/qa-guru/selenoid-tests/internal/config"
 )
+
+// SessionDeleteSLA is the budget for DELETE /wd/hub/session/{id} without pending Playwright HAR.
+const SessionDeleteSLA = 5 * time.Second
+
+// PlaywrightHarSessionDeleteSLA is the budget for hub DELETE of a Playwright session with enableHAR.
+// Hub must drop the session immediately; HAR flush is best-effort after remove (not a 35s CDP wait).
+const PlaywrightHarSessionDeleteSLA = 8 * time.Second
 
 // SessionCreateResult holds session id and echoed browserName.
 type SessionCreateResult struct {
@@ -65,6 +73,18 @@ func CreateSessionExpectStatus(cfg *config.Config, browserName, browserVersion s
 func DeleteSession(cfg *config.Config, sessionID string) error {
 	_, err := hubClient(cfg).Delete("/wd/hub/session/"+sessionID, http.StatusOK)
 	return err
+}
+
+// DeleteSessionWithin DELETE the session and fail if the round-trip exceeds max.
+func DeleteSessionWithin(cfg *config.Config, sessionID string, max time.Duration) error {
+	start := time.Now()
+	if err := DeleteSession(cfg, sessionID); err != nil {
+		return err
+	}
+	if d := time.Since(start); d > max {
+		return fmt.Errorf("DELETE /wd/hub/session/%s took %s, SLA %s", sessionID, d.Round(time.Millisecond), max)
+	}
+	return nil
 }
 
 // DeleteSessionExpectStatus DELETE and require HTTP status.

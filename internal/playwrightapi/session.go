@@ -8,6 +8,19 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/config"
 )
 
+// AppendQuery adds query parameters to a Playwright hub WS URL.
+func AppendQuery(wsEndpoint, query string) string {
+	query = strings.TrimSpace(query)
+	if query == "" {
+		return wsEndpoint
+	}
+	sep := "?"
+	if strings.Contains(wsEndpoint, "?") {
+		sep = "&"
+	}
+	return wsEndpoint + sep + query
+}
+
 // Connect opens a remote Playwright browser via hub WS (default chromium endpoint from config).
 // firefox/webkit use their engine; chrome/msedge/chromium share Chromium.Connect.
 func Connect(pw *playwright.Playwright, cfg *config.Config, wsEndpoint string) (playwright.Browser, error) {

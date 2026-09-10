@@ -53,7 +53,7 @@ func runRemoteSessionLifecycle(
 	})
 
 	a.Step(deleteStep, func() {
-		require.NoError(t, hubapi.DeleteSession(cfg, sessionID))
+		require.NoError(t, hubapi.DeleteSessionWithin(cfg, sessionID, hubapi.SessionDeleteSLA))
 	})
 
 	a.Step("Verify hub released session", func() {

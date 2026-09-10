@@ -10,29 +10,27 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
-func TestHubSession_CreateAndDelete(t *testing.T) {
+func TestHubSession_DeleteReturnsWithinSLA(t *testing.T) {
 	cfg := config.MustLoad()
 	allurex.Run(t, allurex.Meta{
-		Name:      "POST /wd/hub/session creates and DELETE removes session",
-		Package:   "tests.api.HubSessionApiTests",
+		Name:      "DELETE /wd/hub/session/{id} returns within 5s",
+		Package:   "tests.api.HubSessionDeleteSlaTests",
 		Layer:     "api",
 		Component: "selenoid",
 		Epic:      "selenoid",
 		Feature:   "WebDriver session API",
-		Story:     "WebDriver session API",
-		Suite:     "Hub session API",
-		Tags:      []string{"api", "positive"},
+		Story:     "Session delete SLA",
+		Suite:     "Hub session delete SLA",
+		Tags:      []string{"api", "positive", "smoke"},
 	}, func(a *allurex.A) {
 		var sessionID string
 		a.Step("Create remote session", func() {
 			var err error
 			sessionID, err = hubapi.CreateSession(cfg)
 			require.NoError(t, err)
-		})
-		a.Step("Verify session id", func() {
 			require.NotEmpty(t, sessionID)
 		})
-		a.Step("Delete session", func() {
+		a.Step("Delete session within SLA", func() {
 			require.NoError(t, hubapi.DeleteSessionWithin(cfg, sessionID, hubapi.SessionDeleteSLA))
 		})
 	})

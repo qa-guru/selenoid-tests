@@ -30,7 +30,7 @@ func TestUiManualHarWebDriver_CapabilitiesCreateSessionShowsHarInArchive(t *test
 		Feature:   "Capabilities manual session",
 		Story:     "Manual WebDriver session with hub HAR",
 		Suite:     "UI manual HAR",
-		Tags:      []string{"ui-manual-har", "webdriver", "smoke", "positive"},
+		Tags:      []string{"ui-manual-har", "webdriver", "positive"},
 	}, func(a *allurex.A) {
 		var sessionID string
 		runWithBrowser(t, func(page playwright.Page, baseURL string) {

@@ -33,9 +33,12 @@ func skipUnlessWDMinReady(t *testing.T, cfg *config.Config, browser, version str
 	}
 	sessionID, err := hubapi.CreateSessionWithBrowser(cfg, browser, version)
 	if err != nil {
-		t.Skipf("WD min %s %s unavailable on this stack (Java testMin parity): %v", browser, version, err)
+		if cfg.AdvertisedCatalogMustStart() {
+			require.NoError(t, err, "WD min %s %s is advertised on this hub — create must succeed (skip-to-green hid Chrome-exited)", browser, version)
+		}
+		t.Skipf("WD min %s %s unavailable on this stack (no image locally): %v", browser, version, err)
 	}
-	require.NoError(t, hubapi.DeleteSession(cfg, sessionID))
+	require.NoError(t, hubapi.DeleteSessionWithin(cfg, sessionID, hubapi.SessionDeleteSLA))
 }
 
 func runRemoteSessionLifecycle(
@@ -71,7 +74,7 @@ func runRemoteSessionLifecycle(
 	})
 
 	a.Step(deleteStep, func() {
-		require.NoError(t, hubapi.DeleteSession(cfg, sessionID))
+		require.NoError(t, hubapi.DeleteSessionWithin(cfg, sessionID, hubapi.SessionDeleteSLA))
 	})
 
 	a.Step("Verify hub released session", func() {

@@ -297,3 +297,25 @@ func (c *consoleErrorTracker) assertEmpty(t *testing.T) {
 	defer c.mu.Unlock()
 	require.Empty(t, c.errors, "console errors: %v", c.errors)
 }
+
+func (c *consoleErrorTracker) assertNoStopTeardownErrors(t *testing.T) {
+	t.Helper()
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	needles := []string{
+		"disconnected RFB",
+		"Tried changing state",
+		"Failed when connecting",
+		"Can't delete session",
+	}
+	var hit []string
+	for _, err := range c.errors {
+		for _, n := range needles {
+			if strings.Contains(err, n) {
+				hit = append(hit, err)
+				break
+			}
+		}
+	}
+	require.Empty(t, hit, "Stop/Delete teardown console errors: %v", hit)
+}

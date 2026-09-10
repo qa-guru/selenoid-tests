@@ -13,11 +13,15 @@ import (
 	"github.com/qa-guru/selenoid-tests/internal/hubapi"
 )
 
+// New Session / Stop testids (SSOT with UI): capabilities-setup, capabilities-create-session,
+// capabilities-browser-select, caps-enable-vnc|video|har, session-stop, session-delete, session-finished.
 const (
 	manualHarSessionName = "ui-manual-har-e2e"
 	createSessionTimeout = 120 * time.Second
 	// Prod Create Session with VNC+video(+HAR) often exceeds 2m (sidecar + browser boot).
 	createSessionTimeoutProd = 5 * time.Minute
+	// Stop must flip the page to FINISHED without waiting for lagged /events SSE (~4s).
+	stopSessionUITimeout = 2 * time.Second
 )
 
 func openNewSession(t *testing.T, page playwright.Page, baseURL string) {
@@ -160,6 +164,14 @@ func clickCreateSession(t *testing.T, page playwright.Page) string {
 		if id := sessionIDFromURL(page.URL()); id != "" {
 			return id
 		}
+		cls, _ := create.GetAttribute("class")
+		if strings.Contains(cls, "error-true") {
+			title, _ := create.GetAttribute("title")
+			if title == "" {
+				title = cls
+			}
+			t.Fatalf("Create Session failed: %s url=%s", title, page.URL())
+		}
 		time.Sleep(250 * time.Millisecond)
 	}
 	cls, _ := create.GetAttribute("class")
@@ -177,37 +189,66 @@ func killSessionFromUI(t *testing.T, page playwright.Page) string {
 	sessionID := sessionIDFromURL(page.URL())
 	require.NotEmpty(t, sessionID, "killSessionFromUI: expected /#/sessions/<id> URL, got %s", page.URL())
 
-	kill := page.Locator("[data-testid=session-kill]")
+	stop := page.Locator("[data-testid=session-stop]")
 	// Prod Playwright Create Session can take >30s before the live panel mounts.
-	killWait := createSessionTimeout
+	mountWait := createSessionTimeout
 	if strings.Contains(cfg.Env, "qa_guru") {
-		killWait = 3 * time.Minute
+		mountWait = 3 * time.Minute
 	}
-	require.NoError(t, kill.WaitFor(playwright.LocatorWaitForOptions{
+	require.NoError(t, stop.WaitFor(playwright.LocatorWaitForOptions{
 		State:   playwright.WaitForSelectorStateVisible,
-		Timeout: playwright.Float(float64(killWait.Milliseconds())),
+		Timeout: playwright.Float(float64(mountWait.Milliseconds())),
 	}))
-	require.NoError(t, kill.Click())
+	require.NoError(t, stop.Click())
 
-	timeout := killWait
+	require.NoError(t, page.Locator("[data-testid=session-finished]").WaitFor(playwright.LocatorWaitForOptions{
+		State:   playwright.WaitForSelectorStateVisible,
+		Timeout: playwright.Float(float64(stopSessionUITimeout.Milliseconds())),
+	}), "Stop must show FINISHED within %s even if /events SSE still lists the session", stopSessionUITimeout)
+
+	require.Equal(t, sessionID, sessionIDFromURL(page.URL()),
+		"Stop must keep URL on /#/sessions/%s, got %s", sessionID, page.URL())
+
+	vnc, err := page.Locator("[data-testid=vnc-window]").Count()
+	require.NoError(t, err)
+	require.Zero(t, vnc, "VNC must unmount on Stop without waiting for SSE")
+
+	stopLeft, err := page.Locator("[data-testid=session-stop]").Count()
+	require.NoError(t, err)
+	require.Zero(t, stopLeft, "Stop session button must be replaced by FINISHED")
+
+	return sessionID
+}
+
+func deleteSessionFromUI(t *testing.T, page playwright.Page) {
+	t.Helper()
+	cfg := config.MustLoad()
+	sessionID := sessionIDFromURL(page.URL())
+	require.NotEmpty(t, sessionID, "deleteSessionFromUI: expected /#/sessions/<id> URL, got %s", page.URL())
+
+	del := page.Locator("[data-testid=session-delete]")
+	require.NoError(t, del.WaitFor(playwright.LocatorWaitForOptions{
+		State: playwright.WaitForSelectorStateVisible,
+	}))
+
+	timeout := createSessionWait(cfg)
 	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
-		url := page.URL()
-		require.Equal(t, sessionID, sessionIDFromURL(url),
-			"kill must keep URL on /#/sessions/%s, got %s", sessionID, url)
-
-		count, err := kill.Count()
-		if err == nil && count == 0 {
-			return sessionID
-		}
-		finished, err := page.Locator("text=FINISHED").Count()
-		if err == nil && finished > 0 {
-			return sessionID
+		enabled, err := del.IsEnabled()
+		if err == nil && enabled {
+			require.NoError(t, del.Click())
+			gone := time.Now().Add(15 * time.Second)
+			for time.Now().Before(gone) {
+				if sessionIDFromURL(page.URL()) != sessionID {
+					return
+				}
+				time.Sleep(200 * time.Millisecond)
+			}
+			t.Fatalf("Delete session did not leave /#/sessions/%s, url=%s", sessionID, page.URL())
 		}
 		time.Sleep(250 * time.Millisecond)
 	}
-	t.Fatalf("session kill did not finish within %s, url=%s", timeout, page.URL())
-	return sessionID
+	t.Fatalf("Delete session stayed disabled for %s after Stop (SSE still live or artifacts missing)", timeout)
 }
 
 func openFinishedSessionsArchive(t *testing.T, page playwright.Page, baseURL string) {

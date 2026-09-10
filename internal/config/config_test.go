@@ -32,3 +32,16 @@ func TestLoad_ProdApiHubStatusPath(t *testing.T) {
 	require.Equal(t, "/hub/status", cfg.HubStatusPath)
 	require.Contains(t, cfg.APIBase(), "selenoid.qa.guru")
 }
+
+func TestAdvertisedCatalogMustStart(t *testing.T) {
+	require.True(t, config.FromMap(map[string]string{}).AdvertisedCatalogMustStart() == false)
+	qa := config.FromMap(map[string]string{})
+	qa.Env = "selenoid_qa_guru_e2e"
+	require.True(t, qa.AdvertisedCatalogMustStart())
+	gh := config.FromMap(map[string]string{})
+	gh.Env = "selenoid_github_min_integration"
+	require.True(t, gh.AdvertisedCatalogMustStart())
+	local := config.FromMap(map[string]string{})
+	local.Env = "local_integration"
+	require.False(t, local.AdvertisedCatalogMustStart())
+}
