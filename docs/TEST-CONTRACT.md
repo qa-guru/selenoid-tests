@@ -8,7 +8,7 @@ Coverage of **lines** is not the gate. A test that skips, waits three minutes, o
 |-------|----------|
 | RTL (`selenoid-ui/ui`) | Click **Stop session** while the parent still passes a live `browser`. VNC unmounts, FINISHED shows, Delete stays disabled until an artifact exists, then enables. Failed hub DELETE restores Stop. Already-closed RFB is not `disconnect()`ed again. |
 | Hub unit (`selenoid`) | Playwright `enableHAR` DELETE removes the session without waiting on CDP (pending HAR < 2s in unit). |
-| API | `DELETE /wd/hub/session/{id}` returns within **5s**. |
+| API | `DELETE /wd/hub/session/{id}` returns within **5s**. VNC/video/HAR sessions use desktop `chromeVersion`, not profile `browserVersion` when that is `*-min` (hub v3.0.16 rejects `-min` + those flags with 400). |
 | Integration WD/PW/min | Advertised catalog versions **create**. Create failure on `qa_guru` / `github` is **fail**, not skip. PW `enableHAR` hub DELETE within **8s** (including `*-min` without DevTools `:7070`). |
 | E2E smoke | Create (API) → session page → Stop → FINISHED and VNC gone in **2s** (do not wait for `/events`) → video → **Delete session** leaves the page. No skip. No `session-kill` testid. |
 | E2E hub-prod | HAR layout after Stop. May skip **github CI** archive timing. Must run on `qa_guru`. Must not be tagged `smoke` if it skips when `TEST_TAGS=smoke`. |

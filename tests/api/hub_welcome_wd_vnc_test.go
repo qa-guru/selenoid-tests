@@ -134,7 +134,7 @@ func TestHubVncSession_PathRequiresWebSocketUpgrade(t *testing.T) {
 		var sessionID string
 		a.Step("Create hub session with VNC", func() {
 			var err error
-			sessionID, err = hubapi.CreateSessionWithSelenoidOptions(cfg, cfg.Browser, cfg.BrowserVersion, map[string]any{"enableVNC": true})
+			sessionID, err = hubapi.CreateSessionWithSelenoidOptions(cfg, cfg.Browser, cfg.ChromeVersionForSession(), map[string]any{"enableVNC": true})
 			require.NoError(t, err)
 		})
 		a.Step("GET /vnc/{sessionId} without WebSocket headers", func() {
