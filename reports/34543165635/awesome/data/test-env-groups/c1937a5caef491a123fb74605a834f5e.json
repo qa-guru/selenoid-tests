@@ -1,0 +1,1 @@
+{"id":"c1937a5caef491a123fb74605a834f5e","fullName":"ui:src/components/VncCard/VncScreen.test.tsx#VncScreen mock preview does not disconnect an RFB that already closed","name":"does not disconnect an RFB that already closed","status":"passed","testResultsByEnv":{"default":"4a671ec59d36796fab7ce6aa4c85af51"}}

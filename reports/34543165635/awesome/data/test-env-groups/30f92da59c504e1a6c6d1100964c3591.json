@@ -1,0 +1,1 @@
+{"id":"30f92da59c504e1a6c6d1100964c3591","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic maps missing Docker image to a pull/choose-browser plaque, not a daemon dump","name":"maps missing Docker image to a pull/choose-browser plaque, not a daemon dump","status":"passed","testResultsByEnv":{"default":"dbb99dc6188f83c17a89327fef3c9500"}}

@@ -1,0 +1,1 @@
+{"id":"d66870bdff1ee3495a89a6998e886477","fullName":"ui:src/components/Session/SessionInfo.test.tsx#SessionInfo stop closes a retained Playwright socket before DELETE","name":"stop closes a retained Playwright socket before DELETE","status":"passed","testResultsByEnv":{"default":"d946f907351f6c1a5f552a38a33d1f27"}}
