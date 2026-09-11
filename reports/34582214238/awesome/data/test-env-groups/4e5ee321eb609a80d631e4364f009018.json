@@ -1,0 +1,1 @@
+{"id":"4e5ee321eb609a80d631e4364f009018","fullName":"ui:src/components/VncCard/VncScreen.test.tsx#VncScreen mock preview does not re-apply scaleViewport when the parent re-renders","name":"does not re-apply scaleViewport when the parent re-renders","status":"passed","testResultsByEnv":{"default":"63c4072018ff4dbb998c5e6b3484dfdb"}}

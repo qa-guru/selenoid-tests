@@ -1,0 +1,1 @@
+{"id":"37e16f5f6a773c53385b494f76bf3f03","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic pickDefaultWebdriverBrowser falls back to -min when no full chrome exists","name":"pickDefaultWebdriverBrowser falls back to -min when no full chrome exists","status":"passed","testResultsByEnv":{"default":"7cdbe5445c1cabe49c3b92d7885c51f9"}}
