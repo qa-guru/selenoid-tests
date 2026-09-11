@@ -1,1 +1,0 @@
-{"id":"760dd0842eed48c3b6bb519ff554b1e8","fullName":"ui:src/components/VncCard/VncScreen.test.tsx#VncScreen mock preview applyScale is a no-op without an RFB and skips overflow when _screen is missing","name":"applyScale is a no-op without an RFB and skips overflow when _screen is missing","status":"passed","testResultsByEnv":{"default":"38a747e9f6cf24f69ef743b981e7993c"}}

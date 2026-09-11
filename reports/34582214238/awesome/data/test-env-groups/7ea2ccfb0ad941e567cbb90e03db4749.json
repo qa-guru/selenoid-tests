@@ -1,1 +1,0 @@
-{"id":"7ea2ccfb0ad941e567cbb90e03db4749","fullName":"ui:src/containers/Capabilities/Capabilities.caps.test.tsx#Capabilities boolean caps (seg canon) sends enableVNC=false when the VNC seg is toggled off","name":"sends enableVNC=false when the VNC seg is toggled off","status":"passed","testResultsByEnv":{"default":"cacb3e0b0f213f045d43ac3eb8a0025a"}}

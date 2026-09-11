@@ -1,1 +1,0 @@
-{"id":"41c9e650674ec3516266b3e8b59d2ee3","fullName":"ui:src/util/waitForLiveSession.test.ts#waitForLiveSession resolves true when /ui/status poll sees the session","name":"resolves true when /ui/status poll sees the session","status":"passed","testResultsByEnv":{"default":"8797a01f16c10a9ce69886ff483e3f42"}}

@@ -1,1 +1,0 @@
-{"id":"8518ab411e961b98b70b5da1e64004f6","fullName":"ui:src/components/VncCard/VncScreen.test.tsx#VncScreen mock preview scales the viewport locally and never requests a remote desktop resize","name":"scales the viewport locally and never requests a remote desktop resize","status":"passed","testResultsByEnv":{"default":"dbe1c255fc3f1b72bec55848f39218fb"}}
