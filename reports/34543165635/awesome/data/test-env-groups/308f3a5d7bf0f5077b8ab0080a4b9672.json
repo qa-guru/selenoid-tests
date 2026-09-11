@@ -1,1 +1,0 @@
-{"id":"308f3a5d7bf0f5077b8ab0080a4b9672","fullName":"ui:src/components/Session/Session.test.tsx#Session detail page stop drops VNC immediately while SSE still lists the session","name":"stop drops VNC immediately while SSE still lists the session","status":"passed","testResultsByEnv":{"default":"60d6666ab42182ba512b807d8512d568"}}
