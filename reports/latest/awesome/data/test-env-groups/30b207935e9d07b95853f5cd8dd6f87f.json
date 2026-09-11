@@ -1,1 +1,0 @@
-{"id":"30b207935e9d07b95853f5cd8dd6f87f","fullName":"ui:src/components/Sessions/service.test.ts#deleteSession useSessionDelete hides the live id before hub DELETE returns","name":"useSessionDelete hides the live id before hub DELETE returns","status":"passed","testResultsByEnv":{"default":"77902d9547592717db95be9a634696d7"}}

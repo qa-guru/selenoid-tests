@@ -1,1 +1,0 @@
-{"id":"7fe6d2473ac27d4c662b59f859a6f446","fullName":"ui:src/components/Sessions/service.test.ts#deleteSession useSessionDelete logs a failed DELETE and clears the deleting flag","name":"useSessionDelete logs a failed DELETE and clears the deleting flag","status":"passed","testResultsByEnv":{"default":"2b744b2b68ad4c85b2cf36ea89dbe517"}}

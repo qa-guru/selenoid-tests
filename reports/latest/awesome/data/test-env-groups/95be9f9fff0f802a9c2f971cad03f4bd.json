@@ -1,1 +1,0 @@
-{"id":"95be9f9fff0f802a9c2f971cad03f4bd","fullName":"ui:src/util/capabilitiesLogic.test.ts#capabilitiesLogic maps daemon errors, 403, and empty 4xx without dumping HTTP codes","name":"maps daemon errors, 403, and empty 4xx without dumping HTTP codes","status":"passed","testResultsByEnv":{"default":"b44cc4885fc80693b367b4a396b9da2c"}}

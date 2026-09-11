@@ -1,1 +1,0 @@
-{"id":"ced4ad7ffe94bcb64185d47cf6377f16","fullName":"tests.api.HubSessionDeleteSlaTests.DELETE /wd/hub/session/{id} returns within 5s","name":"DELETE /wd/hub/session/{id} returns within 5s","status":"passed","testResultsByEnv":{"default":"e0b36d7dc426119019a0fc42db6bd080"}}
