@@ -1,0 +1,1 @@
+{"id":"a908e912e155d34a4dcf277f3f724793","fullName":"capabilitiesLogic > createSessionCatchMessage covers abort-like strings and empty errors","name":"createSessionCatchMessage covers abort-like strings and empty errors","status":"passed","testResultsByEnv":{"default":"d1b3190f118d537822f59cd4c18fb99f"}}

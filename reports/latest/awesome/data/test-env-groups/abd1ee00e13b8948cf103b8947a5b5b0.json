@@ -1,0 +1,1 @@
+{"id":"abd1ee00e13b8948cf103b8947a5b5b0","fullName":"Session detail page > omits No HAR when a finished session has video but no HAR file","name":"omits No HAR when a finished session has video but no HAR file","status":"passed","testResultsByEnv":{"default":"d8618b2a8d3857ec3ea992dc20dbd11a"}}

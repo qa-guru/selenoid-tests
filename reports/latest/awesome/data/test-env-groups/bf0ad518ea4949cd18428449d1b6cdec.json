@@ -1,0 +1,1 @@
+{"id":"bf0ad518ea4949cd18428449d1b6cdec","fullName":"peer /css/* (no react-ui styles.css barrel) > Session page CSS has no :root and replaces style.css.ts","name":"Session page CSS has no :root and replaces style.css.ts","status":"passed","testResultsByEnv":{"default":"64a71785e326b592ead36183e2431e5d"}}

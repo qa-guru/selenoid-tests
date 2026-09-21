@@ -1,0 +1,1 @@
+{"id":"defc479bdb0872544fa1bf084f84708f","fullName":"waitForLiveSession > resolves false immediately when the session id is empty","name":"resolves false immediately when the session id is empty","status":"passed","testResultsByEnv":{"default":"d38b37614cd7d6fe7b4c6cfa9a262226"}}

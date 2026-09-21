@@ -1,0 +1,1 @@
+{"id":"a2c23a7fda1ee54c3124f7d0c7a0fa8f","fullName":"waitForLiveSession > keeps waiting when EventSource errors (poll can still succeed)","name":"keeps waiting when EventSource errors (poll can still succeed)","status":"passed","testResultsByEnv":{"default":"eafdb602a636f4e994bed0a24e490159"}}
