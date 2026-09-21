@@ -29,6 +29,64 @@ pick_from_versions() {
   printf '%s\n' "${match}"
 }
 
+# All Playwright 1.MM minors that have a playwright-go tag, ascending.
+# Tag scheme: v0.MMpp.b — trailing two digits of the middle group are the PW patch.
+tagged_minors() {
+  local versions_str="$1"
+  local v
+  for v in ${versions_str}; do
+    if [[ "${v}" =~ ^v0\.([0-9]+)[0-9]{2}\.[0-9]+$ ]]; then
+      printf '%s\n' "$((10#${BASH_REMATCH[1]}))"
+    fi
+  done | sort -un
+}
+
+# Newest playwright-go tag whose Playwright minor is <= $1 (fallback when the
+# Go client lags a freshly published Playwright minor, e.g. no v0.63xx yet).
+resolve_tag_with_fallback() {
+  local min="$1"
+  local versions_str="$2"
+  local m
+  for m in $(tagged_minors "${versions_str}" | sort -rn); do
+    if (( m <= min )); then
+      pick_from_versions "${m}" "${versions_str}"
+      return 0
+    fi
+  done
+  echo "pin-playwright-go: no ${MODULE} tag for Playwright 1.${min}.x or earlier in: ${versions_str}" >&2
+  return 1
+}
+
+# Exact Playwright version a playwright-go tag speaks (playwrightCliVersion in run.go).
+pw_version_for_tag() {
+  local tag="$1"
+  curl -fsSL "https://raw.githubusercontent.com/playwright-community/playwright-go/${tag}/run.go" \
+    | grep -Eo 'playwrightCliVersion = "[0-9]+\.[0-9]+\.[0-9]+"' \
+    | head -1 | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'
+}
+
+# Effective image version for the smoke: SOURCE_VERSION when a playwright-go
+# tag covers its minor, else the playwrightCliVersion of the newest earlier tag
+# (the -min suffix of SOURCE_VERSION is preserved).
+resolve_effective() {
+  local min versions tag pwv suffix=""
+  min="$(playwright_minor "${SOURCE_VERSION}")"
+  versions="$(go list -m -versions "${MODULE}")"
+  if pick_from_versions "${min}" "${versions}" >/dev/null; then
+    printf '%s\n' "${SOURCE_VERSION}"
+    return 0
+  fi
+  tag="$(resolve_tag_with_fallback "${min}" "${versions}")"
+  pwv="$(pw_version_for_tag "${tag}")"
+  if [[ -z "${pwv}" ]]; then
+    echo "pin-playwright-go: could not read playwrightCliVersion for ${tag}" >&2
+    return 1
+  fi
+  [[ "${SOURCE_VERSION}" == *-min ]] && suffix="-min"
+  echo "pin-playwright-go: no client tag for ${SOURCE_VERSION}; falling back to ${pwv}${suffix} (${tag})" >&2
+  printf '%s%s\n' "${pwv}" "${suffix}"
+}
+
 playwright_minor() {
   local raw="${1#v}"
   raw="${raw%-min}"
@@ -133,6 +191,20 @@ self_test() {
     echo "fail: missing series should error" >&2
     exit 1
   fi
+  got="$(tagged_minors "${fixture}" | tr '\n' ' ')"
+  [[ "${got}" == "52 57 60 61 62 " ]] || { echo "fail tagged_minors → ${got}" >&2; exit 1; }
+  got="$(resolve_tag_with_fallback 63 "${fixture}")"
+  [[ "${got}" == "v0.6201.1" ]] || { echo "fail fallback 1.63 → ${got}" >&2; exit 1; }
+  got="$(resolve_tag_with_fallback 62 "${fixture}")"
+  [[ "${got}" == "v0.6201.1" ]] || { echo "fail fallback exact 1.62 → ${got}" >&2; exit 1; }
+  got="$(resolve_tag_with_fallback 99 "${fixture}")"
+  [[ "${got}" == "v0.6201.1" ]] || { echo "fail fallback 1.99 → ${got}" >&2; exit 1; }
+  got="$(resolve_tag_with_fallback 56 "${fixture}")"
+  [[ "${got}" == "v0.5200.0" ]] || { echo "fail fallback 1.56 → ${got}" >&2; exit 1; }
+  if resolve_tag_with_fallback 40 "${fixture}" >/dev/null 2>&1; then
+    echo "fail: fallback below all tags should error" >&2
+    exit 1
+  fi
   echo "pin-playwright-go: self-test ok"
 }
 
@@ -146,6 +218,11 @@ SOURCE_VARIANT="${SOURCE_VARIANT:-}"
 
 if [[ "${SOURCE_VARIANT}" != "playwright" || -z "${SOURCE_VERSION}" ]]; then
   echo "pin-playwright-go: skip (need SOURCE_VARIANT=playwright and SOURCE_VERSION)"
+  exit 0
+fi
+
+if [[ "${1:-}" == "--resolve" ]]; then
+  resolve_effective
   exit 0
 fi
 

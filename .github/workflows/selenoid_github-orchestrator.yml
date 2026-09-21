@@ -285,6 +285,19 @@ jobs:
           cache: yarn
           cache-dependency-path: repos/selenoid-ui/ui/yarn.lock
 
+      # playwright-go may lag a freshly published Playwright minor (no v0.63xx tag
+      # yet). Resolve the newest minor the Go client speaks and retarget the pull
+      # + session to it so the smoke still runs (previous version instead of fail).
+      - name: Resolve playwright-go-compatible SOURCE_VERSION
+        if: env.PROD_CLOUD_STAND != 'true' && env.SOURCE_VARIANT == 'playwright' && env.SOURCE_VERSION != ''
+        run: |
+          chmod +x scripts/pin-playwright-go.sh
+          eff="$(./scripts/pin-playwright-go.sh --resolve)"
+          if [[ "${eff}" != "${SOURCE_VERSION}" ]]; then
+            echo "::notice::pin-playwright-go: no client tag for ${SOURCE_VERSION}; smoke runs on ${eff}"
+            echo "SOURCE_VERSION=${eff}" >> "${GITHUB_ENV}"
+          fi
+
       # browser-image dispatch: SOURCE_VERSION + SOURCE_VARIANT → pull published tag (not prod pin).
       - name: Pull published browser-image
         if: env.PROD_CLOUD_STAND != 'true' && env.SOURCE_VERSION != '' && env.SOURCE_VARIANT != ''
