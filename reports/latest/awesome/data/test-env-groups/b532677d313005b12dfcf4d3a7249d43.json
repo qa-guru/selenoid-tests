@@ -1,0 +1,1 @@
+{"id":"b532677d313005b12dfcf4d3a7249d43","fullName":"peer /css/* (no react-ui styles.css barrel) > index.html links session CSS and does not reference the barrel","name":"index.html links session CSS and does not reference the barrel","status":"passed","testResultsByEnv":{"default":"114a0bc8b3a4dea7a6d50805ccfc8806"}}

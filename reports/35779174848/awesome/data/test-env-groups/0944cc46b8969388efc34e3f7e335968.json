@@ -1,0 +1,1 @@
+{"id":"0944cc46b8969388efc34e3f7e335968","fullName":"peer /css/* (no react-ui styles.css barrel) > src components do not import the styles.css barrel","name":"src components do not import the styles.css barrel","status":"passed","testResultsByEnv":{"default":"53df835db5e4434c977cb2460e71990b"}}

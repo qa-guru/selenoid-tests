@@ -1,0 +1,1 @@
+{"id":"5e91b3a1944f4db0706c77e4a83de89d","fullName":"VncScreen mock preview > applyScale is a no-op without an RFB and skips overflow when _screen is missing","name":"applyScale is a no-op without an RFB and skips overflow when _screen is missing","status":"passed","testResultsByEnv":{"default":"75cde270a5c8ed28160b394550533cca"}}
