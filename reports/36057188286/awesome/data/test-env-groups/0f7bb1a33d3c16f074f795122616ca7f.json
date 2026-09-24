@@ -1,0 +1,1 @@
+{"id":"0f7bb1a33d3c16f074f795122616ca7f","fullName":"capabilitiesLogic > buildSelenoidOptions uses asBool so string false does not become true","name":"buildSelenoidOptions uses asBool so string false does not become true","status":"passed","testResultsByEnv":{"default":"e762d7dec3d5e3b4c766879d6d45790a"}}

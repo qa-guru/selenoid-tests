@@ -1,0 +1,1 @@
+{"id":"0e5f59336e8341fd56ac3633a7991476","fullName":"Capabilities CodeHighlight → Panel terminal > does not hardcode TZ=UTC or labels-only in Java without UI fields","name":"does not hardcode TZ=UTC or labels-only in Java without UI fields","status":"passed","testResultsByEnv":{"default":"bd45e3320cd982460cd67bd30648c360"}}

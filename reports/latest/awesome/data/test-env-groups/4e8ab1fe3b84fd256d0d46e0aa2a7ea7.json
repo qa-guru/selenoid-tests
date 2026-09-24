@@ -1,0 +1,1 @@
+{"id":"4e8ab1fe3b84fd256d0d46e0aa2a7ea7","fullName":"Capabilities boolean caps (seg canon) > clears proxyServer and proxyPort when switching from preset to custom","name":"clears proxyServer and proxyPort when switching from preset to custom","status":"passed","testResultsByEnv":{"default":"890eb5ac845c702a67f5f64b60e802eb"}}

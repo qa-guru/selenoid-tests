@@ -1,0 +1,1 @@
+{"id":"61eafa9bddcfa1edefd6c4d975074207","fullName":"capabilitiesLogic > buildAndroidCapabilities omits appium:app when empty and defaults orientation","name":"buildAndroidCapabilities omits appium:app when empty and defaults orientation","status":"passed","testResultsByEnv":{"default":"48f301c1d2b5bf08c2c5492c1eba0efe"}}
