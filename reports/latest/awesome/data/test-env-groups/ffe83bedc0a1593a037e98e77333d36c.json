@@ -1,1 +1,0 @@
-{"id":"ffe83bedc0a1593a037e98e77333d36c","fullName":"tests.api.HubVideoApiTests.GET /video/{missing}.mp4 returns 404","name":"GET /video/{missing}.mp4 returns 404","status":"passed","testResultsByEnv":{"default":"b4a00a984ca8e06c845dd358ad6b9b95"}}
