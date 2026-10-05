@@ -198,6 +198,11 @@ func load() (*Config, error) {
 		return nil, err
 	}
 
+	if strings.HasPrefix(envName, "selenoid_qa_guru_") || strings.HasPrefix(envName, "selenoid_github_") {
+		if err := applyStandWebDriverCatalog(root, props); err != nil {
+			return nil, err
+		}
+	}
 	applyEnvOverrides(props)
 
 	cfg := configFromProps(envName, props)

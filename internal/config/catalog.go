@@ -46,6 +46,36 @@ func loadCatalog() (map[string]catalogBrowser, error) {
 	return catalogData, catalogErr
 }
 
+func applyStandWebDriverCatalog(root string, props map[string]string) error {
+	path := filepath.Join(root, "fixtures", "ci-browsers.json")
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("load WebDriver catalog: %w", err)
+	}
+	var catalog map[string]catalogBrowser
+	if err := json.Unmarshal(raw, &catalog); err != nil {
+		return fmt.Errorf("decode WebDriver catalog: %w", err)
+	}
+	for _, browser := range []string{"chrome", "firefox", "msedge"} {
+		entry := catalog[browser]
+		if entry.Default == "" || entry.Versions[entry.Default] == nil || entry.Versions[entry.Default+"-min"] == nil {
+			return fmt.Errorf("WebDriver catalog lacks default/min versions for %s", browser)
+		}
+		props[browser+"Version"] = entry.Default
+		props[browser+"MinVersion"] = entry.Default + "-min"
+	}
+	browser := firstNonEmpty(props["browser"], "chrome")
+	if catalog[browser].Default == "" {
+		return fmt.Errorf("WebDriver catalog lacks default for %s", browser)
+	}
+	version := catalog[browser].Default
+	if strings.HasSuffix(props["browserVersion"], "-min") {
+		version += "-min"
+	}
+	props["browserVersion"] = version
+	return nil
+}
+
 // DefaultVersion returns catalog default version for browser (WebDriverCatalog.defaultVersion).
 func DefaultVersion(browser string) string {
 	data, err := loadCatalog()
