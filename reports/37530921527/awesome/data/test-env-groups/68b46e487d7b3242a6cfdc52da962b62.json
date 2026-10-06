@@ -1,0 +1,1 @@
+{"id":"68b46e487d7b3242a6cfdc52da962b62","fullName":"capabilitiesLogic > asBool treats the string false as false","name":"asBool treats the string false as false","status":"passed","testResultsByEnv":{"default":"cfc364a68dbded2943193b62b56c646e"}}

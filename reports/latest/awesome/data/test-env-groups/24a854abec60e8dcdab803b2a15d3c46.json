@@ -1,0 +1,1 @@
+{"id":"24a854abec60e8dcdab803b2a15d3c46","fullName":"Capabilities boolean caps (seg canon) > omits HAR recording when enableHar is off (default)","name":"omits HAR recording when enableHar is off (default)","status":"passed","testResultsByEnv":{"default":"655b91f70726d741f0f9d39e6aff14f0"}}

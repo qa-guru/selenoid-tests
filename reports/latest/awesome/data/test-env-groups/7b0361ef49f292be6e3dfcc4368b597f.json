@@ -1,0 +1,1 @@
+{"id":"7b0361ef49f292be6e3dfcc4368b597f","fullName":"capabilitiesLogic > pickDefaultWebdriverBrowser returns undefined when only playwright/android/ios are listed","name":"pickDefaultWebdriverBrowser returns undefined when only playwright/android/ios are listed","status":"passed","testResultsByEnv":{"default":"460a9cb9f5f4c1c8b7dad626a06dc578"}}
