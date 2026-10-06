@@ -1,1 +1,0 @@
-{"id":"d9062d93bd8b51d376fdef14d271afc3","fullName":"capabilitiesLogic > pickDefaultWebdriverBrowser falls back to -min when no full chrome exists","name":"pickDefaultWebdriverBrowser falls back to -min when no full chrome exists","status":"passed","testResultsByEnv":{"default":"255a367ebfb6d19189a6ef04fbbef9e7"}}

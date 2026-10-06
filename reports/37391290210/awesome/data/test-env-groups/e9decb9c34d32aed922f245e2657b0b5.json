@@ -1,1 +1,0 @@
-{"id":"e9decb9c34d32aed922f245e2657b0b5","fullName":"deleteSession > useSessionDelete hides the live id before hub DELETE returns","name":"useSessionDelete hides the live id before hub DELETE returns","status":"passed","testResultsByEnv":{"default":"774f0a74b2b8b792dfd9b5b7c9cb5da8"}}

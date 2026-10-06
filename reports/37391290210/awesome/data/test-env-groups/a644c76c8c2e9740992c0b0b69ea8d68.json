@@ -1,1 +1,0 @@
-{"id":"a644c76c8c2e9740992c0b0b69ea8d68","fullName":"registerServiceWorker > registers /sw.js immediately via DS primitive in production","name":"registers /sw.js immediately via DS primitive in production","status":"passed","testResultsByEnv":{"default":"1095c8d1ed644820fd3d4992a48d9d08"}}
