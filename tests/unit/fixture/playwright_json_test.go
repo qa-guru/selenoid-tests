@@ -1,6 +1,7 @@
 package fixture_test
 
 import (
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -54,6 +55,42 @@ func TestPlaywrightBrowserCapsJson_VersionAndFamily(t *testing.T) {
 		a.Step("lists playwright-chromium family", func() {
 			_, ok := cat["playwright-chromium"]
 			require.True(t, ok)
+		})
+	})
+}
+
+func TestPlaywrightCatalog_CIPullIncludesRegressionImages(t *testing.T) {
+	allurex.Run(t, allurex.Meta{
+		Name:      "CI pulls every catalogued Playwright image including regression versions",
+		Package:   "tests.unit.fixture.PlaywrightCatalogCIPullTests",
+		Layer:     "unit",
+		Component: "playwright-image",
+		Epic:      "playwright-image",
+		Suite:     "Playwright CI image contract",
+		Tags:      []string{"unit"},
+	}, func(a *allurex.A) {
+		a.Step("execute CI jq selector against the browser catalog", func() {
+			script := string(loadProjectFixture(t, "scripts/start-ci-selenoid-stack.sh"))
+			_, selector, ok := strings.Cut(script, "done < <(jq -r '")
+			require.True(t, ok)
+			selector, _, ok = strings.Cut(selector, "' \"$BROWSERS\"")
+			require.True(t, ok)
+			raw := loadProjectFixture(t, "fixtures/ci-browsers.json")
+			cmd := exec.Command("jq", "-r", selector)
+			cmd.Stdin = strings.NewReader(string(raw))
+			output, err := cmd.CombinedOutput()
+			require.NoError(t, err, string(output))
+			images := strings.Fields(string(output))
+			catalog, err := playwrightapi.ParseCatalog(raw)
+			require.NoError(t, err)
+			for browser, family := range catalog {
+				if !strings.HasPrefix(browser, "playwright-") {
+					continue
+				}
+				for version, block := range family.Versions {
+					require.Contains(t, images, block.Image, "%s/%s must be pulled", browser, version)
+				}
+			}
 		})
 	})
 }

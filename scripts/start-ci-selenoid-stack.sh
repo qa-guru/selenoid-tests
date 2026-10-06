@@ -110,9 +110,7 @@ pull_browser_images() {
     .firefox.versions[(.firefox.default + "-min")].image // empty,
     .msedge.versions[.msedge.default].image // empty,
     .msedge.versions[(.msedge.default + "-min")].image // empty,
-    (to_entries[] | select(.key | startswith("playwright-")) | .value |
-      (.versions[.default].image // empty),
-      (.versions[(.default + "-min")].image // empty))
+    (to_entries[] | select(.key | startswith("playwright-")) | .value.versions[] | .image // empty)
   ' "$BROWSERS" | sort -u)
   echo "    docker pull ${VIDEO_RECORDER_IMAGE}"
   docker pull "${VIDEO_RECORDER_IMAGE}"
