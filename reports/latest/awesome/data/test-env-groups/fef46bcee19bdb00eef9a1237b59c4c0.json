@@ -1,0 +1,1 @@
+{"id":"fef46bcee19bdb00eef9a1237b59c4c0","fullName":"header metrics-wrap wiring (synced from design-system) > hides .header__burger with specificity above .icon-btn","name":"hides .header__burger with specificity above .icon-btn","status":"passed","testResultsByEnv":{"default":"42ac0236a7e32a20acbeb80b0d22d8e0"}}
