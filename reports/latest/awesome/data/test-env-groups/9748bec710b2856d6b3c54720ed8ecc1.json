@@ -1,1 +1,1 @@
-{"id":"9748bec710b2856d6b3c54720ed8ecc1","fullName":"tests.integration.CmInstallerLifecycleTests.configure writes browsers.json from dev catalog","name":"configure writes browsers.json from dev catalog","status":"passed","testResultsByEnv":{"default":"2bc06398929568b827e54a28a137850a"}}
+{"id":"9748bec710b2856d6b3c54720ed8ecc1","fullName":"tests.integration.CmInstallerLifecycleTests.configure writes browsers.json from dev catalog","name":"configure writes browsers.json from dev catalog","status":"passed","testResultsByEnv":{"default":"dbe2bba83f64c8728f7d5fdb98b675bb"}}
