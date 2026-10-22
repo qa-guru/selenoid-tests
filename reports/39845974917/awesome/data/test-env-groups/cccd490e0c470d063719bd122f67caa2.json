@@ -1,1 +1,0 @@
-{"id":"cccd490e0c470d063719bd122f67caa2","fullName":"registerServiceWorker > skips registration when serviceWorker is unavailable","name":"skips registration when serviceWorker is unavailable","status":"passed","testResultsByEnv":{"default":"f9fcd05af7cf0734c38b52a842cdb9a9"}}
