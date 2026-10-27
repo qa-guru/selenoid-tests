@@ -1,0 +1,1 @@
+{"id":"b490cc9bde05fa09ddd3f3cb6be5fa26","fullName":"hubAuth > reads three independent env vars when AUTH_* are set","name":"reads three independent env vars when AUTH_* are set","status":"passed","testResultsByEnv":{"default":"78e10685fb9f8a88570df2ddc6969738"}}
