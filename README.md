@@ -328,12 +328,12 @@ CM api locally: `./scripts/start-ci-cm-stack.sh` then `SELENOID_TEST_ENV=selenoi
 | cmHubPort | 4445 (CM installer; dev hub stays :4444) |
 | cmUiPort | 8081 |
 | playwrightWsEndpoint | ws://127.0.0.1:4444/playwright/playwright-chromium/1.64.1 |
-| browser / browserVersion | chrome / **152.0** (warm chrome API + e2e) |
-| chromeVersion | 152.0 |
-| chromeMinVersion | 152.0-min |
-| firefoxVersion | 154.0 |
-| firefoxMinVersion | 154.0-min |
-| msedgeVersion | 151.0 |
-| msedgeMinVersion | 151.0-min |
+| browser / browserVersion | chrome / **157.0** (warm chrome API + e2e) |
+| chromeVersion | 157.0 |
+| chromeMinVersion | 157.0-min |
+| firefoxVersion | 159.0 |
+| firefoxMinVersion | 159.0-min |
+| msedgeVersion | 157.0 |
+| msedgeMinVersion | 157.0-min |
 
 Override: env `SELENOID_TEST_*`, plain `hubUrl`/`uiUrl`/… in process env, or keys in `src/test/resources/config/*.properties`.
