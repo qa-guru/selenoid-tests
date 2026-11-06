@@ -1,150 +1,150 @@
 Full Name,Name,Status,Duration,Error,Stack Trace,Steps,Parent Suite,Suite,Sub Suite,Epic,Feature,Story
-"tests.UiSessionsListTests.Active hub session appears in dashboard sessions list","Active hub session appears in dashboard sessions list","passed","6s 210ms",,,"Create hub session via API passed (537ms)
- Open dashboard and wait for stack Connected passed (4s 679ms)
-  Open Sessions page passed (2ms)
-   Verify session row shows browser name passed (18ms)
-    Verify live-sessions empty-state is hidden passed (1ms)
-     Delete hub session passed (224ms)",,"UI sessions list",,"selenoid-ui","UI sessions list","UI sessions list"
-"tests.UiVncViewerE2eTests.Capabilities chrome session shows connected VNC and navigates remote browser","Capabilities chrome session shows connected VNC and navigates remote browser","passed","10s 506ms",,,"Open dashboard and wait for CONNECTED passed (4s 677ms)
- Open New Session page and select chrome passed (44ms)
-  Create chrome session from Capabilities passed (948ms)
-   Navigate remote browser via hub WebDriver API passed (3s 220ms)
-    Verify remote page loaded passed (389ms)
-     Wait for VNC connected and unlock screen passed (37ms)
+"tests.UiSessionsListTests.Active hub session appears in dashboard sessions list","Active hub session appears in dashboard sessions list","passed","6s 824ms",,,"Create hub session via API passed (450ms)
+ Open dashboard and wait for stack Connected passed (5s 514ms)
+  Open Sessions page passed (1ms)
+   Verify session row shows browser name passed (16ms)
+    Verify live-sessions empty-state is hidden passed (2ms)
+     Delete hub session passed (213ms)",,"UI sessions list",,"selenoid-ui","UI sessions list","UI sessions list"
+"tests.UiVncViewerE2eTests.Capabilities chrome session shows connected VNC and navigates remote browser","Capabilities chrome session shows connected VNC and navigates remote browser","passed","10s 502ms",,,"Open dashboard and wait for CONNECTED passed (5s 323ms)
+ Open New Session page and select chrome passed (52ms)
+  Create chrome session from Capabilities passed (919ms)
+   Navigate remote browser via hub WebDriver API passed (2s 536ms)
+    Verify remote page loaded passed (346ms)
+     Wait for VNC connected and unlock screen passed (23ms)
       Read session id from URL passed (0s)
-       Delete hub session passed (548ms)",,"UI VNC viewer e2e",,"selenoid-ui","VNC viewer","VNC viewer in UI"
-"tests.UiHarContentTests.Capabilities harContent is hidden until enableHAR is on","Capabilities harContent is hidden until enableHAR is on","passed","5s 382ms",,,"Open Capabilities and select WebDriver chrome passed (4s 490ms)
- harContent control absent while enableHAR is off passed (6ms)
-  harContent control appears after enableHAR=true passed (52ms)",,"UI HAR content",,"selenoid-ui","Capabilities HAR","harContent control follows enableHAR"
-"tests.UiDashboardLoadTests.Dashboard opens root URL","Dashboard opens root URL","passed","9s 65ms",,,"Open dashboard passed (8s 216ms)
+       Delete hub session passed (661ms)",,"UI VNC viewer e2e",,"selenoid-ui","VNC viewer","VNC viewer in UI"
+"tests.UiHarContentTests.Capabilities harContent is hidden until enableHAR is on","Capabilities harContent is hidden until enableHAR is on","passed","5s 337ms",,,"Open Capabilities and select WebDriver chrome passed (4s 648ms)
+ harContent control absent while enableHAR is off passed (9ms)
+  harContent control appears after enableHAR=true passed (48ms)",,"UI HAR content",,"selenoid-ui","Capabilities HAR","harContent control follows enableHAR"
+"tests.UiDashboardLoadTests.Dashboard opens root URL","Dashboard opens root URL","passed","9s 241ms",,,"Open dashboard passed (8s 494ms)
  Verify Statistics route (or root) is loaded passed (0s)",,"UI dashboard load",,"selenoid-ui","UI dashboard","UI dashboard load"
-"tests.UiReloadTests.Dashboard reload keeps CONNECTED indicators","Dashboard reload keeps CONNECTED indicators","passed","9s 927ms",,,"Open dashboard and wait for CONNECTED passed (4s 469ms)
- Reload dashboard passed (4s 823ms)",,"UI dashboard reload",,"selenoid-ui","UI dashboard","UI dashboard reload"
-"tests.api.HubSessionDeleteSlaTests.DELETE /wd/hub/session/{id} returns within 5s","DELETE /wd/hub/session/{id} returns within 5s","passed","737ms",,,"Create remote session passed (511ms)
- Delete session within SLA passed (226ms)",,"Hub session delete SLA",,"selenoid","WebDriver session API","Session delete SLA"
-"tests.api.HubSessionDeleteUnknownTests.DELETE unknown session returns client error","DELETE unknown session returns client error","passed","176ms",,,"DELETE unknown session id passed (176ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API","Hub session delete unknown"
-"tests.api.HubWelcomeApiTests.GET / returns Selenoid welcome text","GET / returns Selenoid welcome text","passed","176ms",,,"GET / passed (176ms)
+"tests.UiReloadTests.Dashboard reload keeps CONNECTED indicators","Dashboard reload keeps CONNECTED indicators","passed","10s 472ms",,,"Open dashboard and wait for CONNECTED passed (4s 614ms)
+ Reload dashboard passed (5s 98ms)",,"UI dashboard reload",,"selenoid-ui","UI dashboard","UI dashboard reload"
+"tests.api.HubSessionDeleteSlaTests.DELETE /wd/hub/session/{id} returns within 5s","DELETE /wd/hub/session/{id} returns within 5s","passed","724ms",,,"Create remote session passed (504ms)
+ Delete session within SLA passed (220ms)",,"Hub session delete SLA",,"selenoid","WebDriver session API","Session delete SLA"
+"tests.api.HubSessionDeleteUnknownTests.DELETE unknown session returns client error","DELETE unknown session returns client error","passed","168ms",,,"DELETE unknown session id passed (168ms)",,"Hub session delete unknown",,"selenoid","WebDriver session API","Hub session delete unknown"
+"tests.api.HubWelcomeApiTests.GET / returns Selenoid welcome text","GET / returns Selenoid welcome text","passed","167ms",,,"GET / passed (167ms)
  Verify welcome text passed (0s)",,"Hub welcome page API",,"selenoid","Hub welcome","Hub welcome page API"
-"tests.api.UiBrowsersConfigTests.GET /browsers-config returns browser catalog JSON","GET /browsers-config returns browser catalog JSON","passed","175ms",,,"GET /browsers-config passed (175ms)
+"tests.api.UiBrowsersConfigTests.GET /browsers-config returns browser catalog JSON","GET /browsers-config returns browser catalog JSON","passed","167ms",,,"GET /browsers-config passed (167ms)
  Verify catalog map is present passed (0s)",,"UI browsers config API",,"selenoid-ui","UI browsers config","UI browsers config API"
-"tests.api.HubClipboardApiTests.GET /clipboard/{sessionId} for unknown session returns 404 JSON","GET /clipboard/{sessionId} for unknown session returns 404 JSON","passed","176ms",,,"GET /clipboard/unknown-session passed (176ms)",,"Hub clipboard proxy API",,"selenoid","Hub clipboard proxy","Hub clipboard proxy API"
-"tests.api.UiClipboardApiTests.GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","passed","174ms",,,"GET UI /clipboard/unknown-session passed (174ms)",,"UI /clipboard proxy API",,"selenoid-ui","UI clipboard proxy","UI /clipboard proxy API"
-"tests.api.HubDownloadApiTests.GET /download/{sessionId} for unknown session returns 404 JSON","GET /download/{sessionId} for unknown session returns 404 JSON","passed","175ms",,,"GET /download/unknown-session passed (175ms)",,"Hub download proxy API",,"selenoid","Hub download proxy","Hub download proxy API"
-"tests.api.HubErrorApiTests.GET /error returns invalid session id JSON","GET /error returns invalid session id JSON","passed","175ms",,,"GET /error passed (175ms)",,"Hub /error API",,"selenoid","Hub error","Hub /error API"
-"tests.api.HubLogsListApiTests.GET /logs/{sessionId} without WebSocket upgrade returns 400","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","175ms",,,"GET /logs/unknown-session without WebSocket headers passed (175ms)",,"Hub logs endpoint API",,"selenoid","Hub logs","Hub logs endpoint API"
-"tests.api.HubLogsSessionApiTests.GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","passed","952ms",,,"Create hub session passed (550ms)
- GET /logs/{sessionId} without WebSocket headers passed (174ms)
-  Delete hub session passed (228ms)",,"Hub session logs WebSocket API",,"selenoid","Hub logs WebSocket","Hub logs WebSocket"
-"tests.api.UiPingTests.GET /ping returns uptime and version","GET /ping returns uptime and version","passed","175ms",,,"GET /ping passed (175ms)
+"tests.api.HubClipboardApiTests.GET /clipboard/{sessionId} for unknown session returns 404 JSON","GET /clipboard/{sessionId} for unknown session returns 404 JSON","passed","168ms",,,"GET /clipboard/unknown-session passed (168ms)",,"Hub clipboard proxy API",,"selenoid","Hub clipboard proxy","Hub clipboard proxy API"
+"tests.api.UiClipboardApiTests.GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","GET /clipboard/{sessionId} via UI proxy returns 404 for unknown session","passed","168ms",,,"GET UI /clipboard/unknown-session passed (168ms)",,"UI /clipboard proxy API",,"selenoid-ui","UI clipboard proxy","UI /clipboard proxy API"
+"tests.api.HubDownloadApiTests.GET /download/{sessionId} for unknown session returns 404 JSON","GET /download/{sessionId} for unknown session returns 404 JSON","passed","167ms",,,"GET /download/unknown-session passed (167ms)",,"Hub download proxy API",,"selenoid","Hub download proxy","Hub download proxy API"
+"tests.api.HubErrorApiTests.GET /error returns invalid session id JSON","GET /error returns invalid session id JSON","passed","168ms",,,"GET /error passed (167ms)",,"Hub /error API",,"selenoid","Hub error","Hub /error API"
+"tests.api.HubLogsListApiTests.GET /logs/{sessionId} without WebSocket upgrade returns 400","GET /logs/{sessionId} without WebSocket upgrade returns 400","passed","167ms",,,"GET /logs/unknown-session without WebSocket headers passed (167ms)",,"Hub logs endpoint API",,"selenoid","Hub logs","Hub logs endpoint API"
+"tests.api.HubLogsSessionApiTests.GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","GET /logs/{sessionId} without WebSocket upgrade returns 400 for active session","passed","908ms",,,"Create hub session passed (522ms)
+ GET /logs/{sessionId} without WebSocket headers passed (167ms)
+  Delete hub session passed (219ms)",,"Hub session logs WebSocket API",,"selenoid","Hub logs WebSocket","Hub logs WebSocket"
+"tests.api.UiPingTests.GET /ping returns uptime and version","GET /ping returns uptime and version","passed","168ms",,,"GET /ping passed (168ms)
  Verify uptime and version passed (0s)",,"UI ping API",,"selenoid-ui","UI ping","UI ping API"
-"tests.api.HubPingTests.GET /ping returns uptime and version","GET /ping returns uptime and version","passed","176ms",,,"GET /ping passed (176ms)
+"tests.api.HubPingTests.GET /ping returns uptime and version","GET /ping returns uptime and version","passed","167ms",,,"GET /ping passed (167ms)
  Verify uptime and version passed (0s)",,"Hub ping API",,"selenoid","Hub ping","Hub ping API"
-"tests.api.UiPingVersionTests.GET /ping version contains git revision marker","GET /ping version contains git revision marker","passed","174ms",,,"GET /ping passed (174ms)
+"tests.api.UiPingVersionTests.GET /ping version contains git revision marker","GET /ping version contains git revision marker","passed","167ms",,,"GET /ping passed (167ms)
  Verify version looks like revision passed (0s)",,"UI ping version",,"selenoid-ui","UI ping","UI ping version"
-"tests.api.HubIosStatusTests.GET /status has no ios family (roadmap stub)","GET /status has no ios family (roadmap stub)","passed","174ms",,,"GET /status passed (174ms)
+"tests.api.HubIosStatusTests.GET /status has no ios family (roadmap stub)","GET /status has no ios family (roadmap stub)","passed","168ms",,,"GET /status passed (168ms)
  ios is not advertised until qaguru/ios ships passed (0s)",,"iOS hub status stub",,"ios","Appium session","iOS hub status stub"
-"tests.api.HubAndroidStatusTests.GET /status lists android when the Appium image is configured","GET /status lists android when the Appium image is configured","passed","175ms",,,"GET /status passed (175ms)
+"tests.api.HubAndroidStatusTests.GET /status lists android when the Appium image is configured","GET /status lists android when the Appium image is configured","passed","168ms",,,"GET /status passed (168ms)
  Skip unless this hub advertises android passed (0s)
   Verify android family is present passed (0s)",,"Android hub status",,"android","Appium session","Android hub status"
-"tests.api.HubStatusBrowsersTests.GET /status lists configured browser families","GET /status lists configured browser families","passed","174ms",,,"GET /status passed (174ms)
+"tests.api.HubStatusBrowsersTests.GET /status lists configured browser families","GET /status lists configured browser families","passed","168ms",,,"GET /status passed (168ms)
  Verify chrome is configured passed (0s)",,"Hub status browsers",,"selenoid","Hub status","Hub status browsers"
-"tests.api.HubStatusTests.GET /status returns hub statistics JSON","GET /status returns hub statistics JSON","passed","175ms",,,"GET /status passed (175ms)
+"tests.api.HubStatusTests.GET /status returns hub statistics JSON","GET /status returns hub statistics JSON","passed","167ms",,,"GET /status passed (167ms)
  Verify root counters passed (0s)
   Verify browsers map is present passed (0s)",,"Hub status",,"selenoid","Hub status","Hub status"
-"tests.api.HubStatusSessionApiTests.GET /status used counter tracks session lifecycle","GET /status used counter tracks session lifecycle","passed","1s 273ms",,,"Snapshot hub used counter passed (175ms)
- Create hub session passed (521ms)
-  Verify used counter incremented passed (175ms)
-   Delete hub session passed (227ms)
-    Verify used counter returned to baseline passed (175ms)",,"Hub status session counters API",,"selenoid","Hub status with session","Hub status with session"
-"tests.api.HubVideoApiTests.GET /video/?json returns paginated page (default limit 10)","GET /video/?json returns paginated page (default limit 10)","passed","199ms",,,"GET /video/?json passed (199ms)
+"tests.api.HubStatusSessionApiTests.GET /status used counter tracks session lifecycle","GET /status used counter tracks session lifecycle","passed","1s 263ms",,,"Snapshot hub used counter passed (168ms)
+ Create hub session passed (539ms)
+  Verify used counter incremented passed (167ms)
+   Delete hub session passed (221ms)
+    Verify used counter returned to baseline passed (168ms)",,"Hub status session counters API",,"selenoid","Hub status with session","Hub status with session"
+"tests.api.HubVideoApiTests.GET /video/?json returns paginated page (default limit 10)","GET /video/?json returns paginated page (default limit 10)","passed","194ms",,,"GET /video/?json passed (194ms)
  Verify paginated payload passed (0s)",,"Hub video API",,"video-recorder","Hub video","Hub video API"
-"tests.api.UiVideoApiTests.GET /video/?json via UI proxy returns paginated page (default limit 10)","GET /video/?json via UI proxy returns paginated page (default limit 10)","passed","200ms",,,"GET UI /video/?json passed (200ms)
+"tests.api.UiVideoApiTests.GET /video/?json via UI proxy returns paginated page (default limit 10)","GET /video/?json via UI proxy returns paginated page (default limit 10)","passed","192ms",,,"GET UI /video/?json passed (192ms)
  Verify paginated payload passed (0s)",,"UI /video proxy API",,"video-recorder","UI video proxy","UI /video proxy API"
-"tests.api.HubVideoApiTests.GET /video/?json&offset=10 returns second page metadata","GET /video/?json&offset=10 returns second page metadata","passed","399ms",,,"GET first page passed (199ms)
- GET second page passed (200ms)
+"tests.api.HubVideoApiTests.GET /video/?json&offset=10 returns second page metadata","GET /video/?json&offset=10 returns second page metadata","passed","383ms",,,"GET first page passed (193ms)
+ GET second page passed (190ms)
   Verify second page contract passed (0s)",,"Hub video API",,"video-recorder","Hub video","Hub video API"
-"tests.api.HubVideoApiTests.GET /video/{missing}.mp4 returns 404","GET /video/{missing}.mp4 returns 404","passed","175ms",,,"GET missing video file passed (175ms)",,"Hub video API",,"video-recorder","Hub video","Hub video API"
-"tests.api.UiVideoApiTests.GET /video/{missing}.mp4 via UI proxy returns 404","GET /video/{missing}.mp4 via UI proxy returns 404","passed","174ms",,,"GET missing video via UI passed (174ms)",,"UI /video proxy API",,"video-recorder","UI video proxy","UI /video proxy API"
-"tests.api.HubVncSessionApiTests.GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","passed","1s 668ms",,,"Create hub session with VNC passed (942ms)
- GET /vnc/{sessionId} without WebSocket headers passed (175ms)
-  Delete hub session passed (551ms)",,"Hub session VNC WebSocket API",,"selenoid","Hub VNC WebSocket","Hub VNC WebSocket"
-"tests.api.HubWebDriverStatusApiTests.GET /wd/hub/status reports ready hub","GET /wd/hub/status reports ready hub","passed","175ms",,,"GET /wd/hub/status passed (175ms)
+"tests.api.HubVideoApiTests.GET /video/{missing}.mp4 returns 404","GET /video/{missing}.mp4 returns 404","passed","167ms",,,"GET missing video file passed (167ms)",,"Hub video API",,"video-recorder","Hub video","Hub video API"
+"tests.api.UiVideoApiTests.GET /video/{missing}.mp4 via UI proxy returns 404","GET /video/{missing}.mp4 via UI proxy returns 404","passed","168ms",,,"GET missing video via UI passed (168ms)",,"UI /video proxy API",,"video-recorder","UI video proxy","UI /video proxy API"
+"tests.api.HubVncSessionApiTests.GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","GET /vnc/{sessionId} without WebSocket upgrade returns 400 when enableVNC=true","passed","1s 609ms",,,"Create hub session with VNC passed (945ms)
+ GET /vnc/{sessionId} without WebSocket headers passed (168ms)
+  Delete hub session passed (496ms)",,"Hub session VNC WebSocket API",,"selenoid","Hub VNC WebSocket","Hub VNC WebSocket"
+"tests.api.HubWebDriverStatusApiTests.GET /wd/hub/status reports ready hub","GET /wd/hub/status reports ready hub","passed","167ms",,,"GET /wd/hub/status passed (167ms)
  Verify ready flag and message passed (0s)",,"Hub WebDriver status API",,"selenoid","Hub WebDriver status","Hub WebDriver status API"
-"tests.api.WebDriverStatusApiTests.GET /wd/hub/status reports ready hub for webdriver-image sessions","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","176ms",,,"GET /wd/hub/status passed (176ms)
+"tests.api.WebDriverStatusApiTests.GET /wd/hub/status reports ready hub for webdriver-image sessions","GET /wd/hub/status reports ready hub for webdriver-image sessions","passed","167ms",,,"GET /wd/hub/status passed (167ms)
  Verify ready flag and message passed (0s)",,"WebDriver image hub status API",,"webdriver-image","WebDriver hub status","WebDriver image hub status API"
-"tests.api.UiLogsWsApiTests.GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","916ms",,,"Create hub session passed (513ms)
- GET /ws/logs/{sessionId} without WebSocket headers passed (175ms)
-  Delete hub session passed (228ms)",,"UI /ws/logs WebSocket API",,"selenoid-ui","UI logs WebSocket proxy","UI logs WebSocket proxy"
-"tests.api.UiVncWsApiTests.GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","174ms",,,"GET /ws/vnc/{sessionId} without WebSocket headers passed (174ms)",,"UI /ws/vnc WebSocket API",,"selenoid-ui","UI VNC WebSocket proxy","UI /ws/vnc WebSocket API"
-"tests.api.PlaywrightEndpointTests.GET playwright path without upgrade returns 400","GET playwright path without upgrade returns 400","passed","174ms",,,"GET playwright path without WebSocket headers passed (174ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint","Playwright HTTP endpoint"
-"tests.api.UiStatusTotalTests.GET UI /status exposes total quota counter","GET UI /status exposes total quota counter","passed","175ms",,,"GET UI /status passed (175ms)
+"tests.api.UiLogsWsApiTests.GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","GET /ws/logs/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","893ms",,,"Create hub session passed (507ms)
+ GET /ws/logs/{sessionId} without WebSocket headers passed (167ms)
+  Delete hub session passed (219ms)",,"UI /ws/logs WebSocket API",,"selenoid-ui","UI logs WebSocket proxy","UI logs WebSocket proxy"
+"tests.api.UiVncWsApiTests.GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","GET /ws/vnc/{sessionId} without WebSocket upgrade returns 400 via UI proxy","passed","167ms",,,"GET /ws/vnc/{sessionId} without WebSocket headers passed (167ms)",,"UI /ws/vnc WebSocket API",,"selenoid-ui","UI VNC WebSocket proxy","UI /ws/vnc WebSocket API"
+"tests.api.PlaywrightEndpointTests.GET playwright path without upgrade returns 400","GET playwright path without upgrade returns 400","passed","168ms",,,"GET playwright path without WebSocket headers passed (168ms)",,"Playwright HTTP endpoint",,"playwright-image","Playwright endpoint","Playwright HTTP endpoint"
+"tests.api.UiStatusTotalTests.GET UI /status exposes total quota counter","GET UI /status exposes total quota counter","passed","168ms",,,"GET UI /status passed (168ms)
  Verify total counter is non-negative passed (0s)",,"UI status total counter",,"selenoid-ui","UI status proxy","UI status total counter"
-"tests.api.UiStatusTests.GET UI /status returns proxied hub statistics JSON","GET UI /status returns proxied hub statistics JSON","passed","175ms",,,"GET UI /status passed (175ms)
+"tests.api.UiStatusTests.GET UI /status returns proxied hub statistics JSON","GET UI /status returns proxied hub statistics JSON","passed","168ms",,,"GET UI /status passed (168ms)
  Verify proxied state counters passed (0s)
   Verify browsers map is present passed (0s)",,"UI status proxy",,"selenoid-ui","UI status proxy","UI status proxy"
-"tests.api.PlaywrightUnknownPathTests.GET unknown playwright path returns 400","GET unknown playwright path returns 400","passed","175ms",,,"GET unknown playwright path passed (175ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint","Playwright unknown path"
-"tests.UiNewSessionCreateTests.New Session Create Session opens the session page","New Session Create Session opens the session page","passed","9s 606ms",,,"Open New Session and select WebDriver chrome passed (4s 510ms)
- Click Create Session — session page, not a skip passed (3s 74ms)
-  Cleanup hub session passed (1s 378ms)",,"UI new session create",,"selenoid-ui","New Session","Create Session button"
-"tests.api.HubSessionApiTests.POST /wd/hub/session creates and DELETE removes session","POST /wd/hub/session creates and DELETE removes session","passed","782ms",,,"Create remote session passed (556ms)
- Verify session id passed (0s)
-  Delete session passed (226ms)",,"Hub session API",,"selenoid","WebDriver session API","WebDriver session API"
-"tests.api.WebDriverSessionApiTests.POST /wd/hub/session creates chrome session via webdriver-image node","POST /wd/hub/session creates chrome session via webdriver-image node","passed","775ms",,,"Create remote session passed (549ms)
+"tests.api.PlaywrightUnknownPathTests.GET unknown playwright path returns 400","GET unknown playwright path returns 400","passed","167ms",,,"GET unknown playwright path passed (167ms)",,"Playwright unknown path",,"playwright-image","Playwright endpoint","Playwright unknown path"
+"tests.UiNewSessionCreateTests.New Session Create Session opens the session page","New Session Create Session opens the session page","passed","9s 364ms",,,"Open New Session and select WebDriver chrome passed (4s 481ms)
+ Click Create Session — session page, not a skip passed (2s 826ms)
+  Cleanup hub session passed (1s 417ms)",,"UI new session create",,"selenoid-ui","New Session","Create Session button"
+"tests.api.HubSessionApiTests.POST /wd/hub/session creates and DELETE removes session","POST /wd/hub/session creates and DELETE removes session","passed","757ms",,,"Create remote session passed (536ms)
+ Verify session id passed (1ms)
+  Delete session passed (220ms)",,"Hub session API",,"selenoid","WebDriver session API","WebDriver session API"
+"tests.api.WebDriverSessionApiTests.POST /wd/hub/session creates chrome session via webdriver-image node","POST /wd/hub/session creates chrome session via webdriver-image node","passed","781ms",,,"Create remote session passed (561ms)
  Verify session id and browserName passed (0s)
-  Delete session passed (226ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API","WebDriver session API"
-"tests.api.HubCapabilitiesApiTests.POST /wd/hub/session echoes browserName in capabilities","POST /wd/hub/session echoes browserName in capabilities","passed","1s 154ms",,,"Create remote session passed (925ms)
+  Delete session passed (220ms)",,"WebDriver image session API",,"webdriver-image","WebDriver session API","WebDriver session API"
+"tests.api.HubCapabilitiesApiTests.POST /wd/hub/session echoes browserName in capabilities","POST /wd/hub/session echoes browserName in capabilities","passed","1s 577ms",,,"Create remote session passed (1s 358ms)
  Verify capabilities.browserName passed (0s)
-  Delete session passed (229ms)",,"Hub session capabilities",,"selenoid","WebDriver session API","WebDriver session API"
-"tests.api.HubSessionInvalidBrowserTests.POST /wd/hub/session rejects unknown browser","POST /wd/hub/session rejects unknown browser","passed","175ms",,,"POST session with unknown browser passed (175ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API","Hub session invalid browser"
-"tests.HubSessionTests.Remote Chrome session opens default stack login","Remote Chrome session opens default stack login","passed","1s 596ms",,,"Create remote WebDriver session passed (529ms)
- Open smoke URL passed (295ms)
+  Delete session passed (219ms)",,"Hub session capabilities",,"selenoid","WebDriver session API","WebDriver session API"
+"tests.api.HubSessionInvalidBrowserTests.POST /wd/hub/session rejects unknown browser","POST /wd/hub/session rejects unknown browser","passed","168ms",,,"POST session with unknown browser passed (168ms)",,"Hub session invalid browser",,"selenoid","WebDriver session API","Hub session invalid browser"
+"tests.HubSessionTests.Remote Chrome session opens default stack login","Remote Chrome session opens default stack login","passed","1s 518ms",,,"Create remote WebDriver session passed (523ms)
+ Open smoke URL passed (280ms)
   Verify session id is assigned passed (0s)
-   Verify page title passed (179ms)
-    Verify login form passed (369ms)
-     Delete remote session passed (224ms)",,"WebDriver session",,"webdriver-image","WebDriver session","WebDriver session"
-"tests.HubPlaywrightSessionTests.Remote Playwright WS session opens default stack login","Remote Playwright WS session opens default stack login","failed","1s 349ms","Remote Playwright WS session opens default stack login failed",,,,"Playwright WS session",,"playwright-image","Playwright WS session","Playwright WS session"
-"tests.HubSessionIdTests.Remote session assigns session id","Remote session assigns session id","passed","1s 48ms",,,"Create remote WebDriver session passed (525ms)
- Open smoke URL passed (299ms)
+   Verify page title passed (163ms)
+    Verify login form passed (340ms)
+     Delete remote session passed (211ms)",,"WebDriver session",,"webdriver-image","WebDriver session","WebDriver session"
+"tests.HubPlaywrightSessionTests.Remote Playwright WS session opens default stack login","Remote Playwright WS session opens default stack login","failed","1s 367ms","Remote Playwright WS session opens default stack login failed",,,,"Playwright WS session",,"playwright-image","Playwright WS session","Playwright WS session"
+"tests.HubSessionIdTests.Remote session assigns session id","Remote session assigns session id","passed","1s 7ms",,,"Create remote WebDriver session passed (522ms)
+ Open smoke URL passed (273ms)
   Verify session id passed (0s)
-   Delete remote session passed (223ms)",,"Hub session id",,"webdriver-image","WebDriver session","Hub session id"
-"tests.HubSessionTitleTests.Remote session page has default stack title","Remote session page has default stack title","passed","1s 244ms",,,"Create remote WebDriver session passed (544ms)
- Open smoke URL passed (296ms)
-  Verify document title passed (179ms)
-   Delete remote session passed (225ms)",,"Hub session title",,"webdriver-image","WebDriver session","Hub session title"
-"tests.HubSessionHeadingTests.Remote session renders default stack login form","Remote session renders default stack login form","passed","1s 862ms",,,"Create remote WebDriver session passed (903ms)
- Open smoke URL passed (371ms)
-  Verify login form passed (364ms)
-   Delete remote session passed (224ms)",,"Hub session heading",,"webdriver-image","WebDriver session","Hub session heading"
-"tests.api.UiVideoSessionApiTests.Session video is downloadable via UI /video proxy after delete","Session video is downloadable via UI /video proxy after delete","passed","5s 557ms",,,"Create hub session with video passed (1s 12ms)
- Keep session briefly for recorder passed (3s 1ms)
-  Delete hub session passed (1s 169ms)
-   Wait for video artifact in UI GET /video/?json&q=sessionId passed (200ms)
+   Delete remote session passed (212ms)",,"Hub session id",,"webdriver-image","WebDriver session","Hub session id"
+"tests.HubSessionTitleTests.Remote session page has default stack title","Remote session page has default stack title","passed","1s 184ms",,,"Create remote WebDriver session passed (521ms)
+ Open smoke URL passed (284ms)
+  Verify document title passed (168ms)
+   Delete remote session passed (211ms)",,"Hub session title",,"webdriver-image","WebDriver session","Hub session title"
+"tests.HubSessionHeadingTests.Remote session renders default stack login form","Remote session renders default stack login form","passed","1s 724ms",,,"Create remote WebDriver session passed (882ms)
+ Open smoke URL passed (285ms)
+  Verify login form passed (344ms)
+   Delete remote session passed (213ms)",,"Hub session heading",,"webdriver-image","WebDriver session","Hub session heading"
+"tests.api.UiVideoSessionApiTests.Session video is downloadable via UI /video proxy after delete","Session video is downloadable via UI /video proxy after delete","passed","5s 250ms",,,"Create hub session with video passed (980ms)
+ Keep session briefly for recorder passed (3s 2ms)
+  Delete hub session passed (899ms)
+   Wait for video artifact in UI GET /video/?json&q=sessionId passed (186ms)
     Verify session video is listed via UI proxy passed (0s)
-     Download session video via UI proxy passed (175ms)
+     Download session video via UI proxy passed (183ms)
       Verify MP4 payload via UI proxy passed (0s)",,"UI session video via /video proxy",,"video-recorder","UI session video proxy","UI session video proxy"
-"tests.api.HubVideoSessionApiTests.Session with enableVideo=true produces downloadable MP4 after delete","Session with enableVideo=true produces downloadable MP4 after delete","passed","5s 474ms",,,"Create hub session with video passed (1s 33ms)
- Keep session briefly for recorder passed (3s 3ms)
-  Delete hub session passed (1s 61ms)
-   Wait for video artifact in GET /video/?json&q=sessionId passed (202ms)
+"tests.api.HubVideoSessionApiTests.Session with enableVideo=true produces downloadable MP4 after delete","Session with enableVideo=true produces downloadable MP4 after delete","passed","5s 317ms",,,"Create hub session with video passed (1s 30ms)
+ Keep session briefly for recorder passed (3s 2ms)
+  Delete hub session passed (920ms)
+   Wait for video artifact in GET /video/?json&q=sessionId passed (194ms)
     Verify session video is listed passed (0s)
-     Download session video passed (175ms)
+     Download session video passed (171ms)
       Verify MP4 payload passed (0s)",,"Hub session video API",,"video-recorder","Hub session video","Hub session video"
-"tests.UiVideosPageTests.Sessions archive loads Finished sessions shell without requiring full catalog","Sessions archive loads Finished sessions shell without requiring full catalog","passed","4s 199ms",,,"Open Sessions page (archive) passed (3s 475ms)
- Verify Finished sessions table shell passed (16ms)
+"tests.UiVideosPageTests.Sessions archive loads Finished sessions shell without requiring full catalog","Sessions archive loads Finished sessions shell without requiring full catalog","passed","3s 850ms",,,"Open Sessions page (archive) passed (3s 188ms)
+ Verify Finished sessions table shell passed (19ms)
   Verify empty state, rows, or pager passed (3ms)",,"UI sessions archive page",,"selenoid-ui","UI sessions archive","UI finished sessions archive"
-"tests.api.UiSseStreamTests.SSE /events delivers state or error payload","SSE /events delivers state or error payload","passed","4s 676ms",,,"Read first SSE event passed (4s 676ms)
+"tests.api.UiSseStreamTests.SSE /events delivers state or error payload","SSE /events delivers state or error payload","passed","4s 214ms",,,"Read first SSE event passed (4s 214ms)
  Verify payload has state or errors passed (0s)",,"UI SSE stream",,"selenoid-ui","UI SSE","UI SSE stream"
-"tests.api.UiSseMultipleEventsTests.SSE /events delivers two consecutive payloads","SSE /events delivers two consecutive payloads","passed","9s 997ms",,,"Read two SSE events passed (9s 997ms)
+"tests.api.UiSseMultipleEventsTests.SSE /events delivers two consecutive payloads","SSE /events delivers two consecutive payloads","passed","10s 0ms",,,"Read two SSE events passed (10s 0ms)
  Verify both events are parseable passed (0s)",,"UI SSE multiple events",,"selenoid-ui","UI SSE","UI SSE multiple events"
-"tests.UiStatusBarTests.SSE and SELENOID stay CONNECTED on stable stack","SSE and SELENOID stay CONNECTED on stable stack","passed","5s 71ms",,,"Open dashboard and wait for CONNECTED passed (4s 186ms)
- Verify status indicators show connected StatusTile styling passed (27ms)
+"tests.UiStatusBarTests.SSE and SELENOID stay CONNECTED on stable stack","SSE and SELENOID stay CONNECTED on stable stack","passed","5s 165ms",,,"Open dashboard and wait for CONNECTED passed (4s 534ms)
+ Verify status indicators show connected StatusTile styling passed (3ms)
   Keep CONNECTED stable for 5 seconds passed (0s)",,"UI status bar",,"selenoid-ui","UI status bar","UI status bar"
-"tests.UiSseIndicatorTests.SSE indicator uses connected StatusTile styling when connected","SSE indicator uses connected StatusTile styling when connected","passed","5s 210ms",,,"Open dashboard passed (4s 136ms)
- Verify SSE indicator uses connected StatusTile styling passed (14ms)",,"UI SSE indicator",,"selenoid-ui","UI status bar","UI SSE indicator"
-"tests.UiSessionStopDeleteTests.Stop session shows FINISHED immediately, then Delete wipes artifacts","Stop session shows FINISHED immediately, then Delete wipes artifacts","passed","14s 110ms",,,"Open dashboard passed (4s 531ms)
- Create WebDriver session with VNC+video via hub API passed (1s 52ms)
-  Open session page passed (2ms)
-   Wait for VNC connected passed (3s 821ms)
-    Stop — FINISHED and VNC gone without waiting for SSE passed (38ms)
-     Video appears and Delete becomes enabled passed (3s 789ms)
-      Delete session from UI passed (236ms)",,"UI session stop delete",,"selenoid-ui","Session stop","Optimistic Stop then Delete"
+"tests.UiSseIndicatorTests.SSE indicator uses connected StatusTile styling when connected","SSE indicator uses connected StatusTile styling when connected","passed","4s 701ms",,,"Open dashboard passed (4s 38ms)
+ Verify SSE indicator uses connected StatusTile styling passed (7ms)",,"UI SSE indicator",,"selenoid-ui","UI status bar","UI SSE indicator"
+"tests.UiSessionStopDeleteTests.Stop session shows FINISHED immediately, then Delete wipes artifacts","Stop session shows FINISHED immediately, then Delete wipes artifacts","passed","13s 311ms",,,"Open dashboard passed (4s 342ms)
+ Create WebDriver session with VNC+video via hub API passed (941ms)
+  Open session page passed (3ms)
+   Wait for VNC connected passed (3s 825ms)
+    Stop — FINISHED and VNC gone without waiting for SSE passed (39ms)
+     Video appears and Delete becomes enabled passed (3s 290ms)
+      Delete session from UI passed (235ms)",,"UI session stop delete",,"selenoid-ui","Session stop","Optimistic Stop then Delete"
