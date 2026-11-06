@@ -1,1 +1,0 @@
-{"id":"c0d757570745cb43deb3ce0c9380a813","fullName":"waitForLiveSession > resolves true when the session is already in the initial snapshot","name":"resolves true when the session is already in the initial snapshot","status":"passed","testResultsByEnv":{"default":"50c33a6353c84a95113227a061de9e84"}}
