@@ -327,7 +327,7 @@ CM api locally: `./scripts/start-ci-cm-stack.sh` then `SELENOID_TEST_ENV=selenoi
 | remoteUrl | http://127.0.0.1:4444/wd/hub |
 | cmHubPort | 4445 (CM installer; dev hub stays :4444) |
 | cmUiPort | 8081 |
-| playwrightWsEndpoint | ws://127.0.0.1:4444/playwright/playwright-chromium/1.62.1 |
+| playwrightWsEndpoint | ws://127.0.0.1:4444/playwright/playwright-chromium/1.64.1 |
 | browser / browserVersion | chrome / **152.0** (warm chrome API + e2e) |
 | chromeVersion | 152.0 |
 | chromeMinVersion | 152.0-min |
