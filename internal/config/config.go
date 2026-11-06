@@ -90,7 +90,7 @@ func FromMap(overrides map[string]string) *Config {
 		"apiBaseUrl":               "",
 		"hubStatusPath":            "/status",
 		"remoteUrl":                "",
-		"playwrightWsEndpoint":     "ws://127.0.0.1:4444/playwright/playwright-chromium/1.61.1",
+		"playwrightWsEndpoint":     "ws://127.0.0.1:4444/playwright/playwright-chromium/1.65.0",
 		"playwrightSessionName":    "java-playwright-tests",
 		"playwrightSessionTimeout": "5m",
 		"playwrightEnableVnc":      "false",
