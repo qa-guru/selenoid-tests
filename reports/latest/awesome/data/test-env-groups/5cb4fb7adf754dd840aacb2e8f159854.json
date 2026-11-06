@@ -1,1 +1,1 @@
-{"id":"5cb4fb7adf754dd840aacb2e8f159854","fullName":"config.ConfigReader.resolveHubUrl keeps trailing slash","name":"ConfigReader.resolveHubUrl keeps trailing slash","status":"passed","testResultsByEnv":{"default":"cb7ee38212721da85fa417daa2caac7d"}}
+{"id":"5cb4fb7adf754dd840aacb2e8f159854","fullName":"config.ConfigReader.resolveHubUrl keeps trailing slash","name":"ConfigReader.resolveHubUrl keeps trailing slash","status":"passed","testResultsByEnv":{"default":"68239a7083d861cb20936906cc3f774a"}}

@@ -1,1 +1,1 @@
-{"id":"78d61f0c95c12f57d593f571426bd24a","fullName":"tests.api.HubStatusTests.GET /status returns hub statistics JSON","name":"GET /status returns hub statistics JSON","status":"passed","testResultsByEnv":{"default":"b2bedbedfc6e2407e8974455b455fbf1"}}
+{"id":"78d61f0c95c12f57d593f571426bd24a","fullName":"tests.api.HubStatusTests.GET /status returns hub statistics JSON","name":"GET /status returns hub statistics JSON","status":"passed","testResultsByEnv":{"default":"ba5e1ec5a87d52e1d9c756dc7f948ac4"}}
