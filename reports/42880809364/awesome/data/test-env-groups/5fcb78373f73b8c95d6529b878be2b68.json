@@ -1,0 +1,1 @@
+{"id":"5fcb78373f73b8c95d6529b878be2b68","fullName":"Capabilities visual contract (Driver + Remote hub + Browser caps panels) > does not break terminal JSON with overflow-wrap:anywhere","name":"does not break terminal JSON with overflow-wrap:anywhere","status":"passed","testResultsByEnv":{"default":"96fdd746bb44272c2fb012d501c3b71f"}}
