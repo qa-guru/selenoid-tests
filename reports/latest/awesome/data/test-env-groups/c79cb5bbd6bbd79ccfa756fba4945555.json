@@ -1,1 +1,1 @@
-{"id":"c79cb5bbd6bbd79ccfa756fba4945555","fullName":"tests.api.CmHubStatusApiTests.GET /status on CM hub port returns statistics JSON","name":"GET /status on CM hub port returns statistics JSON","status":"passed","testResultsByEnv":{"default":"1d6fc42308ebd2ae2500c49361ea3357"}}
+{"id":"c79cb5bbd6bbd79ccfa756fba4945555","fullName":"tests.api.CmHubStatusApiTests.GET /status on CM hub port returns statistics JSON","name":"GET /status on CM hub port returns statistics JSON","status":"passed","testResultsByEnv":{"default":"dfb6af6eaf6f2c8793fd0d6793c3bc3b"}}
