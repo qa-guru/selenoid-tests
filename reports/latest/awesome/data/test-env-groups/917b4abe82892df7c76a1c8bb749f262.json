@@ -1,1 +1,0 @@
-{"id":"917b4abe82892df7c76a1c8bb749f262","fullName":"waitForLiveSession > ignores SSE parse errors and non-status payloads until poll finds the session","name":"ignores SSE parse errors and non-status payloads until poll finds the session","status":"passed","testResultsByEnv":{"default":"11f256a3f3f6e98543a48e9c013c7e48"}}
