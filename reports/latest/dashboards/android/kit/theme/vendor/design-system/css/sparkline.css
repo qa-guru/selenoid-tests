@@ -1,0 +1,31 @@
+/* vendored from zero-design-system/projects/design-system-home/design-system — do not edit, run `npm run sync:ds` */
+/* Sparkline — duration trend cell primitive (phase 8.3) */
+
+.sparkline {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.sparkline--empty {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/*
+ * Fluid cells set width:100% + a fixed height. Default SVG meet (xMidYMid)
+ * letterboxes the 88×28 viewBox and centers the stroke — headers then sit
+ * left of the drawn line. Builders set preserveAspectRatio="none".
+ */
+.sparkline--duration {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.sparkline__area {
+  transition: fill 0.3s ease, fill-opacity 0.3s ease;
+}
+
+.sparkline__line {
+  transition: stroke 0.3s ease;
+}
