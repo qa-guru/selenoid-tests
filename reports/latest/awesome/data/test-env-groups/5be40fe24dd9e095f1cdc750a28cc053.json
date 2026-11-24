@@ -1,1 +1,1 @@
-{"id":"5be40fe24dd9e095f1cdc750a28cc053","fullName":"tests.integration.CmCliVersionTests.cm version exits zero and prints revision","name":"cm version exits zero and prints revision","status":"passed","testResultsByEnv":{"default":"6d8984f5427044cd44732402b0115043"}}
+{"id":"5be40fe24dd9e095f1cdc750a28cc053","fullName":"tests.integration.CmCliVersionTests.cm version exits zero and prints revision","name":"cm version exits zero and prints revision","status":"passed","testResultsByEnv":{"default":"346900583fad7c5ee7af516cf90c1aea"}}
