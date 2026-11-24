@@ -1,1 +1,1 @@
-{"id":"6d48fa5171befb4482d26ff5fa7d3c77","fullName":"config.ConfigReaderCmTest.resolveCmHubUrl uses cmHubPort with trailing slash","name":"resolveCmHubUrl uses cmHubPort with trailing slash","status":"passed","testResultsByEnv":{"default":"d98d8a9c83849e3befdcee26cfe96339"}}
+{"id":"6d48fa5171befb4482d26ff5fa7d3c77","fullName":"config.ConfigReaderCmTest.resolveCmHubUrl uses cmHubPort with trailing slash","name":"resolveCmHubUrl uses cmHubPort with trailing slash","status":"passed","testResultsByEnv":{"default":"6b3e38dffde55728ec4966405c753410"}}
